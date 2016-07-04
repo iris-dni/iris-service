@@ -1,0 +1,11 @@
+*.py[co]
+*.egg
+*.egg-info
+bin/
+dist/
+parts/
+develop-eggs/
+.installed.cfg
+.DS\_Store
+.installed.cfg
+iris.service.egg-info
