@@ -38,7 +38,7 @@ extensions.append('sphinx.ext.doctest')
 # General information about the project.
 project = u'IRIS'
 from datetime import date
-copyright = u'{year}, AZ Medien'.format(year=date.today().year)
+copyright = u'{year}, Lovely Systems GmbH'.format(year=date.today().year)
 
 version = release = docs_version
 exclude_patterns = ['service.egg-info', 'parts', 'checkouts']

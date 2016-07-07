@@ -10,8 +10,10 @@ IRIS Services
    ./locations
    ./signatures
    ./users
-   ./sso
    ./petitions
    ./petition-management
    ./petitioner-flows
    ./supporter-flows
+   ./sso
+   ./sso-cms
+   ./embed-code

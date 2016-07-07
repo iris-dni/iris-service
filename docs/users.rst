@@ -27,16 +27,20 @@ Data
     }
 
 
-Get Current User
-================
+Get/Login/Logout Current User
+=============================
 
 .. http:get:: /v1/auth/whoami
 
-    Provide information about the currently logged in user.
+    This is the endpoint to get information about the currently logged in
+    user and login or logout a user using SSO data.
 
-    A user is identified using an authorization cookie.
-    If the authorization cookie is not present or not valid the cookie is
-    deleted.
+    If SSO data is provided (via ``remote_auth`` and ``api_key`` GET
+    parameter) the user is identified using this information and the
+    authorization cookie is updated according to the SSO user.
+
+    Using the endpoint without providing any parameters will provide the user
+    data of the currently logged in user pased on the authorization cookie.
 
     **Example Request**:
 
@@ -57,6 +61,11 @@ Get Current User
         - no authorization cookie is provided
         - Body contains an error response structure with the error code
 
+    :<param string remote_auth:
+        - the remote_auth property from the SSO data
+    :<param string api_key:
+        - the SSO API-Key
+
     :>json object data:
         - the result user object
 
@@ -66,6 +75,7 @@ Get Current User
 
         >>> ERROR_CODES('auth_whoami')
         unauthenticated               : This request needs authentication
+
 
 Content Management API
 ======================
