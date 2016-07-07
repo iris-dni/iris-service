@@ -8,4 +8,5 @@ develop-eggs/
 .installed.cfg
 .DS\_Store
 .installed.cfg
+iris/service/docs
 iris.service.egg-info
