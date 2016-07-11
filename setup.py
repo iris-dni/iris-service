@@ -43,34 +43,35 @@ requires = [
     'python-dateutil',
 ]
 
-setup(name='iris.service',
-      version=VERSION,
-      author='Lovely Systems',
-      author_email='hello@lovelysystems.com',
-      packages=find_packages(),
-      include_package_data=True,
-      extras_require=dict(
-          test=nailed_requires([
-              'collective.xmltestreport',
-              'webtest',
-          ]),
-          documentation=nailed_requires([
-              'sphinx',
-              'sphinx-rtd-theme',
-          ]),
-      ),
-      zip_safe=False,
-      install_requires=nailed_requires(requires),
-      test_suite="iris.service",
-      entry_points={
-          'paste.app_factory': [
-              'main=iris.service.server:app_factory',
-          ],
-          'paste.server_factory': [
-              'server=iris.service.server:server_factory',
-          ],
-          'console_scripts': [
-              'app=pyramid.scripts.pserve:main',
-          ],
-          },
-      )
+setup(
+    name='iris.service',
+    version=VERSION,
+    author='Lovely Systems',
+    author_email='hello@lovelysystems.com',
+    packages=find_packages(),
+    include_package_data=True,
+    extras_require=dict(
+        test=nailed_requires([
+            'collective.xmltestreport',
+            'webtest',
+        ]),
+        documentation=nailed_requires([
+            'sphinx',
+            'sphinx-rtd-theme',
+        ]),
+    ),
+    zip_safe=False,
+    install_requires=nailed_requires(requires),
+    test_suite="iris.service",
+    entry_points={
+        'paste.app_factory': [
+            'main=iris.service.server:app_factory',
+        ],
+        'paste.server_factory': [
+            'server=iris.service.server:server_factory',
+        ],
+        'console_scripts': [
+            'iris-service=pyramid.scripts.pserve:main',
+        ],
+    },
+)

@@ -1,0 +1,4 @@
+include versions.cfg
+recursive-include iris/service/docs *
+recursive-exclude iris/service tests.py
+recursive-exclude iris/service/testing *
