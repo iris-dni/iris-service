@@ -57,5 +57,6 @@ def create_suite(testfile,
 def test_suite():
     s = unittest.TestSuite((
         create_suite('sample/service.rst'),
+        create_suite('static.rst'),
         ))
     return s

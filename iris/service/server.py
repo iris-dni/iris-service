@@ -39,8 +39,10 @@ def app_factory(global_config, **settings):
         settings=settings,
     )
 
+    config.include('iris.service.static')
     config.include('iris.service.sample.service', route_prefix=API_Vx_BASE_URL)
 
+    config.scan('iris.service.static')
     config.scan('iris.service.sample.service')
 
     return config.make_wsgi_app()
