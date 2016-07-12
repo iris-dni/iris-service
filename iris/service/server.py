@@ -39,6 +39,7 @@ def app_factory(global_config, **settings):
         settings=settings,
     )
 
+    config.include('iris.service.db')
     config.include('iris.service.static')
     config.include('iris.service.sample.service', route_prefix=API_Vx_BASE_URL)
 

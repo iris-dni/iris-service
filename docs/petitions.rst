@@ -11,7 +11,7 @@ Data
 .. sourcecode:: json
 
     {
-        "id": "...",
+        "id": ...,
         "dc": {
             ...
         },
@@ -82,7 +82,7 @@ Create
 Update
 ------
 
-.. http:put:: /v1/petitions/(string:id)
+.. http:put:: /v1/petitions/(integer:id)
 
     Update existing petition.
 
@@ -97,7 +97,7 @@ Update
 Delete
 ------
 
-.. http:delete:: /v1/petitions/(string:id)
+.. http:delete:: /v1/petitions/(integer:id)
 
     Delete a petition.
 
@@ -107,7 +107,7 @@ Delete
 Sign
 ----
 
-.. http:post:: /v1/petitions/(string:id)/sign
+.. http:post:: /v1/petitions/(integer:id)/sign
 
     Sign a petition.
 

@@ -41,6 +41,10 @@ requires = [
     'enum34',
     'requests',
     'python-dateutil',
+    'crate',
+    'crash',
+    'lovely.esdb',
+    'lovely.essequence',
 ]
 
 setup(
@@ -54,6 +58,7 @@ setup(
         test=nailed_requires([
             'collective.xmltestreport',
             'webtest',
+            'lovely.testlayers',
         ]),
         documentation=nailed_requires([
             'sphinx',

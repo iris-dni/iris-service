@@ -23,7 +23,7 @@ def print_json(js):
 
 def print_dict(d):
     print(json.dumps(d,
-                     indent=4,
+                     indent=2,
                      sort_keys=True,
                      ensure_ascii=False,
                      separators=(',', ': ')
@@ -51,6 +51,7 @@ def POST(browser, url):
 def setupGlobs(globs, browser):
     globs['print_json'] = print_json
     globs['print_dict'] = print_dict
+    globs['pp'] = print_dict
     globs['pprint'] = pprint.pprint
     # for api documentation HTTP calls
     globs['HTTP_GET'] = functools.partial(GET, browser)

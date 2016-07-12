@@ -17,3 +17,12 @@ IRIS Services
    ./sso
    ./sso-cms
    ./embed-code
+
+Developers
+----------
+
+.. toctree::
+   :maxdepth: 3
+
+   ./develop/index
+

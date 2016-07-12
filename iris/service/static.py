@@ -9,7 +9,6 @@ def docsRedirectView(request):
 
 def includeme(config):
     settings = config.get_settings()
-    docsPath = settings.get('docs.path', '')
-    if docsPath:
-        config.add_static_view(name='/docs', path=docsPath)
-        config.add_route('docs', '/docs')
+    docsPath = settings.get('docs.path', 'iris.service:docs')
+    config.add_static_view(name='/docs', path=docsPath)
+    config.add_route('docs', '/docs')

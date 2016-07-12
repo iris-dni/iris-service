@@ -6,6 +6,7 @@ from pyramid import paster
 from webtest import TestApp
 
 from iris.service.testing import util
+from iris.service.testing import layer
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -31,6 +32,11 @@ def setUp(test):
     util.setupGlobs(test.globs, testapp)
 
 
+def setUpCrate(test):
+    setUp(test)
+    layer.create_crate_indexes()
+
+
 def tearDown(test):
     pass
 
@@ -54,8 +60,17 @@ def create_suite(testfile,
     return suite
 
 
+def create_crate_suite(testfile):
+    return create_suite(testfile,
+                        layer=layer.crateDBLayer,
+                        setUp=setUpCrate,
+                       )
+
+
 def test_suite():
     s = unittest.TestSuite((
+        create_crate_suite('petition/document.rst'),
+        create_suite('db/dc.rst'),
         create_suite('sample/service.rst'),
         create_suite('static.rst'),
         ))
