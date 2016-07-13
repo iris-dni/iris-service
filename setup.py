@@ -35,6 +35,7 @@ def nailed_requires(requirements, pat=re.compile(r'^(.+)(\[.+\])?$')):
     return res
 
 requires = [
+    'pytz',
     'gevent',
     'pyramid',
     'pyramid_jinja2',
