@@ -9,6 +9,7 @@ pyramid.default_locale_name = en
 
 docs.path = iris.service:docs
 
+es.hosts = localhost:${ports:crate}
 ###
 # wsgi server configuration
 ###

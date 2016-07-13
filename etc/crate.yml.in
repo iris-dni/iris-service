@@ -1,0 +1,23 @@
+es:
+    api:
+        enabled: true
+script:
+    groovy:
+        sandbox:
+            enabled: true
+http:
+    port: ${ports:crate}
+    cors:
+        enabled: true
+        allow-origin: "/.*/"
+path:
+    logs:  ${crate:log_dir}
+    data:  ${crate:data_dir}
+discovery:
+    type: zen
+    zen:
+        ping:
+            multicast:
+                enabled:  false
+cluster:
+    name: ${crate:cluster_name}

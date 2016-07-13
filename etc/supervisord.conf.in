@@ -1,0 +1,28 @@
+[inet_http_server]
+port = 0.0.0.0:${ports:supervisor}
+
+[supervisord]
+logfile = ${buildout:directory}/var/log/supervisord.log
+logfile_maxbytes = 50MB
+logfile_backups = 1
+loglevel = info
+pidfile = ${buildout:directory}/var/run/supervisord.pid
+nodaemon = false
+minfds = 800
+childlogdir = ${buildout:directory}/var/log/supervisor
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl = http://localhost:${ports:supervisor}
+
+[program:crate]
+command = ${crate:location}/bin/crate -Des.cluster.name={crate:cluster_name} -Dpath.conf=${buildout:directory}/etc
+redirect_stderr=true
+priority = 1
+
+[program:app]
+command = ${buildout:bin-directory}/app http_port=${ports:app}
+redirect_stderr=true
+priority = 2

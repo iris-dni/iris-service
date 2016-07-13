@@ -43,6 +43,7 @@ requires = [
     'python-dateutil',
     'crate',
     'crash',
+    'lovely.pyrest',
     'lovely.esdb',
     'lovely.essequence',
 ]

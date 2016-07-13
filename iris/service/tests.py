@@ -71,6 +71,8 @@ def test_suite():
     s = unittest.TestSuite((
         create_crate_suite('petition/document.rst'),
         create_suite('db/dc.rst'),
+        create_suite('service/rest.rst'),
+        create_suite('service/restmapper.rst'),
         create_suite('sample/service.rst'),
         create_suite('static.rst'),
         ))
