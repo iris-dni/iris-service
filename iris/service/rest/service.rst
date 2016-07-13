@@ -11,13 +11,14 @@ data from the database.
 
 Prepare test::
 
-    >>> from iris.service.service import rest
-    >>> rest.testing_push_state()
+    >>> from iris.service.rest.service import testing_push_state
+    >>> testing_push_state()
 
     >>> request = get_test_request()
 
 Create a REST service instance::
 
+    >>> from iris.service import rest
     >>> service = rest.RESTService(request)
     >>> service.get('myrestmapper', '1')
     Traceback (most recent call last):
@@ -44,6 +45,12 @@ A mapper must derive from RESTMapper::
     ...     def update(self, contentId, data):
     ...         data['id'] = contentId
     ...         return data
+    ...
+    ...     def delete(self, contentId):
+    ...         return {
+    ...             'id': contentId,
+    ...             'state': 'test'
+    ...         }
     ...
     ...     def query(self, **kwargs):
     ...         return {'data': kwargs, 'total': 0}
@@ -91,6 +98,20 @@ Update an existing document on the update endpoint::
     }
 
 
+REST Delete Content
+-------------------
+
+Delete an existing document::
+
+    >>> pp(service.delete('myrestmapper', '2'))
+    {
+      "data": {
+        "id": "2",
+        "state": "test"
+      }
+    }
+
+
 REST Query Content
 ------------------
 
@@ -123,10 +144,15 @@ Missing implementations result in HTTPMethodNotAllowed (405) errors::
     Traceback (most recent call last):
     HTTPMethodNotAllowed: MyMissingMapper.update
 
+    >>> pp(service.delete('missing', '2'))
+    Traceback (most recent call last):
+    HTTPMethodNotAllowed: MyMissingMapper.delete
+
     >>> pp(service.query('missing'))
     Traceback (most recent call last):
     HTTPMethodNotAllowed: MyMissingMapper.query
 
 Test cleanup::
 
-    >>> rest.testing_pop_state()
+    >>> from iris.service.rest.service import testing_pop_state
+    >>> testing_pop_state()

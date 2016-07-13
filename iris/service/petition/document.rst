@@ -31,11 +31,6 @@ Store the petition::
     {
       "_id": "1",
       "_index": "petitions",
-      "_shards": {
-        "failed": 0,
-        "successful": 1,
-        "total": 1
-      },
       "_type": "default",
       "_version": 1,
       "created": true

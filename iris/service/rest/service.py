@@ -46,16 +46,6 @@ class RESTService(BaseRESTService):
     @rpcmethod_view(http_cache=0)
     def get(self, mapperName, contentId, **kwargs):
         mapper = self._getMapper(mapperName)
-        queryParams = self._queryParams()
-        resolve = ['all']
-        properties = None
-        if 'resolve' in queryParams:
-            resolve = queryParams.pop('resolve')
-        if 'properties' in queryParams:
-            properties = queryParams.pop('properties')
-        if queryParams:
-            raise HTTPBadRequest('unknown query parameters, '
-                                 'only resolve is allowed')
         try:
             data = mapper.get(contentId)
         except NotImplementedError as e:
@@ -85,6 +75,26 @@ class RESTService(BaseRESTService):
             data = mapper.update(contentId, data)
         except NotImplementedError as e:
             raise HTTPMethodNotAllowed(e.message)
+        if data is None:
+            raise HTTPNotFound(
+                "Id %s of content type '%s' not found" % (contentId,
+                                                          mapperName)
+            )
+        return {"data": data}
+
+    @rpcmethod_route(request_method='DELETE',
+                     route_suffix='/{mapperName}/{contentId}')
+    def delete(self, mapperName, contentId, **kwargs):
+        mapper = self._getMapper(mapperName)
+        try:
+            data = mapper.delete(contentId)
+        except NotImplementedError as e:
+            raise HTTPMethodNotAllowed(e.message)
+        if data is None:
+            raise HTTPNotFound(
+                "Id %s of content type '%s' not found" % (contentId,
+                                                          mapperName)
+            )
         return {"data": data}
 
     @rpcmethod_route(route_suffix='/{mapperName}')
@@ -140,6 +150,9 @@ class RESTMapper(object):
 
     def update(self, contentId, data):
         raise NotImplementedError('%s.update' % self.__class__.__name__)
+
+    def delete(self, contentId):
+        raise NotImplementedError('%s.delete' % self.__class__.__name__)
 
     def query(self, **kwargs):
         raise NotImplementedError('%s.query' % self.__class__.__name__)

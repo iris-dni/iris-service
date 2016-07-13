@@ -41,14 +41,14 @@ def app_factory(global_config, **settings):
     )
 
     config.include('iris.service.db')
-    config.include('iris.service.service.rest')
+    config.include('iris.service.rest')
     config.include('iris.service.static')
     config.include('iris.service.sample.service',
                    route_prefix=API_Vx_BASE_URL)
     config.include('iris.service.routes_api',
                    route_prefix=API_Vx_BASE_URL)
 
-    config.scan('iris.service.service.rest')
+    config.scan('iris.service.rest')
     config.scan('iris.service.petition')
     config.scan('iris.service.static')
     config.scan('iris.service.sample.service')
