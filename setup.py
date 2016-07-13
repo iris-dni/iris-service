@@ -47,6 +47,7 @@ requires = [
     'lovely.pyrest',
     'lovely.esdb',
     'lovely.essequence',
+    'pytz',
 ]
 
 setup(
