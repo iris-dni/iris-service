@@ -49,6 +49,7 @@ def app_factory(global_config, **settings):
                    route_prefix=API_Vx_BASE_URL)
 
     config.scan('iris.service.service.rest')
+    config.scan('iris.service.petition')
     config.scan('iris.service.static')
     config.scan('iris.service.sample.service')
 

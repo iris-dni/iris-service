@@ -5,4 +5,5 @@ def includeme(config):
     #   Allows acces to `/admin/<mapper>`
     #
     config.add_route('generic_rest_service',
-                     '/admin')
+                     '/admin',
+                     static=True)
