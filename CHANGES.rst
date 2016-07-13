@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/07/13 0.0.3
+=================
+
  - fix dependencies
 
 2016/07/13 0.0.2
