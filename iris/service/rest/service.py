@@ -38,13 +38,7 @@ class BaseRESTService(object):
                 if n.strip()]
         return queryParams
 
-
-@RestService("generic_rest_service")
-class RESTService(BaseRESTService):
-
-    @rpcmethod_route(route_suffix='/{mapperName}/{contentId}')
-    @rpcmethod_view(http_cache=0)
-    def get(self, mapperName, contentId, **kwargs):
+    def get_content(self, mapperName, contentId):
         mapper = self._getMapper(mapperName)
         try:
             data = mapper.get(contentId)
@@ -57,9 +51,7 @@ class RESTService(BaseRESTService):
             )
         return {"data": data}
 
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{mapperName}')
-    def create(self, mapperName, data, **kwargs):
+    def create_content(self, mapperName, data):
         mapper = self._getMapper(mapperName)
         try:
             data = mapper.create(data)
@@ -67,9 +59,7 @@ class RESTService(BaseRESTService):
             raise HTTPMethodNotAllowed(e.message)
         return {"data": data}
 
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{mapperName}/{contentId}')
-    def update(self, mapperName, contentId, data, **kwargs):
+    def update_content(self, mapperName, contentId, data):
         mapper = self._getMapper(mapperName)
         try:
             data = mapper.update(contentId, data)
@@ -82,9 +72,7 @@ class RESTService(BaseRESTService):
             )
         return {"data": data}
 
-    @rpcmethod_route(request_method='DELETE',
-                     route_suffix='/{mapperName}/{contentId}')
-    def delete(self, mapperName, contentId, **kwargs):
+    def delete_content(self, mapperName, contentId):
         mapper = self._getMapper(mapperName)
         try:
             data = mapper.delete(contentId)
@@ -96,6 +84,30 @@ class RESTService(BaseRESTService):
                                                           mapperName)
             )
         return {"data": data}
+
+
+@RestService("generic_rest_service")
+class RESTService(BaseRESTService):
+
+    @rpcmethod_route(route_suffix='/{mapperName}/{contentId}')
+    @rpcmethod_view(http_cache=0)
+    def get(self, mapperName, contentId, **kwargs):
+        return self.get_content(mapperName, contentId)
+
+    @rpcmethod_route(request_method='POST',
+                     route_suffix='/{mapperName}')
+    def create(self, mapperName, data, **kwargs):
+        return self.create_content(mapperName, data)
+
+    @rpcmethod_route(request_method='POST',
+                     route_suffix='/{mapperName}/{contentId}')
+    def update(self, mapperName, contentId, data, **kwargs):
+        return self.update_content(mapperName, contentId, data)
+
+    @rpcmethod_route(request_method='DELETE',
+                     route_suffix='/{mapperName}/{contentId}')
+    def delete(self, mapperName, contentId, **kwargs):
+        return self.delete_content(mapperName, contentId)
 
     @rpcmethod_route(route_suffix='/{mapperName}')
     @rpcmethod_view(http_cache=0)
@@ -130,7 +142,9 @@ class RESTMapperMeta(type):
                     )
                 )
             cls._MAPPER_REGISTRY[cls.NAME] = cls
-            log.info('registered RESTMapper "%s" for class "%s"', cls.NAME, name)
+            log.info('registered RESTMapper "%s" for class "%s"',
+                     cls.NAME,
+                     name)
         super(RESTMapperMeta, cls).__init__(name, bases, dct)
 
 

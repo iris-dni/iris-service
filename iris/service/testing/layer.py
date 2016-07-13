@@ -33,8 +33,11 @@ crateDBLayer = CascadedLayer('crateDBLayer', crate_layer)
 def delete_crate_indexes():
     """Deletes the Crate indexes.
     """
-    os.system('%s --host http://%s >/dev/null' % (
-                crate_cleanup, crate_host))
+    url = "http://%s/_aliases" % crate_host
+    for index in requests.get(url).json().keys():
+        url = "http://%s/%s" % (crate_host, index)
+        requests.delete(url)
+    wait_for_cluster()
 
 
 def create_crate_indexes():

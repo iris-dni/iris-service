@@ -32,13 +32,19 @@ def setUp(test):
     util.setupGlobs(test.globs, testapp)
 
 
+def tearDown(test):
+    pass
+
+
 def setUpCrate(test):
     setUp(test)
+    layer.delete_crate_indexes()
     layer.create_crate_indexes()
 
 
-def tearDown(test):
-    pass
+def tearDownCrate(test):
+    layer.delete_crate_indexes()
+    tearDown(test)
 
 
 def create_suite(testfile,

@@ -3,6 +3,84 @@ Petition Services
 =================
 
 
+Public API
+==========
+
+The public API contains the endpoints which are available for the frontend.
+
+
+Create Petition
+---------------
+
+    >>> petition = {
+    ...     "data": {}
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        "dc": {
+          "created": "...",
+          "effective": null,
+          "expires": null,
+          "modified": "..."
+        },
+        "id": ...,
+        "state": "draft"
+      }
+    }
+
+    >>> id = response.json['data']['id']
+
+
+Get Petition
+------------
+
+    >>> response = browser.get('/v1/petitions/%s' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        "dc": {
+          "created": "...",
+          "effective": null,
+          "expires": null,
+          "modified": "..."
+        },
+        "id": ...,
+        "state": "draft"
+      }
+    }
+
+
+Delete Petition
+---------------
+
+    >>> response = browser.delete('/v1/petitions/%s' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        "dc": {
+          "created": "...",
+          "effective": null,
+          "expires": null,
+          "modified": "..."
+        },
+        "id": ...,
+        "state": "draft"
+      }
+    }
+
+    >>> response = browser.get('/v1/petitions/%s' % id, expect_errors=True)
+    >>> response.status
+    '404 Not Found'
+
+
 Admin API
 =========
 
@@ -44,7 +122,7 @@ Create a new petition::
           "expires": null,
           "modified": "..."
         },
-        "id": 1,
+        "id": ...,
         "state": "test 1"
       }
     }
@@ -75,7 +153,7 @@ POST on the petition with the data which need to be changed::
           "expires": null,
           "modified": "..."
         },
-        "id": 1,
+        "id": ...,
         "state": "changed 1"
       }
     }
@@ -98,7 +176,7 @@ Use the id from the response above::
           "expires": null,
           "modified": "..."
         },
-        "id": 1,
+        "id": ...,
         "state": "changed 1"
       }
     }
@@ -122,7 +200,7 @@ Use the list endpoint::
             "expires": null,
             "modified": "..."
           },
-          "id": 1,
+          "id": ...,
           "state": "changed 1"
         }
       ],
@@ -147,7 +225,7 @@ Do a delete request::
             "expires": null,
             "modified": "..."
         },
-        "id": 1,
+        "id": ...,
         "state": "changed 1"
       }
     }
