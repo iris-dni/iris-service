@@ -73,6 +73,7 @@ def test_suite():
         create_suite('db/dc.rst'),
         create_suite('rest/service.rst'),
         create_suite('rest/mapper.rst'),
+        create_suite('rest/document.rst'),
         create_suite('sample/service.rst'),
         create_suite('static.rst'),
         ))

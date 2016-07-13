@@ -52,7 +52,7 @@ A mapper must derive from RESTMapper::
     ...             'state': 'test'
     ...         }
     ...
-    ...     def query(self, **kwargs):
+    ...     def search(self, **kwargs):
     ...         return {'data': kwargs, 'total': 0}
 
 
@@ -117,7 +117,7 @@ REST Query Content
 
 Query documents::
 
-    >>> pp(service.query('myrestmapper'))
+    >>> pp(service.search('myrestmapper'))
     {
       "data": {},
       "total": 0
@@ -148,9 +148,9 @@ Missing implementations result in HTTPMethodNotAllowed (405) errors::
     Traceback (most recent call last):
     HTTPMethodNotAllowed: MyMissingMapper.delete
 
-    >>> pp(service.query('missing'))
+    >>> pp(service.search('missing'))
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.query
+    HTTPMethodNotAllowed: MyMissingMapper.search
 
 Test cleanup::
 

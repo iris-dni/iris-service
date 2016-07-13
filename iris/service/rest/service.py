@@ -99,11 +99,11 @@ class RESTService(BaseRESTService):
 
     @rpcmethod_route(route_suffix='/{mapperName}')
     @rpcmethod_view(http_cache=0)
-    def query(self, mapperName, **kwargs):
+    def search(self, mapperName, **kwargs):
         mapper = self._getMapper(mapperName)
         queryParams = self._queryParams()
         try:
-            data = mapper.query(**queryParams)
+            data = mapper.search(**queryParams)
         except (KeyError, ValueError) as e:
             raise HTTPBadRequest(e.message)
         except NotImplementedError as e:
@@ -154,8 +154,8 @@ class RESTMapper(object):
     def delete(self, contentId):
         raise NotImplementedError('%s.delete' % self.__class__.__name__)
 
-    def query(self, **kwargs):
-        raise NotImplementedError('%s.query' % self.__class__.__name__)
+    def search(self, **kwargs):
+        raise NotImplementedError('%s.search' % self.__class__.__name__)
 
     @classmethod
     def getMapperImplementation(cls, name):
