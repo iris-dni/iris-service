@@ -50,6 +50,29 @@ def POST(browser, url):
     print(browser.post(url, expect_errors=True))
 
 
+def POST_JSON(browser, url, body=None, headers=None):
+    res = browser.post_json(url, body, headers=headers, expect_errors=True)
+    print_json(res)
+
+
+def DELETE(browser, url):
+    print(browser.delete(url, expect_errors=True))
+
+
+def DELETE_JSON(browser, url, headers=None):
+    res = browser.delete(url, headers=headers, expect_errors=True)
+    print_json(res)
+
+
+def PUT(browser, url):
+    print(browser.put(url, expect_errors=True))
+
+
+def PUT_JSON(browser, url, body=None, headers=None):
+    res = browser.put_json(url, body, headers=headers, expect_errors=True)
+    print_json(res)
+
+
 def get_test_request():
     request = DummyRequest()
     request.remote_addr = '127.0.0.1'
@@ -67,3 +90,8 @@ def setupGlobs(globs, browser):
     globs['HTTP_GET'] = functools.partial(GET, browser)
     globs['HTTP_GET_JSON'] = functools.partial(GET_JSON, browser)
     globs['HTTP_POST'] = functools.partial(POST, browser)
+    globs['HTTP_POST_JSON'] = functools.partial(PUT_JSON, browser)
+    globs['HTTP_PUT'] = functools.partial(POST, browser)
+    globs['HTTP_PUT_JSON'] = functools.partial(PUT_JSON, browser)
+    globs['HTTP_DELETE'] = functools.partial(DELETE, browser)
+    globs['HTTP_DELETE_JSON'] = functools.partial(DELETE_JSON, browser)

@@ -1,1 +1,1 @@
-from . import mapper  # noqa
+from . import service  # noqa
