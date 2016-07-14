@@ -85,6 +85,17 @@ class BaseRESTService(object):
             )
         return {"data": data}
 
+    def search_content(self, mapperName):
+        mapper = self._getMapper(mapperName)
+        queryParams = self._queryParams()
+        try:
+            data = mapper.search(**queryParams)
+        except (KeyError, ValueError) as e:
+            raise HTTPBadRequest(e.message)
+        except NotImplementedError as e:
+            raise HTTPMethodNotAllowed(e.message)
+        return data
+
 
 @RestService("generic_rest_service")
 class RESTService(BaseRESTService):
@@ -112,15 +123,7 @@ class RESTService(BaseRESTService):
     @rpcmethod_route(route_suffix='/{mapperName}')
     @rpcmethod_view(http_cache=0)
     def search(self, mapperName, **kwargs):
-        mapper = self._getMapper(mapperName)
-        queryParams = self._queryParams()
-        try:
-            data = mapper.search(**queryParams)
-        except (KeyError, ValueError) as e:
-            raise HTTPBadRequest(e.message)
-        except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
-        return data
+        return self.search_content(mapperName)
 
 
 class RESTMapperMeta(type):

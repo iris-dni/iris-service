@@ -8,15 +8,20 @@ CREATE TABLE petitions (
     ),
     state STRING,
     tags ARRAY(STRING),
-    title STRING,
+    title STRING INDEX OFF,
+    -- relation to cities table
     city STRING,
     type STRING,
     description STRING INDEX OFF,
     suggested_solution STRING INDEX OFF,
 
+    -- relations for files table
     images ARRAY(STRING),
+    -- relations to locations table
     links ARRAY(STRING),
+    -- relations to files table,
     videos ARRAY(STRING),
+    -- relations to locations table
     connected_locations ARRAY(STRING),
 
     signatures OBJECT(STRICT) AS (

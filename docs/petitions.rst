@@ -4,34 +4,40 @@ Petition Service
 
 .. contents::
 
+.. doctest::
+    :hide:
 
-Data
-====
+    >>> petition_42 = creators.petition(id=42)
+
+
+Petition Data
+=============
 
 .. sourcecode:: json
 
+    >>> pp(petition_42.get_source())
     {
-        "id": ...,
-        "dc": {
-            ...
-        },
-        "state": ["signable", "active"],
-        "tags": ["domain:aaz", "big"],
-        "title": "",
-        "city": ref,
-        "type": "",
-        "description": "",
-        "suggested_solution": "",
-        "images": [<fileids>],
-        "links": [<locations>],
-        "videos": [<locations-youtube-only>],
-        "connected_locations": [<locations>],
-        "signatures": {
-            "amount": 32,
-            "required": 100
-        },
-        "owner": "<user-id>",
-        "response_token":  "<hashed-id>"
+      "city": null,
+      "connected_locations": [],
+      "dc": {
+        "created": "...",
+        "effective": null,
+        "expires": null,
+        "modified": "..."
+      },
+      "description": "",
+      "id": 42,
+      "images": [],
+      "links": [],
+      "owner": null,
+      "response_token": null,
+      "signatures": {},
+      "state": "draft",
+      "suggested_solution": "",
+      "tags": [],
+      "title": "",
+      "type": "",
+      "videos": []
     }
 
 
@@ -44,6 +50,26 @@ list
 .. http:get:: /v1/petitions
 
     List/filter petitions.
+
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> HTTP_GET_JSON('/v1/petitions')
+        {
+          "data": [
+            {
+              ...
+              "id": 42,
+              ...
+            }
+          ],
+          "total": 1
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: no error
 
     :param string city_id:
         - filter by city id
@@ -70,10 +96,49 @@ Create
 
 .. http:post:: /v1/petitions
 
-    Create new petition. Can be used by anonymous or authenticated users. For
-    anonymous users the initial state of the petition is ``draft`` else it is
-    ``pending``.
+    Create new petition. The new petition is always in state ``draft``.
 
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> petition = {
+        ...     "data": {
+        ...         "title": "my petition",
+        ...         "description": "All about my petition",
+        ...         "type": "i don't like",
+        ...         "images": ["the_image_hash"]
+        ...     }
+        ... }
+        >>> HTTP_POST_JSON('/v1/petitions', petition)
+        {
+          "data": {
+            "city": null,
+            "connected_locations": [],
+            "dc": {
+              ...
+            },
+            "description": "All about my petition",
+            "id": 1,
+            "images": [
+              "the_image_hash"
+            ],
+            "links": [],
+            "owner": null,
+            "response_token": null,
+            "signatures": {},
+            "state": "draft",
+            "suggested_solution": "",
+            "tags": [],
+            "title": "my petition",
+            "type": "i don't like",
+            "videos": []
+          }
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 201: created
 
     :<json string city:
         - reference to the city (not required)
@@ -86,9 +151,33 @@ Update
 
     Update existing petition.
 
-    Allowed if
-     - petition state is draft
-     - and authenticated user is owner
+    The petition must be ``draft`` and the current user is the owner of the
+    petition or an editor.
+
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> petition = {
+        ...     "data": {
+        ...         "title": "better title",
+        ...     }
+        ... }
+        >>> HTTP_POST_JSON('/v1/petitions/1', petition)
+        {
+          "data": {
+            ...
+            "id": 1,
+            ...
+            "title": "better title",
+            ...
+          }
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: modified
+    :statuscode 404: petition not found
 
     :<json string city:
         - reference to the city (not required)
@@ -103,6 +192,24 @@ Delete
 
     ``What is the precondition to be able to delete a petition?``
 
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> HTTP_DELETE_JSON('/v1/petitions/1')
+        {
+          "data": {
+            ...
+            "id": 1,
+            ...
+          }
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: deleted
+    :statuscode 404: petition not found
+
 
 Sign
 ----
@@ -110,6 +217,22 @@ Sign
 .. http:post:: /v1/petitions/(integer:id)/sign
 
     Sign a petition.
+
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> data = {
+        ...     "data": {}
+        ... }
+        >>> HTTP_POST_JSON('/v1/petitions/42/sign', data)
+        {}
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: signed
+    :statuscode 404: petition not found
+    :statuscode 400: details are in the json response body
 
 
 Add City Response

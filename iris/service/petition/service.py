@@ -1,3 +1,5 @@
+from pyramid.httpexceptions import HTTPNotFound
+
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
@@ -13,11 +15,20 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
 
     DOC_CLASS = Petition
 
+    def sign(self, contentId, data):
+        """Sign a petition
+        """
+        petition = Petition.get(contentId)
+        if petition is None:
+            return None
+        # TODO: sign the petition
+        return {}
+
 
 @RestService("petition_public_api")
 class PetitionPublicRESTService(rest.BaseRESTService):
     """Public petition endpoint
-    
+
     We reuse the BaseRESTService for the simple endpoints.
     """
 
@@ -41,3 +52,19 @@ class PetitionPublicRESTService(rest.BaseRESTService):
                      route_suffix='/{contentId}')
     def delete(self, contentId, **kwargs):
         return self.delete_content(self.MAPPER_NAME, contentId)
+
+    @rpcmethod_route()
+    @rpcmethod_view(http_cache=0)
+    def search(self, **kwargs):
+        return self.search_content(self.MAPPER_NAME)
+
+    @rpcmethod_route(request_method='POST',
+                     route_suffix='/{contentId}/sign')
+    def sign(self, contentId, data, **kwargs):
+        mapper = self._getMapper(self.MAPPER_NAME)
+        result = mapper.sign(contentId, data)
+        if result is None:
+            raise HTTPNotFound(
+                "Petition with Id %s not found" % contentId
+            )
+        return result

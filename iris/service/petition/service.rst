@@ -21,14 +21,18 @@ Create Petition
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "draft"
+        ...
+        "state": "draft",
+        ...
       }
     }
 
@@ -44,14 +48,18 @@ Get Petition
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "draft"
+        ...
+        "state": "draft",
+        ...
       }
     }
 
@@ -65,14 +73,18 @@ Delete Petition
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "draft"
+        ...
+        "state": "draft",
+        ...
       }
     }
 
@@ -116,14 +128,18 @@ Create a new petition::
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "test 1"
+        ...
+        "state": "test 1",
+        ...
       }
     }
 
@@ -147,14 +163,18 @@ POST on the petition with the data which need to be changed::
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "changed 1"
+        ...
+        "state": "changed 1",
+        ...
       }
     }
 
@@ -170,14 +190,18 @@ Use the id from the response above::
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
           "created": "...",
           "effective": null,
           "expires": null,
           "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "changed 1"
+        ...
+        "state": "changed 1",
+        ...
       }
     }
 
@@ -194,14 +218,18 @@ Use the list endpoint::
     {
       "data": [
         {
+          ...
           "dc": {
             "created": "...",
             "effective": null,
             "expires": null,
             "modified": "..."
           },
+          ...
           "id": ...,
-          "state": "changed 1"
+          ...
+          "state": "changed 1",
+          ...
         }
       ],
       "total": 1
@@ -219,13 +247,17 @@ Do a delete request::
     >>> print_json(response)
     {
       "data": {
+        ...
         "dc": {
             "created": "...",
             "effective": null,
             "expires": null,
             "modified": "..."
         },
+        ...
         "id": ...,
-        "state": "changed 1"
+        ...
+        "state": "changed 1",
+        ...
       }
     }
