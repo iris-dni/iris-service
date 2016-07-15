@@ -22,7 +22,7 @@ Create a REST service instance::
     >>> service = rest.RESTService(request)
     >>> service.get('myrestmapper', '1')
     Traceback (most recent call last):
-    HTTPNotFound: Mapper 'myrestmapper' not found
+    BadRequest: Errors.mapper_not_found
 
 
 Implement a REST Mapper
@@ -134,23 +134,23 @@ Missing implementations result in HTTPMethodNotAllowed (405) errors::
 
     >>> service.get('missing', '1')
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.get
+    BadRequest: MyMissingMapper.get
 
     >>> pp(service.create('missing', {'state': 'ready'}))
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.create
+    BadRequest: MyMissingMapper.create
 
     >>> pp(service.update('missing', '2', {'state': 'active'}))
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.update
+    BadRequest: MyMissingMapper.update
 
     >>> pp(service.delete('missing', '2'))
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.delete
+    BadRequest: MyMissingMapper.delete
 
     >>> pp(service.search('missing'))
     Traceback (most recent call last):
-    HTTPMethodNotAllowed: MyMissingMapper.search
+    BadRequest: MyMissingMapper.search
 
 Test cleanup::
 

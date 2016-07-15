@@ -1,19 +1,16 @@
 import logging
 import copy
 
-from pyramid.httpexceptions import (
-    HTTPNotFound,
-    HTTPBadRequest,
-    HTTPMethodNotAllowed,
-)
-
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
+
+from ..errors import Errors
+from ..endpoint import EndpointErrorMixin
 
 
 log = logging.getLogger(__name__)
 
 
-class BaseRESTService(object):
+class BaseRESTService(EndpointErrorMixin):
     """The base implementation for mapped REST services
 
     A mapped REST service is implemented using a registered mapper. The data
@@ -27,7 +24,9 @@ class BaseRESTService(object):
         try:
             return RESTMapper.getMapperImplementation(mapperName)
         except KeyError:
-            raise HTTPNotFound("Mapper '%s' not found" % mapperName)
+            raise self.not_found(Errors.mapper_not_found,
+                                 {'mapperName': mapperName}
+                                )
 
     def _queryParams(self):
         queryParams = {k: v for k, v in self.request.GET.items()}
@@ -43,12 +42,13 @@ class BaseRESTService(object):
         try:
             data = mapper.get(contentId)
         except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
+            raise self.method_not_allowed(e.message)
         if data is None:
-            raise HTTPNotFound(
-                "Id %s of content type '%s' not found" % (contentId,
-                                                          mapperName)
-            )
+            raise self.not_found(Errors.document_not_found,
+                                 {'contentId': contentId,
+                                  'mapperName': mapperName
+                                 }
+                                )
         return {"data": data}
 
     def create_content(self, mapperName, data):
@@ -56,7 +56,7 @@ class BaseRESTService(object):
         try:
             data = mapper.create(data)
         except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
+            raise self.method_not_allowed(e.message)
         return {"data": data}
 
     def update_content(self, mapperName, contentId, data):
@@ -64,12 +64,13 @@ class BaseRESTService(object):
         try:
             data = mapper.update(contentId, data)
         except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
+            raise self.method_not_allowed(e.message)
         if data is None:
-            raise HTTPNotFound(
-                "Id %s of content type '%s' not found" % (contentId,
-                                                          mapperName)
-            )
+            raise self.not_found(Errors.document_not_found,
+                                 {'contentId': contentId,
+                                  'mapperName': mapperName
+                                 }
+                                )
         return {"data": data}
 
     def delete_content(self, mapperName, contentId):
@@ -77,12 +78,13 @@ class BaseRESTService(object):
         try:
             data = mapper.delete(contentId)
         except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
+            raise self.method_not_allowed(e.message)
         if data is None:
-            raise HTTPNotFound(
-                "Id %s of content type '%s' not found" % (contentId,
-                                                          mapperName)
-            )
+            raise self.not_found(Errors.document_not_found,
+                                 {'contentId': contentId,
+                                  'mapperName': mapperName
+                                 }
+                                )
         return {"data": data}
 
     def search_content(self, mapperName):
@@ -91,9 +93,9 @@ class BaseRESTService(object):
         try:
             data = mapper.search(**queryParams)
         except (KeyError, ValueError) as e:
-            raise HTTPBadRequest(e.message)
+            raise self.bad_request(e.message)
         except NotImplementedError as e:
-            raise HTTPMethodNotAllowed(e.message)
+            raise self.method_not_allowed(e.message)
         return data
 
 

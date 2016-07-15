@@ -1,8 +1,8 @@
-from pyramid.httpexceptions import HTTPNotFound
-
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
+
+from ..errors import Errors
 
 from .document import Petition
 
@@ -64,7 +64,9 @@ class PetitionPublicRESTService(rest.BaseRESTService):
         mapper = self._getMapper(self.MAPPER_NAME)
         result = mapper.sign(contentId, data)
         if result is None:
-            raise HTTPNotFound(
-                "Petition with Id %s not found" % contentId
-            )
+            raise self.not_found(Errors.document_not_found,
+                                 {'contentId': contentId,
+                                  'mapperName': self.MAPPER_NAME
+                                 }
+                                )
         return result
