@@ -19,8 +19,9 @@ Prepare test::
 Create a REST service instance::
 
     >>> from iris.service import rest
+    >>> request.path = '/v1/admin/myrestmapper/1'
     >>> service = rest.RESTService(request)
-    >>> service.get('myrestmapper', '1')
+    >>> service.get('1')
     Traceback (most recent call last):
     BadRequest: Errors.mapper_not_found
 
@@ -62,7 +63,8 @@ REST Get Content
 Get a document by id. The get method of the service must be called with the
 mapper name as its first paramter::
 
-    >>> pp(service.get('myrestmapper', '1'))
+    >>> request.path = '/v1/admin/myrestmapper/1'
+    >>> pp(service.get('1'))
     {
       "data": {
         "contentId": "1"
@@ -74,8 +76,9 @@ REST Create Content
 -------------------
 
 Create a new document on the create endpoint::
-
-    >>> pp(service.create('myrestmapper', {'state': 'ready'}))
+ 
+    >>> request.path = '/v1/admin/myrestmapper'
+    >>> pp(service.create({'state': 'ready'}))
     {
       "data": {
         "id": 1,
@@ -89,7 +92,8 @@ REST Update Content
 
 Update an existing document on the update endpoint::
 
-    >>> pp(service.update('myrestmapper', '2', {'state': 'active'}))
+    >>> request.path = '/v1/admin/myrestmapper/2'
+    >>> pp(service.update('2', {'state': 'active'}))
     {
       "data": {
         "id": "2",
@@ -103,7 +107,8 @@ REST Delete Content
 
 Delete an existing document::
 
-    >>> pp(service.delete('myrestmapper', '2'))
+    >>> request.path = '/v1/admin/myrestmapper/2'
+    >>> pp(service.delete('2'))
     {
       "data": {
         "id": "2",
@@ -117,7 +122,8 @@ REST Query Content
 
 Query documents::
 
-    >>> pp(service.search('myrestmapper'))
+    >>> request.path = '/v1/admin/myrestmapper'
+    >>> pp(service.search())
     {
       "data": {},
       "total": 0
@@ -132,23 +138,28 @@ Missing implementations result in HTTPMethodNotAllowed (405) errors::
     >>> class MyMissingMapper(rest.RESTMapper):
     ...     NAME = 'missing'
 
-    >>> service.get('missing', '1')
+    >>> request.path = '/v1/admin/missing/1'
+    >>> service.get('1')
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.get
 
-    >>> pp(service.create('missing', {'state': 'ready'}))
+    >>> request.path = '/v1/admin/missing'
+    >>> pp(service.create({'state': 'ready'}))
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.create
 
-    >>> pp(service.update('missing', '2', {'state': 'active'}))
+    >>> request.path = '/v1/admin/missing/2'
+    >>> pp(service.update('2', {'state': 'active'}))
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.update
 
-    >>> pp(service.delete('missing', '2'))
+    >>> request.path = '/v1/admin/missing/2'
+    >>> pp(service.delete('2'))
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.delete
 
-    >>> pp(service.search('missing'))
+    >>> request.path = '/v1/admin/missing'
+    >>> pp(service.search())
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.search
 

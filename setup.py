@@ -39,6 +39,7 @@ requires = [
     'gevent',
     'pyramid',
     'pyramid_jinja2',
+    'pyramid_swagger',
     'enum34',
     'requests',
     'python-dateutil',

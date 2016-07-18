@@ -93,14 +93,13 @@ def bad_request_handler(exc, request):
 
 def exc_response(exc, request, with_traceback=False):
     result = {
-        'errors': [{'code': exc.code,
-                    'description': exc.explanation,
-                    'detail': exc.detail,
-                   }
-                  ]
+        'errors': {
+            'code': str(exc.code),
+            'description': exc.detail,
         }
+    }
     if with_traceback:
-        result['errors'][0]['traceback'] = traceback.format_exc(exc)
+        result['errors']['traceback'] = traceback.format_exc(exc)
     return result
 
 

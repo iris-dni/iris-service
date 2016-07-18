@@ -36,12 +36,12 @@ class PetitionPublicRESTService(rest.BaseRESTService):
 
     @rpcmethod_route(route_suffix='/{contentId}')
     @rpcmethod_view(http_cache=0)
-    def get(self, contentId, **kwargs):
-        return self.get_content(self.MAPPER_NAME, contentId)
+    def get(self, **kwargs):
+        return self.get_content(self.MAPPER_NAME, **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST')
     def create(self, data, **kwargs):
-        return self.create_content(self.MAPPER_NAME, data)
+        return self.create_content(self.MAPPER_NAME, **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}')

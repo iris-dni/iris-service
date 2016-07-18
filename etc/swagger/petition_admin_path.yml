@@ -1,0 +1,92 @@
+petitions:
+  options:
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    summary: Petitions
+    parameters:
+      - name: offset
+        in: query
+        type: integer
+      - name: limit
+        in: query
+        type: integer
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    summary: Create Petition
+    parameters:
+      - name: data
+        in: body
+        schema:
+          $ref: 'petitions.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId:
+  get:
+    summary: Get a Petition
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    summary: Update Petition
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+      - name: data
+        in: body
+        schema:
+          $ref: 'petitions.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  delete:
+    summary: Update Petition
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

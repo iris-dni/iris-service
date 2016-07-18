@@ -1,0 +1,27 @@
+definitions:
+    Petition:
+        type: object
+        properties:
+            state:
+                type: string
+                readOnly: true
+                default: 'draft'
+            title:
+                type: string
+                default: ''
+    POSTBody:
+        # The petition wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/Petition'
+    ResponseBody:
+        # The petition wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/Petition'

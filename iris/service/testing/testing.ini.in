@@ -8,6 +8,18 @@ pyramid.debug_routematch = false
 pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_jinja2
+    pyramid_swagger
+
+pyramid_swagger.schema_directory = ${buildout:directory}/etc/swagger
+pyramid_swagger.schema_file = api.yml
+pyramid_swagger.exclude_paths = ^/docs
+pyramid_swagger.enable_swagger_spec_validation = True
+pyramid_swagger.enable_request_validation = True
+pyramid_swagger.enable_response_validation = False
+pyramid_swagger.enable_path_validation = True
+pyramid_swagger.include_read_only_properties = False
+pyramid_swagger.pass_property_on_missing_spec = False
+pyramid_swagger.expand_missing_properties = default
 
 jinja2.i18n.domain = iris.service
 

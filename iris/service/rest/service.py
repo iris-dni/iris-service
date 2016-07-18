@@ -37,6 +37,9 @@ class BaseRESTService(EndpointErrorMixin):
                 if n.strip()]
         return queryParams
 
+    def _mapperName(self, offset):
+        return self.request.path.split('/')[offset]
+
     def get_content(self, mapperName, contentId):
         mapper = self._getMapper(mapperName)
         try:
@@ -99,33 +102,36 @@ class BaseRESTService(EndpointErrorMixin):
         return data
 
 
-@RestService("generic_rest_service")
 class RESTService(BaseRESTService):
+    """A generic REST implementation
+    
+    This view forwards the requests to a `mapper`.
+    """
 
-    @rpcmethod_route(route_suffix='/{mapperName}/{contentId}')
+    @rpcmethod_route(request_method='GET')
     @rpcmethod_view(http_cache=0)
-    def get(self, mapperName, contentId, **kwargs):
-        return self.get_content(mapperName, contentId)
+    def search(self, **kwargs):
+        return self.search_content(self._mapperName(-1))
+
+    @rpcmethod_route(request_method='GET',
+                     route_suffix='/{contentId}')
+    @rpcmethod_view(http_cache=0)
+    def get(self, contentId, **kwargs):
+        return self.get_content(self._mapperName(-2), contentId)
+
+    @rpcmethod_route(request_method='POST')
+    def create(self, data, **kwargs):
+        return self.create_content(self._mapperName(-1), data)
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{mapperName}')
-    def create(self, mapperName, data, **kwargs):
-        return self.create_content(mapperName, data)
-
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{mapperName}/{contentId}')
-    def update(self, mapperName, contentId, data, **kwargs):
-        return self.update_content(mapperName, contentId, data)
+                     route_suffix='/{contentId}')
+    def update(self, contentId, data, **kwargs):
+        return self.update_content(self._mapperName(-2), contentId, data)
 
     @rpcmethod_route(request_method='DELETE',
-                     route_suffix='/{mapperName}/{contentId}')
-    def delete(self, mapperName, contentId, **kwargs):
-        return self.delete_content(mapperName, contentId)
-
-    @rpcmethod_route(route_suffix='/{mapperName}')
-    @rpcmethod_view(http_cache=0)
-    def search(self, mapperName, **kwargs):
-        return self.search_content(mapperName)
+                     route_suffix='/{contentId}')
+    def delete(self, contentId, **kwargs):
+        return self.delete_content(self._mapperName(-2), contentId)
 
 
 class RESTMapperMeta(type):

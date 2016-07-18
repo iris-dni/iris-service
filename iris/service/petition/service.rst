@@ -13,7 +13,9 @@ Create Petition
 ---------------
 
     >>> petition = {
-    ...     "data": {}
+    ...     "data": {
+    ...         "state": "test"
+    ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> response.status

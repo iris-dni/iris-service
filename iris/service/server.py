@@ -3,7 +3,7 @@ from pyramid.config import Configurator
 from gevent.pywsgi import WSGIServer, WSGIHandler
 
 API_V1_BASE_URL = '/v1'
-API_Vx_BASE_URL = '/v{version}'
+API_Vx_BASE_URL = '/v1'  # {version}'
 
 
 class LoggingWSGIHandler(WSGIHandler):
@@ -50,6 +50,8 @@ def app_factory(global_config, **settings):
                    route_prefix=API_Vx_BASE_URL)
 
     config.scan('iris.service.rest')
+    config.scan('iris.service.routes_api')
+    config.scan('iris.service.routes_public')
     config.scan('iris.service.petition')
     config.scan('iris.service.static')
 
