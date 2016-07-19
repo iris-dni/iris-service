@@ -7,6 +7,9 @@ from ..errors import Errors
 from .document import Petition
 
 
+RestService("petition_admin_api")(rest.RESTService)
+
+
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
     """A mapper for the petitions admin REST API
     """
@@ -15,13 +18,13 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
 
     DOC_CLASS = Petition
 
-    def sign(self, contentId, data):
+    def support(self, contentId, data):
         """Sign a petition
         """
         petition = Petition.get(contentId)
         if petition is None:
             return None
-        # TODO: sign the petition
+        # TODO: support the petition
         return {}
 
 
@@ -41,7 +44,8 @@ class PetitionPublicRESTService(rest.BaseRESTService):
 
     @rpcmethod_route(request_method='POST')
     def create(self, data, **kwargs):
-        return self.create_content(self.MAPPER_NAME, **self.request.swagger_data)
+        return self.create_content(self.MAPPER_NAME,
+                                   **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}')
@@ -59,7 +63,7 @@ class PetitionPublicRESTService(rest.BaseRESTService):
         return self.search_content(self.MAPPER_NAME)
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/sign')
+                     route_suffix='/{contentId}/support')
     def sign(self, contentId, data, **kwargs):
         mapper = self._getMapper(self.MAPPER_NAME)
         result = mapper.sign(contentId, data)
