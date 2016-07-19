@@ -1,10 +1,14 @@
 petitions:
   options:
+    tags:
+      - petition-public
     summary: CORS Options
     responses:
       default:
         description: Empty Body
   get:
+    tags:
+      - petition-public
     summary: Petitions
     parameters:
       - name: offset
@@ -23,6 +27,8 @@ petitions:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
+    tags:
+      - petition-public
     summary: Create Petition
     parameters:
       - name: data
@@ -41,6 +47,8 @@ petitions:
           $ref: 'errors.yml#/definitions/ResponseBody'
 petitions_contentId:
   options:
+    tags:
+      - petition-public
     summary: CORS Options
     parameters:
       - name: contentId
@@ -50,6 +58,8 @@ petitions_contentId:
       default:
         description: Empty Body
   get:
+    tags:
+      - petition-public
     summary: Get a Petition
     parameters:
       - name: contentId
@@ -65,6 +75,8 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
+    tags:
+      - petition-public
     summary: Update Petition
     parameters:
       - name: contentId
@@ -85,6 +97,8 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   delete:
+    tags:
+      - petition-public
     summary: Update Petition
     parameters:
       - name: contentId
@@ -99,8 +113,10 @@ petitions_contentId:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-/petitions/{contentId}/sign:
+petitions_contentId_support:
   post:
+    tags:
+      - petition-public
     summary: Sign Petition
     parameters:
       - name: contentId

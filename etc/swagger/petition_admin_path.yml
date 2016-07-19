@@ -1,10 +1,14 @@
 petitions:
   options:
+    tags:
+      - petition-admin
     summary: CORS Options
     responses:
       default:
         description: Empty Body
   get:
+    tags:
+      - petition-admin
     summary: Petitions
     parameters:
       - name: offset
@@ -23,6 +27,8 @@ petitions:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
+    tags:
+      - petition-admin
     summary: Create Petition
     parameters:
       - name: data
@@ -41,6 +47,8 @@ petitions:
           $ref: 'errors.yml#/definitions/ResponseBody'
 petitions_contentId:
   get:
+    tags:
+      - petition-admin
     summary: Get a Petition
     parameters:
       - name: contentId
@@ -56,6 +64,8 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
+    tags:
+      - petition-admin
     summary: Update Petition
     parameters:
       - name: contentId
@@ -76,6 +86,8 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   delete:
+    tags:
+      - petition-admin
     summary: Update Petition
     parameters:
       - name: contentId

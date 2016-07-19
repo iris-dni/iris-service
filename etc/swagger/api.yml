@@ -2,18 +2,26 @@ swagger: '2.0'
 info:
     title: IRIS API
     version: '0.0.1'
-host: localhost
+host: localhost:8080
 schemes:
     - http
 basePath: /v1
 produces:
     - application/json
 
+tags:
+  - name: petition-public
+    description: Public Petiton API
+  - name: petition-admin
+    description: Administrative Petiton API
+
 paths:
   /petitions:
     $ref: 'petition_public_path.yml#/petitions'
   /petitions/{contentId}:
     $ref: 'petition_public_path.yml#/petitions_contentId'
+  /petitions/{contentId}/support:
+    $ref: 'petition_public_path.yml#/petitions_contentId_support'
   /admin/petitions:
     $ref: 'petition_admin_path.yml#/petitions'
   /admin/petitions/{contentId}:

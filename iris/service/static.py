@@ -1,14 +1,18 @@
 from pyramid.httpexceptions import HTTPFound
+from pyramid.config import aslist
 from pyramid.view import view_config
 
 
-@view_config(route_name='docs')
-def docsRedirectView(request):
-    return HTTPFound('/docs/')
+def staticRedirectView(request):
+    return HTTPFound(request.path + '/')
 
 
 def includeme(config):
     settings = config.get_settings()
-    docsPath = settings.get('docs.path', 'iris.service:docs')
-    config.add_static_view(name='/docs', path=docsPath)
-    config.add_route('docs', '/docs')
+    for key, value in settings.iteritems():
+        if not key.startswith('static.'):
+            continue
+        path, url = aslist(value)
+        view_config(route_name=key)(staticRedirectView)
+        config.add_static_view(name=key[7:] + '/', path=path)
+        config.add_route(key, url)

@@ -23,7 +23,10 @@ pyramid_swagger.include_read_only_properties = False
 pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = False
 
-docs.path = iris.service:docs
+static.docs = iris.service:docs
+              docs
+static.swagger = ${buildout:directory}/parts/swagger-ui/dist
+                 swagger
 
 es.hosts = localhost:${ports:crate}
 
