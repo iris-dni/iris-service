@@ -14,9 +14,11 @@ petitions:
       - name: offset
         in: query
         type: integer
+        default: 0
       - name: limit
         in: query
         type: integer
+        default: 10
     responses:
       '200':
         description: Petition found

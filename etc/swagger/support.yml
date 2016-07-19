@@ -1,0 +1,14 @@
+definitions:
+    POSTBody:
+        # The petition wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                type: object
+                required:
+                    - name
+                properties:
+                    name:
+                        type: string

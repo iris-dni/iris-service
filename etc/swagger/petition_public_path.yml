@@ -122,6 +122,11 @@ petitions_contentId_support:
       - name: contentId
         in: path
         type: integer
+      - name: data
+        in: body
+        schema:
+          $ref: 'support.yml#/definitions/POSTBody'
+        required: true
     responses:
       default:
         description: Unexpected error

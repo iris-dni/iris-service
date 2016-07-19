@@ -9,6 +9,9 @@ the generic REST endpoint.
 The generic REST API is mainly used for the administration access to `raw`
 data from the database.
 
+The `RESTService` implementation can only be used with `pyramid_swagger` and
+expects the parameters in `request.swagger_data`.
+
 Prepare test::
 
     >>> from iris.service.rest.service import testing_push_state
@@ -16,12 +19,18 @@ Prepare test::
 
     >>> request = get_test_request()
 
-Create a REST service instance::
+implement a REST service::
 
     >>> from iris.service import rest
+    >>> class MyRESTService(rest.RESTService):
+    ...     MAPPER_NAME = 'myrestmapper'
+
+Create a REST service instance::
+
     >>> request.path = '/v1/admin/myrestmapper/1'
-    >>> service = rest.RESTService(request)
-    >>> service.get('1')
+    >>> request.swagger_data = {'contentId': '1'}
+    >>> service = MyRESTService(request)
+    >>> service.get()
     Traceback (most recent call last):
     BadRequest: Errors.mapper_not_found
 
@@ -64,7 +73,8 @@ Get a document by id. The get method of the service must be called with the
 mapper name as its first paramter::
 
     >>> request.path = '/v1/admin/myrestmapper/1'
-    >>> pp(service.get('1'))
+    >>> request.swagger_data = {'contentId': '1'}
+    >>> pp(service.get())
     {
       "data": {
         "contentId": "1"
@@ -78,7 +88,8 @@ REST Create Content
 Create a new document on the create endpoint::
  
     >>> request.path = '/v1/admin/myrestmapper'
-    >>> pp(service.create({'state': 'ready'}))
+    >>> request.swagger_data = {'data': {'state': 'ready'}}
+    >>> pp(service.create())
     {
       "data": {
         "id": 1,
@@ -93,7 +104,11 @@ REST Update Content
 Update an existing document on the update endpoint::
 
     >>> request.path = '/v1/admin/myrestmapper/2'
-    >>> pp(service.update('2', {'state': 'active'}))
+    >>> request.swagger_data = {
+    ...     'contentId': '2',
+    ...     'data': {'state': 'active'}
+    ... }
+    >>> pp(service.update())
     {
       "data": {
         "id": "2",
@@ -108,7 +123,8 @@ REST Delete Content
 Delete an existing document::
 
     >>> request.path = '/v1/admin/myrestmapper/2'
-    >>> pp(service.delete('2'))
+    >>> request.swagger_data = {'contentId': '2'}
+    >>> pp(service.delete())
     {
       "data": {
         "id": "2",
@@ -123,6 +139,7 @@ REST Query Content
 Query documents::
 
     >>> request.path = '/v1/admin/myrestmapper'
+    >>> request.swagger_data = {}
     >>> pp(service.search())
     {
       "data": {},
@@ -135,30 +152,38 @@ Missing Mapper Functions
 
 Missing implementations result in HTTPMethodNotAllowed (405) errors::
 
+    >>> class MyMissingRESTService(rest.RESTService):
+    ...     MAPPER_NAME = 'missing'
+    >>> service = MyMissingRESTService(request)
     >>> class MyMissingMapper(rest.RESTMapper):
     ...     NAME = 'missing'
 
     >>> request.path = '/v1/admin/missing/1'
-    >>> service.get('1')
+    >>> request.swagger_data = {'contentId': '1'}
+    >>> service.get()
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.get
 
     >>> request.path = '/v1/admin/missing'
-    >>> pp(service.create({'state': 'ready'}))
+    >>> request.swagger_data = {'data': '1'}
+    >>> pp(service.create())
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.create
 
     >>> request.path = '/v1/admin/missing/2'
-    >>> pp(service.update('2', {'state': 'active'}))
+    >>> request.swagger_data = {'contentId': '1', 'data': {}}
+    >>> pp(service.update())
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.update
 
     >>> request.path = '/v1/admin/missing/2'
-    >>> pp(service.delete('2'))
+    >>> request.swagger_data = {'contentId': '2'}
+    >>> pp(service.delete())
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.delete
 
     >>> request.path = '/v1/admin/missing'
+    >>> request.swagger_data = {'limit': 2}
     >>> pp(service.search())
     Traceback (most recent call last):
     BadRequest: MyMissingMapper.search

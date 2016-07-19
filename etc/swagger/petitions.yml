@@ -6,9 +6,47 @@ definitions:
                 type: string
                 readOnly: true
                 default: 'draft'
+            tags:
+                type: array
+                items:
+                    type: string
             title:
                 type: string
                 default: ''
+            description:
+                type: string
+                default: ''
+            city:
+                type: string
+            type:
+                type: string
+                default: ''
+            suggested_solution:
+                type: string
+            images:
+                type: array
+                items:
+                    type: string
+            links:
+                type: array
+                items:
+                    type: string
+            videos:
+                type: array
+                items:
+                    type: string
+            supportes:
+                type: object
+                readOnly: true
+                properties:
+                    count:
+                        type: integer
+            owner:
+                type: string
+                readOnly: true
+            response_token:
+                type: string
+                readOnly: true
     POSTBody:
         # The petition wrapped in a data property for the POST bodies
         type: object

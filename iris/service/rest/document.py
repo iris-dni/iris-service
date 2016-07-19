@@ -8,7 +8,7 @@ class DocumentRESTMapperMixin(object):
         return self.doc_as_dict(self.DOC_CLASS.get(contentId))
 
     def create(self, data):
-        doc = self.DOC_CLASS(**data)
+        doc = self.DOC_CLASS(**data['data'])
         doc.store(refresh=True)
         return self.doc_as_dict(doc)
 
@@ -16,7 +16,7 @@ class DocumentRESTMapperMixin(object):
         doc = self.DOC_CLASS.get(contentId)
         if not doc:
             return None
-        for name, value in data.items():
+        for name, value in data['data'].items():
             setattr(doc, name, value)
         doc.store(refresh=True)
         return self.doc_as_dict(doc)
@@ -29,7 +29,7 @@ class DocumentRESTMapperMixin(object):
         return self.doc_as_dict(doc)
 
     def search(self, **kwargs):
-        limit = int(kwargs.get('limit', 10))
+        limit = int(kwargs.get('limit') or 10)
         query = {
             "query": {
                 "match_all": {}

@@ -52,11 +52,11 @@ Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
     get('DummyDocument', '1')
     {'id': '1'}
 
-    >>> mapper.create({'state': 'test'})
+    >>> mapper.create({'data': {'state': 'test'}})
     store({'refresh': True})
     {'state': 'test'}
 
-    >>> mapper.update('1', {'state': 'test'})
+    >>> mapper.update('1', {'data': {'state': 'test'}})
     get('DummyDocument', '1')
     store({'refresh': True})
     {'id': '1'}

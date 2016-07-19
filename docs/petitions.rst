@@ -211,26 +211,28 @@ Delete
     :statuscode 404: petition not found
 
 
-Sign
-----
+Support
+-------
 
-.. http:post:: /v1/petitions/(integer:id)/sign
+.. http:post:: /v1/petitions/(integer:id)/support
 
-    Sign a petition.
+    Support a petition.
 
     **example request**
 
     .. sourcecode:: json
 
         >>> data = {
-        ...     "data": {}
+        ...     "data": {
+        ...         "name": "ma name"
+        ...     }
         ... }
-        >>> HTTP_POST_JSON('/v1/petitions/42/sign', data)
+        >>> HTTP_POST_JSON('/v1/petitions/42/support', data)
         {}
 
     :resheader Content-Type: application/json
 
-    :statuscode 200: signed
+    :statuscode 200: supported
     :statuscode 404: petition not found
     :statuscode 400: details are in the json response body
 

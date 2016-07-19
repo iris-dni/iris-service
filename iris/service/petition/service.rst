@@ -14,7 +14,8 @@ Create Petition
 
     >>> petition = {
     ...     "data": {
-    ...         "state": "test"
+    ...         "state": "test",
+    ...         "title": "Public petition"
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -120,7 +121,8 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "state": "test 1"
+    ...         "state": "test 1",
+    ...         "title": "Admin petition",
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/petitions',
@@ -140,7 +142,9 @@ Create a new petition::
         ...
         "id": ...,
         ...
-        "state": "test 1",
+        "state": "draft",
+        ...
+        "title": "Admin petition",
         ...
       }
     }
@@ -155,7 +159,7 @@ POST on the petition with the data which need to be changed::
 
     >>> petition = {
     ...     "data": {
-    ...         "state": "changed 1"
+    ...         "title": "changed Admin petition"
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
@@ -175,7 +179,7 @@ POST on the petition with the data which need to be changed::
         ...
         "id": ...,
         ...
-        "state": "changed 1",
+        "title": "changed Admin petition",
         ...
       }
     }
@@ -202,7 +206,7 @@ Use the id from the response above::
         ...
         "id": ...,
         ...
-        "state": "changed 1",
+        "title": "changed Admin petition",
         ...
       }
     }
@@ -230,7 +234,7 @@ Use the list endpoint::
           ...
           "id": ...,
           ...
-          "state": "changed 1",
+          "title": "changed Admin petition",
           ...
         }
       ],
@@ -259,7 +263,7 @@ Do a delete request::
         ...
         "id": ...,
         ...
-        "state": "changed 1",
+        "title": "changed Admin petition",
         ...
       }
     }

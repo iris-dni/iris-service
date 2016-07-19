@@ -28,8 +28,8 @@ class BaseRESTService(EndpointErrorMixin):
                                  {'mapperName': mapperName}
                                 )
 
-    def _queryParams(self):
-        queryParams = {k: v for k, v in self.request.GET.items()}
+    def _queryParams(self, params):
+        queryParams = {k: v for k, v in params.items()}
         if 'resolve' in queryParams:
             queryParams['resolve'] = [
                 n.strip()
@@ -90,9 +90,9 @@ class BaseRESTService(EndpointErrorMixin):
                                 )
         return {"data": data}
 
-    def search_content(self, mapperName):
+    def search_content(self, mapperName, **kwargs):
         mapper = self._getMapper(mapperName)
-        queryParams = self._queryParams()
+        queryParams = self._queryParams(kwargs)
         try:
             data = mapper.search(**queryParams)
         except (KeyError, ValueError) as e:
@@ -111,27 +111,32 @@ class RESTService(BaseRESTService):
     @rpcmethod_route(request_method='GET')
     @rpcmethod_view(http_cache=0)
     def search(self, **kwargs):
-        return self.search_content(self._mapperName(-1))
+        return self.search_content(self.MAPPER_NAME,
+                                   **self.request.swagger_data)
 
     @rpcmethod_route(request_method='GET',
                      route_suffix='/{contentId}')
     @rpcmethod_view(http_cache=0)
-    def get(self, contentId, **kwargs):
-        return self.get_content(self._mapperName(-2), contentId)
+    def get(self, **kwargs):
+        return self.get_content(self.MAPPER_NAME,
+                                **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST')
-    def create(self, data, **kwargs):
-        return self.create_content(self._mapperName(-1), data)
+    def create(self, **kwargs):
+        return self.create_content(self.MAPPER_NAME,
+                                   **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}')
-    def update(self, contentId, data, **kwargs):
-        return self.update_content(self._mapperName(-2), contentId, data)
+    def update(self, **kwargs):
+        return self.update_content(self.MAPPER_NAME,
+                                   **self.request.swagger_data)
 
     @rpcmethod_route(request_method='DELETE',
                      route_suffix='/{contentId}')
-    def delete(self, contentId, **kwargs):
-        return self.delete_content(self._mapperName(-2), contentId)
+    def delete(self, **kwargs):
+        return self.delete_content(self.MAPPER_NAME,
+                                   **self.request.swagger_data)
 
 
 class RESTMapperMeta(type):
@@ -201,7 +206,3 @@ def testing_push_state():
 def testing_pop_state():
     global TESTING_STATE
     RESTMapper._MAPPER_REGISTRY = TESTING_STATE.pop()
-
-
-def includeme(config):
-    pass
