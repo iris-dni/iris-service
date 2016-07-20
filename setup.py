@@ -80,6 +80,7 @@ setup(
         ],
         'console_scripts': [
             'iris-service=pyramid.scripts.pserve:main',
+            'dump=iris.service.scripts.dump:dump',
         ],
     },
 )
