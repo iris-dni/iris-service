@@ -29,7 +29,11 @@ extensions = ['sphinxcontrib.plantuml',
               'sphinxcontrib.httpdomain',
               'sphinx.ext.doctest']
 
-plantuml = 'java -jar ../parts/plantuml/plantuml.jar -graphvizdot /opt/local/bin/dot'
+plantuml = ('java'
+            ' -Djava.awt.headless=true'
+            ' -jar ../parts/plantuml/plantuml.jar'
+            ' -graphvizdot /opt/local/bin/dot'
+           )
 
 # load doctest extension to be able to setup testdata in the documentation that
 # is hidden in the generated html (by using .. doctest:: :hide:)
