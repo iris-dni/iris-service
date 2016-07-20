@@ -211,8 +211,8 @@ Delete
     :statuscode 404: petition not found
 
 
-Support
--------
+Support Petition
+----------------
 
 .. http:post:: /v1/petitions/(integer:id)/support
 
