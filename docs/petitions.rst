@@ -258,10 +258,48 @@ Add City Response
 Manage API
 ==========
 
-Switch State
+.. _petitions-manage-state:
+
+Manage State
 ------------
 
-.. http:post:: /v1/manage/petitions/(string:id)/switch_state
+
+.. http:post:: /v1/petitions/(integer:id)/state/(string:transitionName)
+
+    Everything that affects the lifecycle of a petition is handled via this
+    endpoint.
+
+    `transitionName` is one of the transition names in the petition state
+    diagram (see :ref:`petition-management-petition-states` allowed names are
+    in square brackets).
+
+    The content of the POST body depends on the transition name.
+
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> data = {}
+        >>> HTTP_POST_JSON('/v1/petitions/42/state/publish', data)
+        {
+          "data": {
+            ...
+            "id": 42,
+            ...
+          },
+          "status": "ok"
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: modified
+    :statuscode 404: petition not found
+    :statuscode 400: details are in the error response body
+
+    :param string id:
+        - the id of the petition
+    :param string transitionName:
+        - the name of the transition from :ref:`petition-management-petition-states`
 
 
 Generate Letter

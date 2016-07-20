@@ -1,0 +1,4 @@
+definitions:
+    POSTBody:
+        # The state endpoint POST body
+        type: object
