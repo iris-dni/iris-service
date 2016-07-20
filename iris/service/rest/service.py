@@ -108,11 +108,22 @@ class RESTService(BaseRESTService):
     This view forwards the requests to a `mapper`.
     """
 
+    @rpcmethod_route(request_method='OPTIONS')
+    @rpcmethod_view(http_cache=0)
+    def options(self, **kwargs):
+        return {}
+
     @rpcmethod_route(request_method='GET')
     @rpcmethod_view(http_cache=0)
     def search(self, **kwargs):
         return self.search_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}')
+    @rpcmethod_view(http_cache=0)
+    def options_contentId(self, **kwargs):
+        return {}
 
     @rpcmethod_route(request_method='GET',
                      route_suffix='/{contentId}')

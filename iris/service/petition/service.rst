@@ -96,6 +96,30 @@ Delete Petition
     '404 Not Found'
 
 
+OPTION requests for CORS
+------------------------
+
+CORS is supported for all endpoints::
+
+    >>> response = browser.options('/v1/petitions')
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {}
+    >>> print_json({n: v for n,v in response.headers.items() if n.startswith('Access')})
+    {
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+      "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Max-Age": "86400"
+    }
+
+    >>> response = browser.options('/v1/petitions/1')
+    >>> response.status
+    '200 OK'
+
+
 Admin API
 =========
 

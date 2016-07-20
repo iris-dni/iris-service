@@ -48,6 +48,17 @@ petitions:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
 petitions_contentId:
+  options:
+    tags:
+      - petition-admin
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Empty Body
   get:
     tags:
       - petition-admin

@@ -40,12 +40,14 @@ def app_factory(global_config, **settings):
     )
 
     config.include('iris.service.db')
+    config.include('iris.service.cors')
     config.include('iris.service.rest')
     config.include('iris.service.endpoint')
     config.include('iris.service.static')
     config.include('iris.service.petition',
                    route_prefix=API_V1_BASE_URL)
 
+    config.scan('iris.service.cors')
     config.scan('iris.service.rest')
     config.scan('iris.service.static')
     config.scan('iris.service.petition')

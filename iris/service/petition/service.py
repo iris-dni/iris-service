@@ -32,7 +32,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
 
 
 @RestService("petition_public_api")
-class PetitionPublicRESTService(rest.BaseRESTService):
+class PetitionPublicRESTService(rest.RESTService):
     """Public petition endpoint
 
     We reuse the BaseRESTService for the simple endpoints.
@@ -40,33 +40,11 @@ class PetitionPublicRESTService(rest.BaseRESTService):
 
     MAPPER_NAME = 'petitions'
 
-    @rpcmethod_route(route_suffix='/{contentId}')
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/support')
     @rpcmethod_view(http_cache=0)
-    def get(self, **kwargs):
-        return self.get_content(self.MAPPER_NAME,
-                                **self.request.swagger_data)
-
-    @rpcmethod_route(request_method='POST')
-    def create(self, **kwargs):
-        return self.create_content(self.MAPPER_NAME,
-                                   **self.request.swagger_data)
-
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}')
-    def update(self, **kwargs):
-        return self.update_content(self.MAPPER_NAME,
-                                   **self.request.swagger_data)
-
-    @rpcmethod_route(request_method='DELETE',
-                     route_suffix='/{contentId}')
-    def delete(self, **kwargs):
-        return self.delete_content(self.MAPPER_NAME,
-                                   **self.request.swagger_data)
-
-    @rpcmethod_route()
-    @rpcmethod_view(http_cache=0)
-    def search(self, **kwargs):
-        return self.search_content(self.MAPPER_NAME)
+    def options_contentId_support(self, **kwargs):
+        return {}
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/support')

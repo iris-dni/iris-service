@@ -114,6 +114,17 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
 petitions_contentId_support:
+  options:
+    tags:
+      - petition-public
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Empty Body
   post:
     tags:
       - petition-public

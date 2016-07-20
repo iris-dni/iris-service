@@ -28,6 +28,12 @@ static.docs = iris.service:docs
 static.swagger = ${buildout:directory}/parts/swagger-ui/dist
                  swagger
 
+cors.Allow-Origin = *
+cors.Allow-Methods = POST,GET,DELETE,PUT,OPTIONS
+cors.Allow-Headers = Origin, Content-Type, Accept, Authorization
+cors.Allow-Credentials = true
+cors.Max-Age = 86400
+
 es.hosts = localhost:${ports:crate}
 
 ###
