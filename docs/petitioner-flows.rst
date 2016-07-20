@@ -94,11 +94,11 @@ petitioner to create and edit a petition.
     @enduml
 
 
-Petitioner Edits His Rejected Petition
-======================================
+Petitioner Edit Their Rejected Petition
+=======================================
 
 This diagram shows how the frontend needs to use the service to enable a
-petition owner to edit his rejected petition.
+petition owner to edit their rejected petition.
 
 .. uml::
 
