@@ -16,7 +16,7 @@ Data
         "tags": ["domain:aaz", "big"],
         "name": "",
         "zips": ["123", "456"],
-        "inhabitants": 12543,
+        "treshold": 125,
         "contact": {
             "salutation": "Sehr geehrter Herr Stromberg",
             "address": "Bahnhofstrasse 1, D - 0815 Finsdorf"
@@ -44,7 +44,7 @@ City Data Import
         ...         "tags": ["domain:aaz", "big"],
         ...         "name": "Aarau",
         ...         "zips": ["5004"],
-        ...         "inhabitants": 12543
+        ...         "treshold": 125
         ...     },
         ...     {
         ...         "id": 5678,
