@@ -30,7 +30,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
         # TODO: support the petition
         return {}
 
-    def state(self, contentId, transitionName, data):
+    def state(self, contentId, transitionName, data=None):
         petition = Petition.get(contentId)
         if petition is None:
             return None
@@ -76,8 +76,16 @@ class PetitionPublicRESTService(rest.RESTService):
         return {}
 
     @rpcmethod_route(request_method='POST',
+                     route_suffix='/{contentId}/state/reject')
+    def state_reject(self, **kwargs):
+        return self._state()
+
+    @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/state/{transitionName}')
     def state(self, **kwargs):
+        return self._state()
+
+    def _state(self):
         mapper = self._getMapper(self.MAPPER_NAME)
         result = mapper.state(**self.request.swagger_data)
         if result is None:

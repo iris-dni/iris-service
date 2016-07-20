@@ -74,7 +74,10 @@ list
     :param string city_id:
         - filter by city id
     :param string state:
-        - filter by state(s), provide multiple states as comma separated list
+        - filter by state(s)
+        - provide multiple states as comma separated list
+        - for possible state names see
+          :ref:`petition-management-petition-states`
     :param string city_tag:
         - filter by city_tag(s), provide multiple tags as comma separated list
     :param string owner:
@@ -263,7 +266,6 @@ Manage API
 Manage State
 ------------
 
-
 .. http:post:: /v1/petitions/(integer:id)/state/(string:transitionName)
 
     Everything that affects the lifecycle of a petition is handled via this
@@ -300,6 +302,42 @@ Manage State
         - the id of the petition
     :param string transitionName:
         - the name of the transition from :ref:`petition-management-petition-states`
+
+.. http:post:: /v1/petitions/(integer:id)/state/reject
+
+    **example request**
+
+    .. sourcecode:: json
+
+        >>> data = {
+        ...     "notify": True,
+        ...     "message": "My special message"
+        ... }
+        >>> HTTP_POST_JSON('/v1/petitions/42/state/reject', data)
+        {
+          "data": {
+            ...
+            "id": 42,
+            ...
+          },
+          "status": "ok"
+        }
+
+    :resheader Content-Type: application/json
+
+    :statuscode 200: modified
+    :statuscode 404: petition not found
+    :statuscode 400: details are in the error response body
+
+    :param string id:
+        - the id of the petition
+    :param string transitionName:
+        - the name of the transition from :ref:`petition-management-petition-states`
+    :<json boolean notify:
+        - true: send a notification to the owner of the petition
+        - false: no notification
+    :<json string message:
+        - an optional message which can be used for the owner notification
 
 
 Generate Letter

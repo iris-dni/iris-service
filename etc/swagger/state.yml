@@ -1,4 +1,10 @@
 definitions:
-    POSTBody:
-        # The state endpoint POST body
+    rejectData:
         type: object
+        required:
+            - notify
+        properties:
+            notify:
+              type: boolean
+            message:
+              type: string

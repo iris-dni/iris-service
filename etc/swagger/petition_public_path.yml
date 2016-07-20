@@ -147,39 +147,3 @@ petitions_contentId_support:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_transitionName:
-  options:
-    tags:
-      - petition-public
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-      - name: transitionName
-        in: path
-        type: string
-    responses:
-      default:
-        description: Empty Body
-  post:
-    tags:
-      - petition-public
-    summary: Sign Petition
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-      - name: transitionName
-        in: path
-        type: string
-      - name: data
-        in: body
-        schema:
-          $ref: 'state.yml#/definitions/POSTBody'
-        required: true
-    responses:
-      default:
-        description: Unexpected error
-        schema:
-          $ref: 'errors.yml#/definitions/ResponseBody'
