@@ -1,7 +1,7 @@
 import logging
 import copy
 
-from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
+from lovely.pyrest.rest import rpcmethod_route, rpcmethod_view
 
 from ..errors import Errors
 from ..endpoint import EndpointErrorMixin
@@ -104,7 +104,7 @@ class BaseRESTService(EndpointErrorMixin):
 
 class RESTService(BaseRESTService):
     """A generic REST implementation
-    
+
     This view forwards the requests to a `mapper`.
     """
 

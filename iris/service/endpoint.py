@@ -1,5 +1,7 @@
 import traceback
 
+from .errors import Errors
+
 
 class BadRequest(Exception):
     """Used as a response in case of an error
@@ -57,14 +59,6 @@ class EndpointErrorMixin(object):
         return BadRequest(error_code,
                           http_status=405,
                           replacements=replacements)
-
-    def get_required(self, name, value):
-        if isinstance(value, (dict, NestedMultiDict)):
-            if name not in value:
-                raise self.bad_request(Errors.property_required,
-                                       {'property_name': name})
-            return value[name]
-        return value
 
     def check_valid_code(self, code):
         return
