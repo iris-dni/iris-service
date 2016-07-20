@@ -1,13 +1,13 @@
 ==========
-Signatures
+Supporters
 ==========
 
 .. contents::
 
-Signatures are used to sign a petition for a user.
+Supporters are users which support a petition.
 
-A `signature` can be created for an anonymous or an authenticated user.
-Signatures for anonymous users are created based on the current session id.
+A `supporter` can be created for an anonymous or an authenticated user.
+Supporters for anonymous users are created based on the current session id.
 
 
 Data

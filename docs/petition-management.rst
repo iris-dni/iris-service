@@ -15,7 +15,7 @@ A `substate` adds his internal state to the state list.
 Example:
 
     When the state `ownerNotified` is active, the `state` property of the
-    petition contains: ["signable", "winner", "ownerNotified"]
+    petition contains: ["supportable", "winner", "ownerNotified"]
 
 .. uml::
 
@@ -25,12 +25,12 @@ Example:
 
     [*] --> draft
     draft --> draft : edit
-    draft --> signable : publish authenticated
+    draft --> supportable : publish authenticated
 
-    signable -up-> rejected : rejected by editor
-    signable -> deleted : deleted by editor
+    supportable -up-> rejected : rejected by editor
+    supportable -> deleted : deleted by editor
 
-    rejected --> signable : published by editor
+    rejected --> supportable : published by editor
 
     state rejected {
         [*] --> edit
@@ -41,20 +41,20 @@ Example:
 
     state loser {
     }
-    note bottom of loser : petition is a loser because\nit didn't reached the sign limit\nbefore the timeout
+    note bottom of loser : petition is a loser because\nit didn't reached the supporter limit\nbefore the timeout
 
-    state signable {
+    state supportable {
       [*] --> pending
       pending : send approval mail to editor
-      note right of pending : signing is active but petition\nis not in query results
+      note right of pending : supporting is active but petition\nis not in query results
       pending --> active : approved by editor
       active : petition is visible to all people in all queries
       pending --> active : auto approved\nif timeout\nand city is assigned
       active --> loser : timeout
-      active -right-> winner : sign limit reached
+      active -right-> winner : supporter limit reached
       
       winner : send mail to owner
-      note top of winner : petition is a winner because\nit reached the sign limit\nbefore the timeout
+      note top of winner : petition is a winner because\nit reached the supporter limit\nbefore the timeout
 
       winner -> processing : timeout
     }

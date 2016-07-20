@@ -22,7 +22,7 @@ supporter to support a petition.
     database "Database" as db
 
     supporter -> browser : opens petition page
-    supporter -> browser : clicks sign
+    supporter -> browser : clicks support
 
     alt not authenticated
       browser -> supporter : select auth type (mobile/sso)
@@ -30,14 +30,14 @@ supporter to support a petition.
       browser -> supporter : trust via sso
     end
 
-    browser -> service : /petition/<id>/sign
+    browser -> service : /petition/<id>/support
     alt status == OK
-        service -> db : store signature for petition
+        service -> db : store supporter for petition
         service -> browser : status "OK"
         browser -> supporter : thank you
     else status == alreadySigned
         service -> browser : status "alreadySigned"
-        browser -> supporter : duplicate signature
+        browser -> supporter : duplicate supporter
     end
 
     @enduml

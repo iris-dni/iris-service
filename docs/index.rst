@@ -8,7 +8,7 @@ IRIS Services
    ./cities
    ./files
    ./locations
-   ./signatures
+   ./supporters
    ./users
    ./petitions
    ./petition-management

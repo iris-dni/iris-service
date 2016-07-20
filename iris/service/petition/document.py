@@ -85,10 +85,10 @@ class Petition(Document):
         """
     )
 
-    signatures = Property(
+    supporters = Property(
         default=lambda: copy.copy({}),
         doc="""
-          An object which contains information about the signatures of the
+          An object which contains information about the supporters of the
           petition.
         """
     )

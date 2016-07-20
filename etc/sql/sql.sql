@@ -24,7 +24,7 @@ CREATE TABLE petitions (
     -- relations to locations table
     connected_locations ARRAY(STRING),
 
-    signatures OBJECT(STRICT) AS (
+    supporters OBJECT(STRICT) AS (
         amount LONG,
         required LONG
     ),
