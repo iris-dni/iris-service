@@ -12,9 +12,9 @@ produces:
     - application/json
 
 tags:
-  - name: petition-public
+  - name: petition
     description: Public Petiton API
-  - name: petition-admin
+  - name: petition_admin
     description: Administrative Petiton API
 
 paths:

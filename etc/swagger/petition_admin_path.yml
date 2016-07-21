@@ -1,15 +1,16 @@
 petitions:
   options:
     tags:
-      - petition-admin
+      - petition_admin
     summary: CORS Options
     responses:
       default:
         description: Empty Body
   get:
     tags:
-      - petition-admin
+      - petition_admin
     summary: Petitions
+    operationId: search
     parameters:
       - name: offset
         in: query
@@ -20,6 +21,7 @@ petitions:
         in: query
         type: integer
         minimum: 0
+        maximum: 50
         default: 10
     responses:
       '200':
@@ -32,8 +34,9 @@ petitions:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
     tags:
-      - petition-admin
+      - petition_admin
     summary: Create Petition
+    operationId: create
     parameters:
       - name: data
         in: body
@@ -52,7 +55,7 @@ petitions:
 petitions_contentId:
   options:
     tags:
-      - petition-admin
+      - petition_admin
     summary: CORS Options
     parameters:
       - name: contentId
@@ -63,8 +66,9 @@ petitions_contentId:
         description: Empty Body
   get:
     tags:
-      - petition-admin
+      - petition_admin
     summary: Get a Petition
+    operationId: get
     parameters:
       - name: contentId
         in: path
@@ -80,8 +84,9 @@ petitions_contentId:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
     tags:
-      - petition-admin
+      - petition_admin
     summary: Update Petition
+    operationId: update
     parameters:
       - name: contentId
         in: path
@@ -102,8 +107,9 @@ petitions_contentId:
           $ref: 'errors.yml#/definitions/ResponseBody'
   delete:
     tags:
-      - petition-admin
+      - petition_admin
     summary: Update Petition
+    operationId: delete
     parameters:
       - name: contentId
         in: path

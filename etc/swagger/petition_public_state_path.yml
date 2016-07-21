@@ -1,7 +1,7 @@
 petitions_contentId_state_transitionName:
   options:
     tags:
-      - petition-public
+      - petition
     summary: CORS Options
     parameters:
       - name: contentId
@@ -15,8 +15,9 @@ petitions_contentId_state_transitionName:
         description: Empty Body
   post:
     tags:
-      - petition-public
-    summary: Sign Petition
+      - petition
+    summary: Generic state manipulation
+    operationId: state
     parameters:
       - name: contentId
         in: path
@@ -32,7 +33,7 @@ petitions_contentId_state_transitionName:
 petitions_contentId_state_reject:
   options:
     tags:
-      - petition-public
+      - petition
     summary: CORS Options
     parameters:
       - name: contentId
@@ -46,8 +47,9 @@ petitions_contentId_state_reject:
         description: Empty Body
   post:
     tags:
-      - petition-public
-    summary: Sign Petition
+      - petition
+    summary: Reject a Petition
+    operationId: reject
     parameters:
       - name: contentId
         in: path

@@ -1,15 +1,16 @@
 petitions:
   options:
     tags:
-      - petition-public
+      - petition
     summary: CORS Options
     responses:
       default:
         description: Empty Body
   get:
     tags:
-      - petition-public
+      - petition
     summary: Petitions
+    operationId: search
     parameters:
       - name: offset
         in: query
@@ -20,6 +21,7 @@ petitions:
         in: query
         type: integer
         minimum: 0
+        maximum: 50
         default: 10
     responses:
       '200':
@@ -27,13 +29,14 @@ petitions:
         schema:
           $ref: 'petitions.yml#/definitions/ResponseBody'
       default:
-        description: Unexpected error
+        description: Error Body
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
     tags:
-      - petition-public
+      - petition
     summary: Create Petition
+    operationId: create
     parameters:
       - name: data
         in: body
@@ -52,7 +55,7 @@ petitions:
 petitions_contentId:
   options:
     tags:
-      - petition-public
+      - petition
     summary: CORS Options
     parameters:
       - name: contentId
@@ -63,8 +66,9 @@ petitions_contentId:
         description: Empty Body
   get:
     tags:
-      - petition-public
+      - petition
     summary: Get a Petition
+    operationId: get
     parameters:
       - name: contentId
         in: path
@@ -80,8 +84,9 @@ petitions_contentId:
           $ref: 'errors.yml#/definitions/ResponseBody'
   post:
     tags:
-      - petition-public
+      - petition
     summary: Update Petition
+    operationId: update
     parameters:
       - name: contentId
         in: path
@@ -102,8 +107,9 @@ petitions_contentId:
           $ref: 'errors.yml#/definitions/ResponseBody'
   delete:
     tags:
-      - petition-public
+      - petition
     summary: Update Petition
+    operationId: delete
     parameters:
       - name: contentId
         in: path
@@ -120,7 +126,7 @@ petitions_contentId:
 petitions_contentId_support:
   options:
     tags:
-      - petition-public
+      - petition
     summary: CORS Options
     parameters:
       - name: contentId
@@ -131,8 +137,9 @@ petitions_contentId_support:
         description: Empty Body
   post:
     tags:
-      - petition-public
-    summary: Sign Petition
+      - petition
+    summary: Support a Petition
+    operationId: support
     parameters:
       - name: contentId
         in: path
