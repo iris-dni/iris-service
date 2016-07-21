@@ -45,7 +45,7 @@ class BaseRESTService(EndpointErrorMixin):
         try:
             data = mapper.get(contentId)
         except NotImplementedError as e:
-            raise self.method_not_allowed(e.message)
+            raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
             raise self.not_found(Errors.document_not_found,
                                  {'contentId': contentId,
@@ -59,7 +59,7 @@ class BaseRESTService(EndpointErrorMixin):
         try:
             data = mapper.create(data)
         except NotImplementedError as e:
-            raise self.method_not_allowed(e.message)
+            raise self.method_not_allowed(replacements={'message': e.message})
         return {"data": data}
 
     def update_content(self, mapperName, contentId, data):
@@ -67,7 +67,7 @@ class BaseRESTService(EndpointErrorMixin):
         try:
             data = mapper.update(contentId, data)
         except NotImplementedError as e:
-            raise self.method_not_allowed(e.message)
+            raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
             raise self.not_found(Errors.document_not_found,
                                  {'contentId': contentId,
@@ -81,7 +81,7 @@ class BaseRESTService(EndpointErrorMixin):
         try:
             data = mapper.delete(contentId)
         except NotImplementedError as e:
-            raise self.method_not_allowed(e.message)
+            raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
             raise self.not_found(Errors.document_not_found,
                                  {'contentId': contentId,
@@ -96,9 +96,9 @@ class BaseRESTService(EndpointErrorMixin):
         try:
             data = mapper.search(**queryParams)
         except (KeyError, ValueError) as e:
-            raise self.bad_request(e.message)
+            raise self.bad_request(replacements={'message': e.message})
         except NotImplementedError as e:
-            raise self.method_not_allowed(e.message)
+            raise self.method_not_allowed(replacements={'message': e.message})
         return data
 
 

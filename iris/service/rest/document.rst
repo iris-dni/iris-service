@@ -66,7 +66,17 @@ Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
     delete({'refresh': True})
     {'id': '1'}
 
+A searchable document mapper::
+
+    >>> from iris.service.rest import SearchableDocumentRESTMapperMixin
+    >>> class SearchableTestMapper(DocumentRESTMapperMixin,
+    ...                            SearchableDocumentRESTMapperMixin
+    ...                           ):
+    ...
+    ...     DOC_CLASS = DummyDocument
+
+    >>> mapper = SearchableTestMapper()
     >>> mapper.search(limit='5')
     search({})
-    query={'query': {'match_all': {}}, 'size': 5}
+    query={'sort': ['_score'], 'query': {'filtered': {'filter': {'bool': {'must': []}}, 'query': {'bool': {'must': []}}}}, 'from': 0, 'size': '5'}
     {'total': 2, 'data': [{'id': '1'}, {'id': '2'}]}

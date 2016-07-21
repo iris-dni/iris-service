@@ -46,10 +46,13 @@ def app_factory(global_config, **settings):
     config.include('iris.service.static')
     config.include('iris.service.petition',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.user',
+                   route_prefix=API_V1_BASE_URL)
 
     config.scan('iris.service.cors')
     config.scan('iris.service.rest')
     config.scan('iris.service.static')
     config.scan('iris.service.petition')
+    config.scan('iris.service.user')
 
     return config.make_wsgi_app()

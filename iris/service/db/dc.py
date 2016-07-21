@@ -8,11 +8,16 @@ def now():
     return utc.isoformat()
 
 
+DC_CREATED = 'created'
+DC_MODIFIED = 'modified'
+DC_EFFECTIVE = 'effective'
+DC_EXPIRES = 'expires'
+
 DC_DEFAULT = {
-    'modified': now,
-    'created': now,
-    'effective': None,
-    'expires': None,
+    DC_MODIFIED: now,
+    DC_CREATED: now,
+    DC_EFFECTIVE: None,
+    DC_EXPIRES: None,
 }
 
 

@@ -61,6 +61,7 @@ setup(
         test=nailed_requires([
             'collective.xmltestreport',
             'webtest',
+            'fake-factory',
             'lovely.testlayers',
         ]),
         documentation=nailed_requires([

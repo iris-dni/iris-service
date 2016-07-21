@@ -1,0 +1,59 @@
+definitions:
+    User:
+        type: object
+        properties:
+            id:
+                type: integer
+                readOnly: true
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            state:
+                type: string
+                readOnly: true
+                default: 'draft'
+            roles:
+                type: array
+                items:
+                    type: string
+            email:
+                type: string
+            firstname:
+                type: string
+            lastname:
+                type: string
+            sso:
+                type: array
+                readOnly: true
+                items:
+                    type: object
+                    properties:
+                        provider:
+                            type: string
+                        trusted:
+                            type: boolean
+    POSTBody:
+        # The user wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/User'
+    ResponseBody:
+        # The user wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/User'

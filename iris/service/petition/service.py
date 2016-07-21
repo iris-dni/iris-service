@@ -13,7 +13,9 @@ class PetitionAdminRESTService(rest.RESTService):
     MAPPER_NAME = 'petitions'
 
 
-class PetitionsRESTMapper(rest.DocumentRESTMapperMixin, rest.RESTMapper):
+class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
+                          rest.SearchableDocumentRESTMapperMixin,
+                          rest.RESTMapper):
     """A mapper for the petitions admin REST API
     """
 

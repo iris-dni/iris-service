@@ -162,31 +162,31 @@ Missing implementations result in HTTPMethodNotAllowed (405) errors::
     >>> request.swagger_data = {'contentId': '1'}
     >>> service.get()
     Traceback (most recent call last):
-    BadRequest: MyMissingMapper.get
+    BadRequest: Errors.method_not_allowed
 
     >>> request.path = '/v1/admin/missing'
     >>> request.swagger_data = {'data': '1'}
     >>> pp(service.create())
     Traceback (most recent call last):
-    BadRequest: MyMissingMapper.create
+    BadRequest: Errors.method_not_allowed
 
     >>> request.path = '/v1/admin/missing/2'
     >>> request.swagger_data = {'contentId': '1', 'data': {}}
     >>> pp(service.update())
     Traceback (most recent call last):
-    BadRequest: MyMissingMapper.update
+    BadRequest: Errors.method_not_allowed
 
     >>> request.path = '/v1/admin/missing/2'
     >>> request.swagger_data = {'contentId': '2'}
     >>> pp(service.delete())
     Traceback (most recent call last):
-    BadRequest: MyMissingMapper.delete
+    BadRequest: Errors.method_not_allowed
 
     >>> request.path = '/v1/admin/missing'
     >>> request.swagger_data = {'limit': 2}
     >>> pp(service.search())
     Traceback (most recent call last):
-    BadRequest: MyMissingMapper.search
+    BadRequest: Errors.method_not_allowed
 
 Test cleanup::
 

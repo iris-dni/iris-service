@@ -2,6 +2,29 @@ definitions:
     Petition:
         type: object
         properties:
+            id:
+                type: integer
+                readOnly: true
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    effective:
+                        type: string
+                        format: dateTime
+                        description: visible after this time (ISO8601)
+                    effective:
+                        type: string
+                        format: dateTime
+                        description: visible until this time (ISO8601)
             state:
                 type: string
                 readOnly: true
@@ -35,7 +58,7 @@ definitions:
                 type: array
                 items:
                     type: string
-            supportes:
+            supporters:
                 type: object
                 readOnly: true
                 properties:

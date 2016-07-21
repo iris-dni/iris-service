@@ -8,9 +8,11 @@ from webtest import TestApp
 from lovely.essequence import sequence
 
 from iris.service.petition import Petition
+from iris.service.user import User
 
 from . import util
 from . import layer
+from . import samples
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -48,6 +50,8 @@ class Creators(object):
 
     petition = partial(create_object, Petition)
 
+    user = partial(create_object, User)
+
 
 def setUp(test):
     app = get_app()
@@ -55,6 +59,7 @@ def setUp(test):
     test.globs['browser'] = testapp
     util.setupGlobs(test.globs, testapp)
     test.globs['creators'] = Creators
+    test.globs['samples'] = samples
 
 
 def tearDown(test):

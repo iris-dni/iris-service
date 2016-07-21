@@ -24,9 +24,11 @@ class EndpointErrorMixin(object):
 
     ERROR_CODES = []
 
-    def bad_request(self, code, replacements={}):
-        self.check_valid_code(code)
-        return BadRequest(code, replacements=replacements)
+    def bad_request(self, error_code=None, replacements={}):
+        if error_code is None:
+            error_code = Errors.bad_request
+        self.check_valid_code(error_code)
+        return BadRequest(error_code, replacements=replacements)
 
     def unauthenticated(self, error_code=None, replacements={}):
         if error_code is None:
@@ -79,7 +81,7 @@ def bad_request_handler(exc, request):
     request.response.status = exc.http_status
     return {
         'error': {
-            'code': exc.message.name,
+            'code': exc.http_status,
             'description': exc.message.value.format(**exc.replacements),
         }
     }

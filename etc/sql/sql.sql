@@ -1,3 +1,30 @@
+CREATE ANALYZER edge_ngram_fulltext (
+    TOKENIZER t with (
+        type='edgeNGram',
+        min_gram=2,
+        max_gram=10,
+        token_chars=['letter', 'digit']
+    ),
+    TOKEN_FILTERS (
+        standard,
+        lowercase
+    )
+);
+
+CREATE ANALYZER email_ngram_fulltext (
+    TOKENIZER t with (
+        type='edgeNGram',
+        min_gram=3,
+        max_gram=10,
+        token_chars=['letter', 'digit']
+    ),
+    TOKEN_FILTERS (
+        standard,
+        lowercase
+    )
+);
+
+
 CREATE TABLE petitions (
     id LONG PRIMARY KEY,
     dc OBJECT(STRICT) AS (
@@ -31,6 +58,51 @@ CREATE TABLE petitions (
 
     owner STRING,
     response_token STRING,
+
+    INDEX description_ft
+      USING FULLTEXT(description)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX suggested_solution_ft
+      USING FULLTEXT(suggested_solution)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+
+    db_class__ STRING INDEX OFF
+)
+CLUSTERED INTO 5 SHARDS
+          WITH (number_of_replicas='0-all',
+                column_policy='strict');
+
+
+CREATE TABLE users (
+    id LONG PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP,
+        modified TIMESTAMP
+    ),
+    state STRING,
+
+    email STRING,
+    firstname STRING,
+    lastname STRING,
+
+    roles ARRAY(STRING),
+
+    sso ARRAY(
+        OBJECT(STRICT) AS (
+            provider STRING,
+            trusted BOOLEAN
+        )
+    ),
+
+    INDEX firstname_ft
+      USING FULLTEXT(firstname)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX lastname_ft
+      USING FULLTEXT(lastname)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX email_ft
+      USING FULLTEXT(email)
+      WITH (ANALYZER = 'email_ngram_fulltext'),
 
     db_class__ STRING INDEX OFF
 )

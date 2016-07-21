@@ -16,6 +16,8 @@ tags:
     description: Public Petiton API
   - name: petition_admin
     description: Administrative Petiton API
+  - name: user_admin
+    description: Administrative User API
 
 paths:
   /petitions:
@@ -32,3 +34,9 @@ paths:
     $ref: 'petition_admin_path.yml#/petitions'
   /admin/petitions/{contentId}:
     $ref: 'petition_admin_path.yml#/petitions_contentId'
+
+  /admin/users:
+    $ref: 'user_admin_path.yml#/users'
+  /admin/users/{contentId}:
+    $ref: 'user_admin_path.yml#/users_contentId'
+

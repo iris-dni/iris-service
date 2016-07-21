@@ -1,0 +1,168 @@
+users:
+  options:
+    tags:
+      - user_admin
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - user_admin
+    summary: Search Users
+    operationId: search
+    parameters:
+      - name: state
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: roles
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: sso.provider
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: sso.trusted
+        in: query
+        type: boolean
+      - name: ft
+        in: query
+        type: string
+      - name: firstname_ft
+        in: query
+        type: string
+      - name: lastname_ft
+        in: query
+        type: string
+      - name: email_ft
+        in: query
+        type: string
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: offset
+        in: query
+        type: integer
+        minimum: 0
+        default: 0
+      - name: limit
+        in: query
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 10
+      - name: debug
+        in: query
+        type: boolean
+        default: false
+    responses:
+      '200':
+        description: User found
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - user_admin
+    summary: Create User
+    operationId: create
+    parameters:
+      - name: data
+        in: body
+        schema:
+          $ref: 'users.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: User found
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+users_contentId:
+  options:
+    tags:
+      - user_admin
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - user_admin
+    summary: Get a User
+    operationId: get
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: User found
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - user_admin
+    summary: Update User
+    operationId: update
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+      - name: data
+        in: body
+        schema:
+          $ref: 'users.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: User found
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  delete:
+    tags:
+      - user_admin
+    summary: Update User
+    operationId: delete
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: User found
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
