@@ -41,11 +41,22 @@ To test for any PEP8 issues run::
 Start the app locally
 ---------------------
 
-To start the app in foreground just run the command::
+To start a fully working local environment a supervisor is available::
 
-    $ bin/app
+    $ bin/supervisord
 
-The api of the app is now available on the port defined in buildout.cfg (8080
-by default)::
+This starts a crate instance on port 8042 and the iris app on port 8080.
 
-    $ open localhost:8080/v1/sample
+To setup the crate database run::
+
+    $ cat etc/sql/sql.sql | bin/crash --host localhost:8042
+
+Documentation is now available::
+
+    $ open http://localhost:8080/docs
+
+Swagger client UI::
+
+    $ open http://localhost:8080/swagger
+
+Explore with: http://localhost:8080/api.json
