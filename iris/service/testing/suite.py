@@ -101,11 +101,12 @@ def create_suite(testfile,
     return suite
 
 
-def create_crate_suite(testfile):
+def create_crate_suite(testfile, level=None):
     return create_suite(testfile,
                         layer=layer.crateDBLayer,
                         setUp=setUpCrate,
                         tearDown=tearDownCrate,
+                        level=level,
                        )
 
 

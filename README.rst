@@ -60,3 +60,11 @@ Swagger client UI::
     $ open http://localhost:8080/swagger
 
 Explore with: http://localhost:8080/api.json
+
+
+Sample Data
+-----------
+
+Sample data can be loaded into the database from the samples directory::
+
+    $ curl -s -XPOST localhost:8042/_bulk?pretty= --data-binary "@samples/sample.bulk"; echo
