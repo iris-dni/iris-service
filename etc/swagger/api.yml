@@ -16,6 +16,8 @@ produces:
 tags:
   - name: petition
     description: Public Petiton API
+  - name: petition_state
+    description: Petiton State Transition API
   - name: petition_admin
     description: Administrative Petiton API
   - name: user_admin
@@ -28,10 +30,24 @@ paths:
     $ref: 'petition_public_path.yml#/petitions_contentId'
   /petitions/{contentId}/support:
     $ref: 'petition_public_path.yml#/petitions_contentId_support'
+
   /petitions/{contentId}/state/reject:
     $ref: 'petition_public_state_path.yml#/petitions_contentId_state_reject'
+  /petitions/{contentId}/state/publish:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_publish'
+  /petitions/{contentId}/state/delete:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_delete'
+  /petitions/{contentId}/state/close:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_close'
+  /petitions/{contentId}/state/approved:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_approved'
+  /petitions/{contentId}/state/sendLetter:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_sendLetter'
+  /petitions/{contentId}/state/setFeedback:
+    $ref: 'petition_public_state_path.yml#/petitions_contentId_state_setFeedback'
   /petitions/{contentId}/state/{transitionName}:
     $ref: 'petition_public_state_path.yml#/petitions_contentId_state_transitionName'
+
   /admin/petitions:
     $ref: 'petition_admin_path.yml#/petitions'
   /admin/petitions/{contentId}:

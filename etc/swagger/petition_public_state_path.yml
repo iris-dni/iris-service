@@ -1,7 +1,7 @@
 petitions_contentId_state_transitionName:
   options:
     tags:
-      - petition
+      - petition_state
     summary: CORS Options
     parameters:
       - name: contentId
@@ -13,55 +13,129 @@ petitions_contentId_state_transitionName:
     responses:
       default:
         description: Empty Body
-  post:
-    tags:
-      - petition
-    summary: Generic state manipulation
-    operationId: state
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-      - name: transitionName
-        in: path
-        type: string
-    responses:
-      default:
-        description: Unexpected error
-        schema:
-          $ref: 'errors.yml#/definitions/ResponseBody'
 petitions_contentId_state_reject:
-  options:
-    tags:
-      - petition
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-      - name: transitionName
-        in: path
-        type: string
-    responses:
-      default:
-        description: Empty Body
   post:
     tags:
-      - petition
+      - petition_state
     summary: Reject a Petition
     operationId: reject
     parameters:
       - name: contentId
         in: path
         type: integer
-      - name: transitionName
-        in: path
-        type: string
       - name: data
         in: body
         schema:
           $ref: 'state.yml#/definitions/rejectData'
         required: true
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_publish:
+  post:
+    tags:
+      - petition_state
+    summary: Publish a Petition
+    operationId: publish
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_delete:
+  post:
+    tags:
+      - petition_state
+    summary: Publish a Petition
+    operationId: delete
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_close:
+  post:
+    tags:
+      - petition_state
+    summary: Close a Petition
+    operationId: close
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_approved:
+  post:
+    tags:
+      - petition_state
+    summary: Approve a pending Petition
+    operationId: approved
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_sendLetter:
+  post:
+    tags:
+      - petition_state
+    summary: sendLetter for Petition
+    operationId: sendLetter
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_setFeedback:
+  post:
+    tags:
+      - petition_state
+    summary: set feedback for Petition
+    operationId: setFeedback
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_state_transitionName:
+  post:
+    tags:
+      - petition_state
+    summary: generic state changer Petition
+    operationId: setState
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+      - name: transitionName
+        in: path
+        type: string
     responses:
       default:
         description: Unexpected error

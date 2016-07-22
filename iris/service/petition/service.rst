@@ -291,3 +291,33 @@ Do a delete request::
         ...
       }
     }
+
+
+State Switch Endpoints
+----------------------
+
+These endpoints are currently avaialable but not fully impemented. The
+endpoints switch the state but don't check for validity::
+
+Create a new petition::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "Switchable petition"
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> id = response.json['data']['id']
+
+Publish the petition::
+
+    >>> response = browser.post('/v1/petitions/%s/state/publish' % id)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "state": "pending",
+        ...
+      },
+      "status": "ok"
+    }

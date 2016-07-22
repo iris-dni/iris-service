@@ -21,6 +21,7 @@ def test_suite():
         create_crate_suite('user/document.rst'),
         create_crate_suite('user/service.rst'),
 
+        create_suite('sm/sm.rst'),
         create_suite('static.rst'),
         ))
     return s
