@@ -22,6 +22,7 @@ pyramid_swagger.enable_api_doc_views = True
 pyramid_swagger.include_read_only_properties = False
 pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = False
+pyramid_swagger.dereference_served_schema = True
 
 static.docs = iris.service:docs
               docs
