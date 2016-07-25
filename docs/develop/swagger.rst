@@ -6,6 +6,8 @@ The IRIS API is defined using `swagger <http://swagger.io>`_
 
 This makes it easy to use the API.
 
+`swagger-ui <http://swagger.io/swagger-ui/>`_ is available here `</swaggerui>`_
+
 
 CORS
 ====
