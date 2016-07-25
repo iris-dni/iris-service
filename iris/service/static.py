@@ -4,6 +4,9 @@ from pyramid.view import view_config
 
 
 def staticRedirectView(request):
+    if request.path.endswith('swagger'):
+        # Provide the swagger spec file
+        return HTTPFound(request.path + '/?url=/swagger.json')
     return HTTPFound(request.path + '/')
 
 
