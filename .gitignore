@@ -9,7 +9,7 @@ develop-eggs/
 .installed.cfg
 .DS\_Store
 .installed.cfg
-etc/pyramid-settings.ini
+etc/local-settings.ini
 etc/crate.yml
 etc/supervisord.conf
 iris/service/docs
