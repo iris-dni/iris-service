@@ -293,10 +293,16 @@ Do a delete request::
     }
 
 
-State Switch Endpoints
-----------------------
+Controlling the Petition State Machine
+--------------------------------------
 
-These endpoints are currently avaialable but not fully impemented. The
+The petition state is controlled using a state machine (for details about the
+state machine see the online documentation).
+
+States can be switched by triggering events on the state machine. These events
+can be created using the `event` endpoint on a petition.
+
+These event endpoints are currently avaialable but not fully impemented. The
 endpoints switch the state but don't check for validity::
 
 Create a new petition::
@@ -311,7 +317,7 @@ Create a new petition::
 
 Publish the petition::
 
-    >>> response = browser.post('/v1/petitions/%s/state/publish' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/publish' % id)
     >>> print_json(response)
     {
       "data": {

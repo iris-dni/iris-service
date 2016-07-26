@@ -33,11 +33,11 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         # TODO: support the petition
         return {}
 
-    def state(self, contentId, transitionName, data=None):
+    def event(self, contentId, transitionName, data=None):
         petition = Petition.get(contentId)
         if petition is None:
             return None
-        # TODO: implement state handling
+        # TODO: implement event state handling
         sm = PetitionStateMachine(petition)
         state = sm.switch(transitionName)
         if state:
@@ -78,55 +78,55 @@ class PetitionPublicRESTService(rest.RESTService):
         return result
 
     @rpcmethod_route(request_method='OPTIONS',
-                     route_suffix='/{contentId}/state/{transitionName}')
+                     route_suffix='/{contentId}/event/{transitionName}')
     @rpcmethod_view(http_cache=0)
-    def options_contentId_state(self, **kwargs):
+    def options_contentId_event(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/reject')
-    def state_reject(self, **kwargs):
-        return self._state('reject')
+                     route_suffix='/{contentId}/event/reject')
+    def event_reject(self, **kwargs):
+        return self._event('reject')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/publish')
-    def state_publish(self, **kwargs):
-        return self._state('publish')
+                     route_suffix='/{contentId}/event/publish')
+    def event_publish(self, **kwargs):
+        return self._event('publish')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/delete')
-    def state_delete(self, **kwargs):
-        return self._state('delete')
+                     route_suffix='/{contentId}/event/delete')
+    def event_delete(self, **kwargs):
+        return self._event('delete')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/close')
-    def state_close(self, **kwargs):
-        return self._state('close')
+                     route_suffix='/{contentId}/event/close')
+    def event_close(self, **kwargs):
+        return self._event('close')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/approved')
-    def state_approved(self, **kwargs):
-        return self._state('approved')
+                     route_suffix='/{contentId}/event/approved')
+    def event_approved(self, **kwargs):
+        return self._event('approved')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/sendLetter')
-    def state_sendLetter(self, **kwargs):
-        return self._state('sendLetter')
+                     route_suffix='/{contentId}/event/sendLetter')
+    def event_sendLetter(self, **kwargs):
+        return self._event('sendLetter')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/setFeedback')
-    def state_setFeedback(self, **kwargs):
-        return self._state('setFeedback')
+                     route_suffix='/{contentId}/event/setFeedback')
+    def event_setFeedback(self, **kwargs):
+        return self._event('setFeedback')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/state/{transitionName}')
-    def state_generic(self, **kwargs):
+                     route_suffix='/{contentId}/event/{transitionName}')
+    def event_generic(self, **kwargs):
         switch = self.request.swagger_data.pop('transitionName')
-        return self._state(switch)
+        return self._event(switch)
 
-    def _state(self, switch):
+    def _event(self, switch):
         mapper = self._getMapper(self.MAPPER_NAME)
-        result = mapper.state(transitionName=switch,
+        result = mapper.event(transitionName=switch,
                               **self.request.swagger_data)
         if result is None:
             raise self.not_found(

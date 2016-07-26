@@ -9,7 +9,7 @@ petitions:
   get:
     tags:
       - petition_admin
-    summary: Petitions
+    summary: Search Petitions
     operationId: search
     parameters:
       - name: offset
@@ -17,12 +17,14 @@ petitions:
         type: integer
         minimum: 0
         default: 0
+        description: The offset to the first petition.
       - name: limit
         in: query
         type: integer
         minimum: 0
         maximum: 50
         default: 10
+        description: The number of petitions in the result.
     responses:
       '200':
         description: Petition found

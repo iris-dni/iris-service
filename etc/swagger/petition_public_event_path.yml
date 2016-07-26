@@ -1,28 +1,36 @@
-petitions_contentId_state_transitionName:
+petitions_contentId_event_transitionName:
   options:
     tags:
-      - petition_state
+      - petition_event
     summary: CORS Options
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
       - name: transitionName
         in: path
         type: string
+        required: true
     responses:
       default:
         description: Empty Body
-petitions_contentId_state_reject:
+petitions_contentId_event_reject:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: Reject a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: reject
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
       - name: data
         in: body
         schema:
@@ -33,109 +41,145 @@ petitions_contentId_state_reject:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_publish:
+petitions_contentId_event_publish:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: Publish a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: publish
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_delete:
+petitions_contentId_event_delete:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: Publish a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: delete
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_close:
+petitions_contentId_event_close:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: Close a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: close
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_approved:
+petitions_contentId_event_approved:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: Approve a pending Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: approved
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_sendLetter:
+petitions_contentId_event_sendLetter:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: sendLetter for Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: sendLetter
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_setFeedback:
+petitions_contentId_event_setFeedback:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: set feedback for Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: setFeedback
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_state_transitionName:
+petitions_contentId_event_transitionName:
   post:
     tags:
-      - petition_state
+      - petition_event
     summary: generic state changer Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
     operationId: setState
     parameters:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
       - name: transitionName
         in: path
         type: string
+        required: true
     responses:
       default:
         description: Unexpected error

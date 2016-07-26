@@ -17,12 +17,14 @@ petitions:
         type: integer
         minimum: 0
         default: 0
+        description: The offset to the first petition.
       - name: limit
         in: query
         type: integer
         minimum: 0
         maximum: 50
         default: 10
+        description: The number of petitions in the result.
     responses:
       '200':
         description: Petition found
@@ -61,6 +63,8 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Empty Body
@@ -73,6 +77,8 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       '200':
         description: Petition found
@@ -91,6 +97,8 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
       - name: data
         in: body
         schema:
@@ -114,6 +122,8 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       '200':
         description: Petition found
@@ -132,6 +142,8 @@ petitions_contentId_support:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
     responses:
       default:
         description: Empty Body
@@ -144,6 +156,8 @@ petitions_contentId_support:
       - name: contentId
         in: path
         type: integer
+        required: true
+        description: The id of the petition
       - name: data
         in: body
         schema:
