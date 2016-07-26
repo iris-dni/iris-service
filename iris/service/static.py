@@ -16,6 +16,6 @@ def includeme(config):
         if not key.startswith('static.'):
             continue
         path, url = aslist(value)
+        config.add_static_view(name=url, path=path)
         view_config(route_name=key)(staticRedirectView)
-        config.add_static_view(name=key[7:] + '/', path=path)
         config.add_route(key, url)
