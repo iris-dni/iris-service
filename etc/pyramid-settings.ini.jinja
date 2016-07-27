@@ -12,7 +12,7 @@ pyramid.default_locale_name = en
 
 docs.path = iris.service:docs
 
-es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:config['containers']['iris-crate']['ports'][0][0] {%endfor%}
+es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:{{config['containers']['iris-crate']['ports'][0][0]}} {%endfor%}
 
 ###
 # wsgi server configuration
