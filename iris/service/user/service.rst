@@ -47,7 +47,8 @@ Create a new user::
         ...
         "id": ...,
         ...
-        "state": "active"
+        "state": "active",
+        "trusted": false
       }
     }
 
@@ -182,7 +183,8 @@ Create some sampledata::
               "trusted": false
             }
           ],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         },
         {
           "dc": {
@@ -195,7 +197,8 @@ Create some sampledata::
           "lastname": "Cooper",
           "roles": [],
           "sso": [],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         },
         {
           "dc": {
@@ -215,7 +218,8 @@ Create some sampledata::
               "trusted": false
             }
           ],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         },
         {
           "dc": {
@@ -235,7 +239,8 @@ Create some sampledata::
               "trusted": false
             }
           ],
-          "state": "disabled"
+          "state": "disabled",
+          "trusted": false
         },
         {
           "dc": {
@@ -255,7 +260,8 @@ Create some sampledata::
               "trusted": true
             }
           ],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         }
       ],
       "total": 5
@@ -358,7 +364,8 @@ Fulltext search::
           "lastname": "Cooper",
           "roles": [],
           "sso": [],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         }
       ],
       "total": 1
@@ -379,7 +386,8 @@ Fulltext search::
           "lastname": "Cooper",
           "roles": [],
           "sso": [],
-          "state": "active"
+          "state": "active",
+          "trusted": false
         }
       ],
       "total": 1

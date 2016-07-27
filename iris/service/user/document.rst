@@ -46,3 +46,31 @@ Get the user back from the database::
     }
     >>> user.state
     u'active'
+
+
+Roles
+=====
+
+User roles are a list of strings::
+
+    >>> user.roles
+    []
+    >>> user.roles = ['r1']
+    >>> user.roles
+    ['r1']
+
+The trusted flag of a user manipulates the roles::
+
+    >>> user.trusted = True
+    >>> user.roles
+    ['r1', 'trusted']
+
+    >>> user.trusted = False
+    >>> user.roles
+    ['r1']
+
+It is not possible to set the role `trusted`::
+
+    >>> user.roles = ['trusted']
+    >>> user.roles
+    []

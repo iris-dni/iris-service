@@ -64,9 +64,7 @@ CREATE TABLE petitions (
       WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX suggested_solution_ft
       USING FULLTEXT(suggested_solution)
-      WITH (ANALYZER = 'edge_ngram_fulltext'),
-
-    db_class__ STRING INDEX OFF
+      WITH (ANALYZER = 'edge_ngram_fulltext')
 )
 CLUSTERED INTO 5 SHARDS
           WITH (number_of_replicas='0-all',
@@ -85,6 +83,7 @@ CREATE TABLE users (
     firstname STRING,
     lastname STRING,
 
+    trusted BOOLEAN,
     roles ARRAY(STRING),
 
     sso ARRAY(
@@ -102,9 +101,20 @@ CREATE TABLE users (
       WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX email_ft
       USING FULLTEXT(email)
-      WITH (ANALYZER = 'email_ngram_fulltext'),
+      WITH (ANALYZER = 'email_ngram_fulltext')
+)
+CLUSTERED INTO 5 SHARDS
+          WITH (number_of_replicas='0-all',
+                column_policy='strict');
 
-    db_class__ STRING INDEX OFF
+
+CREATE TABLE ssotokens (
+    token STRING PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP
+    ),
+    sso STRING INDEX OFF,
+    apikey STRING INDEX OFF
 )
 CLUSTERED INTO 5 SHARDS
           WITH (number_of_replicas='0-all',

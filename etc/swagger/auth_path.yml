@@ -1,0 +1,139 @@
+auth_whoami:
+  options:
+    tags:
+      - options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - auth
+    summary: Logged in user data
+    description: |
+        Provides the user data of the currently logged in user based on the
+        session cookie or, if provided, based on the sso data.
+        
+        If sso data is provided the sso user is logged in using cookies.
+    operationId: whoami
+    parameters:
+      - name: sso
+        in: query
+        type: string
+        description: The sso credentials if available (see <a href="/docs/sso.html">Single Sign On</a>).
+      - name: apikey
+        in: query
+        type: string
+        description: The sso api key (required if sso parameter is provided).
+    responses:
+      '200':
+        description: User data
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+auth_ssologin:
+  options:
+    tags:
+      - options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - auth
+    summary: Login a user using sso data
+    description: |
+        Allows a login by providing the sso data from a foreign domain.<br/>
+        The data must be created according to the
+        <a href="/docs/sso.html">Single Sign On</a> documentation.
+    operationId: ssologin
+    parameters:
+      - name: sso
+        in: query
+        type: string
+        description: The sso credentials (see <a href="/docs/sso.html">Single Sign On</a>).
+      - name: apikey
+        in: query
+        type: string
+        description: The sso api key (not required if token is provided).
+      - name: token
+        in: query
+        type: string
+        description: The sso token requested from the ssotoken endpoint.
+    responses:
+      '200':
+        description: User data
+        schema:
+          $ref: 'users.yml#/definitions/ResponseBody'
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+auth_ssotoken:
+  options:
+    tags:
+      - options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - auth
+    summary: Get a authentication token for an sso user
+    description: |
+        To be able to take over an sso user from a foreign domain to the IRIS
+        domain a token must be forwarded to the IRIS domain. This endpoint
+        allows to request an authentification token for an sso user with the
+        sso credentials of the foreign page.
+
+        The token must be used to login using the ssologin endpoint.
+
+        The token is valid for 1 minute.
+    operationId: ssotoken
+    parameters:
+      - name: sso
+        in: query
+        type: string
+        required: true
+        description: The sso credentials (see <a href="/docs/sso.html">Single Sign On</a>).
+      - name: apikey
+        in: query
+        type: string
+        required: true
+        description: The sso api key.
+    responses:
+      '200':
+        description: User data
+        schema:
+          $ref: 'auth.yml#/definitions/SSOTokenResponse'
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+auth_logout:
+  options:
+    tags:
+      - options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - auth
+    summary: Logout the current session
+    description: |
+        The logout is performed by resetting the login cookie.
+    operationId: logout
+    responses:
+      '200':
+        description: Empty body
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

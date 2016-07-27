@@ -18,10 +18,14 @@ tags:
     description: Public Petiton API
   - name: petition_event
     description: Petiton Event API
+  - name: auth
+    description: Authentication API
   - name: petition_admin
     description: Administrative Petiton API
   - name: user_admin
     description: Administrative User API
+  - name: options
+    description: The `OPTIONS` endpoints
 
 paths:
   /petitions:
@@ -47,6 +51,15 @@ paths:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_setFeedback'
   /petitions/{contentId}/event/{transitionName}:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_transitionName'
+
+  /auth/whoami:
+    $ref: 'auth_path.yml#/auth_whoami'
+  /auth/ssologin:
+    $ref: 'auth_path.yml#/auth_ssologin'
+  /auth/ssotoken:
+    $ref: 'auth_path.yml#/auth_ssotoken'
+  /auth/logout:
+    $ref: 'auth_path.yml#/auth_logout'
 
   /admin/petitions:
     $ref: 'petition_admin_path.yml#/petitions'

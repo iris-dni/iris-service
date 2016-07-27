@@ -1,7 +1,7 @@
 petitions:
   options:
     tags:
-      - petition
+      - options
     summary: CORS Options
     responses:
       default:
@@ -57,7 +57,7 @@ petitions:
 petitions_contentId:
   options:
     tags:
-      - petition
+      - options
     summary: CORS Options
     parameters:
       - name: contentId
@@ -136,7 +136,7 @@ petitions_contentId:
 petitions_contentId_support:
   options:
     tags:
-      - petition
+      - options
     summary: CORS Options
     parameters:
       - name: contentId
