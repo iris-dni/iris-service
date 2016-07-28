@@ -1,0 +1,23 @@
+es:
+    api:
+        enabled: true
+script:
+    groovy:
+        sandbox:
+            enabled: true
+http:
+    port: 8042
+    cors:
+        enabled: true
+        allow-origin: "/.*/"
+path:
+    logs:  /Users/bernd/sandbox/iris-service/var/log/crate
+    data:  /Users/bernd/sandbox/iris-service/var/crate
+discovery:
+    type: zen
+    zen:
+        ping:
+            multicast:
+                enabled:  false
+cluster:
+    name: iris.service-dev
