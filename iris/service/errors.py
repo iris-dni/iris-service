@@ -6,6 +6,7 @@ class Errors(Enum):
     bad_request = 'Bad request: {message}'
 
     unauthenticated = 'This endpoint needs authentication'
+    not_logged_in = 'Not logged in'
     not_found = 'Not Found'
     forbidden = 'Access forbidden'
     mapper_not_found = 'Mapper "{mapperName}" not found'

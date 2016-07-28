@@ -83,7 +83,6 @@ CREATE TABLE users (
     firstname STRING,
     lastname STRING,
 
-    trusted BOOLEAN,
     roles ARRAY(STRING),
 
     sso ARRAY(

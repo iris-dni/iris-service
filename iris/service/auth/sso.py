@@ -36,7 +36,10 @@ def _sso_data(request):
         verify_message(sso, apikey)
     except (ValueError, KeyError):
         return None
-    return get_message_data(sso)
+    return {
+        'data': get_message_data(sso),
+        'apikey': apikey
+    }
 
 
 def _user(request):
@@ -50,31 +53,31 @@ def _user(request):
     return User.get(user_id)
 
 
-def get_or_create_sso_user(credentials):
+def get_or_create_sso_user(ssodata):
     """Get or create a user based on SSO credentials
 
     The SSO credentials are a dict which must contain an `email` and optional
     a `nickname`.
     """
+    data = ssodata.get('data')
+    if not data:
+        return None
     try:
-        jsonschema.validate(credentials, SSO_USER_SCHEMA)
+        jsonschema.validate(data, SSO_USER_SCHEMA)
     except jsonschema.exceptions.ValidationError:
         return None
     user_properties = {
-        'email': credentials['email'],
-        'firstname': credentials.get('firstname'),
-        'lastname': credentials.get('lastname'),
-        'trusted': credentials.get('trusted'),
-        'roles': credentials.get('roles'),
+        'email': data['email'],
+        'firstname': data.get('firstname'),
+        'lastname': data.get('lastname'),
+        'roles': data.get('roles'),
+        'sso': {
+            'provider': ssodata['apikey'],
+            'trusted': data.get('trusted', False),
+        },
     }
     user_properties = {k: v for k, v in user_properties.iteritems() if v}
-    user = User.get_by(User.email, user_properties['email'])
-    if not user:
-        user = User(**user_properties)
-    else:
-        user = user[0]
-    user.store(refresh=True)
-    return user
+    return User.update_or_create_by_email(**user_properties)
 
 
 SSO_USER_SCHEMA = {

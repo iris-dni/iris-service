@@ -8,11 +8,16 @@ Check Current Login
 
 The whoami endpoint provides the data of the currently logged in user::
 
-    >>> response = browser.get('/v1/auth/whoami')
+    >>> response = browser.get('/v1/auth/whoami', expect_errors=True)
     >>> response.status
-    '200 OK'
+    '400 Bad Request'
     >>> print_json(response)
-    {}
+    {
+      "error": {
+        "code": 400,
+        "description": "Not logged in"
+      }
+    }
 
 
 SSO Login

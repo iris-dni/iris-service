@@ -1,6 +1,7 @@
 definitions:
-    User:
+    UserReadOnly:
         type: object
+        discriminator: userType
         properties:
             id:
                 type: integer
@@ -21,16 +22,10 @@ definitions:
                 type: string
                 readOnly: true
                 default: 'draft'
-            roles:
-                type: array
-                items:
-                    type: string
-            email:
-                type: string
-            firstname:
-                type: string
-            lastname:
-                type: string
+    UserSSOInfo:
+        description: additional sso information which shows all sso connections of the user.
+        type: object
+        properties:
             sso:
                 type: array
                 readOnly: true
@@ -41,19 +36,115 @@ definitions:
                             type: string
                         trusted:
                             type: boolean
-    POSTBody:
+    UserSSOPOST:
+        description: The properties used in the sso login data for a user.
+        type: object
+        required:
+            - email
+        properties:
+            email:
+                type: string
+            firstname:
+                type: string
+            lastname:
+                type: string
+            trusted:
+                type: boolean
+                default: false
+            roles:
+                type: array
+                items:
+                    type: string
+    UserPublic:
+        description: The public properties of a user.
+        type: object
+        allOf:
+            - $ref: '#/definitions/UserReadOnly'
+            - type: object
+              properties:
+                firstname:
+                    type: string
+                lastname:
+                    type: string
+    UserPrivate:
+        type: object
+        allOf:
+            - $ref: '#/definitions/UserReadOnly'
+            - $ref: '#/definitions/UserSSOInfo'
+            - $ref: '#/definitions/UserPublic'
+            - type: object
+              properties:
+                email:
+                    type: string
+                roles:
+                    type: array
+                    items:
+                        type: string
+    UserAdmin:
+        type: object
+        required:
+            - email
+        allOf:
+            - $ref: '#/definitions/UserPrivate'
+
+    UserResponsePublic:
+        description: The user data provided in public user APIs
+        type: object
+        allOf:
+            - $ref: '#/definitions/UserReadOnly'
+            - $ref: '#/definitions/UserPublic'
+
+    AdminPOSTCreateBody:
         # The user wrapped in a data property for the POST bodies
         type: object
         required: 
             - data
         properties:
             data:
-                $ref: '#/definitions/User'
-    ResponseBody:
-        # The user wrapped in a data property for the response body
+                $ref: '#/definitions/UserAdmin'
+    AdminPOSTEditBody:
+        # The user wrapped in a data property for the POST bodies
         type: object
         required: 
             - data
         properties:
             data:
-                $ref: '#/definitions/User'
+                $ref: '#/definitions/UserAdmin'
+
+    ResponseBodyPublic:
+        description: Response body providing the public user data wrapped in a data property.
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/UserPublic'
+    ResponseBodyPrivate:
+        description: Response body providing the private user data wrapped in a data property.
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/UserPrivate'
+    ResponseBodyAdmin:
+        description: Response body providing the full user data wrapped in a data property.
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/UserAdmin'
+    ListResponseBodyAdmin:
+        description: User list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/UserAdmin'
+            total:
+                type: integer

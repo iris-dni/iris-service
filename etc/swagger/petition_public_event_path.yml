@@ -37,6 +37,10 @@ petitions_contentId_event_reject:
           $ref: 'state.yml#/definitions/rejectData'
         required: true
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -57,6 +61,10 @@ petitions_contentId_event_publish:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -77,6 +85,10 @@ petitions_contentId_event_delete:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -97,6 +109,10 @@ petitions_contentId_event_close:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -117,6 +133,10 @@ petitions_contentId_event_approved:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -137,6 +157,10 @@ petitions_contentId_event_sendLetter:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -157,6 +181,10 @@ petitions_contentId_event_setFeedback:
         required: true
         description: The id of the petition
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:
@@ -181,6 +209,10 @@ petitions_contentId_event_transitionName:
         type: string
         required: true
     responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
       default:
         description: Unexpected error
         schema:

@@ -1,5 +1,7 @@
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
+from iris.service.rest.swagger import swagger_reduce_response
+
 from ..endpoint import EndpointErrorMixin
 from ..errors import Errors
 
@@ -24,11 +26,15 @@ class AuthService(EndpointErrorMixin):
     @rpcmethod_route(request_method='GET',
                      route_suffix='/whoami')
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def whoami(self, **kwargs):
+        return self._whoami()
+
+    def _whoami(self):
         user = self.request.user
         if user is None:
-            return {}
-        return user.get_source()
+            raise self.bad_request(Errors.not_logged_in)
+        return {'data': user.get_source()}
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssologin')
@@ -39,6 +45,7 @@ class AuthService(EndpointErrorMixin):
     @rpcmethod_route(request_method='POST',
                      route_suffix='/ssologin')
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def ssologin(self, **kwargs):
         data = self.request.swagger_data
         sso = data.get('sso')
@@ -56,7 +63,7 @@ class AuthService(EndpointErrorMixin):
             user = get_or_create_sso_user(ssodata)
             if user is not None:
                 login_user(self.request, self.request.response, user)
-        return self.whoami()
+        return self._whoami()
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssotoken')

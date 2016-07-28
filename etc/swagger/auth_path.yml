@@ -27,9 +27,11 @@ auth_whoami:
         description: The sso api key (required if sso parameter is provided).
     responses:
       '200':
-        description: User data
+        description: Private User data
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyPrivate'
+      '400':
+        description: Not logged in
       default:
         description: Error Body
         schema:
@@ -66,9 +68,9 @@ auth_ssologin:
         description: The sso token requested from the ssotoken endpoint.
     responses:
       '200':
-        description: User data
+        description: Private User data
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyPrivate'
       default:
         description: Error Body
         schema:
@@ -84,7 +86,7 @@ auth_ssotoken:
   post:
     tags:
       - auth
-    summary: Get a authentication token for an sso user
+    summary: Get an authentication token for an sso user
     description: |
         To be able to take over an sso user from a foreign domain to the IRIS
         domain a token must be forwarded to the IRIS domain. This endpoint
@@ -92,8 +94,6 @@ auth_ssotoken:
         sso credentials of the foreign page.
 
         The token must be used to login using the ssologin endpoint.
-
-        The token is valid for 1 minute.
     operationId: ssotoken
     parameters:
       - name: sso
@@ -108,7 +108,9 @@ auth_ssotoken:
         description: The sso api key.
     responses:
       '200':
-        description: User data
+        description: |
+            The created token.<br/>
+            The token is only valid for 1 minute.
         schema:
           $ref: 'auth.yml#/definitions/SSOTokenResponse'
       default:

@@ -48,6 +48,66 @@ Get the user back from the database::
     u'active'
 
 
+SSO Data
+========
+
+The sso property is an array containing information about different sso
+providers::
+
+    >>> user.sso
+    []
+    >>> user.sso = [
+    ...     {'provider': '1', 'trusted': False},
+    ...     {'provider': '2', 'trusted': True},
+    ... ]
+    >>> pp(user.sso)
+    [
+      {
+        "provider": "1",
+        "trusted": false
+      },
+      {
+        "provider": "2",
+        "trusted": true
+      }
+    ]
+
+To simplify the update of existing or adding new providers a dict can be
+assigned to the property::
+
+    >>> user.sso = {'provider': '1', 'trusted': True}
+    >>> pp(user.sso)
+    [
+      {
+        "provider": "1",
+        "trusted": true
+      },
+      {
+        "provider": "2",
+        "trusted": true
+      }
+    ]
+
+Add a new provider::
+
+    >>> user.sso = {'provider': '3', 'trusted': False}
+    >>> pp(user.sso)
+    [
+      {
+        "provider": "1",
+        "trusted": true
+      },
+      {
+        "provider": "2",
+        "trusted": true
+      },
+      {
+        "provider": "3",
+        "trusted": false
+      }
+    ]
+
+
 Roles
 =====
 
@@ -59,18 +119,62 @@ User roles are a list of strings::
     >>> user.roles
     ['r1']
 
-The trusted flag of a user manipulates the roles::
 
-    >>> user.trusted = True
+Update or Create Users
+======================
+
+::
+
+    >>> data = {
+    ...     'email': 'email@mail.com',
+    ...     'firstname': 'firstname',
+    ...     'lastname': 'lastname',
+    ...     'roles': ['roles'],
+    ...     'sso': {
+    ...         'provider': 'apikey',
+    ...         'trusted': True,
+    ...     },
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.email
+    'email@mail.com'
+    >>> user.firstname
+    'firstname'
+    >>> user.lastname
+    'lastname'
     >>> user.roles
-    ['r1', 'trusted']
+    ['roles']
+    >>> pp(user.sso)
+    [
+      {
+        "provider": "apikey",
+        "trusted": true
+      }
+    ]
 
-    >>> user.trusted = False
+    >>> data = {
+    ...     'email': 'email@mail.com',
+    ...     'firstname': 'new firstname',
+    ...     'lastname': 'new lastname',
+    ...     'roles': ['new', 'roles'],
+    ...     'sso': {
+    ...         'provider': 'apikey',
+    ...         'trusted': False,
+    ...     },
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.email
+    u'email@mail.com'
+    >>> user.firstname
+    'new firstname'
+    >>> user.lastname
+    'new lastname'
     >>> user.roles
-    ['r1']
-
-It is not possible to set the role `trusted`::
-
-    >>> user.roles = ['trusted']
-    >>> user.roles
-    []
+    ['new', 'roles']
+    >>> pp(user.sso)
+    [
+      {
+        "provider": "apikey",
+        "trusted": false
+      }
+    ]

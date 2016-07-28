@@ -39,49 +39,46 @@ class User(Document):
         default=''
     )
 
-    trusted = Property(
-        default=False,
-        doc="Trusted users have additional privilegs"
-    )
-
     roles = Property(
-        default=[],
+        default=lambda: [],
         doc="""
           The roles are simple strings used for access control.
         """
     )
 
-    @roles.getter
-    def get_roles(self, value):
-        """adds internal roles
-
-        trusted: if the trusted flag is set to True
-        """
-        more = []
-        if self.trusted:
-            more.append('trusted')
-        return value + more
-
-    @roles.setter
-    def set_roles(self, value):
-        """Removes the trusted role if provided
-        """
-        if 'trusted' in value:
-            value.remove('trusted')
-        return value
-
     sso = Property(
-        default=[],
+        name="sso",
+        default=lambda: [],
         doc="""
           Data for the different SSO providers used by this user.
         """
     )
 
+    @sso.setter
+    def set_sso(self, value):
+        if isinstance(value, dict):
+            provider = value['provider']
+            original = self.sso
+            found = False
+            for p in original:
+                if p['provider'] == provider:
+                    p.update(value)
+                    found = True
+                    break
+            if not found:
+                original.append(value)
+            return original
+        return value
+
     @classmethod
-    def get_or_create_by_sso_data(cls, email, **kwargs):
+    def update_or_create_by_email(cls, email, **kwargs):
         user = cls.get_by(cls.email, email)
-        if user is None:
-            user = User(email=email, **kwargs)
+        if user:
+            user = user[0]
+        else:
+            user = User(email=email)
+        for k, v in kwargs.iteritems():
+            setattr(user, k, v)
         user.store(refresh=True)
         return user
 

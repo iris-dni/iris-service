@@ -327,3 +327,14 @@ Publish the petition::
       },
       "status": "ok"
     }
+
+Call all event endpoint to make sure swagger validation works::
+
+    >>> response = browser.post('/v1/petitions/%s/event/reject' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/delete' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/close' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/approved' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/sendLetter' % id)
+    >>> response = browser.post('/v1/petitions/%s/event/setFeedback' % id)
+
+    >>> response = browser.post('/v1/petitions/%s/event/reset' % id)

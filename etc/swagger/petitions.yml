@@ -19,10 +19,12 @@ definitions:
                         description: ISO8601
                     effective:
                         type: string
+                        x-nullable: true
                         format: dateTime
                         description: visible after this time (ISO8601)
-                    effective:
+                    expires:
                         type: string
+                        x-nullable: true
                         format: dateTime
                         description: visible until this time (ISO8601)
             state:
@@ -41,6 +43,7 @@ definitions:
                 default: ''
             city:
                 type: string
+                x-nullable: true
             type:
                 type: string
                 default: ''
@@ -66,9 +69,11 @@ definitions:
                         type: integer
             owner:
                 type: string
+                x-nullable: true
                 readOnly: true
             response_token:
                 type: string
+                x-nullable: true
                 readOnly: true
     POSTBody:
         # The petition wrapped in a data property for the POST bodies
@@ -86,3 +91,29 @@ definitions:
         properties:
             data:
                 $ref: '#/definitions/Petition'
+    ListResponseBody:
+        description: Petition list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/Petition'
+            total:
+                type: integer
+    ListResponseBodyAdmin:
+        description: Petition list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/Petition'
+            total:
+                type: integer

@@ -1,5 +1,3 @@
-import copy
-
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
 from lovely.essequence import Sequence
@@ -30,7 +28,7 @@ class Petition(Document):
     )
 
     tags = Property(
-        default=lambda: copy.copy([]),
+        default=lambda: [],
         doc="""
           A list of tags which are searchable.
         """,
@@ -68,17 +66,17 @@ class Petition(Document):
     )
 
     links = Property(
-        default=lambda: copy.copy([]),
+        default=lambda: [],
         doc="A list of location ids."
     )
 
     videos = Property(
-        default=lambda: copy.copy([]),
+        default=lambda: [],
         doc="A list of location ids to youtube videos."
     )
 
     connected_locations = Property(
-        default=lambda: copy.copy([]),
+        default=lambda: [],
         doc="""
           A list of location ids to location which are connected to this
           petition.
@@ -86,7 +84,7 @@ class Petition(Document):
     )
 
     supporters = Property(
-        default=lambda: copy.copy({}),
+        default=lambda: {},
         doc="""
           An object which contains information about the supporters of the
           petition.

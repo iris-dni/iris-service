@@ -25,7 +25,6 @@ class UsersRESTMapper(rest.DocumentRESTMapperMixin,
     QUERY_PARAMS = {
         'state': queries.termsFilter('state'),
         'roles': queries.termsFilter('roles'),
-        'trusted': queries.booleanFilter('trusted'),
         'sso.provider': queries.termsFilter('sso.provider'),
         'sso.trusted': queries.booleanFilter('sso.trusted'),
         'ft': queries.fulltextQuery(['firstname_ft',

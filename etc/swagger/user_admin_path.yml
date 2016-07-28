@@ -1,7 +1,7 @@
 users:
   options:
     tags:
-      - user_admin
+      - options
     summary: CORS Options
     responses:
       default:
@@ -70,7 +70,7 @@ users:
       '200':
         description: User found
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ListResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -84,13 +84,13 @@ users:
       - name: data
         in: body
         schema:
-          $ref: 'users.yml#/definitions/POSTBody'
+          $ref: 'users.yml#/definitions/AdminPOSTCreateBody'
         required: true
     responses:
       '200':
         description: User found
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -98,7 +98,7 @@ users:
 users_contentId:
   options:
     tags:
-      - user_admin
+      - options
     summary: CORS Options
     parameters:
       - name: contentId
@@ -120,7 +120,7 @@ users_contentId:
       '200':
         description: User found
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -137,13 +137,13 @@ users_contentId:
       - name: data
         in: body
         schema:
-          $ref: 'users.yml#/definitions/POSTBody'
+          $ref: 'users.yml#/definitions/AdminPOSTEditBody'
         required: true
     responses:
       '200':
         description: User found
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -161,7 +161,7 @@ users_contentId:
       '200':
         description: User found
         schema:
-          $ref: 'users.yml#/definitions/ResponseBody'
+          $ref: 'users.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:

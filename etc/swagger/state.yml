@@ -8,3 +8,13 @@ definitions:
               type: boolean
             message:
               type: string
+    eventResponseBody:
+        type: object
+        required:
+            - data
+            - status
+        properties:
+            data:
+                $ref: 'petitions.yml#/definitions/Petition'
+            status:
+                type: string

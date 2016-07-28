@@ -27,7 +27,10 @@ Now the data can be extracted::
 
     >>> pp(_sso_data(request))
     {
-      "some": "data"
+      "apikey": "test_public_api_key",
+      "data": {
+        "some": "data"
+      }
     }
 
 Without any parameters::
@@ -61,7 +64,10 @@ Create a token::
     >>> request.swagger_data = {'token': token.token}
     >>> pp(_sso_data(request))
     {
-      "some": "data"
+      "apikey": "test_public_api_key",
+      "data": {
+        "some": "data"
+      }
     }
 
 The token is no longer available::
@@ -87,24 +93,34 @@ User access via sso data requires at least the email::
 
 With valid data::
 
-    >>> u1 = get_or_create_sso_user({'email': 'my_1@mail.com'})
+    >>> u1 = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'my_1@mail.com'
+    ...     },
+    ...     'apikey': '42'
+    ... })
     >>> u1
     <User [id=1, 'my_1@mail.com']>
+    >>> u1.sso
+    [{'trusted': False, 'provider': '42'}]
     >>> u2 = get_or_create_sso_user({
-    ...     'email': 'my_2@mail.com',
-    ...     'firstname': 'first',
-    ...     'lastname': 'last',
-    ...     'trusted': True,
-    ...     'roles': ['admin', 'editor'],
+    ...     'data': {
+    ...         'email': 'my_2@mail.com',
+    ...         'firstname': 'first',
+    ...         'lastname': 'last',
+    ...         'trusted': True,
+    ...         'roles': ['admin', 'editor'],
+    ...     },
+    ...     'apikey': '42'
     ... })
     >>> u2
     <User [id=2, 'my_2@mail.com']>
     >>> u2.firstname, u2.lastname
     ('first', 'last')
-    >>> u2.trusted
-    True
     >>> u2.roles
-    ['admin', 'editor', 'trusted']
+    ['admin', 'editor']
+    >>> u2.sso
+    [{'trusted': True, 'provider': '42'}]
 
     >>> from iris.service.user import User
     >>> User.get(u1.id)
@@ -115,8 +131,28 @@ With valid data::
 There is no error if more data is provided::
 
     >>> u3 = get_or_create_sso_user({
-    ...     'email': 'my_3@mail.com',
-    ...     'additional_property': 'more',
+    ...     'data': {
+    ...         'email': 'my_3@mail.com',
+    ...         'additional_property': 'more',
+    ...     },
+    ...     'apikey': '42'
     ... })
     >>> u3
     <User [id=3, 'my_3@mail.com']>
+
+Update an existing user::
+
+    >>> u2 = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'my_2@mail.com',
+    ...         'firstname': 'second',
+    ...         'trusted': False,
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> u2.firstname, u2.lastname
+    ('second', u'last')
+    >>> u2.sso
+    [{u'trusted': False, u'provider': '42'}]
+    >>> u2.roles
+    [u'admin', u'editor']

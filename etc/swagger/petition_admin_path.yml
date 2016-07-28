@@ -29,7 +29,7 @@ petitions:
       '200':
         description: Petition found
         schema:
-          $ref: 'petitions.yml#/definitions/ResponseBody'
+          $ref: 'petitions.yml#/definitions/ListResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
