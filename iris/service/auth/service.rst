@@ -108,3 +108,66 @@ The user can be logged out::
     >>> response = browser.post('/v1/auth/logout')
     >>> print_json(response)
     {}
+
+
+Whoami With SSO Data
+====================
+
+whoami can be used to check sso data.
+
+sso with apikey::
+
+    >>> message = sign_message({'email': 'me_check@you.com','firstname': 'me'}, 'test_public_api_key')
+
+    >>> response = browser.get('/v1/auth/whoami?sso=%s&apikey=test_public_api_key' % message)
+    >>> print_json(response)
+    {
+      "data": {
+        "dc": {
+          "created": "...",
+          "modified": "..."
+        },
+        "email": "me_check@you.com",
+        "firstname": "me",
+        "id": 2,
+        "lastname": "",
+        "roles": [],
+        "sso": [
+          {
+            "provider": "test_public_api_key",
+            "trusted": false
+          }
+        ],
+        "state": "active"
+      }
+    }
+
+token::
+
+    >>> message = sign_message({'email': 'me_check@you.com','lastname': 'me last'}, 'test_public_api_key')
+    >>> response = browser.post('/v1/auth/ssotoken'
+    ...                         '?sso=%s'
+    ...                         '&apikey=test_public_api_key' % message)
+    >>> token = response.json['token']
+    >>> response = browser.get('/v1/auth/whoami?token=%s' % token)
+    >>> print_json(response)
+    {
+      "data": {
+        "dc": {
+          "created": "...",
+          "modified": "..."
+        },
+        "email": "me_check@you.com",
+        "firstname": "me",
+        "id": 2,
+        "lastname": "me last",
+        "roles": [],
+        "sso": [
+          {
+            "provider": "test_public_api_key",
+            "trusted": false
+          }
+        ],
+        "state": "active"
+      }
+    }

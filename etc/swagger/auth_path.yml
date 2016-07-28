@@ -9,12 +9,19 @@ auth_whoami:
   get:
     tags:
       - auth
-    summary: Logged in user data
+    summary: User data for the logged in user
     description: |
         Provides the user data of the currently logged in user based on the
-        session cookie or, if provided, based on the sso data.
+        session cookie or on sso data.
         
-        If sso data is provided the sso user is logged in using cookies.
+        sso and apikey or token is provided the sso data is checked for a
+        logged in user. This makes it possible to check the user on an sso page
+        with the need to login.
+        If a token is provided the token will be consumed and is no longer
+        valid a second time.
+
+        If you want to login for a domain the ssologin endpoint must be used.
+        This endpoint will not provide authentication cookies.
     operationId: whoami
     parameters:
       - name: sso
@@ -25,6 +32,10 @@ auth_whoami:
         in: query
         type: string
         description: The sso api key (required if sso parameter is provided).
+      - name: token
+        in: query
+        type: string
+        description: The sso token requested from the ssotoken endpoint.
     responses:
       '200':
         description: Private User data

@@ -107,5 +107,5 @@ SSO_USER_SCHEMA = {
 
 
 def includeme(config):
-    config.add_request_method(_sso_data, "sso_data", reify=True)
+    config.add_request_method(_sso_data, "sso_data")
     config.add_request_method(_user, "user", reify=True)
