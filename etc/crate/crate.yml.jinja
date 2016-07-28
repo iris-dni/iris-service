@@ -6,18 +6,23 @@ script:
         sandbox:
             enabled: true
 http:
-    port: 8042
+    port: {{config['containers']['iris-crate']['ports'][0][1]}}
     cors:
         enabled: true
         allow-origin: "/.*/"
 path:
-    logs:  /Users/bernd/sandbox/iris-service/var/log/crate
-    data:  /Users/bernd/sandbox/iris-service/var/crate
+    logs:  {{config['containers']['iris-crate']['log_path']}}
+    data:  {{config['containers']['iris-crate']['data_path']}}
 discovery:
     type: zen
     zen:
         ping:
             multicast:
                 enabled:  false
+            unicast:
+                hosts:
+                    {%- for node in config['containers']['iris-crate']['hosts'] %}
+                    - {{node}}
+                    {%- endfor %}
 cluster:
-    name: iris.service-dev
+    name: {{config['containers']['iris-crate']['cluster_name']}}
