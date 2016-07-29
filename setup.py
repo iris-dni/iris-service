@@ -42,6 +42,8 @@ requires = [
     'pyramid-swagger',
     'bravado-core',
     'enum34',
+    'jsonschema',
+    'rfc3987',
     'requests',
     'python-dateutil',
     'crate',
