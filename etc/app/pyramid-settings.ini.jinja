@@ -10,6 +10,40 @@ pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
 
+pyramid.includes =
+    pyramid_jinja2
+    pyramid_swagger
+
+pyramid_swagger.schema_file = api.yml
+pyramid_swagger.skip_validation = ^(?!^/v1/).*
+pyramid_swagger.enable_swagger_spec_validation = True
+pyramid_swagger.enable_request_validation = True
+pyramid_swagger.enable_response_validation = False
+pyramid_swagger.enable_path_validation = True
+pyramid_swagger.enable_api_doc_views = True
+pyramid_swagger.include_read_only_properties = False
+pyramid_swagger.pass_property_on_missing_spec = False
+pyramid_swagger.expand_missing_properties = False
+pyramid_swagger.dereference_served_schema = True
+
+auth.secret = {{ config['containers']['iris-api-service']['auth_secret'] }}
+auth.cookie_name = iris-tkt
+
+sso.apikey.local = local
+
+static.docs = iris.service:docs
+              docs
+static.admin = ???
+               admin
+
+swagger_ui.url = swaggerui
+
+cors.Allow-Origin = *
+cors.Allow-Methods = POST,GET,DELETE,PUT,OPTIONS
+cors.Allow-Headers = Origin, Content-Type, Accept, Authorization
+cors.Allow-Credentials = true
+cors.Max-Age = 86400
+
 docs.path = iris.service:docs
 
 es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:{{config['containers']['iris-crate']['ports'][0][0]}} {%endfor%}
