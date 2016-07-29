@@ -12,10 +12,8 @@ pyramid.default_locale_name = en
 
 pyramid.includes =
     pyramid_jinja2
-    pyramid_swagger
 
-pyramid_swagger.schema_file = api.yml
-pyramid_swagger.skip_validation = ^(?!^/v1/).*
+pyramid_swagger.exclude_paths = (^/docs|^/v1/views)
 pyramid_swagger.enable_swagger_spec_validation = True
 pyramid_swagger.enable_request_validation = True
 pyramid_swagger.enable_response_validation = False
@@ -33,8 +31,6 @@ sso.apikey.local = local
 
 static.docs = iris.service:docs
               docs
-static.admin = ???
-               admin
 
 swagger_ui.url = swaggerui
 
@@ -43,8 +39,6 @@ cors.Allow-Methods = POST,GET,DELETE,PUT,OPTIONS
 cors.Allow-Headers = Origin, Content-Type, Accept, Authorization
 cors.Allow-Credentials = true
 cors.Max-Age = 86400
-
-docs.path = iris.service:docs
 
 es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:{{config['containers']['iris-crate']['ports'][0][0]}} {%endfor%}
 
