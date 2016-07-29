@@ -1,7 +1,7 @@
 petitions:
   options:
     tags:
-      - options
+        - Options
     summary: CORS Options
     responses:
       default:
@@ -12,6 +12,30 @@ petitions:
     summary: Search Petitions
     operationId: search
     parameters:
+      - name: state
+        in: query
+        type: string
+      - name: ft
+        in: query
+        type: string
+      - name: tags_ft
+        in: query
+        type: string
+      - name: title_ft
+        in: query
+        type: string
+      - name: description_ft
+        in: query
+        type: string
+      - name: suggested_solution_ft
+        in: query
+        type: string
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
       - name: offset
         in: query
         type: integer
@@ -57,7 +81,7 @@ petitions:
 petitions_contentId:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     parameters:
       - name: contentId

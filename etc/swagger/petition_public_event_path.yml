@@ -1,7 +1,7 @@
 petitions_contentId_event_transitionName:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     parameters:
       - name: contentId

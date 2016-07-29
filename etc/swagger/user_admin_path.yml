@@ -1,7 +1,7 @@
 users:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     responses:
       default:
@@ -98,7 +98,7 @@ users:
 users_contentId:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     parameters:
       - name: contentId

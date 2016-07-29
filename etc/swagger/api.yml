@@ -24,7 +24,7 @@ tags:
     description: Administrative Petiton API
   - name: user_admin
     description: Administrative User API
-  - name: options
+  - name: Options
     description: The `OPTIONS` endpoints
 
 paths:

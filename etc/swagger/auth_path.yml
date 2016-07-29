@@ -1,7 +1,7 @@
 auth_whoami:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     responses:
       default:
@@ -50,7 +50,7 @@ auth_whoami:
 auth_ssologin:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     responses:
       default:
@@ -89,7 +89,7 @@ auth_ssologin:
 auth_ssotoken:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     responses:
       default:
@@ -131,7 +131,7 @@ auth_ssotoken:
 auth_logout:
   options:
     tags:
-      - options
+      - Options
     summary: CORS Options
     responses:
       default:
