@@ -1,3 +1,5 @@
+import os
+
 from pyramid.config import Configurator
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -72,6 +74,12 @@ def app_factory(global_config, **settings):
 
         autocommit=True,
     )
+
+    settings = config.get_settings()
+    settings['pyramid_swagger.schema_directory'] = os.path.join(os.path.dirname(__file__), 'swagger')
+    settings['pyramid_swagger.schema_file'] = 'api.yml'
+
+    config.include('pyramid_swagger')
 
     config.include('iris.service.db')
     config.include('iris.service.cors')

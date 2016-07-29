@@ -2,6 +2,7 @@ include versions.cfg
 recursive-include iris/service *.jinja2
 recursive-include iris/service/docs *
 
+graft iris/service/swagger
 graft iris/service/swaggerui/dist
 exclude iris/service/swaggerui/dist/index.html
 
