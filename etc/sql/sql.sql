@@ -59,6 +59,12 @@ CREATE TABLE petitions (
     owner STRING,
     response_token STRING,
 
+    INDEX tags_ft
+      USING FULLTEXT(description)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX title_ft
+      USING FULLTEXT(description)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX description_ft
       USING FULLTEXT(description)
       WITH (ANALYZER = 'edge_ngram_fulltext'),
