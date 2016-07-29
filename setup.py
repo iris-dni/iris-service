@@ -50,7 +50,7 @@ requires = [
     'lovely.pyrest',
     'lovely.esdb',
     'lovely.essequence',
-    'bravado-core'
+    'bravado-core',
     'pyramid-swagger',
     'swagger-spec-validator',
     'functools32',
@@ -58,7 +58,7 @@ requires = [
     'simplejson',
     'rfc3987',
     'webcolors',
-    'strict-rfc3339'
+    'strict-rfc3339',
 ]
 
 setup(
