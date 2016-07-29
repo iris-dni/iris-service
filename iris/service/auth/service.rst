@@ -54,7 +54,15 @@ SSO Token
 We need a valid sso message::
 
     >>> from iris.service.auth.secret import sign_message
-    >>> message = sign_message({'email': 'me@you.com'}, 'test_public_api_key')
+    >>> message = sign_message(
+    ...     {
+    ...         'email': 'me@you.com',
+    ...         'firstname': 'hoschi',
+    ...         'roles': ['admin'],
+    ...     },
+    ...     'test_public_api_key',
+    ... )
+    >>> # sign_message({'email': 'me@you.com', 'roles': ['admin']}, 'local')
 
 To transfer a login from one domain to another an SSO token must be
 requested::
@@ -76,9 +84,28 @@ The ssologin endpoint can use the token to login::
     {
       ...
       "email": "me@you.com",
+      "firstname": "hoschi",
+      ...
+        "roles": [
+          "admin"
+        ],
       ...
     }
     >>> response = browser.get('/v1/auth/whoami')
+    >>> print_json(response)
+    {
+      ...
+      "email": "me@you.com",
+      ...
+    }
+
+It can be used multiple times on the same user::
+
+    >>> response = browser.post('/v1/auth/ssotoken'
+    ...                         '?sso=%s'
+    ...                         '&apikey=test_public_api_key' % message)
+    >>> token = response.json['token']
+    >>> response = browser.post('/v1/auth/ssologin?token=%s' % token)
     >>> print_json(response)
     {
       ...
