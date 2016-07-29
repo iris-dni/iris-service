@@ -1,6 +1,7 @@
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
+from iris.service.rest import queries
 
 from ..errors import Errors
 
@@ -23,6 +24,30 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     NAME = 'petitions'
 
     DOC_CLASS = Petition
+
+    QUERY_PARAMS = {
+        'state': queries.termsFilter('state'),
+        'tags': queries.termsFilter('tags'),
+        'ft': queries.fulltextQuery(['tags_ft',
+                                     'title_ft',
+                                     'description_ft',
+                                     'suggested_solution_ft',
+                                    ]),
+        'tags_ft': queries.fulltextQuery(['tags_ft']),
+        'title_ft': queries.fulltextQuery(['title_ft']),
+        'description_ft': queries.fulltextQuery(['description_ft']),
+        'suggested_solution_ft': queries.fulltextQuery(
+            ['suggested_solution_ft']
+        ),
+    }
+
+    SORT_PARAMS = {
+        'created': queries.fieldSorter('dc.created'),
+        'modified': queries.fieldSorter('dc.modified'),
+        'state': queries.fieldSorter('state'),
+        'score': queries.scoreSorter,
+        'default': queries.fieldSorter('dc.created', 'DESC'),
+    }
 
     def support(self, contentId, data):
         """Sign a petition

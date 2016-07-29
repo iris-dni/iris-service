@@ -293,6 +293,75 @@ Do a delete request::
     }
 
 
+Search
+======
+
+Create some sampledata::
+
+    >>> samples.petitions(5)
+
+Filter by State
+---------------
+
+Search results can be filtered by state::
+
+    >>> response = browser.get('/v1/admin/petitions?state=pending')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          ...
+          "state": "pending",
+          ...
+        }
+      ],
+      "total": 1
+    }
+
+It is possible to provide multiple states::
+
+    >>> response = browser.get('/v1/admin/petitions?state=pending,draft')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          ...
+          "state": "pending",
+          ...
+        }
+      ],
+      "total": 5
+    }
+
+
+General Fulltext Search
+-----------------------
+
+Uses all existing fulltext fields::
+
+    >>> response = browser.get('/v1/admin/petitions?ft=harum&sort=score')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+    ...
+        }
+      ],
+      "total": 2
+    }
+
+    >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+    ...
+        }
+      ],
+      "total": 2
+    }
+
+
 Controlling the Petition State Machine
 --------------------------------------
 
