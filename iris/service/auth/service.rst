@@ -3,6 +3,7 @@ Auth Service
 ============
 
     >>> from iris.service.auth.secret import sign_message
+    >>> # sign_message({'email': 'me@you.com', 'roles': ['admin']}, 'local')
 
 Check Current Login
 ===================
@@ -78,6 +79,7 @@ Logout an sso user with an empty object::
     '400 Bad Request'
 
 Logout is performed if email is missing::
+
     >>> message = sign_message(
     ...     {
     ...         'lastname': 'last'
@@ -102,7 +104,6 @@ We need a valid sso message::
     ...     },
     ...     'test_public_api_key',
     ... )
-    >>> # sign_message({'email': 'me@you.com', 'roles': ['admin']}, 'local')
 
 To transfer a login from one domain to another an SSO token must be
 requested::
