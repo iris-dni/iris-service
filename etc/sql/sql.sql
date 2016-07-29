@@ -124,3 +124,11 @@ CREATE TABLE ssotokens (
 CLUSTERED INTO 5 SHARDS
           WITH (number_of_replicas='0-all',
                 column_policy='strict');
+
+
+CREATE TABLE lc_iidsequences (
+    iid LONG
+)
+CLUSTERED INTO 1 SHARDS
+          WITH (number_of_replicas='0-all',
+                column_policy='strict');
