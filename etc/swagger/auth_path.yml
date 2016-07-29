@@ -14,20 +14,27 @@ auth_whoami:
         Provides the user data of the currently logged in user based on the
         session cookie or on sso data.
         
-        sso and apikey or token is provided the sso data is checked for a
+        If sso/apikey or token is provided the sso data is checked for a
         logged in user. This makes it possible to check the user on an sso page
         with the need to login.
+
         If a token is provided the token will be consumed and is no longer
-        valid a second time.
+        valid a second time. The user will also be logged in if the token was
+        used (authentication cookies will be set).
 
         If you want to login for a domain the ssologin endpoint must be used.
         This endpoint will not provide authentication cookies.
+
+        If sso/apikey or token is used and the sso data is '{}' a logout is
+        performed.
     operationId: whoami
     parameters:
       - name: sso
         in: query
         type: string
-        description: The sso credentials if available (see <a href="/docs/sso.html">Single Sign On</a>).
+        description: |
+            The sso credentials if available
+            (see <a href="/docs/sso.html">Single Sign On</a>).
       - name: apikey
         in: query
         type: string
@@ -63,6 +70,9 @@ auth_ssologin:
         Allows a login by providing the sso data from a foreign domain.<br/>
         The data must be created according to the
         <a href="/docs/sso.html">Single Sign On</a> documentation.
+
+        If sso/apikey or token is used and the sso data is '{}' a logout is
+        performed.
     operationId: ssologin
     parameters:
       - name: sso

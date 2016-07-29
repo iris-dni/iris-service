@@ -29,7 +29,7 @@ class AuthService(EndpointErrorMixin):
     @swagger_reduce_response
     def whoami(self, **kwargs):
         try:
-            self.request.user = self._ssouser(False)
+            self.request.user = self._ssouser(allow_token_login=True)
         except BadRequest as e:
             if e.message != Errors.no_parameters:
                 raise
@@ -52,12 +52,20 @@ class AuthService(EndpointErrorMixin):
     @rpcmethod_view(http_cache=0)
     @swagger_reduce_response
     def ssologin(self, **kwargs):
-        user = self._ssouser(allow_no_params=False)
-        if user is not None:
-            login_user(self.request, self.request.response, user)
+        self._ssouser(allow_login=True)
         return self._whoami()
 
-    def _ssouser(self, allow_no_params):
+    def _ssouser(self, allow_login=False, allow_token_login=False):
+        """Get the sso user fro sso data
+
+        Data can be provided as sso/apikey combination or as token.
+
+        If the sso data is empty or contains no email ('{}') a logout is
+        performed on self.request.response.
+
+        allow_login=True will also login the user
+        allow_token_login=True will login the user if there was a token used
+        """
         data = self.request.swagger_data
         sso = data.get('sso')
         token = data.get('token')
@@ -65,15 +73,23 @@ class AuthService(EndpointErrorMixin):
             # at least one of 'sso' or 'token' must be provided but not
             # both together.
             if sso is None:
-                if allow_no_params:
-                    return None
                 raise self.bad_request(Errors.no_parameters)
             raise self.bad_request(Errors.too_many_parameters)
         ssodata = self.request.sso_data()
         if ssodata is None:
+            logout_user(self.request, self.request.response)
             return None
         # With sso data we can get the sso user and login
-        return get_or_create_sso_user(ssodata)
+        user = get_or_create_sso_user(ssodata)
+        if (user is not None
+            and (allow_login
+                 or (token is not None and allow_token_login)
+                )
+           ):
+            login_user(self.request, self.request.response, user)
+        else:
+            logout_user(self.request, self.request.response)
+        return user
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssotoken')
@@ -84,6 +100,7 @@ class AuthService(EndpointErrorMixin):
     @rpcmethod_route(request_method='POST',
                      route_suffix='/ssotoken')
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def ssotoken(self, **kwargs):
         data = self.request.swagger_data
         sso = data['sso']
@@ -109,6 +126,7 @@ class AuthService(EndpointErrorMixin):
     @rpcmethod_route(request_method='POST',
                      route_suffix='/logout')
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def logout(self, **kwargs):
         logout_user(self.request, self.request.response)
         return {}

@@ -2,6 +2,7 @@
 Auth Service
 ============
 
+    >>> from iris.service.auth.secret import sign_message
 
 Check Current Login
 ===================
@@ -47,13 +48,52 @@ The sso or token parameter is required::
       }
     }
 
+Login with sso data::
+
+    >>> message = sign_message(
+    ...     {
+    ...         'email': 'me-sso@you.com',
+    ...         'firstname': 'hoschi',
+    ...         'roles': ['admin'],
+    ...     },
+    ...     'test_public_api_key',
+    ... )
+    >>> response = browser.post('/v1/auth/ssologin?sso=%s&apikey=test_public_api_key' % message)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "email": "me-sso@you.com",
+        ...
+    }
+
+Logout an sso user with an empty object::
+
+    >>> message = sign_message(
+    ...     {},
+    ...     'test_public_api_key',
+    ... )
+    >>> response = browser.post('/v1/auth/ssologin?sso=%s&apikey=test_public_api_key' % message, expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+
+Logout is performed if email is missing::
+    >>> message = sign_message(
+    ...     {
+    ...         'lastname': 'last'
+    ...     },
+    ...     'test_public_api_key',
+    ... )
+    >>> response = browser.post('/v1/auth/ssologin?sso=%s&apikey=test_public_api_key' % message, expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+
 
 SSO Token
 =========
 
 We need a valid sso message::
 
-    >>> from iris.service.auth.secret import sign_message
     >>> message = sign_message(
     ...     {
     ...         'email': 'me@you.com',
@@ -106,6 +146,13 @@ It can be used multiple times on the same user::
     ...                         '&apikey=test_public_api_key' % message)
     >>> token = response.json['token']
     >>> response = browser.post('/v1/auth/ssologin?token=%s' % token)
+    >>> print_json(response.headerlist)
+    [
+      [
+        "Set-Cookie",
+        "iris-tkt=\"...!userid_type:int\"; Path=/"
+      ],
+    ...
     >>> print_json(response)
     {
       ...
@@ -156,7 +203,7 @@ sso with apikey::
         },
         "email": "me_check@you.com",
         "firstname": "me",
-        "id": 2,
+        "id": ...,
         "lastname": "",
         "roles": [],
         "sso": [
@@ -169,7 +216,8 @@ sso with apikey::
       }
     }
 
-token::
+When using a token the user is logged in the same way as she would be logged
+in the ssologin endpoint::
 
     >>> message = sign_message({'email': 'me_check@you.com','lastname': 'me last'}, 'test_public_api_key')
     >>> response = browser.post('/v1/auth/ssotoken'
@@ -177,6 +225,13 @@ token::
     ...                         '&apikey=test_public_api_key' % message)
     >>> token = response.json['token']
     >>> response = browser.get('/v1/auth/whoami?token=%s' % token)
+    >>> print_json(response.headerlist)
+    [
+      [
+        "Set-Cookie",
+        "iris-tkt=\"...!userid_type:int\"; Path=/"
+      ],
+    ...
     >>> print_json(response)
     {
       "data": {
@@ -186,7 +241,7 @@ token::
         },
         "email": "me_check@you.com",
         "firstname": "me",
-        "id": 2,
+        "id": ...,
         "lastname": "me last",
         "roles": [],
         "sso": [
