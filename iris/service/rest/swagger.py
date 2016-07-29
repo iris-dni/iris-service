@@ -9,7 +9,7 @@ SPEC_MAPPING_CACHE = {}
 
 def swagger_reduce_response(f):
     """Reduce response JSON data from swagger response definition
-    
+
     This is a decorator for pyramid views.
     """
 
@@ -48,6 +48,8 @@ def swagger_reduce_response(f):
 def reduce_mapping(mapping, data):
     """Reduce data to conain only properties from mapping
     """
+    if mapping is True:
+        return data
     result = {}
     for k, v in mapping.iteritems():
         if k not in data:
@@ -64,7 +66,7 @@ def reduce_mapping(mapping, data):
 
 def build_spec_mapping(spec):
     """From a swagger spec dict create a simple dict with all properties
-    
+
     Reduces a full swagger spec to a simple dict which only contains the
     properties. The result can then be used to reduce any dict to contain only
     properties from the spec using method `reduce_mapping`.

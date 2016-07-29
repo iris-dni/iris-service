@@ -84,7 +84,7 @@ Arrays::
 
     >>> pp(reduce_mapping(
     ...     {
-    ...         "tags": True,
+    ...         "tags": [True],
     ...         "obj_list": [{
     ...             "p1": True,
     ...             "p2": True
