@@ -26,6 +26,7 @@ auth.cookie_name = iris-tkt
 
 sso.apikey.test_public_api_key = test_private_api_key
 sso.apikey.other_public_api_key = other_private_api_key
+sso.apikey.local = local
 
 static.docs = iris.service.testing:docs
               docs

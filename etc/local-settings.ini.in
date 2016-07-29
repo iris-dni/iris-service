@@ -27,6 +27,8 @@ pyramid_swagger.dereference_served_schema = True
 auth.secret = supersecret
 auth.cookie_name = iris-tkt
 
+sso.apikey.local = local
+
 static.docs = iris.service:docs
               docs
 static.admin = ${buildout:directory}/../iris-admin/public
