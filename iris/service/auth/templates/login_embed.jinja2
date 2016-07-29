@@ -1,6 +1,6 @@
 (function iris_sso_login(global) {
 
-    var irisSSOData = global.irisConfig && global.irisConfig.sso || null;
+    var irisSSOData = global.irisConfig && global.irisConfig.sso ? new global.irisConfig.sso() : null;
     if (!irisSSOData || !irisSSOData.remote_auth) {
         // There is no IRIS SSO data on this page. This means we are not able
         // to manage this page.
