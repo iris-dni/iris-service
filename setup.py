@@ -43,8 +43,6 @@ requires = [
     'bravado-core',
     'enum34',
     'jsonschema',
-    'rfc3987',
-    'webcolors',
     'requests',
     'python-dateutil',
     'crate',
@@ -52,6 +50,15 @@ requires = [
     'lovely.pyrest',
     'lovely.esdb',
     'lovely.essequence',
+    'bravado-core'
+    'pyramid-swagger',
+    'swagger-spec-validator',
+    'functools32',
+    'jsonschema',
+    'simplejson',
+    'rfc3987',
+    'webcolors',
+    'strict-rfc3339'
 ]
 
 setup(
