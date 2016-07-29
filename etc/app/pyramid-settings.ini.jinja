@@ -27,7 +27,7 @@ pyramid_swagger.dereference_served_schema = True
 auth.secret = {{ config['containers']['iris-api-service']['auth_secret'] }}
 auth.cookie_name = iris-tkt
 
-sso.apikey.local = local
+sso.apikey.az = {{ config['containers']['iris-api-service']['az_api_secret'] }}
 
 static.docs = iris.service:docs
               docs

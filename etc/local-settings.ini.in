@@ -25,6 +25,7 @@ auth.secret = supersecret
 auth.cookie_name = iris-tkt
 
 sso.apikey.local = local
+sso.apikey.az = 08f9e7d03d2c83e9e8774299d114c154
 
 static.docs = iris.service:docs
               docs
