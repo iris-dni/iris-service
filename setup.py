@@ -44,6 +44,7 @@ requires = [
     'enum34',
     'jsonschema',
     'rfc3987',
+    'webcolors',
     'requests',
     'python-dateutil',
     'crate',
