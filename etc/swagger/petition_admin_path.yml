@@ -45,6 +45,15 @@ petitions:
         items:
           type: string
         collectionFormat: csv
+        description: |
+            Possible options
+
+              - created (default)
+              - modified
+              - state
+              - supporters.amount
+              - score
+              - id
       - name: offset
         in: query
         type: integer

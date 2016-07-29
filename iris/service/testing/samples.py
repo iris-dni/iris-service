@@ -74,5 +74,9 @@ def petitions(amount, seed='0'):
                           'effective': None,
                           'expires': None,
                       },
+                      supporters={
+                          'amount': random.randint(0, 20),
+                          'required': 10
+                      },
                      )
     Petition.refresh()

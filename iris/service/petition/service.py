@@ -44,7 +44,9 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     SORT_PARAMS = {
         'created': queries.fieldSorter('dc.created'),
         'modified': queries.fieldSorter('dc.modified'),
+        'id': queries.fieldSorter('id'),
         'state': queries.fieldSorter('state'),
+        'supporters.amount': queries.fieldSorter('supporters.amount'),
         'score': queries.scoreSorter,
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }

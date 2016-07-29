@@ -298,39 +298,38 @@ Search
 
 Create some sampledata::
 
-    >>> samples.petitions(5)
+    >>> samples.petitions(10)
+    >>> response = browser.get('/v1/admin/petitions')
 
 Filter by State
 ---------------
 
 Search results can be filtered by state::
 
-    >>> response = browser.get('/v1/admin/petitions?state=pending')
+    >>> response = browser.get('/v1/admin/petitions?state=draft')
     >>> print_json(response)
     {
       "data": [
         {
           ...
-          "state": "pending",
+          "state": "draft",
           ...
         }
       ],
-      "total": 1
+      "total": 8
     }
 
 It is possible to provide multiple states::
 
-    >>> response = browser.get('/v1/admin/petitions?state=pending,draft')
+    >>> response = browser.get('/v1/admin/petitions?state=active,draft')
     >>> print_json(response)
     {
       "data": [
         {
           ...
-          "state": "pending",
-          ...
         }
       ],
-      "total": 5
+      "total": 10
     }
 
 
@@ -347,7 +346,7 @@ Uses all existing fulltext fields::
     ...
         }
       ],
-      "total": 2
+      "total": 5
     }
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
@@ -358,8 +357,45 @@ Uses all existing fulltext fields::
     ...
         }
       ],
-      "total": 2
+      "total": 5
     }
+
+
+Sorting Search Results
+======================
+
+
+Amount of Supporters
+--------------------
+
+Use the `supporters.amount` sort::
+
+    >>> response = browser.get('/v1/petitions?sort=supporters.amount')
+    >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
+    [(1, 10), (3, 9), (4, 5), (4, 3), (6, 8), (9, 12), (13, 4), (16, 6), (18, 7), (20, 11)]
+
+    >>> response = browser.get('/v1/petitions?sort=-supporters.amount')
+    >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
+    [(20, 11), (18, 7), (16, 6), (13, 4), (9, 12), (6, 8), (4, 5), (4, 3), (3, 9), (1, 10)]
+
+State
+-----
+
+Use the `state` sort::
+
+    >>> response = browser.get('/v1/petitions?sort=state&limit=5')
+    >>> [(p['state'], p['id']) for p in response.json['data']]
+    [(u'active', 12), (u'active', 8), (u'draft', 4), (u'draft', 9), (u'draft', 11)]
+
+    >>> response = browser.get('/v1/petitions?sort=-state&limit=5')
+    >>> [(p['state'], p['id']) for p in response.json['data']]
+    [(u'draft', 4), (u'draft', 9), (u'draft', 11), (u'draft', 5), (u'draft', 6)]
+
+Combined with id sort::
+
+    >>> response = browser.get('/v1/petitions?sort=state,id&limit=5')
+    >>> [(p['state'], p['id']) for p in response.json['data']]
+    [(u'active', 8), (u'active', 12), (u'draft', 3), (u'draft', 4), (u'draft', 5)]
 
 
 Controlling the Petition State Machine
