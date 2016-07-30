@@ -126,7 +126,8 @@ CLUSTERED INTO 5 SHARDS
                 column_policy='strict');
 
 
-CREATE TABLE lc_iidsequences (
+CREATE TABLE lovely_essequences (
+    name STRING PRIMARY KEY,
     iid LONG
 )
 CLUSTERED INTO 1 SHARDS
