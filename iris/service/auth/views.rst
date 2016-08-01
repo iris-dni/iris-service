@@ -10,6 +10,8 @@ This is the endpoint from which an sso enabled foreign page must load the IRSI
 javascript for the login page::
 
     >>> response = browser.get('/v1/views/iris-sso-login.js')
+    >>> response.headers['content-type']
+    'application/javascript; charset=UTF-8'
     >>> response.status
     '200 OK'
     >>> print response.body

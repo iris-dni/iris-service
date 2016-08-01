@@ -6,6 +6,7 @@ from pyramid.view import view_config
              renderer='templates/login_embed.jinja2'
             )
 def login_embed(request):
+    request.response.content_type = 'application/javascript'
     return {
         'apiBasePath': request.application_url,
     }
