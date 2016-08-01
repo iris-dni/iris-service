@@ -9,3 +9,5 @@ def includeme(config):
                      static=True)
     config.add_route('login_embed',
                      'views/iris-sso-login.js')
+    config.add_route('sso_login_redirect',
+                     'views/iris-sso-redirect.html')

@@ -52,14 +52,10 @@
                     // back to the original page:
                     var token = response.data.token;
                     console.log('Got token: ' + token);
-                    if (retUrl.indexOf('?') === -1) {
-                        retUrl = retUrl + '?iristoken=' + token;
-                    } else {
-                        retUrl = retUrl + '&iristoken=' + token;
-                    }
-                    global.location.href = retUrl;
+                    var redirectUrl = '{{ redirectUrl }}?token=' + token + '&redirecturl=' + retUrl;
+                    global.location.href = redirectUrl;
                 } else {
-                    console.log('Got not token: ' + response.status);
+                    console.log('No token: ' + response.status);
                 }
             });
         };

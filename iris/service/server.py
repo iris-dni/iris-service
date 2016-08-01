@@ -61,7 +61,7 @@ def app_factory(global_config, **settings):
         timeout=settings.get('auth.timeout', None),
         reissue_time=settings.get('auth.reissue_time', None),
         max_age=settings.get('auth.max_age', None),
-        wild_domain=asbool(settings.get('auth.wild_domain', 'true')),
+        parent_domain=asbool(settings.get('auth.parent_domain', 'true')),
 
         callback=groupfinder,
     )
