@@ -111,7 +111,7 @@ CORS is supported for all endpoints::
       "Access-Control-Allow-Credentials": "true",
       "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
       "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "localhost",
       "Access-Control-Max-Age": "86400"
     }
 

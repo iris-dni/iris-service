@@ -17,9 +17,9 @@ javascript for the login page::
     >>> print response.body
     (function iris_sso_login(global) {
     ...
-    axios[method]('http://localhost/v1/auth/' + functionName + '?sso=' + sso + '&apikey=' + apikey
+            axios[method]('http://localhost/v1/auth/' + functionName + '?sso=' + sso + '&apikey=' + apikey
     ...
-    var redirectUrl = http://localhost/v1/views/iris-sso-redirect.html + '?token=' + token + '&redirecturl=' + returl;
+                        var redirectUrl = 'http://localhost/v1/views/iris-sso-redirect.html?token=' + token + '&redirecturl=' + retUrl;
     ...
     })(window);
 
