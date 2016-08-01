@@ -10,7 +10,7 @@ def add_cors_headers_response_callback(event):
     def cors_headers(request, response):
         global CORS_HEADERS
         headers = copy.copy(CORS_HEADERS)
-        headers['Access-Control-Allow-Origin'] = request.host.split(':')[0]
+        headers['Access-Control-Allow-Origin'] = request.application_url
         response.headers.update(headers)
     event.request.add_response_callback(cors_headers)
 
