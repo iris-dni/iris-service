@@ -1,5 +1,6 @@
 import os
 
+from pyramid.settings import asbool
 from pyramid.config import Configurator
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -60,6 +61,7 @@ def app_factory(global_config, **settings):
         timeout=settings.get('auth.timeout', None),
         reissue_time=settings.get('auth.reissue_time', None),
         max_age=settings.get('auth.max_age', None),
+        wild_domain=asbool(settings.get('auth.wild_domain', 'true')),
 
         callback=groupfinder,
     )

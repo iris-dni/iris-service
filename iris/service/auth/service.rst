@@ -5,6 +5,7 @@ Auth Service
     >>> from iris.service.auth.secret import sign_message
     >>> # sign_message({'email': 'me@you.com', 'roles': ['admin']}, 'local')
 
+
 Check Current Login
 ===================
 
