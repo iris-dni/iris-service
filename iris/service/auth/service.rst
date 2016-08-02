@@ -16,7 +16,6 @@ The whoami endpoint provides the data of the currently logged in user::
     '200 OK'
     >>> print_json(response)
     {
-      "data": {},
       "status": "unauthenticated"
     }
 
@@ -88,7 +87,6 @@ Logout an sso user with an empty object::
     '200 OK'
     >>> print_json(response)
     {
-      "data": {},
       "status": "unauthenticated"
     }
 
@@ -105,7 +103,6 @@ Logout is performed if email is missing::
     '200 OK'
     >>> print_json(response)
     {
-      "data": {},
       "status": "unauthenticated"
     }
 

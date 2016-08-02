@@ -37,13 +37,12 @@ class AuthService(EndpointErrorMixin):
 
     def _whoami(self):
         user = self.request.user
-        data = {}
-        if user is not None:
-            data = user.get_source()
-        return {
-            'data': data,
-            'status': data and 'ok' or 'unauthenticated'
+        result = {
+            'status': user is not None and 'ok' or 'unauthenticated'
         }
+        if user is not None:
+            result['data'] = user.get_source()
+        return result
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssologin')
