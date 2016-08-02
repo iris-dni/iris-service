@@ -5,7 +5,7 @@ Single Sign On
 .. contents::
 
 
-SSO (Signel Sign On) is currently the only way to authenticate a user.
+SSO (Single Sign On) is currently the only way to authenticate a user.
 
 
 Integration On External Pages
@@ -18,12 +18,8 @@ sso settings.
 
     var IRISConfig = {
         sso: function() {
-            this.page.remote_auth = "<message>, <hmac>, <timestamp>";
-            this.page.api_key = "...";
-            this.page.name = "Remote Portal Name";
-            this.page.icon = "http://images.remote.com/favicon.png";
-            this.page.loginUrl = "https://remote.com/signin";   // IRIS redirects to this URL upon sign-in/up
-            this.page.logoutUrl = "https://remote.com/signout"; // IRIS redirects to this URL upon logout
+            this.remote_auth = "<message>, <hmac>, <timestamp>";
+            this.api_key = "...";
         }
     }
 
@@ -41,7 +37,11 @@ This is the JSON serialized user data and must be base64 encoded.
 User data can contain these properties:
 
 - ``email``: the users email which is used to identify the user (required)
+- ``firstname``: optional
+- ``lastname``: optional
 - ``trusted``: set this to true if this is a trusted user (required), see ???
+- ``roles``: A list with role names. The only supported role is ``admin``
+  which allows a user to use the administration frontend.
 
 Example:
 
@@ -49,8 +49,44 @@ Example:
 
     {
         "email": "stromberg@finsdorf.de",
-        "trusted": false
+        "firstname": "Bernd",
+        "trusted": false,
+        "roles": ["admin"]
     }
+
+The data is validated with this json-schema::
+
+.. sourcecode:: python
+
+    >>> from iris.service.auth.sso import SSO_USER_SCHEMA
+    >>> print_json(SSO_USER_SCHEMA)
+    {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "trusted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "type": "object"
+    }
+
 
 The Signature
 ^^^^^^^^^^^^^
@@ -70,7 +106,7 @@ SSO payloads expire after 2 hours.
 IRIS SSO-Provider Setup
 =======================
 
-IRIS must add configuration data for eacj SSO-Provider it supports.
+IRIS must add configuration data for each SSO-Provider it supports.
 
 Data needed:
 
@@ -88,27 +124,29 @@ user.
 
 This URL is called with the following GET parameters:
 
-- ``return_url``: URL to which the login must return after a successful login.
-                  This parameter is used in the ``IRIS-Login-Support``
+- ``irisreturl``: URL to which the login must return after a successful login.
+                  This parameter is used in the ``iris-sso-login.js``
                   javascript.
 
 
 Embed IRIS-Login-Support Javascript
 -----------------------------------
 
-The ``IRIS-Login-Support`` javascript code must be loaded in the HEAD of the
+The ``iris-sso-login.js`` javascript code must be loaded in the HEAD of the
 login page.
 
 The support code will check if the user is already logged in and will
-immediately redirect to the ``return_url`` if he is logged in.
+immediately redirect to the ``irisreturl`` if he is logged in.
 
 
 Login Page Requirements
 -----------------------
 
-Because the ``IRIS-Login-Support`` code expects that the ``IRISConfig`` data
+Because the ``IRIS-Login-Support`` code expects that the ``irisConfig`` data
 provides the user data in the ``remote_auth`` property the login page must
-reload after a successful login.
+reload after a successful login. After login ``remote_auth`` must be updated
+by the backend to allow ``iris-sso-login.js`` to detect the user and redirect
+back to ``irisreturl``.
 
 
 Logout a User
@@ -127,4 +165,19 @@ using different API-Secret-Keys.
 SSO Code Examples
 =================
 
-TODO: Provide code examples
+
+Javascript
+----------
+
+.. sourcecode:: javascript
+
+  var crypto = require('crypto');
+
+  function createRemoteAuth(data) {
+    var data_json = JSON.stringify(data);
+    var message = new Buffer(data_json).toString('base64');
+    var timestamp = Math.floor(new Date().getTime() / 1000);
+    var sigAuth = message + ' ' + timestamp;
+    var sigHash = crypto.createHmac('SHA1', secret_key).update(sigAuth).digest('hex');
+    return message + ', ' + sigHash + ', ' + timestamp;
+  }

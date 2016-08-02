@@ -26,8 +26,9 @@ def test_suite():
         create_crate_suite('auth/security.rst'),
         create_crate_suite('auth/ssotoken.rst'),
         create_crate_suite('auth/sso.rst'),
-        create_suite('auth/secret.rst'),
         create_crate_suite('auth/views.rst'),
+        create_suite('auth/secret.rst'),
+        create_crate_doc_suite('sso.rst'),
 
         create_suite('sm/sm.rst'),
         create_suite('static.rst'),

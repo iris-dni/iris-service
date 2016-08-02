@@ -3,26 +3,32 @@ IRIS Services
 =============
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
+
+   ./users
+   ./sso
+   ./sso-cms
+   ./petitions
+   ./petition-management
+   ./petitioner-flows
+
+Not Implemented or Not Validated
+--------------------------------
+
+.. toctree::
+   :maxdepth: 2
 
    ./cities
    ./files
    ./locations
    ./supporters
-   ./users
-   ./petitions
-   ./petition-management
-   ./petitioner-flows
    ./supporter-flows
-   ./sso
-   ./sso-cms
-   ./embed-code
 
 Developers
 ----------
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    ./develop/index
 
