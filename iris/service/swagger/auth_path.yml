@@ -45,11 +45,9 @@ auth_whoami:
         description: The sso token requested from the ssotoken endpoint.
     responses:
       '200':
-        description: Private User data
+        description: User data and status
         schema:
-          $ref: 'users.yml#/definitions/ResponseBodyPrivate'
-      '400':
-        description: Not logged in
+          $ref: 'auth.yml#/definitions/WhoamiResponseBody'
       default:
         description: Error Body
         schema:
@@ -91,7 +89,7 @@ auth_ssologin:
       '200':
         description: Private User data
         schema:
-          $ref: 'users.yml#/definitions/ResponseBodyPrivate'
+          $ref: 'auth.yml#/definitions/WhoamiResponseBody'
       default:
         description: Error Body
         schema:

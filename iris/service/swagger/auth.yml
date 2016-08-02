@@ -7,3 +7,12 @@ definitions:
             token:
                 type: string
                 readOnly: true
+    WhoamiResponseBody:
+        type: object
+        required: 
+            - status
+        properties:
+            status:
+                type: string
+            data:
+                $ref: 'users.yml#/definitions/UserPrivate'

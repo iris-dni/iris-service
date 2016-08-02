@@ -118,12 +118,17 @@ def includeme(config):
         bad_request_handler,
         renderer='json',
         context=BadRequest,
+        http_cache=0,
     )
     config.add_view(
         http_4xx,
         renderer='json',
-        context='pyramid.httpexceptions.HTTPClientError')
+        context='pyramid.httpexceptions.HTTPClientError',
+        http_cache=0,
+    )
     config.add_view(
         http_5xx,
         renderer='json',
-        context='pyramid.httpexceptions.HTTPServerError')
+        context='pyramid.httpexceptions.HTTPServerError',
+        http_cache=0,
+    )
