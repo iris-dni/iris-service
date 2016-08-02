@@ -22,10 +22,10 @@
     {% include 'axios-0.9.1.min.js' %}
     var axios = module.exports;
 
-    function ssoapicall(functionName, method, callback) {
+    function ssoapicall(url, method, callback) {
         var sso = encodeURIComponent(irisSSOData.remote_auth);
         var apikey = encodeURIComponent(irisSSOData.apikey);
-        axios[method]('{{ apiBasePath }}/v1/auth/' + functionName + '?sso=' + sso + '&apikey=' + apikey
+        axios[method](url + '?sso=' + sso + '&apikey=' + apikey
                  ).then(function success(response) {
             callback(response);
         }).catch(function (response) {
@@ -34,11 +34,11 @@
     };
 
     function whoami(callback) {
-        ssoapicall('whoami', 'get', callback);
+        ssoapicall('{{ whoamiUrl}}', 'get', callback);
     };
 
     function ssotoken(callback) {
-        ssoapicall('ssotoken', 'post', callback);
+        ssoapicall('{{ ssotokenUrl}}', 'post', callback);
     };
 
     // try whoami with the remote_auth data
@@ -51,7 +51,6 @@
                     // The response contains the authentication token, redirect
                     // back to the original page:
                     var token = response.data.token;
-                    console.log('Got token: ' + token);
                     var redirectUrl = '{{ redirectUrl }}?token=' + token + '&redirecturl=' + retUrl;
                     global.location.href = redirectUrl;
                 } else {

@@ -12,10 +12,12 @@ from .sso import get_or_create_sso_user
             )
 def login_embed(request):
     request.response.content_type = 'application/javascript'
-    return {
-        'apiBasePath': request.application_url,
+    context = {
+        'whoamiUrl': request.route_url('auth_api.whoami@v1/auth'),
+        'ssotokenUrl': request.route_url('auth_api.ssotoken@v1/auth'),
         'redirectUrl': request.route_url('sso_login_redirect'),
     }
+    return context
 
 
 @view_config(route_name='sso_login_redirect',

@@ -17,9 +17,9 @@ javascript for the login page::
     >>> print response.body
     (function iris_sso_login(global) {
     ...
-            axios[method]('http://localhost/v1/auth/' + functionName + '?sso=' + sso + '&apikey=' + apikey
+            ssoapicall('http://localhost/v1/auth/whoami', 'get', callback);
     ...
-                        var redirectUrl = 'http://localhost/v1/views/iris-sso-redirect.html?token=' + token + '&redirecturl=' + retUrl;
+            ssoapicall('http://localhost/v1/auth/ssotoken', 'post', callback);
     ...
     })(window);
 
