@@ -10,19 +10,19 @@ SSO Providers to authenticate users.
 .. uml::
 
     @startuml
-    Title CMS Login
+    Title SSO Login
 
     actor user
-    participant "CMS-Frontend" as cms
+    participant "IRIS-Frontend" as frontend
     participant "SSOProvider" as provider
     participant "IRIS-Login-Embed" as iris
     participant "IRIS-Backend" as backend
 
-    cms -> backend : whoami (session cookie is used)
-    backend -> cms : whoami: no user
-    cms -> user : show login screen with SSO Providers
-    user -> cms : selected SSO Provider
-    cms -> provider : open provider login page
+    frontend -> backend : whoami (session cookie is used)
+    backend -> frontend : whoami: no user
+    frontend -> user : show login screen with SSO Providers
+    user -> frontend : selected SSO Provider
+    frontend -> provider : open provider login page
     provider -> iris : load /v1/views/iris-sso-login.js
     activate iris
     alt no irisreturl provided
@@ -47,7 +47,7 @@ SSO Providers to authenticate users.
         iris -> provider : redirect to iris login endpoint with token
         deactivate iris
         provider -> backend : load login endpoint
-        backend -> cms : redirect to irisreturl
+        backend -> frontend : redirect to irisreturl
       end
     end
     deactivate iris
@@ -60,4 +60,4 @@ provide the SSO data via the SSOConfig global data.
 IRIS embed code checks if the user is already logged in via ``irisConfig``.
 
 If an SSO login is provided the login is made on the IRIS domain and the user
-is redirected back to the CMS.
+is redirected back to the IRIS frontend.
