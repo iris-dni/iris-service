@@ -17,9 +17,11 @@ javascript for the login page::
     >>> print response.body
     (function iris_sso_login(global) {
     ...
-            ssoapicall('http://localhost/v1/auth/whoami', 'get', callback);
+            ssoapicall('http://testing.com/v1/auth/whoami', 'get', callback);
     ...
-            ssoapicall('http://localhost/v1/auth/ssotoken', 'post', callback);
+            ssoapicall('http://testing.com/v1/auth/ssotoken', 'post', callback);
+    ...
+                        var redirectUrl = 'http://testing.com/v1/views/iris-sso-redirect.html?token=' + token + '&redirecturl=' + retUrl;
     ...
     })(window);
 

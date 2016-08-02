@@ -18,6 +18,8 @@ pyramid_swagger.include_read_only_properties = False
 pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = default
 
+api.app_url = http://testing.com
+
 auth.secret = supersecret
 auth.cookie_name = iris-tkt
 

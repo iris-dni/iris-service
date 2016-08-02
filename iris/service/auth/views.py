@@ -2,6 +2,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from pyramid.view import view_config
 
+from .. import rest
 from .security import login_user, logout_user
 from .sso import get_or_create_sso_user
 
@@ -13,9 +14,12 @@ from .sso import get_or_create_sso_user
 def login_embed(request):
     request.response.content_type = 'application/javascript'
     context = {
-        'whoamiUrl': request.route_url('auth_api.whoami@v1/auth'),
-        'ssotokenUrl': request.route_url('auth_api.ssotoken@v1/auth'),
-        'redirectUrl': request.route_url('sso_login_redirect'),
+        'whoamiUrl': request.route_url('auth_api.whoami@v1/auth',
+                                       _app_url=rest.APP_URL),
+        'ssotokenUrl': request.route_url('auth_api.ssotoken@v1/auth',
+                                         _app_url=rest.APP_URL),
+        'redirectUrl': request.route_url('sso_login_redirect',
+                                         _app_url=rest.APP_URL),
     }
     return context
 
