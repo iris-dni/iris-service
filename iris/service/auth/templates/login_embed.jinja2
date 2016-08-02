@@ -44,7 +44,7 @@
     // try whoami with the remote_auth data
     whoami(function(response) {
         // successful invocation:
-        if (response.status === 200) {
+        if (response.status === 200 && response.data.status === 'ok') {
             //  We are logged in and can now redirect back to the original page.
             ssotoken(function(response) {
                 if (response.status === 200) {
