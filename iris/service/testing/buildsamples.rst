@@ -5,6 +5,7 @@ Sample Builder
 Build samples::
 
     >>> samples.users(100)
+    >>> samples.cities(50)
     >>> samples.petitions(50)
 
 Dump the samples::
