@@ -1,0 +1,165 @@
+cities:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - city_admin
+    summary: Search Cities
+    operationId: search
+    parameters:
+      - name: state
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: tags
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: ft
+        in: query
+        type: string
+      - name: tags_ft
+        in: query
+        type: string
+      - name: name_ft
+        in: query
+        type: string
+      - name: zips_ft
+        in: query
+        type: string
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+        description: |
+            Possible options
+
+              - created (default)
+              - modified
+              - state
+              - name
+              - id
+      - name: offset
+        in: query
+        type: integer
+        minimum: 0
+        default: 0
+        description: The offset to the first entry.
+      - name: limit
+        in: query
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 10
+        description: The number of entries in the result.
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ListResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - city_admin
+    summary: Create City
+    operationId: create
+    parameters:
+      - name: data
+        in: body
+        schema:
+          $ref: 'cities.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+cities_contentId:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - city_admin
+    summary: Get a City
+    operationId: get
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - city_admin
+    summary: Update City
+    operationId: update
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+      - name: data
+        in: body
+        schema:
+          $ref: 'cities.yml#/definitions/POSTBody'
+        required: true
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  delete:
+    tags:
+      - city_admin
+    summary: Update City
+    operationId: delete
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

@@ -1,0 +1,91 @@
+definitions:
+    City:
+        type: object
+        properties:
+            id:
+                type: integer
+                readOnly: true
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            state:
+                type: string
+                readOnly: true
+                default: 'draft'
+            tags:
+                type: array
+                items:
+                    type: string
+            name:
+                type: string
+                default: ''
+            zips:
+                type: array
+                items:
+                    type: string
+            treshold:
+                type: integer
+            contact:
+                type: object
+                properties:
+                    salutation:
+                        type: string
+                        default: ''
+                    address:
+                        type: string
+                        default: ''
+    CityAdmin:
+        type: object
+        allOf:
+            - $ref: '#/definitions/City'
+    POSTBody:
+        # The city wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/City'
+    ResponseBody:
+        # The city wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/City'
+    ListResponseBody:
+        description: City list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/City'
+            total:
+                type: integer
+    ListResponseBodyAdmin:
+        description: User list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityAdmin'
+            total:
+                type: integer

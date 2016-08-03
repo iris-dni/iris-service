@@ -60,16 +60,47 @@ CREATE TABLE petitions (
     response_token STRING,
 
     INDEX tags_ft
-      USING FULLTEXT(description)
+      USING FULLTEXT(tags)
       WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX title_ft
-      USING FULLTEXT(description)
+      USING FULLTEXT(title)
       WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX description_ft
       USING FULLTEXT(description)
       WITH (ANALYZER = 'edge_ngram_fulltext'),
     INDEX suggested_solution_ft
       USING FULLTEXT(suggested_solution)
+      WITH (ANALYZER = 'edge_ngram_fulltext')
+)
+CLUSTERED INTO 5 SHARDS
+          WITH (number_of_replicas='0-all',
+                column_policy='strict');
+
+
+CREATE TABLE cities (
+    id LONG PRIMARY KEY,
+    state STRING,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP,
+        modified TIMESTAMP
+    ),
+    name STRING,
+    tags ARRAY(STRING),
+    zips ARRAY(STRING),
+    treshold LONG,
+    contact OBJECT(STRICT) AS (
+        salutation STRING,
+        address STRING
+    ),
+
+    INDEX tags_ft
+      USING FULLTEXT(tags)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX name_ft
+      USING FULLTEXT(name)
+      WITH (ANALYZER = 'edge_ngram_fulltext'),
+    INDEX zips_ft
+      USING FULLTEXT(zips)
       WITH (ANALYZER = 'edge_ngram_fulltext')
 )
 CLUSTERED INTO 5 SHARDS

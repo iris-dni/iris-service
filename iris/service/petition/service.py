@@ -26,8 +26,6 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     DOC_CLASS = Petition
 
     QUERY_PARAMS = {
-        'state': queries.termsFilter('state'),
-        'tags': queries.termsFilter('tags'),
         'ft': queries.fulltextQuery(['tags_ft',
                                      'title_ft',
                                      'description_ft',
@@ -39,6 +37,11 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'suggested_solution_ft': queries.fulltextQuery(
             ['suggested_solution_ft']
         ),
+    }
+
+    FILTER_PARAMS = {
+        'state': queries.termsFilter('state'),
+        'tags': queries.termsFilter('tags'),
     }
 
     SORT_PARAMS = {
