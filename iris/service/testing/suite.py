@@ -9,6 +9,7 @@ from lovely.essequence import sequence
 
 from iris.service.petition import Petition
 from iris.service.user import User
+from iris.service.city import City
 
 from . import util
 from . import layer
@@ -49,15 +50,15 @@ class Creators(object):
     """
 
     petition = partial(create_object, Petition)
-
     user = partial(create_object, User)
+    city = partial(create_object, City)
 
 
 def setUp(test):
     app = get_app()
     testapp = TestApp(app, extra_environ={'REMOTE_ADDR': '127.0.0.1'})
     test.globs['browser'] = testapp
-    util.setupGlobs(test.globs, testapp)
+    util.setupGlobs(test.globs, testapp, app)
     test.globs['creators'] = Creators
     test.globs['samples'] = samples
 

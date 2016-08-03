@@ -8,16 +8,43 @@ Admin API
 
 The admin API is implemented via the REST mapper.
 
+The browser must be logged in with an administrator::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+
 Get User List
 -------------
+
+Lists all cities::
 
     >>> response = browser.get('/v1/admin/users')
     >>> response.status
     '200 OK'
     >>> print_json(response)
     {
-      "data": [],
-      "total": 0
+      "data": [
+        {
+          "dc": {
+            "created": "...",
+            "modified": "..."
+          },
+          "email": "tester@iris.com",
+          "firstname": "",
+          "id": ...,
+          "lastname": "",
+          "roles": [
+            "admin"
+          ],
+          "sso": [
+            {
+              "provider": "local",
+              "trusted": false
+            }
+          ],
+          "state": "active"
+        }
+      ],
+      "total": 1
     }
 
 
@@ -106,8 +133,8 @@ Use the id from the response above::
     }
 
 
-List Petitions
---------------
+List Users
+----------
 
 Use the list endpoint::
 
@@ -128,7 +155,7 @@ Use the list endpoint::
           ...
         }
       ],
-      "total": 1
+      "total": 2
     }
 
 
@@ -161,105 +188,7 @@ Search Filters
 Create some sampledata::
 
     >>> samples.users(5)
-
     >>> response = browser.get('/v1/admin/users')
-    >>> print_json(response)
-    {
-      "data": [
-        {
-          "dc": {
-            "created": "2016-02-02T11:48:44",
-            "modified": "2016-02-02T11:48:44"
-          },
-          "email": "montoyadaniel@yahoo.com",
-          "firstname": "Blake",
-          "id": 2,
-          "lastname": "Irwin",
-          "roles": [],
-          "sso": [
-            {
-              "provider": "zeitOnline",
-              "trusted": false
-            }
-          ],
-          "state": "active"
-        },
-        {
-          "dc": {
-            "created": "2016-02-12T04:25:09",
-            "modified": "2016-02-12T04:25:09"
-          },
-          "email": "christopher13@conway.com",
-          "firstname": "Richard",
-          "id": 3,
-          "lastname": "Cooper",
-          "roles": [],
-          "sso": [],
-          "state": "active"
-        },
-        {
-          "dc": {
-            "created": "2016-02-13T13:50:55",
-            "modified": "2016-02-13T13:50:55"
-          },
-          "email": "perezangelica@hotmail.com",
-          "firstname": "Terri",
-          "id": 4,
-          "lastname": "Woodward",
-          "roles": [
-            "admin"
-          ],
-          "sso": [
-            {
-              "provider": "azMedien",
-              "trusted": false
-            }
-          ],
-          "state": "active"
-        },
-        {
-          "dc": {
-            "created": "2016-04-02T09:32:50",
-            "modified": "2016-04-02T09:32:50"
-          },
-          "email": "howardtiffany@gmail.com",
-          "firstname": "Adam",
-          "id": 5,
-          "lastname": "Jackson",
-          "roles": [
-            "admin"
-          ],
-          "sso": [
-            {
-              "provider": "zeitOnline",
-              "trusted": false
-            }
-          ],
-          "state": "disabled"
-        },
-        {
-          "dc": {
-            "created": "2016-04-30T16:04:48",
-            "modified": "2016-04-30T16:04:48"
-          },
-          "email": "brianfuller@mcclure-payne.net",
-          "firstname": "Sherry",
-          "id": 6,
-          "lastname": "Hernandez",
-          "roles": [
-            "admin"
-          ],
-          "sso": [
-            {
-              "provider": "azMedien",
-              "trusted": true
-            }
-          ],
-          "state": "active"
-        }
-      ],
-      "total": 5
-    }
 
 Search state::
 
@@ -310,7 +239,7 @@ Search roles::
           ...
         }
       ],
-      "total": 3
+      "total": 4
     }
 
 Search email using fulltext search::
@@ -354,7 +283,7 @@ Fulltext search::
           },
           "email": "christopher13@conway.com",
           "firstname": "Richard",
-          "id": 3,
+          "id": ...,
           "lastname": "Cooper",
           "roles": [],
           "sso": [],
@@ -375,7 +304,7 @@ Fulltext search::
           },
           "email": "christopher13@conway.com",
           "firstname": "Richard",
-          "id": 3,
+          "id": ...,
           "lastname": "Cooper",
           "roles": [],
           "sso": [],
@@ -384,3 +313,33 @@ Fulltext search::
       ],
       "total": 1
     }
+
+
+Permissions
+===========
+
+Get a test user::
+
+    >>> response = browser.get('/v1/admin/users')
+    >>> user_id = response.json['data'][0]['id']
+
+Permission check for all endpoints::
+
+    >>> check_roles("GET", "/v1/admin/users")
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
+
+    >>> check_roles("GET", "/v1/admin/users/%s" % user_id)
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
+
+    >>> def tmp_obj():
+    ...     obj = creators.user(email='tester@iris.com')
+    ...     return {'obj_id': obj.id}
+
+    >>> check_roles("DELETE", "/v1/admin/users/%(obj_id)s", hook=tmp_obj)
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK

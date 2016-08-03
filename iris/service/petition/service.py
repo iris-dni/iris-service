@@ -2,6 +2,7 @@ from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
 from iris.service.rest import queries
+from iris.service.security import acl
 
 from ..errors import Errors
 
@@ -9,7 +10,8 @@ from .sm import PetitionStateMachine
 from .document import Petition
 
 
-@RestService("petition_admin_api")
+@RestService("petition_admin_api",
+             permission=acl.Permissions.AdminFull)
 class PetitionAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'petitions'

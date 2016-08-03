@@ -2,11 +2,13 @@ from lovely.pyrest.rest import RestService
 
 from iris.service import rest
 from iris.service.rest import queries
+from iris.service.security import acl
 
 from .document import City
 
 
-@RestService("city_admin_api")
+@RestService("city_admin_api",
+             permission=acl.Permissions.AdminFull)
 class CityAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'cities'

@@ -8,8 +8,15 @@ Admin API
 
 The admin API is implemented via the REST mapper.
 
+The browser must be logged in with an administrator::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+
+
 Get City List
 -------------
+
+Lists all cities::
 
     >>> response = browser.get('/v1/admin/cities')
     >>> response.status
@@ -221,3 +228,33 @@ Uses all existing fulltext fields::
       ],
       "total": 3
     }
+
+
+Permissions
+===========
+
+Get a test city::
+
+    >>> response = browser.get('/v1/admin/cities')
+    >>> city_id = response.json['data'][0]['id']
+
+Permission check for all endpoints::
+
+    >>> check_roles("GET", "/v1/admin/cities")
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
+
+    >>> check_roles("GET", "/v1/admin/cities/%s" % city_id)
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
+
+    >>> def tmp_city():
+    ...     city = creators.city(name='tester')
+    ...     return {'city_id': city.id}
+
+    >>> check_roles("DELETE", "/v1/admin/cities/%(city_id)s", hook=tmp_city)
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
