@@ -89,3 +89,61 @@ definitions:
                     $ref: '#/definitions/CityAdmin'
             total:
                 type: integer
+
+# Importer defintions
+
+    CityImportData:
+        type: object
+        properties:
+            id:
+                type: integer
+            state:
+                type: string
+                default: 'draft'
+            tags:
+                type: array
+                items:
+                    type: string
+            name:
+                type: string
+                default: ''
+            zips:
+                type: array
+                items:
+                    type: string
+            treshold:
+                type: integer
+            contact:
+                type: object
+                properties:
+                    salutation:
+                        type: string
+                        default: ''
+                    address:
+                        type: string
+                        default: ''
+    CityImportResponseData:
+        type: object
+        properties:
+            id:
+                type: integer
+            status:
+                type: string
+    ImportPOSTBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityImportData'
+    ImportResponseBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityImportResponseData'

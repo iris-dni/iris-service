@@ -119,3 +119,10 @@ def create_crate_doc_suite(testfile):
                         setUp=setUpCrate,
                         tearDown=tearDownCrate,
                        )
+
+
+def create_doc_suite(testfile):
+    testfile = os.path.join('../../../docs', testfile)
+    return create_suite(testfile,
+                        package=None,
+                       )

@@ -3,9 +3,9 @@ from .document import User  # noqa
 
 
 def includeme(config):
-    from iris.service.rest import admin
+    from iris.service.rest import auth
     config.add_route('user_admin_api',
                      'admin/users',
                      static=True,
-                     factory=admin.AdminServiceAuthFactory,
+                     factory=auth.AdminServiceAuthFactory,
                     )

@@ -244,11 +244,13 @@ Permission check for all endpoints::
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny
 
     >>> check_roles("GET", "/v1/admin/cities/%s" % city_id)
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny
 
     >>> def tmp_city():
     ...     city = creators.city(name='tester')
@@ -258,3 +260,4 @@ Permission check for all endpoints::
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny

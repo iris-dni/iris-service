@@ -24,6 +24,8 @@ tags:
     description: Administrative Petiton API
   - name: user_admin
     description: Administrative User API
+  - name: city_import
+    description: City Importer API
   - name: city_admin
     description: Administrative City API
   - name: Options
@@ -67,6 +69,9 @@ paths:
     $ref: 'petition_admin_path.yml#/petitions'
   /admin/petitions/{contentId}:
     $ref: 'petition_admin_path.yml#/petitions_contentId'
+
+  /import/cities:
+    $ref: 'city_public_path.yml#/import_cities'
 
   /admin/cities:
     $ref: 'city_admin_path.yml#/cities'

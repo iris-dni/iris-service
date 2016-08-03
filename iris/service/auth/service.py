@@ -1,13 +1,13 @@
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service.rest.swagger import swagger_reduce_response
+from iris.service.security.security import login_user, logout_user
 
 from ..endpoint import EndpointErrorMixin, BadRequest
 from ..errors import Errors
 
 from .ssotoken import SSOToken
 from .secret import verify_message
-from .security import login_user, logout_user
 from .sso import get_or_create_sso_user
 
 

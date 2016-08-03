@@ -2,6 +2,7 @@
 class Roles(object):
 
     Admin = 'ur:admin'
+    ApiKeyUser = 'apikey-user'
 
 
 class Permissions(object):

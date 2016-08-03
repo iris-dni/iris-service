@@ -26,7 +26,12 @@ api.app_url = http://{{ config['containers']['iris-api-service']['url'] }}
 auth.secret = {{ config['containers']['iris-api-service']['auth_secret'] }}
 auth.cookie_name = iris-tkt
 
-sso.apikey.az = {{ config['containers']['iris-api-service']['az_api_secret'] }}
+{% for key, value in config['containers']['iris-api-service']['sso']['apikeys'] %}
+sso.apikey.{{ key }} = {{ value }}
+{% endfor %}
+{% for key, value in config['containers']['iris-api-service']['iris']['apikeys'] %}
+iris.apikey.{{ key }} = {{ value }}
+{% endfor %}
 
 static.docs = iris.service:docs
               docs

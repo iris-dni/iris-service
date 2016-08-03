@@ -3,12 +3,12 @@ import os
 from pyramid.settings import asbool
 from pyramid.config import Configurator
 from pyramid.authorization import ACLAuthorizationPolicy
-from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid import security
 
 from gevent.pywsgi import WSGIServer, WSGIHandler
 
-from .auth.security import groupfinder
+from .security.security import groupfinder
+from .security.policy import IRISAuthPolicy
 
 
 API_V1_BASE_URL = '/v1'
@@ -55,7 +55,7 @@ def server_factory(global_conf, host, port):
 def app_factory(global_config, **settings):
 
     authz_policy = ACLAuthorizationPolicy()
-    authn_policy = AuthTktAuthenticationPolicy(
+    authn_policy = IRISAuthPolicy(
         secret=settings['auth.secret'],
         cookie_name=settings['auth.cookie_name'],
         timeout=settings.get('auth.timeout', None),
@@ -78,7 +78,10 @@ def app_factory(global_config, **settings):
     )
 
     settings = config.get_settings()
-    settings['pyramid_swagger.schema_directory'] = os.path.join(os.path.dirname(__file__), 'swagger')
+    settings['pyramid_swagger.schema_directory'] = os.path.join(
+        os.path.dirname(__file__),
+        'swagger'
+    )
     settings['pyramid_swagger.schema_file'] = 'api.yml'
 
     config.include('pyramid_swagger')
@@ -97,6 +100,7 @@ def app_factory(global_config, **settings):
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.auth',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.security.policy')
     config.include('iris.service.auth.secret')
     config.include('iris.service.auth.sso')
 

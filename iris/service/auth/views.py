@@ -2,8 +2,9 @@ from pyramid.httpexceptions import HTTPFound
 
 from pyramid.view import view_config
 
+from iris.service.security.security import login_user, logout_user
+
 from .. import rest
-from .security import login_user, logout_user
 from .sso import get_or_create_sso_user
 
 

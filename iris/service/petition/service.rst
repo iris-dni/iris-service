@@ -463,11 +463,13 @@ Permission check for all endpoints::
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny
 
     >>> check_roles("GET", "/v1/admin/petitions/%s" % city_id)
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny
 
     >>> def tmp_petition():
     ...     petition = creators.petition(title='tester')
@@ -477,3 +479,4 @@ Permission check for all endpoints::
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
+    apikey-user                             deny

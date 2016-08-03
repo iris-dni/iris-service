@@ -1,0 +1,28 @@
+import_cities:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - city_importer
+    summary: Import Cities
+    operationId: importer
+    parameters:
+      - name: data
+        in: body
+        schema:
+          $ref: 'cities.yml#/definitions/ImportPOSTBody'
+        required: true
+    responses:
+      '200':
+        description: City import status
+        schema:
+          $ref: 'cities.yml#/definitions/ImportResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

@@ -3,11 +3,11 @@ from .document import Petition  # noqa
 
 
 def includeme(config):
-    from iris.service.rest import admin
+    from iris.service.rest import auth
     config.add_route('petition_admin_api',
                      'admin/petitions',
                      static=True,
-                     factory=admin.AdminServiceAuthFactory,
+                     factory=auth.AdminServiceAuthFactory,
                     )
     config.add_route('petition_public_api',
                      'petitions',

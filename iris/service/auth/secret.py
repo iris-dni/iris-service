@@ -89,4 +89,4 @@ def includeme(config):
             continue
         public = key[11:]
         PRIVATE_KEYS[public] = value
-        logger.info('loaded api-key: %s', public)
+        logger.info('loaded sso api-key for "%s"', public)
