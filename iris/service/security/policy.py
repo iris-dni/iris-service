@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 API_KEY_HEADER_NAME = 'X-Iris-Api-Key'
 
-API_KEYS = set([])
+API_KEYS = {}
 
 
 class IRISAuthTktCookieHelper(AuthTktCookieHelper):
@@ -47,6 +47,14 @@ class IRISAuthPolicy(AuthTktAuthenticationPolicy):
         self.cookie = IRISAuthTktCookieHelper(*args, **kwargs)
 
 
+def _apikeyProvider(request):
+    global API_KEYS
+    apikey = request.headers.get(API_KEY_HEADER_NAME)
+    if apikey is not None:
+        return API_KEYS.get(apikey)
+    return None
+
+
 def includeme(config):
     global API_KEYS
     settings = config.get_settings()
@@ -54,5 +62,6 @@ def includeme(config):
         if not key.startswith('iris.apikey.'):
             continue
         name = key[12:]
-        API_KEYS.add(value)
+        API_KEYS[value] = name
         logger.info('loaded iris api-key for "%s"', name)
+    config.add_request_method(_apikeyProvider, "apikeyProvider", reify=True)

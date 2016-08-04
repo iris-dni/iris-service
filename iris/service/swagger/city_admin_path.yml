@@ -18,6 +18,12 @@ cities:
         items:
           type: string
         collectionFormat: csv
+      - name: provider
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
       - name: tags
         in: query
         type: array
@@ -92,7 +98,7 @@ cities:
       - name: data
         in: body
         schema:
-          $ref: 'cities.yml#/definitions/POSTBody'
+          $ref: 'cities.yml#/definitions/POSTBodyAdmin'
         required: true
     responses:
       '200':
@@ -111,7 +117,7 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       default:
         description: Empty Body
@@ -123,7 +129,7 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: City found
@@ -141,11 +147,11 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
       - name: data
         in: body
         schema:
-          $ref: 'cities.yml#/definitions/POSTBody'
+          $ref: 'cities.yml#/definitions/POSTBodyAdmin'
         required: true
     responses:
       '200':
@@ -164,7 +170,7 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: City found

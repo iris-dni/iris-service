@@ -35,6 +35,8 @@ Create a new city::
 
     >>> city = {
     ...     "data": {
+    ...         "id": "10042",
+    ...         "provider": "test",
     ...         "name": "aarau",
     ...         "tags": ["portal:aaz"],
     ...         "zips": ["5004"],
@@ -52,8 +54,9 @@ Create a new city::
           "created": "...",
           "modified": "..."
         },
-        "id": ...,
+        "id": "test:10042",
         "name": "aarau",
+        "provider": "test",
         "state": "active",
         "tags": [
           "portal:aaz"
@@ -86,6 +89,7 @@ POST on the city with the data which need to be changed::
     {
       "data": {
         ...
+        "id": "test:10042",
         "name": "Aarau",
         ...
       }
@@ -103,13 +107,14 @@ Use the id from the response above::
     >>> print_json(response)
     {
       "data": {
-        ...
+        "contact": {},
         "dc": {
           "created": "...",
           "modified": "..."
         },
-        ...
+        "id": "test:10042",
         "name": "Aarau",
+        "provider": "test",
         "state": "active",
         "tags": [
           "portal:aaz"
@@ -253,7 +258,9 @@ Permission check for all endpoints::
     apikey-user                             deny
 
     >>> def tmp_city():
-    ...     city = creators.city(name='tester')
+    ...     city = creators.city(id='1111',
+    ...                          provider='check_roles',
+    ...                          name='tester')
     ...     return {'city_id': city.id}
 
     >>> check_roles("DELETE", "/v1/admin/cities/%(city_id)s", hook=tmp_city)

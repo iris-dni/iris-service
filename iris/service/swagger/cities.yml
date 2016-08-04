@@ -3,8 +3,9 @@ definitions:
         type: object
         properties:
             id:
-                type: integer
-                readOnly: true
+                type: string
+            provider:
+                type: string
             tags:
                 type: array
                 items:
@@ -61,6 +62,14 @@ definitions:
         properties:
             data:
                 $ref: '#/definitions/City'
+    POSTBodyAdmin:
+        # The city wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/CityAdmin'
     ResponseBodyAdmin:
         # The city wrapped in a data property for the response body
         type: object
@@ -123,7 +132,7 @@ definitions:
         type: object
         properties:
             id:
-                type: integer
+                type: string
             state:
                 type: string
                 default: 'draft'
@@ -174,7 +183,14 @@ definitions:
             - status
         properties:
             id:
-                type: integer
+                type: string
+            irisId:
+                type: string
+                description: |
+                    The iris internal id of the city.
+
+                    This is the id which can be used to get the city using the
+                    API.
             status:
                 type: string
                 enum:

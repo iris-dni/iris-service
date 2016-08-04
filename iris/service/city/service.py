@@ -48,6 +48,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
 
     FILTER_PARAMS = {
         'state': queries.termsFilter('state'),
+        'provider': queries.termsFilter('provider'),
         'tags': queries.termsFilter('tags'),
         'zips': queries.termsFilter('zips'),
     }
@@ -57,6 +58,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
         'modified': queries.fieldSorter('dc.modified'),
         'id': queries.fieldSorter('id'),
         'state': queries.fieldSorter('state'),
+        'provider': queries.fieldSorter('provider'),
         'name': queries.fieldSorter('state'),
         'score': queries.scoreSorter,
         'default': queries.fieldSorter('dc.created', 'DESC'),
@@ -71,6 +73,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
         "operation" and "data" (city).
         """
         result = []
+        provider = self.request.apikeyProvider
         for entry in data['data']:
             operation = entry.get("operation")
             cityData = entry.get("data")
@@ -78,24 +81,29 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
                 result.append({'status': 'error:missing_id'})
                 continue
             city_id = cityData.pop('id')
-            city = City.get(city_id)
+            city = City.get(City.buildPrimaryKey(city_id, provider))
             if operation == 'delete':
                 if city is not None:
                     #TODO: also remove relations
                     city.delete()
-                    result.append({'id': city_id, 'status': 'ok:deleted'})
+                    result.append({'id': city_id,
+                                   'irisId': city.id,
+                                   'status': 'ok:deleted'})
                 else:
-                    result.append({'id': city_id, 'status': 'error:not_found'})
+                    result.append({'id': city_id,
+                                   'status': 'error:not_found'})
             else:
                 status = 'ok:updated'
-                city = City.get(city_id)
                 if city is None:
                     status = 'ok:added'
-                    city = City(id=city_id)
+                    city = City(id=city_id, provider=provider)
                 for k, v in cityData.iteritems():
-                    setattr(city, k, v)
+                    if k not in ['id', 'provider']:
+                        setattr(city, k, v)
                 city.store()
-                result.append({'id': city.id, 'status': status})
+                result.append({'id': city_id,
+                               'irisId': city.id,
+                               'status': status})
         City.refresh()
         return result
 

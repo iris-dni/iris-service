@@ -73,7 +73,9 @@ paths:
     $ref: 'petition_admin_path.yml#/petitions_contentId'
 
   /cities:
-    $ref: 'city_public_path.yml#/city_search'
+    $ref: 'city_public_path.yml#/cities_search'
+  /cities/{contentId}:
+    $ref: 'city_public_path.yml#/cities_contentId'
   /import/cities:
     $ref: 'city_public_path.yml#/import_cities'
 

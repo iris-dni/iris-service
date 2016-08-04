@@ -94,6 +94,8 @@ def cities(amount, seed='0'):
             tzinfo=None,
         )
         create_object(City,
+                      id=i,
+                      provider='test',
                       name=faker.city(),
                       tags=list(set([random.choice(['portal:aaz',
                                                     'portal:bzb',

@@ -78,7 +78,7 @@ CLUSTERED INTO 5 SHARDS
 
 
 CREATE TABLE cities (
-    id LONG PRIMARY KEY,
+    id STRING PRIMARY KEY,
     state STRING,
     dc OBJECT(STRICT) AS (
         created TIMESTAMP,
@@ -88,6 +88,7 @@ CREATE TABLE cities (
     tags ARRAY(STRING),
     zips ARRAY(STRING),
     treshold LONG,
+    provider STRING,
     contact OBJECT(STRICT) AS (
         salutation STRING,
         address STRING

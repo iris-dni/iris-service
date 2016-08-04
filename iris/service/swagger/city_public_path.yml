@@ -1,4 +1,4 @@
-city_search:
+cities_search:
   options:
     tags:
         - Options
@@ -92,6 +92,43 @@ city_search:
         description: Error Body
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
+cities_contentId:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - city
+    summary: Get a City
+    description: |
+        Get a specific city by `id`.
+
+        For example the petition contains a city property which provides the id
+        of the city.
+    operationId: get
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'cities.yml#/definitions/ResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+
+
 import_cities:
   options:
     tags:
