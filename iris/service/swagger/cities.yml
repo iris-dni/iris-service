@@ -122,13 +122,43 @@ definitions:
                     address:
                         type: string
                         default: ''
+    CityImportEntry:
+        type: object
+        required:
+            - operation
+            - data
+        properties:
+            operation:
+                type: string
+                enum: 
+                    - add
+                    - update
+                    - delete
+                description: |
+                    The operation on the city
+
+                    Please note that the operation "update" and "add" always
+                    create or change a city.
+            data:
+                $ref: '#/definitions/CityImportData'
     CityImportResponseData:
         type: object
+        required:
+            - status
         properties:
             id:
                 type: integer
             status:
                 type: string
+                enum:
+                    - ok:added
+                    - ok:updated
+                    - ok:deleted
+                    - error:missing_id
+                    - error:not_found
+                description: |
+                    status names starting with `ok:` are positiv, anything else
+                    leaves the corresponding city unchanged.
     ImportPOSTBody:
         type: object
         required: 
@@ -137,7 +167,7 @@ definitions:
             data:
                 type: array
                 items:
-                    $ref: '#/definitions/CityImportData'
+                    $ref: '#/definitions/CityImportEntry'
     ImportResponseBody:
         type: object
         required: 

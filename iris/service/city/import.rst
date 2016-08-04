@@ -24,7 +24,10 @@ Create a City
 
     >>> data = {
     ...     "data": [
-    ...         {"id": 1007, "name": "aarau"}
+    ...         {
+    ...             "operation": "add",
+    ...             "data": {"id": 1007, "name": "aarau"}
+    ...         }
     ...     ]
     ... }
     >>> response = browser.post_json('/v1/import/cities', data, headers=headers)
@@ -33,7 +36,7 @@ Create a City
       "data": [
         {
           "id": 1007,
-          "status": "ok"
+          "status": "ok:added"
         }
       ]
     }
@@ -42,6 +45,7 @@ Create a City
     >>> City.get(1007).name
     u'aarau'
 
+
 Update an existing city
 =======================
 
@@ -49,7 +53,10 @@ Update an existing city
 
     >>> data = {
     ...     "data": [
-    ...         {"id": 1007, "name": "Aarau"}
+    ...         {
+    ...             "operation": "update",
+    ...             "data": {"id": 1007, "name": "Aarau"}
+    ...         }
     ...     ]
     ... }
     >>> response = browser.post_json('/v1/import/cities', data, headers=headers)
@@ -65,8 +72,14 @@ Multiple cities
 
     >>> data = {
     ...     "data": [
-    ...         {"id": 1007, "name": "Aarau"},
-    ...         {"id": 5004, "name": "Dornbirn"},
+    ...         {
+    ...             "operation": "update",
+    ...             "data": {"id": 1007, "name": "Aarau"},
+    ...         },
+    ...         {
+    ...             "operation": "update",
+    ...             "data": {"id": 5004, "name": "Dornbirn"},
+    ...         }
     ...     ]
     ... }
     >>> response = browser.post_json('/v1/import/cities', data, headers=headers)
@@ -75,11 +88,11 @@ Multiple cities
       "data": [
         {
           "id": 1007,
-          "status": "ok"
+          "status": "ok:updated"
         },
         {
           "id": 5004,
-          "status": "ok"
+          "status": "ok:added"
         }
       ]
     }
@@ -94,11 +107,14 @@ All Properties::
     >>> data = {
     ...     "data": [
     ...         {
-    ...             "id": 1007,
-    ...             "name": "Aarau",
-    ...             "tags": ["portal:aaz", "kanton:aargau"],
-    ...             "zips": ["5004", "5000", "5001"],
-    ...             "treshold": 100
+    ...             "operation": "update",
+    ...             "data": {
+    ...                 "id": 1007,
+    ...                 "name": "Aarau",
+    ...                 "tags": ["portal:aaz", "kanton:aargau"],
+    ...                 "zips": ["5004", "5000", "5001"],
+    ...                 "treshold": 100
+    ...             }
     ...         },
     ...     ]
     ... }
@@ -108,7 +124,7 @@ All Properties::
       "data": [
         {
           "id": 1007,
-          "status": "ok"
+          "status": "ok:updated"
         }
       ]
     }
@@ -123,6 +139,50 @@ All Properties::
     100
     >>> city.contact
     {}
+
+
+Delete a City
+=============
+
+::
+
+    >>> data = {
+    ...     "data": [
+    ...         {
+    ...             "operation": "delete",
+    ...             "data": {"id": 1007},
+    ...         },
+    ...         {
+    ...             "operation": "delete",
+    ...             "data": {"id": 33267},
+    ...         },
+    ...         {
+    ...             "operation": "update",
+    ...             "data": {"id": 5004, "name": "Dornbirn"},
+    ...         }
+    ...     ]
+    ... }
+    >>> response = browser.post_json('/v1/import/cities', data, headers=headers)
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          "id": 1007,
+          "status": "ok:deleted"
+        },
+        {
+          "id": 33267,
+          "status": "error:not_found"
+        },
+        {
+          "id": 5004,
+          "status": "ok:updated"
+        }
+      ]
+    }
+
+    >>> City.get(1007) is None
+    True
 
 
 Edge cases
@@ -146,8 +206,8 @@ Missing id::
 
     >>> data = {
     ...     "data": [
-    ...         {"name": "Aarau"},
-    ...         {"id": 5004, "name": "Dornbirn"},
+    ...         {"operation": "update", "data": {"name": "Aarau"}},
+    ...         {"operation": "update", "data": {"id": 5004, "name": "Dornbirn"}},
     ...     ]
     ... }
     >>> response = browser.post_json('/v1/import/cities', data, headers=headers)
@@ -155,11 +215,11 @@ Missing id::
     {
       "data": [
         {
-          "status": "missing id"
+          "status": "error:missing_id"
         },
         {
           "id": 5004,
-          "status": "ok"
+          "status": "ok:updated"
         }
       ]
     }

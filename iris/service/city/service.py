@@ -51,26 +51,43 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
 
     def importer(self, data):
         """Import cities
+
+        Can create, edit or delete cities.
+
+        Expectes data['data'] to be an array of object containing an
+        "operation" and "data" (city).
         """
         result = []
-        for city_data in data['data']:
-            if 'id' in city_data:
-                city_id = city_data.pop('id')
+        for entry in data['data']:
+            operation = entry.get("operation")
+            cityData = entry.get("data")
+            if 'id' not in cityData:
+                result.append({'status': 'error:missing_id'})
+                continue
+            city_id = cityData.pop('id')
+            city = City.get(city_id)
+            if operation == 'delete':
+                if city is not None:
+                    city.delete()
+                    result.append({'id': city_id, 'status': 'ok:deleted'})
+                else:
+                    result.append({'id': city_id, 'status': 'error:not_found'})
+            else:
+                status = 'ok:updated'
                 city = City.get(city_id)
                 if city is None:
+                    status = 'ok:added'
                     city = City(id=city_id)
-                for k, v in city_data.iteritems():
+                for k, v in cityData.iteritems():
                     setattr(city, k, v)
                 city.store()
-                result.append({'id': city.id, 'status': 'ok'})
-            else:
-                result.append({'status': 'missing id'})
+                result.append({'id': city.id, 'status': status})
         City.refresh()
         return result
 
 
 @RestService("city_import_api",
-             permission=acl.Permissions.Edit)
+             permission=acl.Permissions.Import)
 class CityImportRESTService(rest.BaseRESTService):
 
     MAPPER_NAME = 'cities'
@@ -84,5 +101,8 @@ class CityImportRESTService(rest.BaseRESTService):
     @rpcmethod_view(http_cache=0)
     def importer(self, **kwargs):
         mapper = self._getMapper(self.MAPPER_NAME)
-        result = mapper.importer(**self.request.swagger_data)
+        data = self.request.swagger_data
+        if 'x-iris-api-key' in data:
+            del data['x-iris-api-key']
+        result = mapper.importer(**data)
         return {"data": result}

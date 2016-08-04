@@ -13,4 +13,6 @@ class Permissions(object):
     Create = 'create'
     Delete = 'delete'
 
+    Import = 'import'
+
     AdminFull = 'admin:full'

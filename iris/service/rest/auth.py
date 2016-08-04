@@ -21,4 +21,4 @@ class ApiKeyServiceAuthFactory(BaseAuthFactory):
     """Allows access with API key permission only
     """
 
-    __acl__ = [(security.Allow, acl.Roles.ApiKeyUser, acl.Permissions.Edit)]
+    __acl__ = [(security.Allow, acl.Roles.ApiKeyUser, acl.Permissions.Import)]
