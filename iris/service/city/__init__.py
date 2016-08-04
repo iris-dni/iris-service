@@ -4,6 +4,10 @@ from .document import City  # noqa
 
 def includeme(config):
     from iris.service.rest import auth
+    config.add_route('city_public_api',
+                     'cities',
+                     static=True,
+                    )
     config.add_route('city_admin_api',
                      'admin/cities',
                      static=True,

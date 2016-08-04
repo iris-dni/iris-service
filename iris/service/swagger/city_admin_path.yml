@@ -24,13 +24,19 @@ cities:
         items:
           type: string
         collectionFormat: csv
+      - name: zips
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
       - name: ft
         in: query
         type: string
-      - name: tags_ft
+      - name: name_ft
         in: query
         type: string
-      - name: name_ft
+      - name: tags_ft
         in: query
         type: string
       - name: zips_ft
@@ -41,15 +47,20 @@ cities:
         type: array
         items:
           type: string
-        collectionFormat: csv
-        description: |
-            Possible options
-
-              - created (default)
+          enum:
+              - created
+              - -created
               - modified
-              - state
-              - name
+              - -modified
               - id
+              - -id
+              - state
+              - -state
+              - name
+              - -name
+              - score
+              - -score
+        collectionFormat: csv
       - name: offset
         in: query
         type: integer
@@ -87,7 +98,7 @@ cities:
       '200':
         description: City found
         schema:
-          $ref: 'cities.yml#/definitions/ResponseBody'
+          $ref: 'cities.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -117,7 +128,7 @@ cities_contentId:
       '200':
         description: City found
         schema:
-          $ref: 'cities.yml#/definitions/ResponseBody'
+          $ref: 'cities.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -140,7 +151,7 @@ cities_contentId:
       '200':
         description: City found
         schema:
-          $ref: 'cities.yml#/definitions/ResponseBody'
+          $ref: 'cities.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:
@@ -158,7 +169,7 @@ cities_contentId:
       '200':
         description: City found
         schema:
-          $ref: 'cities.yml#/definitions/ResponseBody'
+          $ref: 'cities.yml#/definitions/ResponseBodyAdmin'
       default:
         description: Unexpected error
         schema:

@@ -14,6 +14,18 @@ class CityAdminRESTService(rest.RESTService):
     MAPPER_NAME = 'cities'
 
 
+@RestService("city_public_api")
+class CityPublicRESTService(rest.RESTService):
+    """The public city API
+
+    Please note that this class provides the full REST API. Access to the
+    endpoints must be limited using swagger (only endpoints defined in swagger
+    are available).
+    """
+
+    MAPPER_NAME = 'cities'
+
+
 class CityRESTMapper(rest.DocumentRESTMapperMixin,
                      rest.SearchableDocumentRESTMapperMixin,
                      rest.RESTMapper):
@@ -29,14 +41,15 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
                                      'name_ft',
                                      'zips_ft',
                                     ]),
-        'tags_ft': queries.fulltextQuery(['tags_ft']),
         'name_ft': queries.fulltextQuery(['name_ft']),
+        'tags_ft': queries.fulltextQuery(['tags_ft']),
         'zips_ft': queries.fulltextQuery(['zips_ft']),
     }
 
     FILTER_PARAMS = {
         'state': queries.termsFilter('state'),
         'tags': queries.termsFilter('tags'),
+        'zips': queries.termsFilter('zips'),
     }
 
     SORT_PARAMS = {
@@ -68,6 +81,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
             city = City.get(city_id)
             if operation == 'delete':
                 if city is not None:
+                    #TODO: also remove relations
                     city.delete()
                     result.append({'id': city_id, 'status': 'ok:deleted'})
                 else:

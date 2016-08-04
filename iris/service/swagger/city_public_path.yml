@@ -1,3 +1,97 @@
+city_search:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - city
+    summary: Cities
+    description: |
+        The city search endpoint.
+
+        This endpoint can be used to autocomplete user city searches:
+
+        - ft=aar
+        - sort=score
+
+        It is important to use the `score` sort to get the best fulltext
+        matches first.
+
+        Fulltext search uses left ngrams with a minimum length of two
+        characters.
+
+    operationId: search
+    parameters:
+      - name: tags
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: zips
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: ft
+        in: query
+        type: string
+        description: Fulltext search in all fields.
+      - name: tags_ft
+        in: query
+        type: string
+      - name: name_ft
+        in: query
+        type: string
+      - name: zips_ft
+        in: query
+        type: string
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+              - created
+              - -created
+              - modified
+              - -modified
+              - id
+              - -id
+              - state
+              - -state
+              - name
+              - -name
+              - score
+              - -score
+        collectionFormat: csv
+      - name: offset
+        in: query
+        type: integer
+        minimum: 0
+        default: 0
+        description: The offset to the first city.
+      - name: limit
+        in: query
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 10
+        description: The number of cities in the result.
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'cities.yml#/definitions/ListResponseBody'
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
 import_cities:
   options:
     tags:

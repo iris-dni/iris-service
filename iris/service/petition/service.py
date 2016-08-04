@@ -82,7 +82,10 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
 class PetitionPublicRESTService(rest.RESTService):
     """Public petition endpoint
 
-    We reuse the BaseRESTService for the simple endpoints.
+    We reuse the RESTService for the simple endpoints.
+
+    The REST methods which should not be available must not be configured in
+    swagger.
     """
 
     MAPPER_NAME = 'petitions'
