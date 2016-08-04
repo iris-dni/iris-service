@@ -82,6 +82,11 @@ class City(Document):
 
     @classmethod
     def buildPrimaryKey(cls, id, provider):
+        """Create the primary key
+
+        The primary key of a city is created from an external id and the
+        provider name.
+        """
         return provider + ':' + str(id)
 
     def __repr__(self):
