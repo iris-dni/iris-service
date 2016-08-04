@@ -16,6 +16,17 @@ The import endpoint must be called with a valid application key provided in
 the request header `X-Iris-Api-Key`.
 
 
+City Ids
+--------
+
+The id of a city must be provided when importing a city. The id must be a
+string.
+
+To be able to manage multiple city sources the internal city id is a prefixed
+version of the external id. The prfix is the provider which is defined
+internally via the apikey.
+
+
 Administration Endpoints
 ========================
 

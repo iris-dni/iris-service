@@ -184,6 +184,9 @@ definitions:
         properties:
             id:
                 type: string
+                description: |
+                    The external city id as it was provided in the request
+                    data.
             irisId:
                 type: string
                 description: |
