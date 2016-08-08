@@ -21,15 +21,15 @@ pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = False
 pyramid_swagger.dereference_served_schema = True
 
-api.app_url = http://{{ config['containers']['iris-api-service']['url'] }}
+api.app_url = http://{{ context['url'] }}
 
-auth.secret = {{ config['containers']['iris-api-service']['auth_secret'] }}
+auth.secret = {{ context['auth_secret'] }}
 auth.cookie_name = iris-tkt
 
-{% for key, value in config['containers']['iris-api-service']['sso']['apikeys'] %}
+{% for key, value in context['sso']['apikeys'].items() %}
 sso.apikey.{{ key }} = {{ value }}
 {% endfor %}
-{% for key, value in config['containers']['iris-api-service']['iris']['apikeys'] %}
+{% for key, value in context['iris']['apikeys'].items() %}
 iris.apikey.{{ key }} = {{ value }}
 {% endfor %}
 
