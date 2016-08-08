@@ -23,7 +23,7 @@ discovery:
             unicast:
                 hosts:
                     {%- for node in crate['hosts'] %}
-                    - {{ node }}:{{ crate['ports'][1][1] }}
+                    - {{ node }}:{{ crate['ports'][1][0] }}
                     {%- endfor %}
 cluster:
     name: {{ crate['cluster_name'] }}
