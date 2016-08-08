@@ -1,6 +1,3 @@
-# Temp file to test remote loading of config files
-#
-
 [app:main]
 use = egg:iris.service
 
@@ -13,7 +10,7 @@ pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_jinja2
 
-pyramid_swagger.exclude_paths = (^/docs|^/v1/views)
+pyramid_swagger.exclude_paths = ^(/docs|/admin|/swaggerui|/v1/views)
 pyramid_swagger.enable_swagger_spec_validation = True
 pyramid_swagger.enable_request_validation = True
 pyramid_swagger.enable_response_validation = False
@@ -24,14 +21,22 @@ pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = False
 pyramid_swagger.dereference_served_schema = True
 
+api.app_url = http://{{ config['containers']['iris-api-service']['url'] }}
+
 auth.secret = {{ config['containers']['iris-api-service']['auth_secret'] }}
 auth.cookie_name = iris-tkt
 
-sso.apikey.az = {{ config['containers']['iris-api-service']['az_api_secret'] }}
+{% for key, value in config['containers']['iris-api-service']['sso']['apikeys'] %}
+sso.apikey.{{ key }} = {{ value }}
+{% endfor %}
+{% for key, value in config['containers']['iris-api-service']['iris']['apikeys'] %}
+iris.apikey.{{ key }} = {{ value }}
+{% endfor %}
 
 static.docs = iris.service:docs
               docs
 
+# also add this URL to 'pyramid_swagger.exclude_paths'
 swagger_ui.url = swaggerui
 
 cors.Allow-Origin = *

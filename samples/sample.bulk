@@ -1,3 +1,7 @@
+{"index": {"_type": "default", "_id": "users", "_index": "lovely_essequences"}}
+{"iid": 100, "name": "users"}
+{"index": {"_type": "default", "_id": "petitions", "_index": "lovely_essequences"}}
+{"iid": 50, "name": "petitions"}
 {"index": {"_type": "default", "_id": "4", "_index": "petitions"}}
 {"city": null, "description": "Rem nulla doloremque quis eligendi. Recusandae natus voluptates accusamus voluptatum suscipit. Modi error ullam a. Impedit nemo nihil sequi labore nisi eum consequatur.\nUnde suscipit odio temporibus possimus. Vitae ullam minus quae laudantium nostrum quod ipsam.\nTenetur commodi non quos odio cum. Incidunt nostrum sed sunt deserunt iusto voluptatum labore quibusdam. Facilis modi veritatis earum qui delectus.\nDebitis molestias nemo sint distinctio asperiores. Mollitia ab qui magni doloribus. Nisi maxime ab porro est expedita.\nDolore labore quidem corrupti porro beatae error quam. Dolores incidunt eos quaerat natus perspiciatis inventore. Odit provident quasi dolore. Eligendi nobis dicta exercitationem.", "links": [], "title": "Iure est nesciunt nemo eum ipsum.", "suggested_solution": "Sit modi at eligendi. Dicta beatae sequi vitae tempora totam debitis distinctio. Ut ullam facilis voluptatem laboriosam nam.\nQuos similique nostrum facilis inventore distinctio nam minus. Voluptatibus sapiente atque fuga autem perferendis et quaerat. Repudiandae quasi quo doloremque ab mollitia laborum voluptates.\nIn quis mollitia et laborum placeat amet. Totam optio commodi ex dolorem autem vitae. Perspiciatis unde tenetur eos in libero porro.", "dc": {"expires": null, "modified": "2016-06-16T01:39:50", "effective": null, "created": "2016-06-16T01:39:50"}, "owner": null, "state": "draft", "videos": [], "images": [], "response_token": null, "connected_locations": [], "type": "", "id": 4, "tags": ["shop"], "supporters": {"amount": 16, "required": 10}}
 {"index": {"_type": "default", "_id": "9", "_index": "petitions"}}
@@ -98,10 +102,106 @@
 {"city": null, "description": "Sapiente eos eum veniam amet dignissimos quis. Quam illum eveniet nam non. Repudiandae aliquam debitis voluptas a rerum accusamus. Rem nam perspiciatis fugiat.\nAb unde dolor quis. Dolorum porro architecto unde distinctio dolore ipsa. At nulla expedita sint eveniet eligendi.\nEveniet veritatis repellat non fuga laborum. Cumque nesciunt ipsam ex omnis sunt labore. Vel consequatur atque facere quas vitae dicta vero iusto. Ipsa aliquid eveniet nemo eum id corrupti ex voluptatum.\nEa qui vitae veniam at sequi temporibus debitis. Incidunt velit enim nostrum ullam. Facere dolor qui molestiae suscipit esse eius. Qui dolorum pariatur optio dolorem. Nam veniam cumque vitae fuga a quasi culpa.\nLaudantium accusantium sint aliquam nisi. Delectus libero minima molestiae repudiandae corporis. Maxime suscipit sapiente quos ea quasi esse praesentium ipsam.", "links": [], "title": "Iure culpa aperiam sed.", "suggested_solution": "Veritatis aut saepe natus ratione reiciendis voluptatibus. Totam beatae illo accusamus exercitationem quasi. Molestiae exercitationem aspernatur cum architecto vitae omnis rem. Nihil et voluptas debitis laborum accusamus.\nQuas culpa consequatur accusantium eum ad. Beatae laboriosam voluptatum delectus delectus eius nemo itaque. Expedita aperiam natus quisquam ab corporis eos ipsam.\nPorro magnam provident eligendi impedit ex voluptatibus accusantium. Laudantium libero ex exercitationem ex ea aliquid occaecati. Eum harum eveniet facere reiciendis ipsa magni illum. Dolorem sapiente voluptatum repudiandae vero dolorum.", "dc": {"expires": null, "modified": "2016-05-06T00:28:59", "effective": null, "created": "2016-05-06T00:28:59"}, "owner": null, "state": "pending", "videos": [], "images": [], "response_token": null, "connected_locations": [], "type": "", "id": 41, "tags": ["shop"], "supporters": {"amount": 1, "required": 10}}
 {"index": {"_type": "default", "_id": "46", "_index": "petitions"}}
 {"city": null, "description": "Earum veritatis illo ipsa temporibus molestias tempore accusantium. Beatae officia libero corrupti nemo nisi nisi. Quia odit voluptates sed itaque. Veniam id cumque perspiciatis sapiente. Nisi corporis quos sapiente molestias voluptates porro itaque.\nUnde autem occaecati occaecati expedita soluta perferendis blanditiis error. Veritatis eos possimus temporibus. Dicta quos voluptatum ullam. Placeat earum asperiores quae rem at qui.\nQui porro ex numquam dolore voluptatum. Debitis aspernatur dolor asperiores nemo necessitatibus natus magnam. Quidem inventore aut repellat earum. Vel fugiat nam magni reprehenderit.\nPlaceat voluptatum aperiam quo eos labore. Repellendus nam esse repellendus eveniet assumenda corrupti. Numquam assumenda quia id voluptatum cupiditate. Quidem doloribus inventore ad maxime aut ad consequatur.\nAperiam autem odit quis optio quis. Officiis officiis voluptas modi quae tenetur illum. Quasi nesciunt fugit dignissimos exercitationem reiciendis non et pariatur. Distinctio est iusto ducimus architecto nostrum reiciendis.", "links": [], "title": "Explicabo atque facere totam similique.", "suggested_solution": "Delectus facilis ducimus recusandae totam repellendus earum nemo. Blanditiis ipsum fugit impedit quaerat cum aliquid. Rerum necessitatibus impedit error pariatur. Possimus ipsum cumque recusandae enim voluptatum molestiae quaerat.\nMollitia dolorum eligendi non ex. Beatae facere molestias temporibus quia. Qui adipisci officia beatae ducimus explicabo neque. Atque illum necessitatibus explicabo sequi accusantium debitis modi.\nVoluptates voluptates repellendus sequi odio. Optio dolor nobis delectus facilis ullam. Officia atque soluta dicta nesciunt sapiente unde vel. Consequatur tenetur ipsa omnis perspiciatis eos.", "dc": {"expires": null, "modified": "2016-07-10T14:44:25", "effective": null, "created": "2016-07-10T14:44:25"}, "owner": null, "state": "pending", "videos": [], "images": [], "response_token": null, "connected_locations": [], "type": "", "id": 46, "tags": ["pet"], "supporters": {"amount": 6, "required": 10}}
-{"index": {"_type": "iid", "_id": "users", "_index": "lc_iidsequences"}}
-{"iid": 100}
-{"index": {"_type": "iid", "_id": "petitions", "_index": "lc_iidsequences"}}
-{"iid": 50}
+{"index": {"_type": "default", "_id": "test:0", "_index": "cities"}}
+{"name": "Williamstown", "tags": ["portal:gtb"], "dc": {"modified": "2016-02-02T11:48:44", "created": "2016-02-02T11:48:44"}, "state": "active", "contact": {}, "provider": "test", "zips": ["74993"], "treshold": 10, "id": "test:0"}
+{"index": {"_type": "default", "_id": "test:5", "_index": "cities"}}
+{"name": "Brookestad", "tags": ["portal:aaz"], "dc": {"modified": "2016-01-04T13:21:01", "created": "2016-01-04T13:21:01"}, "state": "active", "contact": {}, "provider": "test", "zips": ["22679"], "treshold": 10, "id": "test:5"}
+{"index": {"_type": "default", "_id": "test:13", "_index": "cities"}}
+{"name": "Michaelborough", "tags": ["portal:aaz"], "dc": {"modified": "2016-03-09T05:17:29", "created": "2016-03-09T05:17:29"}, "state": "active", "contact": {}, "provider": "test", "zips": ["34571", "26628", "92500", "55390"], "treshold": 10, "id": "test:13"}
+{"index": {"_type": "default", "_id": "test:18", "_index": "cities"}}
+{"name": "Thompsonstad", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-05-29T03:57:01", "created": "2016-05-29T03:57:01"}, "state": "active", "contact": {}, "provider": "test", "zips": ["54608"], "treshold": 10, "id": "test:18"}
+{"index": {"_type": "default", "_id": "test:20", "_index": "cities"}}
+{"name": "Kevinstad", "tags": ["portal:bzb", "portal:aaz"], "dc": {"modified": "2016-03-06T11:00:27", "created": "2016-03-06T11:00:27"}, "state": "active", "contact": {}, "provider": "test", "zips": ["73945", "58771"], "treshold": 10, "id": "test:20"}
+{"index": {"_type": "default", "_id": "test:25", "_index": "cities"}}
+{"name": "Lake Danielle", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-06-22T18:21:12", "created": "2016-06-22T18:21:12"}, "state": "active", "contact": {}, "provider": "test", "zips": ["01892", "77370", "14922"], "treshold": 10, "id": "test:25"}
+{"index": {"_type": "default", "_id": "test:32", "_index": "cities"}}
+{"name": "South Claudia", "tags": ["portal:bzb"], "dc": {"modified": "2016-07-01T07:26:29", "created": "2016-07-01T07:26:29"}, "state": "active", "contact": {}, "provider": "test", "zips": ["15933", "54920", "37938", "98380"], "treshold": 10, "id": "test:32"}
+{"index": {"_type": "default", "_id": "test:37", "_index": "cities"}}
+{"name": "South Joseph", "tags": ["portal:bzb"], "dc": {"modified": "2016-06-17T18:47:47", "created": "2016-06-17T18:47:47"}, "state": "active", "contact": {}, "provider": "test", "zips": ["22140"], "treshold": 10, "id": "test:37"}
+{"index": {"_type": "default", "_id": "test:44", "_index": "cities"}}
+{"name": "Thompsonmouth", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-05-13T11:31:48", "created": "2016-05-13T11:31:48"}, "state": "active", "contact": {}, "provider": "test", "zips": ["08076"], "treshold": 10, "id": "test:44"}
+{"index": {"_type": "default", "_id": "test:49", "_index": "cities"}}
+{"name": "Moralesmouth", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-03-06T21:44:14", "created": "2016-03-06T21:44:14"}, "state": "active", "contact": {}, "provider": "test", "zips": ["05442"], "treshold": 10, "id": "test:49"}
+{"index": {"_type": "default", "_id": "test:1", "_index": "cities"}}
+{"name": "North Brianton", "tags": ["portal:gtb"], "dc": {"modified": "2016-05-07T14:58:23", "created": "2016-05-07T14:58:23"}, "state": "active", "contact": {}, "provider": "test", "zips": ["77956", "15570", "52097"], "treshold": 10, "id": "test:1"}
+{"index": {"_type": "default", "_id": "test:6", "_index": "cities"}}
+{"name": "Port Ericberg", "tags": ["portal:aaz"], "dc": {"modified": "2016-04-02T05:47:37", "created": "2016-04-02T05:47:37"}, "state": "active", "contact": {}, "provider": "test", "zips": ["01186", "86386", "54851", "33633"], "treshold": 10, "id": "test:6"}
+{"index": {"_type": "default", "_id": "test:12", "_index": "cities"}}
+{"name": "North James", "tags": ["portal:bzb", "portal:aaz"], "dc": {"modified": "2016-04-23T18:10:08", "created": "2016-04-23T18:10:08"}, "state": "active", "contact": {}, "provider": "test", "zips": ["37830", "53147", "05762", "65751"], "treshold": 10, "id": "test:12"}
+{"index": {"_type": "default", "_id": "test:17", "_index": "cities"}}
+{"name": "South Christopherport", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-07-17T11:27:12", "created": "2016-07-17T11:27:12"}, "state": "active", "contact": {}, "provider": "test", "zips": ["05520", "91599", "37726", "50057"], "treshold": 10, "id": "test:17"}
+{"index": {"_type": "default", "_id": "test:24", "_index": "cities"}}
+{"name": "Kruegerchester", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-07-07T11:34:17", "created": "2016-07-07T11:34:17"}, "state": "active", "contact": {}, "provider": "test", "zips": ["36615", "13073"], "treshold": 10, "id": "test:24"}
+{"index": {"_type": "default", "_id": "test:29", "_index": "cities"}}
+{"name": "Port Trevorfurt", "tags": ["portal:bzb"], "dc": {"modified": "2016-04-12T12:21:07", "created": "2016-04-12T12:21:07"}, "state": "active", "contact": {}, "provider": "test", "zips": ["69664", "49934", "13177"], "treshold": 10, "id": "test:29"}
+{"index": {"_type": "default", "_id": "test:31", "_index": "cities"}}
+{"name": "Bakermouth", "tags": ["portal:aaz"], "dc": {"modified": "2016-01-04T21:13:19", "created": "2016-01-04T21:13:19"}, "state": "active", "contact": {}, "provider": "test", "zips": ["19405", "67177", "39667", "26428"], "treshold": 10, "id": "test:31"}
+{"index": {"_type": "default", "_id": "test:36", "_index": "cities"}}
+{"name": "Howardborough", "tags": ["portal:gtb"], "dc": {"modified": "2016-05-05T12:01:03", "created": "2016-05-05T12:01:03"}, "state": "active", "contact": {}, "provider": "test", "zips": ["64927"], "treshold": 10, "id": "test:36"}
+{"index": {"_type": "default", "_id": "test:43", "_index": "cities"}}
+{"name": "Port Bianca", "tags": ["portal:aaz"], "dc": {"modified": "2016-05-25T20:48:24", "created": "2016-05-25T20:48:24"}, "state": "active", "contact": {}, "provider": "test", "zips": ["12352", "10846", "84919", "86817"], "treshold": 10, "id": "test:43"}
+{"index": {"_type": "default", "_id": "test:48", "_index": "cities"}}
+{"name": "Bauerchester", "tags": ["portal:aaz"], "dc": {"modified": "2016-05-20T01:31:05", "created": "2016-05-20T01:31:05"}, "state": "active", "contact": {}, "provider": "test", "zips": ["10340"], "treshold": 10, "id": "test:48"}
+{"index": {"_type": "default", "_id": "test:2", "_index": "cities"}}
+{"name": "Conwayborough", "tags": ["portal:aaz"], "dc": {"modified": "2016-03-02T10:26:19", "created": "2016-03-02T10:26:19"}, "state": "active", "contact": {}, "provider": "test", "zips": ["31268"], "treshold": 10, "id": "test:2"}
+{"index": {"_type": "default", "_id": "test:7", "_index": "cities"}}
+{"name": "Clarketown", "tags": ["portal:aaz"], "dc": {"modified": "2016-07-01T12:08:33", "created": "2016-07-01T12:08:33"}, "state": "active", "contact": {}, "provider": "test", "zips": ["78640", "78767", "47581", "85661"], "treshold": 10, "id": "test:7"}
+{"index": {"_type": "default", "_id": "test:11", "_index": "cities"}}
+{"name": "Port Edwin", "tags": ["portal:bzb", "portal:aaz"], "dc": {"modified": "2016-02-13T12:11:22", "created": "2016-02-13T12:11:22"}, "state": "active", "contact": {}, "provider": "test", "zips": ["83797"], "treshold": 10, "id": "test:11"}
+{"index": {"_type": "default", "_id": "test:16", "_index": "cities"}}
+{"name": "New Ashley", "tags": ["portal:gtb"], "dc": {"modified": "2016-04-02T15:46:50", "created": "2016-04-02T15:46:50"}, "state": "active", "contact": {}, "provider": "test", "zips": ["30040"], "treshold": 10, "id": "test:16"}
+{"index": {"_type": "default", "_id": "test:23", "_index": "cities"}}
+{"name": "Watkinston", "tags": ["portal:bzb"], "dc": {"modified": "2016-03-02T07:56:58", "created": "2016-03-02T07:56:58"}, "state": "active", "contact": {}, "provider": "test", "zips": ["13737", "84730"], "treshold": 10, "id": "test:23"}
+{"index": {"_type": "default", "_id": "test:28", "_index": "cities"}}
+{"name": "Robersonfort", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-07-11T23:27:18", "created": "2016-07-11T23:27:18"}, "state": "active", "contact": {}, "provider": "test", "zips": ["56709", "63286", "43223", "48719"], "treshold": 10, "id": "test:28"}
+{"index": {"_type": "default", "_id": "test:30", "_index": "cities"}}
+{"name": "South Alisha", "tags": ["portal:bzb"], "dc": {"modified": "2016-02-05T21:54:24", "created": "2016-02-05T21:54:24"}, "state": "active", "contact": {}, "provider": "test", "zips": ["62966", "13856", "79820"], "treshold": 10, "id": "test:30"}
+{"index": {"_type": "default", "_id": "test:35", "_index": "cities"}}
+{"name": "West Desireeburgh", "tags": ["portal:bzb", "portal:aaz"], "dc": {"modified": "2016-07-20T17:38:59", "created": "2016-07-20T17:38:59"}, "state": "active", "contact": {}, "provider": "test", "zips": ["88053", "19449"], "treshold": 10, "id": "test:35"}
+{"index": {"_type": "default", "_id": "test:42", "_index": "cities"}}
+{"name": "West Amy", "tags": ["portal:gtb"], "dc": {"modified": "2016-01-15T14:36:47", "created": "2016-01-15T14:36:47"}, "state": "active", "contact": {}, "provider": "test", "zips": ["44768", "36048", "73920"], "treshold": 10, "id": "test:42"}
+{"index": {"_type": "default", "_id": "test:47", "_index": "cities"}}
+{"name": "Jamesstad", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-02-09T02:42:15", "created": "2016-02-09T02:42:15"}, "state": "active", "contact": {}, "provider": "test", "zips": ["84355", "39431", "76876"], "treshold": 10, "id": "test:47"}
+{"index": {"_type": "default", "_id": "test:3", "_index": "cities"}}
+{"name": "East Brian", "tags": ["portal:bzb"], "dc": {"modified": "2016-02-19T07:07:31", "created": "2016-02-19T07:07:31"}, "state": "active", "contact": {}, "provider": "test", "zips": ["78375", "87120", "08311", "28088"], "treshold": 10, "id": "test:3"}
+{"index": {"_type": "default", "_id": "test:8", "_index": "cities"}}
+{"name": "Riveratown", "tags": ["portal:bzb"], "dc": {"modified": "2016-04-29T14:12:01", "created": "2016-04-29T14:12:01"}, "state": "active", "contact": {}, "provider": "test", "zips": ["66109", "15210", "75465"], "treshold": 10, "id": "test:8"}
+{"index": {"_type": "default", "_id": "test:10", "_index": "cities"}}
+{"name": "North Bridgettown", "tags": ["portal:gtb"], "dc": {"modified": "2016-06-07T19:01:53", "created": "2016-06-07T19:01:53"}, "state": "active", "contact": {}, "provider": "test", "zips": ["65058", "54995"], "treshold": 10, "id": "test:10"}
+{"index": {"_type": "default", "_id": "test:15", "_index": "cities"}}
+{"name": "New Maryville", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-04-21T19:54:43", "created": "2016-04-21T19:54:43"}, "state": "active", "contact": {}, "provider": "test", "zips": ["34822", "68117", "62818"], "treshold": 10, "id": "test:15"}
+{"index": {"_type": "default", "_id": "test:22", "_index": "cities"}}
+{"name": "Brandonland", "tags": ["portal:bzb"], "dc": {"modified": "2016-07-19T10:42:50", "created": "2016-07-19T10:42:50"}, "state": "active", "contact": {}, "provider": "test", "zips": ["01461"], "treshold": 10, "id": "test:22"}
+{"index": {"_type": "default", "_id": "test:27", "_index": "cities"}}
+{"name": "Clinemouth", "tags": ["portal:bzb"], "dc": {"modified": "2016-01-02T03:02:15", "created": "2016-01-02T03:02:15"}, "state": "active", "contact": {}, "provider": "test", "zips": ["17839", "30359", "41731", "69846"], "treshold": 10, "id": "test:27"}
+{"index": {"_type": "default", "_id": "test:34", "_index": "cities"}}
+{"name": "Davisburgh", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-04-01T02:28:10", "created": "2016-04-01T02:28:10"}, "state": "active", "contact": {}, "provider": "test", "zips": ["27730", "39156", "03413"], "treshold": 10, "id": "test:34"}
+{"index": {"_type": "default", "_id": "test:39", "_index": "cities"}}
+{"name": "Kingland", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-06-21T10:57:22", "created": "2016-06-21T10:57:22"}, "state": "active", "contact": {}, "provider": "test", "zips": ["12107", "63128", "44346"], "treshold": 10, "id": "test:39"}
+{"index": {"_type": "default", "_id": "test:41", "_index": "cities"}}
+{"name": "Kendrabury", "tags": ["portal:aaz"], "dc": {"modified": "2016-03-01T18:10:48", "created": "2016-03-01T18:10:48"}, "state": "active", "contact": {}, "provider": "test", "zips": ["62010"], "treshold": 10, "id": "test:41"}
+{"index": {"_type": "default", "_id": "test:46", "_index": "cities"}}
+{"name": "Lake Daniel", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-03-05T19:54:35", "created": "2016-03-05T19:54:35"}, "state": "active", "contact": {}, "provider": "test", "zips": ["31901"], "treshold": 10, "id": "test:46"}
+{"index": {"_type": "default", "_id": "test:4", "_index": "cities"}}
+{"name": "Kathyview", "tags": ["portal:aaz"], "dc": {"modified": "2016-07-15T11:14:36", "created": "2016-07-15T11:14:36"}, "state": "active", "contact": {}, "provider": "test", "zips": ["56317", "53345", "19124", "21869"], "treshold": 10, "id": "test:4"}
+{"index": {"_type": "default", "_id": "test:9", "_index": "cities"}}
+{"name": "Morenostad", "tags": ["portal:bzb"], "dc": {"modified": "2016-03-18T22:57:53", "created": "2016-03-18T22:57:53"}, "state": "active", "contact": {}, "provider": "test", "zips": ["36440"], "treshold": 10, "id": "test:9"}
+{"index": {"_type": "default", "_id": "test:14", "_index": "cities"}}
+{"name": "Nancymouth", "tags": ["portal:aaz", "portal:gtb"], "dc": {"modified": "2016-04-18T08:21:44", "created": "2016-04-18T08:21:44"}, "state": "active", "contact": {}, "provider": "test", "zips": ["11406", "90701", "65595", "58433"], "treshold": 10, "id": "test:14"}
+{"index": {"_type": "default", "_id": "test:19", "_index": "cities"}}
+{"name": "East Jillhaven", "tags": ["portal:bzb"], "dc": {"modified": "2016-03-09T00:25:48", "created": "2016-03-09T00:25:48"}, "state": "active", "contact": {}, "provider": "test", "zips": ["18923"], "treshold": 10, "id": "test:19"}
+{"index": {"_type": "default", "_id": "test:21", "_index": "cities"}}
+{"name": "Richardchester", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-05-11T14:16:33", "created": "2016-05-11T14:16:33"}, "state": "active", "contact": {}, "provider": "test", "zips": ["27876", "67398"], "treshold": 10, "id": "test:21"}
+{"index": {"_type": "default", "_id": "test:26", "_index": "cities"}}
+{"name": "New Dakota", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-02-12T08:15:03", "created": "2016-02-12T08:15:03"}, "state": "active", "contact": {}, "provider": "test", "zips": ["59300", "32427", "04374"], "treshold": 10, "id": "test:26"}
+{"index": {"_type": "default", "_id": "test:33", "_index": "cities"}}
+{"name": "North Robertberg", "tags": ["portal:bzb", "portal:aaz"], "dc": {"modified": "2016-05-17T12:55:36", "created": "2016-05-17T12:55:36"}, "state": "active", "contact": {}, "provider": "test", "zips": ["11966", "77469"], "treshold": 10, "id": "test:33"}
+{"index": {"_type": "default", "_id": "test:38", "_index": "cities"}}
+{"name": "East Joshua", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-01-23T02:03:05", "created": "2016-01-23T02:03:05"}, "state": "active", "contact": {}, "provider": "test", "zips": ["18311", "50924", "03507"], "treshold": 10, "id": "test:38"}
+{"index": {"_type": "default", "_id": "test:40", "_index": "cities"}}
+{"name": "South Willie", "tags": ["portal:gtb"], "dc": {"modified": "2016-06-16T23:03:00", "created": "2016-06-16T23:03:00"}, "state": "active", "contact": {}, "provider": "test", "zips": ["17405", "54981", "96906"], "treshold": 10, "id": "test:40"}
+{"index": {"_type": "default", "_id": "test:45", "_index": "cities"}}
+{"name": "Josephburgh", "tags": ["portal:bzb", "portal:gtb"], "dc": {"modified": "2016-02-28T13:02:41", "created": "2016-02-28T13:02:41"}, "state": "active", "contact": {}, "provider": "test", "zips": ["43786", "45364", "39166", "68733"], "treshold": 10, "id": "test:45"}
 {"index": {"_type": "default", "_id": "4", "_index": "users"}}
 {"sso": [{"trusted": false, "provider": "zeitOnline"}], "firstname": "Adam", "roles": ["admin"], "lastname": "Jackson", "dc": {"modified": "2016-04-02T09:32:50", "created": "2016-04-02T09:32:50"}, "id": 4, "state": "disabled", "email": "howardtiffany@gmail.com"}
 {"index": {"_type": "default", "_id": "9", "_index": "users"}}

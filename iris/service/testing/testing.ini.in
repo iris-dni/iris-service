@@ -18,12 +18,16 @@ pyramid_swagger.include_read_only_properties = False
 pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = default
 
+api.app_url = http://testing.com
+
 auth.secret = supersecret
 auth.cookie_name = iris-tkt
 
 sso.apikey.test_public_api_key = test_private_api_key
 sso.apikey.other_public_api_key = other_private_api_key
 sso.apikey.local = local
+
+iris.apikey.local = local
 
 static.docs = iris.service.testing:docs
               docs

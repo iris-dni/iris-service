@@ -2,6 +2,7 @@ from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
 from iris.service.rest import queries
+from iris.service.security import acl
 
 from ..errors import Errors
 
@@ -9,7 +10,8 @@ from .sm import PetitionStateMachine
 from .document import Petition
 
 
-@RestService("petition_admin_api")
+@RestService("petition_admin_api",
+             permission=acl.Permissions.AdminFull)
 class PetitionAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'petitions'
@@ -26,8 +28,6 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     DOC_CLASS = Petition
 
     QUERY_PARAMS = {
-        'state': queries.termsFilter('state'),
-        'tags': queries.termsFilter('tags'),
         'ft': queries.fulltextQuery(['tags_ft',
                                      'title_ft',
                                      'description_ft',
@@ -39,6 +39,11 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'suggested_solution_ft': queries.fulltextQuery(
             ['suggested_solution_ft']
         ),
+    }
+
+    FILTER_PARAMS = {
+        'state': queries.termsFilter('state'),
+        'tags': queries.termsFilter('tags'),
     }
 
     SORT_PARAMS = {
@@ -77,7 +82,10 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
 class PetitionPublicRESTService(rest.RESTService):
     """Public petition endpoint
 
-    We reuse the BaseRESTService for the simple endpoints.
+    We reuse the RESTService for the simple endpoints.
+
+    The REST methods which should not be available must not be configured in
+    swagger.
     """
 
     MAPPER_NAME = 'petitions'

@@ -2,6 +2,8 @@ from pyramid import security
 
 from iris.service.user import User
 
+from . import acl
+
 
 def groupfinder(user_id, request):
     """Provides the groups based on the currently logged in user
@@ -14,6 +16,9 @@ def groupfinder(user_id, request):
     """
     groups = []
     user = None
+    if user_id == acl.Roles.ApiKeyUser:
+        groups.append(acl.Roles.ApiKeyUser)
+        return groups
     if user_id is not None:
         user = User.get(user_id)
     if user:
@@ -49,3 +54,7 @@ def logout_user(request, response):
     headers = security.forget(request)
     response.headerlist.extend(headers)
     request.user = None
+
+
+class ApiKeyDummyUser(object):
+    pass

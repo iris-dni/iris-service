@@ -1,0 +1,225 @@
+definitions:
+    CityPublic:
+        type: object
+        properties:
+            id:
+                type: string
+            provider:
+                type: string
+            tags:
+                type: array
+                items:
+                    type: string
+            name:
+                type: string
+                default: ''
+            zips:
+                type: array
+                items:
+                    type: string
+            treshold:
+                type: integer
+    CityPrivate:
+        type: object
+        properties:
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            state:
+                type: string
+                readOnly: true
+                default: 'draft'
+            contact:
+                type: object
+                properties:
+                    salutation:
+                        type: string
+                        default: ''
+                    address:
+                        type: string
+                        default: ''
+    City:
+        $ref: '#/definitions/CityPublic'
+    CityAdmin:
+        type: object
+        allOf:
+            - $ref: '#/definitions/CityPublic'
+            - $ref: '#/definitions/CityPrivate'
+    POSTBody:
+        # The city wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/City'
+    POSTBodyAdmin:
+        # The city wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/CityAdmin'
+    ResponseBodyAdmin:
+        # The city wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/CityAdmin'
+    ResponseBody:
+        # The city wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/City'
+    ListResponseBody:
+        description: City list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/City'
+            total:
+                type: integer
+    ListResponseBodyAdmin:
+        description: Admin city list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityAdmin'
+            total:
+                type: integer
+    ListResponseBodyAdmin:
+        description: User list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityAdmin'
+            total:
+                type: integer
+
+# Importer defintions
+
+    CityImportData:
+        type: object
+        properties:
+            id:
+                type: string
+            state:
+                type: string
+                default: 'draft'
+            tags:
+                type: array
+                items:
+                    type: string
+            name:
+                type: string
+                default: ''
+            zips:
+                type: array
+                items:
+                    type: string
+            treshold:
+                type: integer
+            contact:
+                type: object
+                properties:
+                    salutation:
+                        type: string
+                        default: ''
+                    address:
+                        type: string
+                        default: ''
+    CityImportEntry:
+        type: object
+        required:
+            - operation
+            - data
+        properties:
+            operation:
+                type: string
+                enum: 
+                    - add
+                    - update
+                    - delete
+                description: |
+                    The operation on the city
+
+                    Please note that the operation "update" and "add" always
+                    create or change a city.
+            data:
+                $ref: '#/definitions/CityImportData'
+    CityImportResponseData:
+        type: object
+        required:
+            - status
+        properties:
+            id:
+                type: string
+                description: |
+                    The external city id as it was provided in the request
+                    data.
+            irisId:
+                type: string
+                description: |
+                    The iris internal id of the city.
+
+                    This is the id which can be used to get the city using the
+                    API.
+            status:
+                type: string
+                enum:
+                    - ok:added
+                    - ok:updated
+                    - ok:deleted
+                    - error:missing_id
+                    - error:not_found
+                description: |
+                    status names starting with `ok:` are positiv, anything else
+                    leaves the corresponding city unchanged.
+    ImportPOSTBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityImportEntry'
+    ImportResponseBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/CityImportResponseData'

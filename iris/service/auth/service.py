@@ -1,13 +1,13 @@
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service.rest.swagger import swagger_reduce_response
+from iris.service.security.security import login_user, logout_user
 
 from ..endpoint import EndpointErrorMixin, BadRequest
 from ..errors import Errors
 
 from .ssotoken import SSOToken
 from .secret import verify_message
-from .security import login_user, logout_user
 from .sso import get_or_create_sso_user
 
 
@@ -37,9 +37,12 @@ class AuthService(EndpointErrorMixin):
 
     def _whoami(self):
         user = self.request.user
-        if user is None:
-            raise self.bad_request(Errors.not_logged_in)
-        return {'data': user.get_source()}
+        result = {
+            'status': user is not None and 'ok' or 'unauthenticated'
+        }
+        if user is not None:
+            result['data'] = user.get_source()
+        return result
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssologin')

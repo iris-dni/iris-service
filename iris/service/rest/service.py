@@ -22,7 +22,7 @@ class BaseRESTService(EndpointErrorMixin):
 
     def _getMapper(self, mapperName):
         try:
-            return RESTMapper.getMapperImplementation(mapperName)
+            return RESTMapper.getMapperImplementation(mapperName, self.request)
         except KeyError:
             raise self.not_found(Errors.mapper_not_found,
                                  {'mapperName': mapperName}
@@ -183,6 +183,9 @@ class RESTMapper(object):
 
     NAME = None
 
+    def __init__(self, request):
+        self.request = request
+
     def get(self, contentId):
         raise NotImplementedError('%s.get' % self.__class__.__name__)
 
@@ -199,9 +202,9 @@ class RESTMapper(object):
         raise NotImplementedError('%s.search' % self.__class__.__name__)
 
     @classmethod
-    def getMapperImplementation(cls, name):
+    def getMapperImplementation(cls, name, request):
         cls = cls._MAPPER_REGISTRY[name]
-        impl = cls()
+        impl = cls(request)
         impl.name = name
         return impl
 

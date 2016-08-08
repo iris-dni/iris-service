@@ -10,7 +10,7 @@ The group finder creates a list of groups based on a user::
 
     >>> request = get_test_request()
 
-    >>> from iris.service.auth.security import groupfinder
+    >>> from iris.service.security.security import groupfinder
 
     >>> groupfinder(None, request)
     []
@@ -32,3 +32,13 @@ With an unknown user id::
 
     >>> groupfinder('unknown', request)
     []
+
+
+API-Key
+=======
+
+There is a special handling for the API-Key user::
+
+    >>> from iris.service.security import acl
+    >>> groupfinder(acl.Roles.ApiKeyUser, request)
+    ['apikey-user']

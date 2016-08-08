@@ -5,6 +5,7 @@ Auth Service
     >>> from iris.service.auth.secret import sign_message
     >>> # sign_message({'email': 'me@you.com', 'roles': ['admin']}, 'local')
 
+
 Check Current Login
 ===================
 
@@ -12,13 +13,10 @@ The whoami endpoint provides the data of the currently logged in user::
 
     >>> response = browser.get('/v1/auth/whoami', expect_errors=True)
     >>> response.status
-    '400 Bad Request'
+    '200 OK'
     >>> print_json(response)
     {
-      "error": {
-        "code": 400,
-        "description": "Not logged in"
-      }
+      "status": "unauthenticated"
     }
 
 
@@ -39,6 +37,14 @@ The sso or token parameter is required::
     }
 
     >>> response = browser.post('/v1/auth/ssologin?sso=123&token=321', expect_errors=True)
+    >>> response.headers['cache-control']
+    'max-age=0, must-revalidate, no-cache, no-store'
+    >>> response.headers['pragma']
+    'no-cache'
+    >>> response.headers['expires']
+    '... GMT'
+    >>> response.headers['last-modified']
+    '... GMT'
     >>> response.status
     '400 Bad Request'
     >>> print_json(response)
@@ -66,6 +72,8 @@ Login with sso data::
         ...
         "email": "me-sso@you.com",
         ...
+      },
+      "status": "ok"
     }
 
 Logout an sso user with an empty object::
@@ -76,7 +84,11 @@ Logout an sso user with an empty object::
     ... )
     >>> response = browser.post('/v1/auth/ssologin?sso=%s&apikey=test_public_api_key' % message, expect_errors=True)
     >>> response.status
-    '400 Bad Request'
+    '200 OK'
+    >>> print_json(response)
+    {
+      "status": "unauthenticated"
+    }
 
 Logout is performed if email is missing::
 
@@ -88,7 +100,11 @@ Logout is performed if email is missing::
     ... )
     >>> response = browser.post('/v1/auth/ssologin?sso=%s&apikey=test_public_api_key' % message, expect_errors=True)
     >>> response.status
-    '400 Bad Request'
+    '200 OK'
+    >>> print_json(response)
+    {
+      "status": "unauthenticated"
+    }
 
 
 SSO Token
@@ -214,7 +230,8 @@ sso with apikey::
           }
         ],
         "state": "active"
-      }
+      },
+      "status": "ok"
     }
 
 When using a token the user is logged in the same way as she would be logged
@@ -252,5 +269,6 @@ in the ssologin endpoint::
           }
         ],
         "state": "active"
-      }
+      },
+      "status": "ok"
     }

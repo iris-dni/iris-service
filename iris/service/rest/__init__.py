@@ -4,6 +4,10 @@ from .document import (  # noqa
     SearchableDocumentRESTMapperMixin,
 )
 
+APP_URL = None
+
 
 def includeme(config):
-    pass
+    global APP_URL
+    settings = config.get_settings()
+    APP_URL = settings.get('api.app_url', None)

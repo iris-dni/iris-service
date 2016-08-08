@@ -6,6 +6,7 @@ Prepare test::
 
     >>> from iris.service.rest.service import testing_push_state
     >>> testing_push_state()
+    >>> request = get_test_request()
 
 
 Implementation
@@ -20,7 +21,7 @@ RESTMapper::
 
 The RESTMapper class provides a method to get mapper implementations::
 
-    >>> rest.RESTMapper.getMapperImplementation('mymapper')
+    >>> rest.RESTMapper.getMapperImplementation('mymapper', request)
     <MyMapper object at ...>
 
 A mapper class must provide a NAME::

@@ -5,6 +5,7 @@ from faker import Faker
 
 from iris.service.user import User
 from iris.service.petition import Petition
+from iris.service.city import City
 
 
 def create_object(cls, *args, **kwargs):
@@ -80,3 +81,34 @@ def petitions(amount, seed='0'):
                       },
                      )
     Petition.refresh()
+
+
+def cities(amount, seed='0'):
+    faker = Faker()
+    faker.seed(seed)
+    random.seed(seed)
+    for i in range(amount):
+        time = faker.date_time_between_dates(
+            datetime_start=datetime(2016, 1, 1),
+            datetime_end=datetime(2016, 7, 21),
+            tzinfo=None,
+        )
+        create_object(City,
+                      id=i,
+                      provider='test',
+                      name=faker.city(),
+                      tags=list(set([random.choice(['portal:aaz',
+                                                    'portal:bzb',
+                                                    'portal:gtb'])
+                                     for i in range(random.randint(1, 3))]
+                               )),
+                      zips=list(set([faker.postalcode()
+                                     for i in range(random.randint(1, 4))]
+                               )),
+                      treshold=10,
+                      dc={
+                          'created': time,
+                          'modified': time,
+                      },
+                     )
+    City.refresh()
