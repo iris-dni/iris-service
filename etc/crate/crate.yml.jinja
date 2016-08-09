@@ -6,15 +6,22 @@ script:
     groovy:
         sandbox:
             enabled: true
+
+network:
+    bind_host: 0.0.0.0
+    publish_host: {{ hostname }}
+
 http:
+    publish_port: {{ crate['ports'][0][0] }}
     port: {{ crate['ports'][0][1] }}
     cors:
         enabled: true
         allow-origin: "/.*/"
 
 transport:
+    publish_port: {{ crate['ports'][1][0] }}
     tcp:
-        port: {{ crate['ports'][1][0] }}
+        port: {{ crate['ports'][1][1] }}
 
 path:
     logs:  {{ crate['log_path'] }}
@@ -34,7 +41,3 @@ discovery:
 
 cluster:
     name: {{ crate['cluster_name'] }}
-
-network:
-    bind_host: 0.0.0.0
-    publish_host: {{ hostname }}
