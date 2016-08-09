@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - removed allowed schema from swagger api config
+
 2016/07/13 0.0.6
 =================
 

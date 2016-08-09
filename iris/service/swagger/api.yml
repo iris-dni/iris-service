@@ -4,8 +4,6 @@ info:
     version: '0.0.1'
     description: |
         The IRIS API
-schemes:
-    - http
 basePath: /v1
 
 consumes:
