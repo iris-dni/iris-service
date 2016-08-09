@@ -14,6 +14,7 @@ http:
 path:
     logs:  {{ crate['log_path'] }}
     data:  {{ crate['data_path'] }}
+
 discovery:
     type: zen
     zen:
@@ -25,5 +26,10 @@ discovery:
                     {%- for node in crate['hosts'] %}
                     - {{ node }}:{{ crate['ports'][1][0] }}
                     {%- endfor %}
+
 cluster:
     name: {{ crate['cluster_name'] }}
+
+network:
+    bind_host: 0.0.0.0
+    publish_host: {{ hostname }}
