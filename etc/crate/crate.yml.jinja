@@ -11,6 +11,11 @@ http:
     cors:
         enabled: true
         allow-origin: "/.*/"
+
+transport:
+    tcp:
+        port: {{ crate['ports'][1][0] }}
+
 path:
     logs:  {{ crate['log_path'] }}
     data:  {{ crate['data_path'] }}
