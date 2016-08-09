@@ -1,3 +1,4 @@
+{%- set crate = config['containers']['iris-crate'] -%}
 es:
     api:
         enabled: true
@@ -6,13 +7,13 @@ script:
         sandbox:
             enabled: true
 http:
-    port: {{config['containers']['iris-crate']['ports'][0][1]}}
+    port: {{ crate['ports'][0][1] }}
     cors:
         enabled: true
         allow-origin: "/.*/"
 path:
-    logs:  {{config['containers']['iris-crate']['log_path']}}
-    data:  {{config['containers']['iris-crate']['data_path']}}
+    logs:  {{ crate['log_path'] }}
+    data:  {{ crate['data_path'] }}
 discovery:
     type: zen
     zen:
@@ -21,8 +22,8 @@ discovery:
                 enabled:  false
             unicast:
                 hosts:
-                    {%- for node in config['containers']['iris-crate']['hosts'] %}
-                    - {{node}}
+                    {%- for node in crate['hosts'] %}
+                    - {{ node }}:{{ crate['ports'][1][0] }}
                     {%- endfor %}
 cluster:
-    name: {{config['containers']['iris-crate']['cluster_name']}}
+    name: {{ crate['cluster_name'] }}
