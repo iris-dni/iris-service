@@ -44,6 +44,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     FILTER_PARAMS = {
         'state': queries.termsFilter('state'),
         'tags': queries.termsFilter('tags'),
+        'city': queries.termsFilter('city'),
     }
 
     SORT_PARAMS = {
