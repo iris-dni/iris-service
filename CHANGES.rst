@@ -5,6 +5,11 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added petition state management
+
+2016/08/10 0.0.7
+=================
+
  - removed allowed schema from swagger api config
 
 2016/07/13 0.0.6

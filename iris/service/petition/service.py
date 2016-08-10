@@ -1,3 +1,5 @@
+import transitions
+
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
@@ -5,6 +7,7 @@ from iris.service.rest import queries
 from iris.service.security import acl
 
 from ..errors import Errors
+from ..rest.swagger import swagger_reduce_response
 
 from .sm import PetitionStateMachine
 from .document import Petition
@@ -42,7 +45,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     }
 
     FILTER_PARAMS = {
-        'state': queries.termsFilter('state'),
+        'state': queries.termsFilter('state.name'),
         'tags': queries.termsFilter('tags'),
         'city': queries.termsFilter('city'),
     }
@@ -51,7 +54,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'created': queries.fieldSorter('dc.created'),
         'modified': queries.fieldSorter('dc.modified'),
         'id': queries.fieldSorter('id'),
-        'state': queries.fieldSorter('state'),
+        'state': queries.fieldSorter('state.name'),
         'supporters.amount': queries.fieldSorter('supporters.amount'),
         'score': queries.scoreSorter,
         'default': queries.fieldSorter('dc.created', 'DESC'),
@@ -66,15 +69,27 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         # TODO: support the petition
         return {}
 
+    def delete_support(self, contentId, data):
+        """Sign a petition
+        """
+        petition = Petition.get(contentId)
+        if petition is None:
+            return None
+        # TODO: support the petition
+        return {}
+
     def event(self, contentId, transitionName, data=None):
         petition = Petition.get(contentId)
         if petition is None:
             return None
-        # TODO: implement event state handling
         sm = PetitionStateMachine(petition)
-        state = sm.switch(transitionName)
-        if state:
-            petition.state = state
+        transition_fn = getattr(sm, transitionName)
+        if transition_fn is None:
+            # transition doesn't exist
+            raise transitions.MachineError(
+                'Unknown transition "%s"' % transitionName)
+        done = getattr(sm, transitionName)()
+        if done:
             petition.store(refresh=True)
         return self.doc_as_dict(petition)
 
@@ -99,9 +114,27 @@ class PetitionPublicRESTService(rest.RESTService):
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/support')
+    @swagger_reduce_response
     def support(self, **kwargs):
         mapper = self._getMapper(self.MAPPER_NAME)
         result = mapper.support(**self.request.swagger_data)
+        if result is None:
+            raise self.not_found(
+                Errors.document_not_found,
+                {
+                    'contentId': self.request.swagger_data.get('contentId',
+                                                               'missing'),
+                    'mapperName': self.MAPPER_NAME
+                }
+            )
+        return result
+
+    @rpcmethod_route(request_method='DELETE',
+                     route_suffix='/{contentId}/support')
+    @swagger_reduce_response
+    def delete_support(self, **kwargs):
+        mapper = self._getMapper(self.MAPPER_NAME)
+        result = mapper.delete_support(**self.request.swagger_data)
         if result is None:
             raise self.not_found(
                 Errors.document_not_found,
@@ -121,49 +154,63 @@ class PetitionPublicRESTService(rest.RESTService):
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/reject')
+    @swagger_reduce_response
     def event_reject(self, **kwargs):
         return self._event('reject')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/publish')
+    @swagger_reduce_response
     def event_publish(self, **kwargs):
         return self._event('publish')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/delete')
+    @swagger_reduce_response
     def event_delete(self, **kwargs):
         return self._event('delete')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/close')
+    @swagger_reduce_response
     def event_close(self, **kwargs):
         return self._event('close')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/approved')
+    @swagger_reduce_response
     def event_approved(self, **kwargs):
         return self._event('approved')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/sendLetter')
+    @swagger_reduce_response
     def event_sendLetter(self, **kwargs):
         return self._event('sendLetter')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/setFeedback')
+    @swagger_reduce_response
     def event_setFeedback(self, **kwargs):
         return self._event('setFeedback')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/{transitionName}')
+    @swagger_reduce_response
     def event_generic(self, **kwargs):
         switch = self.request.swagger_data.pop('transitionName')
         return self._event(switch)
 
     def _event(self, switch):
         mapper = self._getMapper(self.MAPPER_NAME)
-        result = mapper.event(transitionName=switch,
-                              **self.request.swagger_data)
+        try:
+            result = mapper.event(transitionName=switch,
+                                  **self.request.swagger_data)
+        except transitions.MachineError as e:
+            raise self.bad_request(Errors.sm_transition_error,
+                                   replacements={
+                                       'text': e.value
+                                   })
         if result is None:
             raise self.not_found(
                 Errors.document_not_found,

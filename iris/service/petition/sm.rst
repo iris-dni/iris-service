@@ -1,0 +1,36 @@
+======================
+Petition State Machine
+======================
+
+The state machine needs an instance of a petition::
+
+    >>> from iris.service.petition import Petition
+    >>> petition = Petition()
+
+    >>> from iris.service.petition.sm import PetitionStateMachine
+    >>> sm = PetitionStateMachine(petition)
+    >>> sm.state
+    'draft'
+    >>> petition.state
+    <StateContainer draft>
+
+Publish the petition::
+
+    >>> _ = sm.publish()
+    >>> sm.state
+    'supportable.pending'
+    >>> petition.state
+    <StateContainer supportable.pending>
+
+A new instance of the petition state machine initializes with the current
+state of the petition::
+
+    >>> sm = PetitionStateMachine(petition)
+    >>> sm.state
+    'supportable.pending'
+    >>> petition.state
+    <StateContainer supportable.pending>
+
+    >>> _ = sm.approved()
+    >>> sm.state
+    'supportable.active'

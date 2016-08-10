@@ -33,7 +33,12 @@ CREATE TABLE petitions (
         effective TIMESTAMP,
         expires TIMESTAMP
     ),
-    state STRING,
+    state OBJECT(IGNORED) AS (
+        name STRING,
+        parent STRING,
+        listable BOOLEAN,
+        timer LONG
+    ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,
     -- relation to cities table

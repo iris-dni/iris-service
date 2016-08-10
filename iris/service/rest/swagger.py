@@ -19,8 +19,9 @@ def swagger_reduce_response(f):
         result = f(self, *args, **kwargs)
         route_mapper = self.request.registry.queryUtility(IRoutesMapper)
         route_info = route_mapper(self.request)
-        path = route_info['route'].path
-        if path not in SPEC_MAPPING_CACHE:
+        route = route_info['route']
+        cacheKey = route.path + route.predicates[0].text()
+        if cacheKey not in SPEC_MAPPING_CACHE:
             if TWEEN_SETTINGS is None:
                 TWEEN_SETTINGS = tween.load_settings(self.request.registry)
             swagger_handler, spec = tween.get_swagger_objects(
@@ -38,9 +39,9 @@ def swagger_reduce_response(f):
             )
             resolved = api.resolve_refs(spec, response_spec).get('schema', {})
             spec_mapping = build_spec_mapping(resolved)
-            SPEC_MAPPING_CACHE[path] = spec_mapping
+            SPEC_MAPPING_CACHE[cacheKey] = spec_mapping
         else:
-            spec_mapping = SPEC_MAPPING_CACHE[path]
+            spec_mapping = SPEC_MAPPING_CACHE[cacheKey]
         return reduce_mapping(spec_mapping, result)
     return do
 

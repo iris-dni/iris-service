@@ -18,6 +18,8 @@ def test_suite():
 
         create_crate_suite('petition/document.rst'),
         create_crate_suite('petition/service.rst'),
+        create_crate_suite('petition/events.rst'),
+        create_suite('petition/sm.rst'),
         create_crate_doc_suite('petitions.rst'),
 
         create_crate_suite('user/document.rst'),

@@ -30,6 +30,8 @@ sso.apikey.nwch = 08f9e7d03d2c83e9e8774299d114c154
 iris.apikey.local = local
 iris.apikey.nwch = b428db796829443ed2062702deb02b6c
 
+iris.city.treshold = 100
+
 static.docs = iris.service:docs
               docs
 static.admin = ${buildout:directory}/../iris-admin/public

@@ -1,5 +1,43 @@
 definitions:
-    Petition:
+    PublicState:
+        type: object
+        properties:
+            state:
+                type: object
+                readOnly: true
+                properties:
+                    name:
+                        type: string
+                        readOnly: true
+                        default: 'draft'
+                    parent:
+                        type: string
+                        readOnly: true
+                        default: ''
+    PrivateState:
+        type: object
+        properties:
+            state:
+                type: object
+                readOnly: true
+                properties:
+                    name:
+                        type: string
+                        readOnly: true
+                        default: 'draft'
+                    parent:
+                        type: string
+                        readOnly: true
+                        default: ''
+                    listable:
+                        type: boolean
+                        readOnly: true
+                    timer:
+                        type: integer
+                        readOnly: true
+                        default: 0
+
+    ReadOnly:
         type: object
         properties:
             id:
@@ -27,10 +65,10 @@ definitions:
                         x-nullable: true
                         format: dateTime
                         description: visible until this time (ISO8601)
-            state:
-                type: string
-                readOnly: true
-                default: 'draft'
+
+    Properties:
+        type: object
+        properties:
             tags:
                 type: array
                 items:
@@ -65,8 +103,12 @@ definitions:
                 type: object
                 readOnly: true
                 properties:
-                    count:
+                    amount:
                         type: integer
+                        readOnly: true
+                    required:
+                        type: integer
+                        readOnly: true
             owner:
                 type: string
                 x-nullable: true
@@ -75,6 +117,21 @@ definitions:
                 type: string
                 x-nullable: true
                 readOnly: true
+
+    Petition:
+        type: object
+        allOf:
+            - $ref: '#/definitions/ReadOnly'
+            - $ref: '#/definitions/PublicState'
+            - $ref: '#/definitions/Properties'
+
+    AdminPetition:
+        type: object
+        allOf:
+            - $ref: '#/definitions/ReadOnly'
+            - $ref: '#/definitions/PrivateState'
+            - $ref: '#/definitions/Properties'
+
     POSTBody:
         # The petition wrapped in a data property for the POST bodies
         type: object
@@ -104,6 +161,14 @@ definitions:
                     $ref: '#/definitions/Petition'
             total:
                 type: integer
+    ResponseBodyAdmin:
+        # The petition wrapped in a data property for the response body
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/AdminPetition'
     ListResponseBodyAdmin:
         description: Petition list response
         type: object
@@ -114,6 +179,6 @@ definitions:
             data:
                 type: array
                 items:
-                    $ref: '#/definitions/Petition'
+                    $ref: '#/definitions/AdminPetition'
             total:
                 type: integer

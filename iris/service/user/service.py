@@ -9,7 +9,7 @@ from .document import User
 
 @RestService("user_admin_api",
              permission=acl.Permissions.AdminFull)
-class PetitionAdminRESTService(rest.RESTService):
+class UserAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'users'
 

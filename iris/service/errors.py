@@ -21,3 +21,5 @@ class Errors(Enum):
     document_not_found = (
         "Id '{contentId}' for content type '{mapperName}' not found"
     )
+
+    sm_transition_error = 'Transition error: {text}'

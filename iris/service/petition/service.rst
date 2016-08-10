@@ -14,7 +14,7 @@ Create Petition
 
     >>> petition = {
     ...     "data": {
-    ...         "state": "test",
+    ...         "state": {"name": "test"},
     ...         "title": "Public petition"
     ...     }
     ... }
@@ -34,7 +34,10 @@ Create Petition
         ...
         "id": ...,
         ...
-        "state": "draft",
+        "state": {
+          "name": "draft",
+          "parent": ""
+        },
         ...
       }
     }
@@ -61,7 +64,10 @@ Get Petition
         ...
         "id": ...,
         ...
-        "state": "draft",
+        "state": {
+          "name": "draft",
+          "parent": ""
+        },
         ...
       }
     }
@@ -85,8 +91,6 @@ Delete Petition
         },
         ...
         "id": ...,
-        ...
-        "state": "draft",
         ...
       }
     }
@@ -149,7 +153,7 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "state": "test 1",
+    ...         "state": {"name": "test 1"},
     ...         "title": "Admin petition",
     ...     }
     ... }
@@ -170,7 +174,12 @@ Create a new petition::
         ...
         "id": ...,
         ...
-        "state": "draft",
+        "state": {
+          "listable": false,
+          "name": "draft",
+          "parent": "",
+          "timer": 0
+        },
         ...
         "title": "Admin petition",
         ...
@@ -316,7 +325,10 @@ Search results can be filtered by state::
       "data": [
         {
           ...
-          "state": "draft",
+          "state": {
+            "name": "draft",
+            "parent": ""
+          },
           ...
         }
       ],
@@ -388,65 +400,18 @@ State
 Use the `state` sort::
 
     >>> response = browser.get('/v1/petitions?sort=state&limit=5')
-    >>> [(p['state'], p['id']) for p in response.json['data']]
+    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
     [(u'active', 12), (u'active', 8), (u'draft', 4), (u'draft', 9), (u'draft', 11)]
 
     >>> response = browser.get('/v1/petitions?sort=-state&limit=5')
-    >>> [(p['state'], p['id']) for p in response.json['data']]
+    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
     [(u'draft', 4), (u'draft', 9), (u'draft', 11), (u'draft', 5), (u'draft', 6)]
 
 Combined with id sort::
 
     >>> response = browser.get('/v1/petitions?sort=state,id&limit=5')
-    >>> [(p['state'], p['id']) for p in response.json['data']]
+    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
     [(u'active', 8), (u'active', 12), (u'draft', 3), (u'draft', 4), (u'draft', 5)]
-
-
-Controlling the Petition State Machine
---------------------------------------
-
-The petition state is controlled using a state machine (for details about the
-state machine see the online documentation).
-
-States can be switched by triggering events on the state machine. These events
-can be created using the `event` endpoint on a petition.
-
-These event endpoints are currently avaialable but not fully impemented. The
-endpoints switch the state but don't check for validity::
-
-Create a new petition::
-
-    >>> petition = {
-    ...     "data": {
-    ...         "title": "Switchable petition"
-    ...     }
-    ... }
-    >>> response = browser.post_json('/v1/petitions', petition)
-    >>> id = response.json['data']['id']
-
-Publish the petition::
-
-    >>> response = browser.post('/v1/petitions/%s/event/publish' % id)
-    >>> print_json(response)
-    {
-      "data": {
-        ...
-        "state": "pending",
-        ...
-      },
-      "status": "ok"
-    }
-
-Call all event endpoint to make sure swagger validation works::
-
-    >>> response = browser.post('/v1/petitions/%s/event/reject' % id)
-    >>> response = browser.post('/v1/petitions/%s/event/delete' % id)
-    >>> response = browser.post('/v1/petitions/%s/event/close' % id)
-    >>> response = browser.post('/v1/petitions/%s/event/approved' % id)
-    >>> response = browser.post('/v1/petitions/%s/event/sendLetter' % id)
-    >>> response = browser.post('/v1/petitions/%s/event/setFeedback' % id)
-
-    >>> response = browser.post('/v1/petitions/%s/event/reset' % id)
 
 
 Permissions

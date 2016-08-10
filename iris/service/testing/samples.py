@@ -5,6 +5,7 @@ from faker import Faker
 
 from iris.service.user import User
 from iris.service.petition import Petition
+from iris.service.petition.document import StateContainer
 from iris.service.city import City
 
 
@@ -64,7 +65,9 @@ def petitions(amount, seed='0'):
             tzinfo=None,
         )
         create_object(Petition,
-                      state=random.choice(['draft', 'active', 'pending']),
+                      state=StateContainer(
+                          name=random.choice(['draft', 'active', 'pending'])
+                      ),
                       tags=[random.choice(['pet', 'shop', 'boys'])],
                       title=faker.text(50),
                       description='\n'.join(faker.paragraphs(5)),

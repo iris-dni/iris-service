@@ -1,6 +1,11 @@
+import copy
+import jsonpickle
+
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property
+from lovely.esdb.properties import Property, ObjectProperty
 from lovely.essequence import Sequence
+
+from transitions.extensions.nesting import NestedState
 
 from ..db.dc import dc_defaults_all
 
@@ -10,6 +15,7 @@ IID = Sequence('petitions').next
 
 
 class Petition(Document):
+
     INDEX = 'petitions'
 
     id = Property(primary_key=True, default=IID)
@@ -19,10 +25,13 @@ class Petition(Document):
         doc="Dublin Core data."
     )
 
-    state = Property(
-        default='draft',
+    state = ObjectProperty(
+        default=lambda: StateContainer(name='draft',
+                                       parent='',
+                                       listable=False,
+                                       timer=0),
         doc="""
-          The current state of the petition.
+          The current state information of the petition.
           The state is controlled via a state machine.
         """
     )
@@ -84,7 +93,10 @@ class Petition(Document):
     )
 
     supporters = Property(
-        default=lambda: {},
+        default=lambda: {
+            "amount": 0,
+            "required": 0,
+        },
         doc="""
           An object which contains information about the supporters of the
           petition.
@@ -101,3 +113,55 @@ class Petition(Document):
 
     def __repr__(self):
         return "<%s [id=%r]>" % (self.__class__.__name__, self.id)
+
+
+class StateContainer(object):
+
+    def __init__(self,
+                 name='draft',
+                 parent='',
+                 **kwargs):
+        self.name = name
+        self.parent = parent
+        for name, value in kwargs.iteritems():
+            if name not in set(['py/object']):
+                setattr(self, name, value)
+
+    def get_full_name(self):
+        if self.parent:
+            return NestedState.separator.join([self.parent,
+                                               self.name])
+        return self.name
+
+    def set_full_name(self, value):
+        states = value.split(NestedState.separator, 1)
+        self.name = states[-1]
+        if len(states) > 1:
+            self.parent = states[0]
+        else:
+            self.parent = Petition.state.default().parent
+
+    full_name = property(get_full_name, set_full_name)
+
+    def __repr__(self):
+        return '<%s %s>' % (self.__class__.__name__,
+                            self.full_name)
+
+
+class StateContainerJSONPickleHandler(jsonpickle.handlers.DatetimeHandler):
+    """JSON Pickle handler for the StateContainer
+    """
+
+    def flatten(self, obj, data):
+        """Provides the StateContainer __dict__ as payload
+        """
+        payload = obj.__dict__
+        if not self.context.unpicklable:
+            return copy.copy(payload)
+        data.update(payload)
+        return data
+
+    def restore(self, data):
+        return StateContainer(**data)
+
+StateContainerJSONPickleHandler.handles(StateContainer)

@@ -1,0 +1,89 @@
+states:
+    - name: draft
+      on_enter:
+        - reset_timer
+        - not_listable
+      transitions:
+        - trigger: publish
+          dest: supportable.pending
+
+    - name: rejected
+      on_enter:
+        - send_rejected_mail_to_owner
+        - not_listable
+      transitions:
+        - trigger: publish
+          dest: supportable.pending
+
+    - name: supportable
+      on_enter:
+        - reset_timer
+        - listable
+      children:
+          - name: pending
+            on_enter:
+                - reset_timer
+                - not_listable
+                - send_approval_request_to_editor
+            transitions:
+                - trigger: approved
+                  dest: supportable.active
+                - trigger: reject
+                  dest: rejected
+          - name: active
+            on_enter:
+                - listable
+            transitions:
+                - trigger: check
+                  dest: supportable.winner
+                  conditions:
+                      - is_supporter_limit_reached
+                - trigger: check
+                  dest: loser
+                  conditions:
+                      - is_support_timeout
+          - name: winner
+            on_enter:
+                - send_winner_mail_to_owner
+                - listable
+            transitions:
+                - trigger: check
+                  dest: processing.sendLetterRequested
+                  conditions:
+                      - is_support_timeout
+
+    - name: processing
+      children:
+          - name: sendLetterRequested
+            on_enter:
+                - listable
+            transitions:
+                - trigger: sendLetter
+                  dest: processing.waitForLetterResponse
+          - name: waitForLetterResponse
+            on_enter:
+                - listable
+            transitions:
+                - trigger: setFeedback
+                  dest: processing.letterResponseArrived
+          - name: letterResponseArrived
+            on_enter:
+                - listable
+            transitions:
+                - trigger: close
+                  dest: closed
+
+    - name: loser
+    - name: closed
+    - name: deleted
+      on_enter:
+        - not_listable
+
+
+transitions:
+    - trigger: reset
+      source: '*'
+      dest: draft
+    - trigger: delete
+      source: '*'
+      dest: deleted

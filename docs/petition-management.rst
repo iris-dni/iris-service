@@ -35,6 +35,7 @@ For information about the management of the petition state see
     supportable -> deleted : [delete]
 
     rejected --> supportable : [publish]
+    rejected : send mail to owner
 
     draft --> deleted : [delete]
     loser --> deleted : [delete]
@@ -46,13 +47,6 @@ For information about the management of the petition state see
     deleted : only marked as deleted
     deleted : not removed from database
 
-    state rejected {
-        [*] --> edit
-        edit -> edit : edit
-        edit --> publish_request : [publish]
-    }
-    rejected : send mail to owner
-
     state loser {
     }
     note right of loser : petition is a loser because\nit didn't reached the supporter limit\nbefore the timeout
@@ -63,7 +57,6 @@ For information about the management of the petition state see
       note right of pending : supporting is active but petition\nis not in query results
       pending --> active : [approved]
       active : petition is visible to all people in all queries
-      pending --> active : auto approved\nif timeout\nand city is assigned
       active --> loser : timeout
       active -right-> winner : supporter\nlimit reached
       

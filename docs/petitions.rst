@@ -4,42 +4,6 @@ Petition Service
 
 .. contents::
 
-.. doctest::
-    :hide:
-
-    >>> petition_42 = creators.petition(id=42)
-
-
-Petition Data
-=============
-
-.. sourcecode:: json
-
-    >>> pp(petition_42.get_source())
-    {
-      "city": null,
-      "connected_locations": [],
-      "dc": {
-        "created": "...",
-        "effective": null,
-        "expires": null,
-        "modified": "..."
-      },
-      "description": "",
-      "id": 42,
-      "images": [],
-      "links": [],
-      "owner": null,
-      "response_token": null,
-      "state": "draft",
-      "suggested_solution": "",
-      "supporters": {},
-      "tags": [],
-      "title": "",
-      "type": "",
-      "videos": []
-    }
-
 
 API
 ===
@@ -66,7 +30,7 @@ The full state machine diagram is shown here: :ref:`petition-management-petition
 Generate Letter
 ---------------
 
-.. http:post:: /v1/manage/petitions/(string:id)/generate_letter_pdf
+.. http:post:: /v1/manage/petitions/(string:id)/letter.pdf
 
     .. sourcecode:: json
 

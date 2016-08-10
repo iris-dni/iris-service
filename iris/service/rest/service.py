@@ -3,6 +3,7 @@ import copy
 
 from lovely.pyrest.rest import rpcmethod_route, rpcmethod_view
 
+from .swagger import swagger_reduce_response
 from ..errors import Errors
 from ..endpoint import EndpointErrorMixin
 
@@ -115,6 +116,7 @@ class RESTService(BaseRESTService):
 
     @rpcmethod_route(request_method='GET')
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def search(self, **kwargs):
         return self.search_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
@@ -127,24 +129,28 @@ class RESTService(BaseRESTService):
 
     @rpcmethod_route(request_method='GET',
                      route_suffix='/{contentId}')
+    @swagger_reduce_response
     @rpcmethod_view(http_cache=0)
     def get(self, **kwargs):
         return self.get_content(self.MAPPER_NAME,
                                 **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST')
+    @swagger_reduce_response
     def create(self, **kwargs):
         return self.create_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}')
+    @swagger_reduce_response
     def update(self, **kwargs):
         return self.update_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
     @rpcmethod_route(request_method='DELETE',
                      route_suffix='/{contentId}')
+    @swagger_reduce_response
     def delete(self, **kwargs):
         return self.delete_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
