@@ -43,7 +43,6 @@ requires = [
     'bravado-core',
     'enum34',
     'six',
-    'pygraphviz',
     'pyyaml',
     'jsonschema',
     'jsonpickle',
@@ -79,6 +78,9 @@ setup(
             'webtest',
             'fake-factory',
             'lovely.testlayers',
+        ]),
+        stategraph=nailed_requires([
+            'pygraphviz',
         ]),
         documentation=nailed_requires([
             'sphinx',
