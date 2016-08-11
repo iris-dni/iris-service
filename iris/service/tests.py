@@ -38,7 +38,7 @@ def test_suite():
         create_suite('auth/secret.rst'),
         create_doc_suite('sso.rst'),
 
-        create_suite('sm/sm.rst'),
+        create_suite('sm/service.rst'),
         create_suite('static.rst'),
 
         create_crate_suite('testing/buildsamples.rst',

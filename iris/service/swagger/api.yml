@@ -28,6 +28,8 @@ tags:
     description: City Importer API
   - name: city_admin
     description: Administrative City API
+  - name: statemachine
+    description: Statemachine API
   - name: Options
     description: The `OPTIONS` endpoints
 
@@ -87,3 +89,5 @@ paths:
   /admin/users/{contentId}:
     $ref: 'user_admin_path.yml#/users_contentId'
 
+  /admin/statemachine/{name}:
+    $ref: 'statemachine_path.yml#/statemachine_name'

@@ -1,3 +1,4 @@
+import copy
 import time
 import yaml
 import os
@@ -64,13 +65,34 @@ class PetitionStateMachine(object):
         return supporters['amount'] >= supporters['required']
 
 
-def fromYAML():
+def fromYAML(raw=False):
     data = {}
     filename = os.path.join(os.path.dirname(__file__), 'states.yaml')
     with open(filename, 'r') as yamlFile:
         data = yaml.load(yamlFile.read())
 
     transitions = data.setdefault('transitions', [])
+    if raw:
+
+        def insert(transition, states, baseName=None):
+            source = transition.get('source')
+            if not source:
+                return
+            tr = copy.deepcopy(transition)
+            del tr['source']
+            for state in states:
+                name = state['name']
+                if baseName is not None:
+                    name = baseName + NestedState.separator + name
+                if source == '*' or source == state['name']:
+                    trs = state.setdefault('transitions', [])
+                    trs.append(tr)
+                if 'children' in state:
+                    insert(transition, state['children'], name)
+        states = data.get('states', [])
+        for tr in transitions:
+            insert(tr, states)
+        return data
 
     def extractTransitions(state, parentName=None):
         if isinstance(state, list):

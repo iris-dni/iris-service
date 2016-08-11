@@ -1,6 +1,8 @@
 import logging
 import copy
 
+from pyramid import security
+
 from lovely.pyrest.rest import rpcmethod_route, rpcmethod_view
 
 from .swagger import swagger_reduce_response
@@ -21,9 +23,18 @@ class BaseRESTService(EndpointErrorMixin):
     def __init__(self, request):
         self.request = request
 
-    def _getMapper(self, mapperName):
+    def _getMapper(self, mapperName, method=None):
+        """Get a mapper by name
+        
+        Also check if the `method` exists on the mapper.
+
+        raise a 404 error if the mapper or the method could not be found.
+        """
         try:
-            return RESTMapper.getMapperImplementation(mapperName, self.request)
+            mapper = RESTMapper.getMapperImplementation(mapperName, self.request)
+            if method is not None and not hasattr(mapper, method):
+                raise KeyError()
+            return mapper
         except KeyError:
             raise self.not_found(Errors.mapper_not_found,
                                  {'mapperName': mapperName}
@@ -110,7 +121,8 @@ class RESTService(BaseRESTService):
     """
 
     @rpcmethod_route(request_method='OPTIONS')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def options(self, **kwargs):
         return {}
 
@@ -123,14 +135,15 @@ class RESTService(BaseRESTService):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def options_contentId(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='GET',
                      route_suffix='/{contentId}')
-    @swagger_reduce_response
     @rpcmethod_view(http_cache=0)
+    @swagger_reduce_response
     def get(self, **kwargs):
         return self.get_content(self.MAPPER_NAME,
                                 **self.request.swagger_data)

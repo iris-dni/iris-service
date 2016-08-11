@@ -64,9 +64,12 @@ def petitions(amount, seed='0'):
             datetime_end=datetime(2016, 7, 21),
             tzinfo=None,
         )
+        state_name = random.choice(['draft', 'active', 'pending'])
         create_object(Petition,
                       state=StateContainer(
-                          name=random.choice(['draft', 'active', 'pending'])
+                          name=state_name,
+                          listable=state_name != 'draft',
+                          timer=0,
                       ),
                       tags=[random.choice(['pet', 'shop', 'boys'])],
                       title=faker.text(50),

@@ -1,3 +1,5 @@
+from pyramid import security
+
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
@@ -115,7 +117,8 @@ class CityImportRESTService(rest.BaseRESTService):
     MAPPER_NAME = 'cities'
 
     @rpcmethod_route(request_method='OPTIONS')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def options(self, **kwargs):
         return {}
 

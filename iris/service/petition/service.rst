@@ -326,8 +326,10 @@ Search results can be filtered by state::
         {
           ...
           "state": {
+            "listable": false,
             "name": "draft",
-            "parent": ""
+            "parent": "",
+            "timer": 0
           },
           ...
         }

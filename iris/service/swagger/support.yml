@@ -1,6 +1,6 @@
 definitions:
     POSTBody:
-        # The petition wrapped in a data property for the POST bodies
+        # The data needed to create a supporter for a petition
         type: object
         required: 
             - data

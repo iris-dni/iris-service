@@ -100,6 +100,8 @@ def app_factory(global_config, **settings):
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.auth',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.sm',
+                   route_prefix=API_V1_BASE_URL)
     config.include('iris.service.security.policy')
     config.include('iris.service.auth.secret')
     config.include('iris.service.auth.sso')
@@ -112,6 +114,7 @@ def app_factory(global_config, **settings):
     config.scan('iris.service.user')
     config.scan('iris.service.city')
     config.scan('iris.service.auth')
+    config.scan('iris.service.sm')
     config.scan('iris.service.auth.secret')
     config.scan('iris.service.auth.sso')
 

@@ -1,5 +1,7 @@
 import transitions
 
+from pyramid import security
+
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service import rest
@@ -9,7 +11,7 @@ from iris.service.security import acl
 from ..errors import Errors
 from ..rest.swagger import swagger_reduce_response
 
-from .sm import PetitionStateMachine
+from .sm import PetitionStateMachine, fromYAML
 from .document import Petition
 
 
@@ -93,6 +95,9 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             petition.store(refresh=True)
         return self.doc_as_dict(petition)
 
+    def statemachine(self):
+        return fromYAML(raw=True)
+
 
 @RestService("petition_public_api")
 class PetitionPublicRESTService(rest.RESTService):
@@ -108,7 +113,8 @@ class PetitionPublicRESTService(rest.RESTService):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/support')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def options_contentId_support(self, **kwargs):
         return {}
 
@@ -148,7 +154,8 @@ class PetitionPublicRESTService(rest.RESTService):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def options_contentId_event(self, **kwargs):
         return {}
 

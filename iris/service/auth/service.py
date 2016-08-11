@@ -1,3 +1,5 @@
+from pyramid import security
+
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
 
 from iris.service.rest.swagger import swagger_reduce_response
@@ -19,7 +21,8 @@ class AuthService(EndpointErrorMixin):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/whoami')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def whoamiOptions(self, **kwargs):
         return {}
 
@@ -46,7 +49,8 @@ class AuthService(EndpointErrorMixin):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssologin')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def ssologinOptions(self, **kwargs):
         return {}
 
@@ -96,7 +100,8 @@ class AuthService(EndpointErrorMixin):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/ssotoken')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def ssotokenOptions(self, **kwargs):
         return {}
 
@@ -122,7 +127,8 @@ class AuthService(EndpointErrorMixin):
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/logout')
-    @rpcmethod_view(http_cache=0)
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
     def logoutOptions(self, **kwargs):
         return {}
 

@@ -216,3 +216,21 @@ petitions_contentId_support:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
+  delete:
+    tags:
+      - petition
+    summary: Remove petition support
+    description: |
+        Remove the support for the logged in user from the petition.
+    operationId: remove_support
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+        required: true
+        description: The id of the petition
+    responses:
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

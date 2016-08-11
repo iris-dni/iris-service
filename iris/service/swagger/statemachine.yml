@@ -1,0 +1,45 @@
+definitions:
+    Transition:
+        type: object
+        properties:
+            trigger:
+                type: string
+            dest:
+                type: string
+
+    SimpleState:
+        type: object
+        properties:
+            name:
+                type: string
+            transitions:
+                type: array
+                items:
+                    $ref: '#/definitions/Transition'
+
+    CompoundState:
+        type: object
+        allOf:
+            - $ref: '#/definitions/SimpleState'
+            - type: object
+              properties:
+                  children:
+                      type: array
+                      items:
+                          $ref: '#/definitions/SimpleState'
+
+    Statemachine:
+        type: object
+        properties:
+            states:
+                type: array
+                items:
+                    $ref: '#/definitions/CompoundState'
+
+    StatemachineResponseBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/Statemachine'

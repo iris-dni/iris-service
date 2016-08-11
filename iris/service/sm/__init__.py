@@ -1,13 +1,8 @@
+from . import service  # noqa
 
 
-class StateMachine(object):
-
-    TRANSITIONS = {}
-
-    def __init__(self, currentState):
-        self.current = currentState
-
-    def switch(self, transitionName):
-        tr = self.TRANSITIONS.get(self.current, {})
-        self.current = tr.get(transitionName)
-        return self.current
+def includeme(config):
+    config.add_route('statemachine_api',
+                     'admin/statemachine',
+                     static=True,
+                    )

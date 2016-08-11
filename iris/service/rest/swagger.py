@@ -18,6 +18,9 @@ def swagger_reduce_response(f):
         # call the view method
         result = f(self, *args, **kwargs)
         route_mapper = self.request.registry.queryUtility(IRoutesMapper)
+        if route_mapper is None:
+            # for testing
+            return result
         route_info = route_mapper(self.request)
         route = route_info['route']
         cacheKey = route.path + route.predicates[0].text()
