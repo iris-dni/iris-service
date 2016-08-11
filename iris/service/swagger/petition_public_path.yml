@@ -18,6 +18,12 @@ petitions:
         items:
           type: string
         collectionFormat: csv
+        description: |
+            States can be provided in dotted notation to filter parent states:
+
+            - draft: all states with name 'draft'
+            - supportable.active: all states with name 'active' and parent 'supportable'
+            - supportable.*: all states with parent 'supportable'
       - name: tags
         in: query
         type: array
@@ -57,6 +63,7 @@ petitions:
               - created (default)
               - modified
               - state
+              - state.parent
               - supporters.amount
               - score
               - id

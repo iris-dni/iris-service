@@ -1,5 +1,7 @@
 import transitions
 
+from transitions.extensions.nesting import NestedState
+
 from pyramid import security
 
 from lovely.pyrest.rest import RestService, rpcmethod_route, rpcmethod_view
@@ -20,6 +22,40 @@ from .document import Petition
 class PetitionAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'petitions'
+
+
+def stateFilter(value):
+    if isinstance(value, (list, tuple)):
+        states = [v.strip() for v in value if v.strip()]
+    else:
+        states = [v.lower().strip() for v in value.split(',') if v.strip()]
+    if not states:
+        raise ValueError("No states provided")
+    filters = []
+    for state in states:
+        parts = state.split(NestedState.separator, 1)
+        if len(parts) > 1:
+            parent, name = parts
+            if not name or name == '*':
+                filters.append(queries.termFilter('state.parent')(parent))
+            else:
+                filters.append({
+                    "bool": {
+                        "must": [
+                            queries.termFilter('state.name')(name),
+                            queries.termFilter('state.parent')(parent)
+                        ]
+                    }
+                })
+        else:
+            filters.append(queries.termFilter('state.name')(parts[0]))
+    if len(filters) == 1:
+        return filters[0]
+    return {
+        "bool": {
+            "should": filters
+        }
+    }
 
 
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
@@ -47,7 +83,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     }
 
     FILTER_PARAMS = {
-        'state': queries.termsFilter('state.name'),
+        'state': stateFilter,
         'tags': queries.termsFilter('tags'),
         'city': queries.termsFilter('city'),
     }
@@ -57,6 +93,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'modified': queries.fieldSorter('dc.modified'),
         'id': queries.fieldSorter('id'),
         'state': queries.fieldSorter('state.name'),
+        'state.parent': queries.fieldSorter('state.parent'),
         'supporters.amount': queries.fieldSorter('supporters.amount'),
         'score': queries.scoreSorter,
         'default': queries.fieldSorter('dc.created', 'DESC'),

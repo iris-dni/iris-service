@@ -64,10 +64,14 @@ def petitions(amount, seed='0'):
             datetime_end=datetime(2016, 7, 21),
             tzinfo=None,
         )
-        state_name = random.choice(['draft', 'active', 'pending'])
+        state_parent, state_name = random.choice([
+            ('', 'draft'),
+            ('supportable', 'active'),
+            ('supportable', 'pending')])
         create_object(Petition,
                       state=StateContainer(
                           name=state_name,
+                          parent=state_parent,
                           listable=state_name != 'draft',
                           timer=0,
                       ),
