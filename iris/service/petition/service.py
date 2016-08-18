@@ -193,7 +193,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/reject')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_reject(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -206,7 +206,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/publish')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_publish(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -219,7 +219,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/delete')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_delete(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -232,7 +232,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/close')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_close(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -245,7 +245,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/approved')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_approved(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -258,7 +258,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/sendLetter')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_sendLetter(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
@@ -271,7 +271,7 @@ class PetitionPublicRESTService(rest.RESTService):
                      route_suffix='/{contentId}/event/setFeedback')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_event(self, **kwargs):
+    def options_event_setFeedback(self, **kwargs):
         return {}
 
     @rpcmethod_route(request_method='POST',
