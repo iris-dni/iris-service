@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - do not use generic options endpoint but specific ones
+
 2016/08/10 0.0.8
 ================
 

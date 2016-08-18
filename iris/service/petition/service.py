@@ -190,7 +190,7 @@ class PetitionPublicRESTService(rest.RESTService):
         return result
 
     @rpcmethod_route(request_method='OPTIONS',
-                     route_suffix='/{contentId}/event/{transitionName}')
+                     route_suffix='/{contentId}/event/reject')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
     def options_contentId_event(self, **kwargs):
@@ -202,11 +202,25 @@ class PetitionPublicRESTService(rest.RESTService):
     def event_reject(self, **kwargs):
         return self._event('reject')
 
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/publish')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
+
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/publish')
     @swagger_reduce_response
     def event_publish(self, **kwargs):
         return self._event('publish')
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/delete')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/delete')
@@ -214,11 +228,25 @@ class PetitionPublicRESTService(rest.RESTService):
     def event_delete(self, **kwargs):
         return self._event('delete')
 
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/close')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
+
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/close')
     @swagger_reduce_response
     def event_close(self, **kwargs):
         return self._event('close')
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/approved')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/approved')
@@ -226,11 +254,25 @@ class PetitionPublicRESTService(rest.RESTService):
     def event_approved(self, **kwargs):
         return self._event('approved')
 
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/sendLetter')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
+
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/sendLetter')
     @swagger_reduce_response
     def event_sendLetter(self, **kwargs):
         return self._event('sendLetter')
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/event/setFeedback')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_contentId_event(self, **kwargs):
+        return {}
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/setFeedback')
