@@ -7,6 +7,8 @@ unreleased
 
  - allow admin API to write on petition owner field
  - added city_answer field to petitions
+   DEPLOY:
+     ALTER TABLE petitions ADD COLUMN city_answer STRING INDEX OFF;
  - reverted events endpoints to use generic options path definition by adding
    it to the swagger spec
  - do not use generic options endpoint but specific ones
