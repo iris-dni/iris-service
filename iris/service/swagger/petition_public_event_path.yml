@@ -27,19 +27,6 @@ petitions_contentId_event_reject:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_publish:
   post:
     tags:
@@ -64,19 +51,6 @@ petitions_contentId_event_publish:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_delete:
   post:
     tags:
@@ -101,19 +75,6 @@ petitions_contentId_event_delete:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_close:
   post:
     tags:
@@ -138,19 +99,6 @@ petitions_contentId_event_close:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_approved:
   post:
     tags:
@@ -175,19 +123,6 @@ petitions_contentId_event_approved:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_sendLetter:
   post:
     tags:
@@ -212,19 +147,6 @@ petitions_contentId_event_sendLetter:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_setFeedback:
   post:
     tags:
@@ -249,19 +171,6 @@ petitions_contentId_event_setFeedback:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-  options:
-    tags:
-      - Options
-    summary: CORS Options
-    parameters:
-      - name: contentId
-        in: path
-        type: integer
-        required: true
-        description: The id of the petition
-    responses:
-      default:
-        description: Empty Body
 petitions_contentId_event_transitionName:
   post:
     tags:
@@ -290,3 +199,20 @@ petitions_contentId_event_transitionName:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: integer
+        required: true
+        description: The id of the petition
+      - name: transitionName
+        in: path
+        type: string
+        required: true
+    responses:
+      default:
+        description: Empty Body

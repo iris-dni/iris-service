@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - reverted events endpoints to use generic options path definition by adding
+   it to the swagger spec
  - do not use generic options endpoint but specific ones
 
 2016/08/10 0.0.8

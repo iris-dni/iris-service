@@ -304,3 +304,26 @@ Delete the petition::
     {u'name': u'deleted', u'parent': u''}
     >>> showListable(response)
     False
+
+
+Options Requests
+================
+
+THe options request on the event endpoint is implementated as a generic
+endpoint allowing to provide any event name.
+
+An existing event name::
+
+    >>> response = browser.options('/v1/petitions/%s/event/delete' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {}
+
+An unknown event name is also allowed::
+
+    >>> response = browser.options('/v1/petitions/%s/event/unknown42' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {}
