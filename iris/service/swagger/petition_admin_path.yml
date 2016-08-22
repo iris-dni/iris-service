@@ -98,7 +98,7 @@ petitions:
       - name: data
         in: body
         schema:
-          $ref: 'petitions.yml#/definitions/POSTBody'
+          $ref: 'petitions.yml#/definitions/POSTBodyAdmin'
         required: true
     responses:
       '200':
@@ -151,7 +151,7 @@ petitions_contentId:
       - name: data
         in: body
         schema:
-          $ref: 'petitions.yml#/definitions/POSTBody'
+          $ref: 'petitions.yml#/definitions/POSTBodyAdmin'
         required: true
     responses:
       '200':

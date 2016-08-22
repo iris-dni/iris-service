@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - allow admin API to write on petition owner field
  - added city_answer field to petitions
  - reverted events endpoints to use generic options path definition by adding
    it to the swagger spec

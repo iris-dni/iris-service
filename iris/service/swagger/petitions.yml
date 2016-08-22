@@ -82,6 +82,9 @@ definitions:
             city:
                 type: string
                 x-nullable: true
+            city_answer:
+                type: string
+                default: ''
             type:
                 type: string
                 default: ''
@@ -109,14 +112,25 @@ definitions:
                     required:
                         type: integer
                         readOnly: true
-            owner:
-                type: string
-                x-nullable: true
-                readOnly: true
             response_token:
                 type: string
                 x-nullable: true
                 readOnly: true
+
+    PropertiesForPublic:
+        type: object
+        properties:
+            owner:
+                type: string
+                x-nullable: true
+                readOnly: true
+
+    PropertiesForAdmin:
+        type: object
+        properties:
+            owner:
+                type: string
+                x-nullable: true
 
     Petition:
         type: object
@@ -124,6 +138,7 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/PropertiesForPublic'
 
     AdminPetition:
         type: object
@@ -131,6 +146,7 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PrivateState'
             - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/PropertiesForAdmin'
 
     POSTBody:
         # The petition wrapped in a data property for the POST bodies
@@ -161,6 +177,14 @@ definitions:
                     $ref: '#/definitions/Petition'
             total:
                 type: integer
+    POSTBodyAdmin:
+        # The petition wrapped in a data property for the POST bodies
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/AdminPetition'
     ResponseBodyAdmin:
         # The petition wrapped in a data property for the response body
         type: object
