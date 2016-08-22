@@ -43,6 +43,7 @@ CREATE TABLE petitions (
     title STRING INDEX OFF,
     -- relation to cities table
     city STRING,
+    city_answer STRING,
     type STRING,
     description STRING INDEX OFF,
     suggested_solution STRING INDEX OFF,

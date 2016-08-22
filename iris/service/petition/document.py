@@ -54,6 +54,13 @@ class Petition(Document):
         """
     )
 
+    city_answer = Property(
+        default='',
+        doc="""
+          The answer provided by the city authority
+        """
+    )
+
     type = Property(
         default='',
         doc="""

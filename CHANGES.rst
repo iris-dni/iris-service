@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added city_answer field to petitions
  - reverted events endpoints to use generic options path definition by adding
    it to the swagger spec
  - do not use generic options endpoint but specific ones
