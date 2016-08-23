@@ -456,3 +456,39 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+
+
+Supporters Admin API
+====================
+
+The admin API is implemented via the REST mapper.
+
+The browser must be logged in with an administrator::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+
+Get Supporters List
+-------------------
+
+    >>> response = browser.get('/v1/admin/supporters?sort=id')
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          "dc": {
+            "created": "..."
+          },
+          "id": "10-t:(185)363-7457x07224",
+          "phone_user": {
+            "firstname": "Tami",
+            "lastname": "Proctor",
+            "telephone": "(185)363-7457x07224"
+          },
+          "user": null
+        },
+        ...
+      ],
+      "total": 140
+    }

@@ -50,13 +50,13 @@ def swagger_reduce_response(f):
 
 
 def reduce_mapping(mapping, data):
-    """Reduce data to conain only properties from mapping
+    """Reduce data to contain only properties from mapping
     """
     if mapping is True:
         return data
     result = {}
     for k, v in mapping.iteritems():
-        if k not in data:
+        if data is None or k not in data:
             continue
         prop = data[k]
         if v is True:

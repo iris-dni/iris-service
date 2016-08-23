@@ -245,5 +245,6 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
 
     SORT_PARAMS = {
         'created': queries.fieldSorter('dc.created'),
+        'id': queries.fieldSorter('id'),
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }

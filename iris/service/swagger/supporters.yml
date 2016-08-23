@@ -15,7 +15,8 @@ definitions:
             provider:
                 type: string
             user:
-                type: string
+                type: integer
+                x-nullable: true
             phone_user:
                 type: object
                 properties:
@@ -26,7 +27,7 @@ definitions:
                     lastname:
                         type: string
     ListResponseBodyAdmin:
-        description: User list response
+        description: Supporters list response
         type: object
         required: 
             - data

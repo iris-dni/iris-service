@@ -26,6 +26,8 @@ supporters:
           enum:
               - created
               - -created
+              - id
+              - -id
         collectionFormat: csv
       - name: offset
         in: query
@@ -42,7 +44,7 @@ supporters:
         description: The number of entries in the result.
     responses:
       '200':
-        description: City found
+        description: Supporters found
         schema:
           $ref: 'supporters.yml#/definitions/ListResponseBodyAdmin'
       default:
