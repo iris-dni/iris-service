@@ -311,6 +311,8 @@ Search
 
 Create some sampledata::
 
+    >>> samples.users(30)
+    >>> samples.cities(30)
     >>> samples.petitions(30)
     >>> response = browser.get('/v1/admin/petitions')
 
@@ -334,40 +336,24 @@ Search results can be filtered by state::
           ...
         }
       ],
-      "total": 16
+      "total": 14
     }
 
 It is possible to provide multiple states::
 
     >>> response = browser.get('/v1/admin/petitions?state=active,draft')
-    >>> print_json(response)
-    {
-      "data": [
-        {
-          ...
-        }
-      ],
-      "total": 25
-    }
+    >>> response.json['total']
+    19
 
     >>> response = browser.get('/v1/admin/petitions?state=supportable.pending')
-    >>> print_json(response)
-    {
-      ...
-      "total": 5
-    }
+    >>> response.json['total']
+    7
     >>> response = browser.get('/v1/admin/petitions?state=supportable.active')
-    >>> print_json(response)
-    {
-      ...
-      "total": 9
-    }
+    >>> response.json['total']
+    5
     >>> response = browser.get('/v1/admin/petitions?state=supportable.*')
-    >>> print_json(response)
-    {
-      ...
-      "total": 14
-    }
+    >>> response.json['total']
+    16
 
 
 General Fulltext Search
@@ -376,26 +362,12 @@ General Fulltext Search
 Uses all existing fulltext fields::
 
     >>> response = browser.get('/v1/admin/petitions?ft=harum&sort=score')
-    >>> print_json(response)
-    {
-      "data": [
-        {
-    ...
-        }
-      ],
-      "total": 17
-    }
+    >>> response.json['total']
+    19
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
-    >>> print_json(response)
-    {
-      "data": [
-        {
-    ...
-        }
-      ],
-      "total": 17
-    }
+    >>> response.json['total']
+    19
 
 
 Sorting Search Results
@@ -407,13 +379,23 @@ Amount of Supporters
 
 Use the `supporters.amount` sort::
 
-    >>> response = browser.get('/v1/petitions?sort=supporters.amount')
-    >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
-    [(0, 22), (1, 10), (1, 19), (3, 9), (4, 3), (4, 5), (4, 15), (6, 8), (6, 18), (7, 26)]
+    >>> response = browser.get('/v1/petitions?sort=supporters.amount&limit=50')
+    >>> last = None
+    >>> for p in response.json['data']:
+    ...     amount = p['supporters']['amount']
+    ...     if last is not None and last > amount:
+    ...         print 'Error: amount not ascending'
+    ...         break
+    ...     last = amount
 
     >>> response = browser.get('/v1/petitions?sort=-supporters.amount')
-    >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
-    [(20, 11), (19, 16), (18, 7), (18, 24), (18, 28), (17, 20), (16, 6), (16, 25), (15, 14), (13, 4)]
+    >>> last = None
+    >>> for p in response.json['data']:
+    ...     amount = p['supporters']['amount']
+    ...     if last is not None and last < amount:
+    ...         print 'Error: amount not descending'
+    ...         break
+    ...     last = amount
 
 State
 -----
@@ -421,28 +403,26 @@ State
 Use the `state` sort::
 
     >>> response = browser.get('/v1/petitions?sort=state&limit=5')
-    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'active', 8), (u'active', 12), (u'active', 13), (u'active', 16), (u'active', 17)]
+    >>> response.json['data'][0]['state']['name']
+    u'active'
 
     >>> response = browser.get('/v1/petitions?sort=-state&limit=5')
-    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'pending', 18), (u'pending', 19), (u'pending', 21), (u'pending', 22), (u'pending', 23)]
-
-Combined with id sort::
-
-    >>> response = browser.get('/v1/petitions?sort=state,id&limit=5')
-    >>> [(p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'active', 8), (u'active', 12), (u'active', 13), (u'active', 16), (u'active', 17)]
+    >>> response.json['data'][0]['state']['name']
+    u'winner'
 
 `state.parent` sorts by parent state::
 
     >>> response = browser.get('/v1/petitions?sort=state.parent,id&limit=5')
-    >>> [(p['state']['parent'], p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'', u'draft', 3), (u'', u'draft', 4), (u'', u'draft', 5), (u'', u'draft', 6), (u'', u'draft', 7)]
+    >>> response.json['data'][0]['state']['name']
+    u'draft'
+    >>> response.json['data'][0]['state']['parent']
+    u''
 
     >>> response = browser.get('/v1/petitions?sort=-state.parent,id&limit=5')
-    >>> [(p['state']['parent'], p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'supportable', u'active', 8), (u'supportable', u'active', 12), (u'supportable', u'active', 13), (u'supportable', u'active', 16), (u'supportable', u'active', 17)]
+    >>> response.json['data'][0]['state']['name']
+    u'active'
+    >>> response.json['data'][0]['state']['parent']
+    u'supportable'
 
 
 Permissions
