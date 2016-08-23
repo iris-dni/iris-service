@@ -58,6 +58,10 @@ def petitions(amount, seed='0'):
     faker = Faker()
     faker.seed(seed)
     random.seed(seed)
+    cities = City.search({"query": {"match_all": {}}, "size": 1000}
+                        )['hits']['hits']
+    users = User.search({"query": {"match_all": {}}, "size": 1000}
+                       )['hits']['hits']
     for i in range(amount):
         time = faker.date_time_between_dates(
             datetime_start=datetime(2016, 1, 1),
@@ -68,28 +72,43 @@ def petitions(amount, seed='0'):
             ('', 'draft'),
             ('supportable', 'active'),
             ('supportable', 'pending')])
-        create_object(Petition,
-                      state=StateContainer(
-                          name=state_name,
-                          parent=state_parent,
-                          listable=state_name != 'draft',
-                          timer=0,
-                      ),
-                      tags=[random.choice(['pet', 'shop', 'boys'])],
-                      title=faker.text(50),
-                      description='\n'.join(faker.paragraphs(5)),
-                      suggested_solution='\n'.join(faker.paragraphs(3)),
-                      dc={
-                          'created': time,
-                          'modified': time,
-                          'effective': None,
-                          'expires': None,
-                      },
-                      supporters={
-                          'amount': random.randint(0, 20),
-                          'required': 10
-                      },
-                     )
+        city = random.choice(cities)
+        petition = create_object(
+            Petition,
+            state=StateContainer(
+                name=state_name,
+                parent=state_parent,
+                listable=state_name != 'draft',
+                timer=0,
+            ),
+            tags=[random.choice(['pet', 'shop', 'boys'])],
+            title=faker.text(50),
+            description='\n'.join(faker.paragraphs(5)),
+            suggested_solution='\n'.join(faker.paragraphs(3)),
+            dc={
+                'created': time,
+                'modified': time,
+                'effective': None,
+                'expires': None,
+            },
+            city=city.id,
+            supporters={
+                'amount': 0,
+                'required': city.treshold
+            },
+        )
+        if state_parent == 'supportable':
+            for _ in range(0, random.randint(0, 20)):
+                if bool(random.getrandbits(1)):
+                    user = random.choice(users)
+                    petition.addSupporter(user=user.id)
+                else:
+                    phone_user = {
+                        "telephone": faker.phone_number(),
+                        "firstname": faker.first_name(),
+                        "lastname": faker.last_name(),
+                    }
+                    petition.addSupporter(phone_user=phone_user)
     Petition.refresh()
 
 

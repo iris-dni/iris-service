@@ -49,7 +49,7 @@ This starts a crate instance on port 8042 and the iris app on port 8080.
 
 To setup the crate database run::
 
-    $ cat etc/sql/sql.sql | bin/crash --host localhost:8042
+    $ bin/setup_db --setting etc/sql/sql.py --host localhost:8042 etc/sql/sql.sql
 
 Documentation is now available::
 

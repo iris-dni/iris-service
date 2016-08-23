@@ -16,8 +16,9 @@ APPROVAL_TIME = 10
 
 class PetitionStateMachine(object):
 
-    def __init__(self, petition):
+    def __init__(self, petition, request):
         self.petition = petition
+        self.request = request
         self.sm = Machine(
             self,
             initial=petition.state.full_name,
@@ -36,16 +37,23 @@ class PetitionStateMachine(object):
 
     state = property(get_state, set_state)
 
-    def listable(self):
+    def listable(self, **kwargs):
         self.petition.state.listable = True
 
-    def not_listable(self):
+    def not_listable(self, **kwargs):
         self.petition.state.listable = False
 
-    def reset_timer(self):
+    def reset_timer(self, **kwargs):
         self.petition.state.timer = int(time.time())
 
-    def send_rejected_mail_to_owner(self):
+    def support_petition(self, **kwargs):
+        user = self.request.user
+        if user is not None:
+            user = user.id
+        self.petition.addSupporter(user=user,
+                                   **kwargs.get('data', {}))
+
+    def send_rejected_mail_to_owner(self, **kwargs):
         pass
 
     def send_winner_mail_to_owner(self):
@@ -65,6 +73,9 @@ class PetitionStateMachine(object):
         return supporters['amount'] >= supporters['required']
 
 
+HIDDEN_TRIGGERS = ['check', 'tick', 'reset']
+
+
 def fromYAML(raw=False):
     data = {}
     filename = os.path.join(os.path.dirname(__file__), 'states.yaml')
@@ -73,8 +84,9 @@ def fromYAML(raw=False):
 
     transitions = data.setdefault('transitions', [])
     if raw:
-
+        # The raw version provides a states with all transitions assigned.
         def insert(transition, states, baseName=None):
+            # insert a transitions into the states
             source = transition.get('source')
             if not source:
                 return
@@ -89,11 +101,24 @@ def fromYAML(raw=False):
                     trs.append(tr)
                 if 'children' in state:
                     insert(transition, state['children'], name)
+        # insert globally defined transitions into the states
         states = data.get('states', [])
         for tr in transitions:
             insert(tr, states)
+
+        def remove_hidden_triggers(state):
+            transitions = state.get('transitions', [])
+            for transition in list(transitions):
+                if transition['trigger'] in HIDDEN_TRIGGERS:
+                    transitions.remove(transition)
+            if 'children' in state:
+                for child_state in state['children']:
+                    remove_hidden_triggers(child_state)
+        for state in states:
+            remove_hidden_triggers(state)
         return data
 
+    # prepare the data to be able to use it for the state machine
     def extractTransitions(state, parentName=None):
         if isinstance(state, list):
             for s in state:

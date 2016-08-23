@@ -8,11 +8,17 @@ The state machine needs an instance of a petition::
     >>> petition = Petition()
 
     >>> from iris.service.petition.sm import PetitionStateMachine
-    >>> sm = PetitionStateMachine(petition)
+    >>> sm = PetitionStateMachine(petition, None)
     >>> sm.state
     'draft'
     >>> petition.state
     <StateContainer draft>
+
+The petition can also provide the state machine::
+
+    >>> sm = petition.sm
+    >>> sm.state
+    'draft'
 
 Publish the petition::
 
@@ -25,7 +31,7 @@ Publish the petition::
 A new instance of the petition state machine initializes with the current
 state of the petition::
 
-    >>> sm = PetitionStateMachine(petition)
+    >>> sm = PetitionStateMachine(petition, None)
     >>> sm.state
     'supportable.pending'
     >>> petition.state

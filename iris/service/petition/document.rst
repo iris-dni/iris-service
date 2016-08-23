@@ -94,3 +94,92 @@ The state container is also restored::
     >>> petition = Petition.get("1")
     >>> petition.state.other
     u'other'
+
+
+Petition Support
+================
+
+Users can support petitions::
+
+    >>> petition = Petition()
+    >>> _ = petition.store(refresh=True)
+    >>> petition.supporters['required'] = 4
+
+Support using a telephone number::
+
+    >>> phone_user = {
+    ...     "telephone": "0555 42",
+    ...     "firstname": "first",
+    ...     "lastname": "last",
+    ... }
+    >>> supporter = petition.addSupporter(phone_user=phone_user)
+    >>> supporter
+    <Supporter [id='2-t:0555 42']>
+    >>> supporter.user is None
+    True
+    >>> supporter.phone_user
+    {'lastname': 'last', 'telephone': '0555 42', 'firstname': 'first'}
+    >>> supporter.petition == petition.id
+    True
+
+    >>> from iris.service.petition.document import Supporter
+    >>> supporters = Supporter.search({"query": {"match_all": {}},})['hits']['hits']
+    >>> len(supporters)
+    1
+
+    >>> petition = Petition.get(petition.id)
+    >>> pp(petition.supporters)
+    {
+      "amount": 1,
+      "required": 4
+    }
+
+Support using an existing user::
+
+    >>> supporter = petition.addSupporter(user=42)
+    >>> supporter
+    <Supporter [id='2-u:42']>
+    >>> supporter.user
+    42
+    >>> supporter.phone_user is None
+    True
+    >>> supporter.petition == petition.id
+    True
+    >>> petition = Petition.get(petition.id)
+    >>> pp(petition.supporters)
+    {
+      "amount": 2,
+      "required": 4
+    }
+
+Duplicate supporters are not counted::
+
+    >>> supporter = petition.addSupporter(user=42)
+    >>> supporter
+    <Supporter [id=u'2-u:42']>
+    >>> petition = Petition.get(petition.id)
+    >>> pp(petition.supporters)
+    {
+      "amount": 2,
+      "required": 4
+    }
+
+Supporters can be removed::
+
+    >>> petition.removeSupporter('2-u:42')
+    >>> petition = Petition.get(petition.id)
+    >>> pp(petition.supporters)
+    {
+      "amount": 1,
+      "required": 4
+    }
+
+Remove the already removed supporter again::
+
+    >>> petition.removeSupporter('2-u:42')
+    >>> petition = Petition.get(petition.id)
+    >>> pp(petition.supporters)
+    {
+      "amount": 1,
+      "required": 4
+    }

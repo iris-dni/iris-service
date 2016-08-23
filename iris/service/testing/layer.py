@@ -17,7 +17,8 @@ crate_host = '127.0.0.1:%s' % crate_port
 crate_settings = os.path.join(here, 'testing', 'crate.yml')
 crate_setup_dir = os.path.join(buildout_dir, 'etc', 'sql')
 crash_path = os.path.join(buildout_dir, 'bin', 'crash')
-jinja_params = os.path.join(buildout_dir, 'crate', 'sqllocal.py')
+setup_db_path = os.path.join(buildout_dir, 'bin', 'setup_db')
+setup_db_settings = os.path.join(here, 'testing', 'sql.py')
 crate_cleanup = os.path.join(buildout_dir, 'bin', 'crate_cleanup')
 crate_setup = os.path.join(buildout_dir, 'bin', 'crate_setup')
 
@@ -44,14 +45,15 @@ def create_crate_indexes():
     """Creates the Crate indexes defined in etc/sql/sql.sql
     """
     sql_file = os.path.join(crate_setup_dir, 'sql.sql')
-    cmd = "cat %s | %s --host %s" % (sql_file, crash_path, crate_host)
+    cmd = "%s --crash %s --host %s --settings %s %s" % (
+        setup_db_path, crash_path, crate_host, setup_db_settings, sql_file)
     os.system(cmd)
     wait_for_cluster()
 
 
 def wait_for_cluster():
     healthurl = 'http://%s/_cluster/health' % crate_host
-    params = {'wait_for_status': 'yellow',
+    params = {'wait_for_status': 'green',
               'timeout': '300s'}
     res = requests.get(healthurl, params=params)
     assert res.status_code == 200

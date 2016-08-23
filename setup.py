@@ -37,6 +37,7 @@ def nailed_requires(requirements, pat=re.compile(r'^(.+)(\[.+\])?$')):
 requires = [
     'pytz',
     'gevent',
+    'jinja2',
     'pyramid',
     'pyramid-jinja2',
     'pyramid-swagger',
@@ -100,6 +101,7 @@ setup(
         'console_scripts': [
             'iris-service=pyramid.scripts.pserve:main',
             'dump=iris.service.scripts.dump:dump',
+            'setup_db=iris.service.scripts.setup_db:main',
         ],
     },
 )

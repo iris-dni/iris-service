@@ -1,0 +1,51 @@
+supporters:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - supporter_admin
+    summary: Search Supporters
+    operationId: search
+    parameters:
+      - name: petition
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+              - created
+              - -created
+        collectionFormat: csv
+      - name: offset
+        in: query
+        type: integer
+        minimum: 0
+        default: 0
+        description: The offset to the first entry.
+      - name: limit
+        in: query
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 10
+        description: The number of entries in the result.
+    responses:
+      '200':
+        description: City found
+        schema:
+          $ref: 'supporters.yml#/definitions/ListResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

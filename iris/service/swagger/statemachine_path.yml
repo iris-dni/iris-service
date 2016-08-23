@@ -7,9 +7,9 @@ statemachine_name:
       - name: name
         in: path
         type: string
+        required: True
         enum:
             - petitions
-        default: petitions
     responses:
       default:
         description: Empty Body
@@ -22,6 +22,7 @@ statemachine_name:
       - name: name
         in: path
         type: string
+        required: True
         enum:
             - petitions
     responses:

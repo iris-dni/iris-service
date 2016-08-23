@@ -12,3 +12,8 @@ def includeme(config):
     config.add_route('petition_public_api',
                      'petitions',
                      static=True)
+    config.add_route('supporter_admin_api',
+                     'admin/supporters',
+                     static=True,
+                     factory=auth.AdminServiceAuthFactory,
+                    )

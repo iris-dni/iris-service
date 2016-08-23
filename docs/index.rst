@@ -21,7 +21,6 @@ Not Implemented or Not Validated
    ./cities
    ./files
    ./locations
-   ./supporters
    ./supporter-flows
 
 Developers

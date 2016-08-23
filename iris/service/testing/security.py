@@ -32,6 +32,15 @@ def ssologin(browser, sso_data=None):
     return User.get(response.json['data']['id'])
 
 
+def ssologout(browser):
+    sso = sign_message({}, APIKEY)
+    url = (LOGIN_URL +
+           '?' +
+           urllib.urlencode({"sso": sso, "apikey": APIKEY})
+          )
+    browser.post_json(url)
+
+
 class RoleChecker(object):
     """Class to check urls with all roles
 
