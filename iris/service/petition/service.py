@@ -99,25 +99,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
 
-    def support(self, contentId, data):
-        """Sign a petition
-        """
-        petition = Petition.get(contentId)
-        if petition is None:
-            return None
-        # TODO: support the petition
-        return {}
-
-    def delete_support(self, contentId, data):
-        """Sign a petition
-        """
-        petition = Petition.get(contentId)
-        if petition is None:
-            return None
-        # TODO: support the petition
-        return {}
-
-    def event(self, contentId, transitionName, data=None):
+    def event(self, contentId, transitionName, data={}):
         petition = Petition.get(contentId)
         if petition is None:
             return None
@@ -127,7 +109,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # transition doesn't exist
             raise transitions.MachineError(
                 'Unknown transition "%s"' % transitionName)
-        done = getattr(sm, transitionName)()
+        done = getattr(sm, transitionName)(**data)
         if done:
             petition.store(refresh=True)
         return self.doc_as_dict(petition)
@@ -142,52 +124,28 @@ class PetitionPublicRESTService(rest.RESTService):
 
     We reuse the RESTService for the simple endpoints.
 
-    The REST methods which should not be available must not be configured in
-    swagger.
+    The REST methods from the base class which should not be available must
+    not be configured in swagger.
     """
 
     MAPPER_NAME = 'petitions'
 
     @rpcmethod_route(request_method='OPTIONS',
-                     route_suffix='/{contentId}/support')
+                     route_suffix='/{contentId}/supporters}')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_support(self, **kwargs):
+    def options_supporters(self, **kwargs):
         return {}
 
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/support')
-    @swagger_reduce_response
-    def support(self, **kwargs):
-        mapper = self._getMapper(self.MAPPER_NAME)
-        result = mapper.support(**self.request.swagger_data)
-        if result is None:
-            raise self.not_found(
-                Errors.document_not_found,
-                {
-                    'contentId': self.request.swagger_data.get('contentId',
-                                                               'missing'),
-                    'mapperName': self.MAPPER_NAME
-                }
-            )
-        return result
-
-    @rpcmethod_route(request_method='DELETE',
-                     route_suffix='/{contentId}/support')
-    @swagger_reduce_response
-    def delete_support(self, **kwargs):
-        mapper = self._getMapper(self.MAPPER_NAME)
-        result = mapper.delete_support(**self.request.swagger_data)
-        if result is None:
-            raise self.not_found(
-                Errors.document_not_found,
-                {
-                    'contentId': self.request.swagger_data.get('contentId',
-                                                               'missing'),
-                    'mapperName': self.MAPPER_NAME
-                }
-            )
-        return result
+    @rpcmethod_route(request_method='GET',
+                     route_suffix='/{contentId}/supporters}')
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.ListSupporters)
+    def get_supporters(self, **kwargs):
+        return {
+            "data": [],
+            "total": 0
+        }
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')
@@ -215,6 +173,12 @@ class PetitionPublicRESTService(rest.RESTService):
         return self._event('delete')
 
     @rpcmethod_route(request_method='POST',
+                     route_suffix='/{contentId}/event/support')
+    @swagger_reduce_response
+    def event_support(self, **kwargs):
+        return self._event('support')
+
+    @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/close')
     @swagger_reduce_response
     def event_close(self, **kwargs):
@@ -239,11 +203,16 @@ class PetitionPublicRESTService(rest.RESTService):
         return self._event('setFeedback')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/{transitionName}')
+                     route_suffix='/{contentId}/event/check')
     @swagger_reduce_response
-    def event_generic(self, **kwargs):
-        switch = self.request.swagger_data.pop('transitionName')
-        return self._event(switch)
+    def event_check(self, **kwargs):
+        return self._event('check')
+
+    @rpcmethod_route(request_method='POST',
+                     route_suffix='/{contentId}/event/tick')
+    @swagger_reduce_response
+    def event_tick(self, **kwargs):
+        return self._event('tick')
 
     def _event(self, switch):
         mapper = self._getMapper(self.MAPPER_NAME)

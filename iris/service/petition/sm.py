@@ -36,16 +36,19 @@ class PetitionStateMachine(object):
 
     state = property(get_state, set_state)
 
-    def listable(self):
+    def listable(self, **kwargs):
         self.petition.state.listable = True
 
-    def not_listable(self):
+    def not_listable(self, **kwargs):
         self.petition.state.listable = False
 
-    def reset_timer(self):
+    def reset_timer(self, **kwargs):
         self.petition.state.timer = int(time.time())
 
-    def send_rejected_mail_to_owner(self):
+    def support_petition(self, **kwargs):
+        self.petition.addSupporter(**kwargs.get('data', {}))
+
+    def send_rejected_mail_to_owner(self, **kwargs):
         pass
 
     def send_winner_mail_to_owner(self):
@@ -73,8 +76,9 @@ def fromYAML(raw=False):
 
     transitions = data.setdefault('transitions', [])
     if raw:
-
+        # The raw version provides a states with all transitions assigned.
         def insert(transition, states, baseName=None):
+            # insert a transitions into the states
             source = transition.get('source')
             if not source:
                 return
@@ -89,11 +93,13 @@ def fromYAML(raw=False):
                     trs.append(tr)
                 if 'children' in state:
                     insert(transition, state['children'], name)
+        # insert globally defined transitions into the states
         states = data.get('states', [])
         for tr in transitions:
             insert(tr, states)
         return data
 
+    # prepare the data to be able to use it for the state machine
     def extractTransitions(state, parentName=None):
         if isinstance(state, list):
             for s in state:

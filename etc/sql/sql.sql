@@ -78,8 +78,24 @@ CREATE TABLE petitions (
       USING FULLTEXT(suggested_solution)
       WITH (ANALYZER = 'edge_ngram_fulltext')
 )
-CLUSTERED INTO 5 SHARDS
-          WITH (number_of_replicas='0-all',
+CLUSTERED INTO {{ Petition.shards }} SHARDS
+          WITH (number_of_replicas='{{ Petition.number_of_replicas }}',
+                column_policy='strict');
+
+
+CREATE TABLE supporters (
+    id STRING PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP
+    ),
+    -- relation to a petition
+    petition LONG,
+    -- relation to a user
+    user LONG,
+    telephone STRING
+)
+CLUSTERED INTO {{ Supporters.shards }} SHARDS
+          WITH (number_of_replicas='{{ Supporters.number_of_replicas }}',
                 column_policy='strict');
 
 
@@ -110,8 +126,8 @@ CREATE TABLE cities (
       USING FULLTEXT(zips)
       WITH (ANALYZER = 'edge_ngram_fulltext')
 )
-CLUSTERED INTO 5 SHARDS
-          WITH (number_of_replicas='0-all',
+CLUSTERED INTO {{ Cities.shards }} SHARDS
+          WITH (number_of_replicas='{{ Cities.number_of_replicas }}',
                 column_policy='strict');
 
 
@@ -146,8 +162,8 @@ CREATE TABLE users (
       USING FULLTEXT(email)
       WITH (ANALYZER = 'email_ngram_fulltext')
 )
-CLUSTERED INTO 5 SHARDS
-          WITH (number_of_replicas='0-all',
+CLUSTERED INTO {{ Users.shards }} SHARDS
+          WITH (number_of_replicas='{{ Users.number_of_replicas }}',
                 column_policy='strict');
 
 
@@ -159,8 +175,8 @@ CREATE TABLE ssotokens (
     sso STRING INDEX OFF,
     apikey STRING INDEX OFF
 )
-CLUSTERED INTO 1 SHARDS
-          WITH (number_of_replicas='0-all',
+CLUSTERED INTO {{ SSOTokens.shards }} SHARDS
+          WITH (number_of_replicas='{{ SSOTokens.number_of_replicas }}',
                 column_policy='strict');
 
 
@@ -168,6 +184,6 @@ CREATE TABLE lovely_essequences (
     name STRING PRIMARY KEY,
     iid LONG
 )
-CLUSTERED INTO 1 SHARDS
-          WITH (number_of_replicas='0-all',
+CLUSTERED INTO {{ Lovely_ESSequences.shards }} SHARDS
+          WITH (number_of_replicas='{{ Lovely_ESSequences.number_of_replicas }}',
                 column_policy='strict');

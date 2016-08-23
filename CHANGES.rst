@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - support event creates supporter data
  - allow admin API to write on petition owner field
  - added city_answer field to petitions
    DEPLOY:

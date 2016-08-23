@@ -11,6 +11,10 @@ The petition event endpoints control the petition state machine.
     >>> from iris.service.petition.sm import APPROVAL_TIME
     >>> def showState(response):
     ...     return response.json['data']['state']
+
+Shows the listable flag of the petition state. This flag indicates that the
+petition is allowed to be seen in the public list endpoints::
+
     >>> def showListable(response):
     ...     return Petition.get(response.json['data']['id']).state.listable
 
@@ -73,7 +77,13 @@ Publish the petition::
 
 Reject the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/reject' % id)
+    >>> body = {
+    ...     "notify": False
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/reject' % id,
+    ...     body
+    ... )
     >>> showState(response)
     {u'name': u'rejected', u'parent': u''}
     >>> showListable(response)
@@ -100,10 +110,6 @@ Create a new petition::
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
-    >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
-    >>> showListable(response)
-    False
 
 Publish the petition::
 
@@ -162,7 +168,7 @@ Approve the petition::
     >>> showListable(response)
     True
 
-Now the check event will switch to state winner if the supporter amount is
+Now the 'check' event will switch to state winner if the supporter amount is
 reached::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
@@ -181,9 +187,10 @@ reached::
     >>> showListable(response)
     True
 
-The winner state waits until the support time is reached::
+The winner state waits until the support time is reached. The 'tick' event
+will switch after the timeout::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
@@ -193,7 +200,7 @@ The winner state waits until the support time is reached::
     >>> petition.state.timer = int(time.time()) - APPROVAL_TIME - 1
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'sendLetterRequested', u'parent': u'processing'}
     >>> showListable(response)
@@ -263,7 +270,7 @@ Approve the petition::
 Now the petition is a loser when the support timeout occures before the
 supporter limit is reached::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -273,7 +280,7 @@ supporter limit is reached::
     >>> petition.state.timer = int(time.time()) - APPROVAL_TIME - 1
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'loser', u'parent': u''}
     >>> showListable(response)

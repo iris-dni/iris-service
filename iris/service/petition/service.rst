@@ -409,11 +409,11 @@ Use the `supporters.amount` sort::
 
     >>> response = browser.get('/v1/petitions?sort=supporters.amount')
     >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
-    [(0, 22), (1, 19), (1, 10), (3, 9), (4, 5), (4, 3), (4, 15), (6, 18), (6, 8), (7, 26)]
+    [(0, 22), (1, 10), (1, 19), (3, 9), (4, 3), (4, 5), (4, 15), (6, 8), (6, 18), (7, 26)]
 
     >>> response = browser.get('/v1/petitions?sort=-supporters.amount')
     >>> [(p['supporters']['amount'], p['id']) for p in response.json['data']]
-    [(20, 11), (19, 16), (18, 28), (18, 24), (18, 7), (17, 20), (16, 6), (16, 25), (15, 14), (13, 4)]
+    [(20, 11), (19, 16), (18, 7), (18, 24), (18, 28), (17, 20), (16, 6), (16, 25), (15, 14), (13, 4)]
 
 State
 -----
@@ -422,11 +422,11 @@ Use the `state` sort::
 
     >>> response = browser.get('/v1/petitions?sort=state&limit=5')
     >>> [(p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'active', 16), (u'active', 12), (u'active', 17), (u'active', 24), (u'active', 29)]
+    [(u'active', 8), (u'active', 12), (u'active', 13), (u'active', 16), (u'active', 17)]
 
     >>> response = browser.get('/v1/petitions?sort=-state&limit=5')
     >>> [(p['state']['name'], p['id']) for p in response.json['data']]
-    [(u'pending', 23), (u'pending', 18), (u'pending', 19), (u'pending', 21), (u'pending', 22)]
+    [(u'pending', 18), (u'pending', 19), (u'pending', 21), (u'pending', 22), (u'pending', 23)]
 
 Combined with id sort::
 

@@ -30,6 +30,10 @@ states:
                   dest: supportable.active
                 - trigger: reject
                   dest: rejected
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.pending
           - name: active
             on_enter:
                 - listable
@@ -38,19 +42,27 @@ states:
                   dest: supportable.winner
                   conditions:
                       - is_supporter_limit_reached
-                - trigger: check
+                - trigger: tick
                   dest: loser
                   conditions:
                       - is_support_timeout
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.active
           - name: winner
             on_enter:
                 - send_winner_mail_to_owner
                 - listable
             transitions:
-                - trigger: check
+                - trigger: tick
                   dest: processing.sendLetterRequested
                   conditions:
                       - is_support_timeout
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.winner
 
     - name: processing
       children:

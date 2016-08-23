@@ -1,5 +1,6 @@
 import copy
 import jsonpickle
+import transitions
 
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property, ObjectProperty
@@ -7,18 +8,20 @@ from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
 
-from ..db.dc import dc_defaults_all
+from ..db.dc import dc_defaults, dc_defaults_all, DC_CREATED
+
+from .sm import PetitionStateMachine
 
 
-# IID generator to create the integer ids for petitions
-IID = Sequence('petitions').next
+# IID generators to create the integer ids for the documents
+PETITIONS_IID = Sequence('petitions').next
 
 
 class Petition(Document):
 
     INDEX = 'petitions'
 
-    id = Property(primary_key=True, default=IID)
+    id = Property(primary_key=True, default=PETITIONS_IID)
 
     dc = Property(
         default=dc_defaults_all(),
@@ -116,6 +119,97 @@ class Petition(Document):
 
     response_token = Property(
         default=None
+    )
+
+    def addSupporter(self, user=None, telephone=None):
+        """Add a supporter to the petition
+
+        Update the supporters amount.
+
+        returns the supporter document
+        """
+        if user is not None:
+            supporterType = 'u'
+        else:
+            supporterType = 't'
+        supporterId = '%s-%s:%s' % (self.id, supporterType, user or telephone)
+        supporter = Supporter.get(supporterId)
+        if supporter is None:
+            supporter = Supporter(
+                id=supporterId,
+                petition=self.id,
+                user=user,
+                telephone=telephone
+            )
+            self.supporters['amount'] += 1
+            try:
+                self.sm.check()
+            except transitions.MachineError:
+                pass
+            self.store(refresh=True)
+            supporter.store(refresh=True)
+        return supporter
+
+    def removeSupporter(self, supporterId):
+        """Remove a supporter from the petition
+
+        Update the supporters amount.
+        """
+        supporter = Supporter.get(supporterId)
+        if supporter is not None:
+            if self.supporters['amount'] > 0:
+                self.supporters['amount'] -= 1
+            supporter.delete(refresh=True)
+            self.store(refresh=True)
+
+    @property
+    def sm(self):
+        return PetitionStateMachine(self)
+
+    def __repr__(self):
+        return "<%s [id=%r]>" % (self.__class__.__name__, self.id)
+
+
+class Supporter(Document):
+    """The supporters for the petitions
+
+    The supporter instances must be manipulated using the methods on the
+    petition document implementation.
+    """
+
+    INDEX = 'supporters'
+
+    id = Property(
+        primary_key=True,
+        doc="""
+          The id is created from the petition id and the user or telephone
+          number (see Petition.addSupporter).
+        """
+    )
+
+    dc = Property(
+        default=dc_defaults(DC_CREATED),
+        doc="Dublin Core data."
+    )
+
+    petition = Property(
+        doc="Relation to the petition"
+    )
+
+    user = Property(
+        default=None,
+        doc="""
+          Relation to the supporting user.
+          Not required if the user was identified with a telephone number.
+        """
+    )
+
+    telephone = Property(
+        default=None,
+        doc="""
+          Telephone number of the supporting user if this user was identified
+          using the telephone number.
+        """
     )
 
     def __repr__(self):

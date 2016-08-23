@@ -14,5 +14,6 @@ class Permissions(object):
     Delete = 'delete'
 
     Import = 'import'
+    ListSupporters = 'listsupporters'
 
     AdminFull = 'admin:full'

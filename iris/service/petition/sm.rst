@@ -14,6 +14,12 @@ The state machine needs an instance of a petition::
     >>> petition.state
     <StateContainer draft>
 
+The petition can also provide the state machine::
+
+    >>> sm = petition.sm
+    >>> sm.state
+    'draft'
+
 Publish the petition::
 
     >>> _ = sm.publish()

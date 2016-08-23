@@ -8,6 +8,16 @@ definitions:
               type: boolean
             message:
               type: string
+    supportData:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              user:
+                type: integer
+              telephone:
+                type: string
     eventResponseBody:
         type: object
         required:
