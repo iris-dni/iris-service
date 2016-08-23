@@ -107,13 +107,18 @@ Users can support petitions::
 
 Support using a telephone number::
 
-    >>> supporter = petition.addSupporter(telephone="0555 42")
+    >>> phone_user = {
+    ...     "telephone": "0555 42",
+    ...     "firstname": "first",
+    ...     "lastname": "last",
+    ... }
+    >>> supporter = petition.addSupporter(phone_user=phone_user)
     >>> supporter
     <Supporter [id='2-t:0555 42']>
     >>> supporter.user is None
     True
-    >>> supporter.telephone
-    '0555 42'
+    >>> supporter.phone_user
+    {'lastname': 'last', 'telephone': '0555 42', 'firstname': 'first'}
     >>> supporter.petition == petition.id
     True
 
@@ -136,7 +141,7 @@ Support using an existing user::
     <Supporter [id='2-u:42']>
     >>> supporter.user
     42
-    >>> supporter.telephone is None
+    >>> supporter.phone_user is None
     True
     >>> supporter.petition == petition.id
     True

@@ -363,11 +363,11 @@ Uses all existing fulltext fields::
 
     >>> response = browser.get('/v1/admin/petitions?ft=harum&sort=score')
     >>> response.json['total']
-    19
+    16
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
     >>> response.json['total']
-    19
+    16
 
 
 Sorting Search Results

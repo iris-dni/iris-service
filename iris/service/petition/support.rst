@@ -62,13 +62,27 @@ The same user supports again::
 
 Support using a telephone number::
 
-    >>> supporter = {"data": {"telephone": '0555 42'}}
+    >>> supporter = {
+    ...     "data": {
+    ...         "phone_user": {
+    ...             "telephone": '0555 42',
+    ...             "firstname": 'first',
+    ...             "lastname": 'last',
+    ...         }
+    ...     }
+    ... }
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 5}
+
+    >>> obj = Supporter.get('1-t:0555 42')
+    >>> obj.user is None
+    True
+    >>> obj.phone_user
+    {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
     [<Supporter [id=u'1-u:42']>, <Supporter [id=u'1-t:0555 42']>]
@@ -117,3 +131,25 @@ Support until the petition is a winner::
     {u'amount': 6, u'required': 5}
     {u'name': u'winner', u'parent': u'supportable'}
     {u'amount': 7, u'required': 5}
+
+Invalid phone_user data::
+
+    >>> supporter = {
+    ...     "data": {
+    ...         "phone_user": {
+    ...             "firstname": 'first',
+    ...             "lastname": 'last',
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter,
+    ...     expect_errors=True)
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "'telephone' is a required property...
+      }
+    }

@@ -92,7 +92,11 @@ CREATE TABLE supporters (
     petition LONG,
     -- relation to a user
     user LONG,
-    telephone STRING
+    phone_user OBJECT(IGNORED) AS (
+        telephone STRING,
+        firstname STRING,
+        lastname STRING
+    )
 )
 CLUSTERED INTO {{ Supporters.shards }} SHARDS
           WITH (number_of_replicas='{{ Supporters.number_of_replicas }}',

@@ -27,6 +27,12 @@ petition: `IRIS-Swagger-UI event API </swaggerui#/petition_event>`_
 The full state machine diagram is shown here: :ref:`petition-management-petition-states`
 
 
+Support Petitions
+-----------------
+
+Petition support is implemented using the `support` event: `IRIS-Swagger-UI event API </swaggerui#/petition_event>`_
+
+
 Generate Letter
 ---------------
 

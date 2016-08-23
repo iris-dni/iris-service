@@ -16,8 +16,17 @@ definitions:
             properties:
               user:
                 type: integer
-              telephone:
-                type: string
+              phone_user:
+                type: object
+                required:
+                  - telephone
+                properties:
+                  telephone:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
     eventResponseBody:
         type: object
         required:

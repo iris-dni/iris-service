@@ -121,25 +121,27 @@ class Petition(Document):
         default=None
     )
 
-    def addSupporter(self, user=None, telephone=None):
+    def addSupporter(self, user=None, phone_user=None):
         """Add a supporter to the petition
 
         Update the supporters amount.
 
+        The phone_user object must provide at least a 'telephone' property.
+
         returns the supporter document
         """
         if user is not None:
-            supporterType = 'u'
+            supporter = 'u:%s' % user
         else:
-            supporterType = 't'
-        supporterId = '%s-%s:%s' % (self.id, supporterType, user or telephone)
+            supporter = 't:%s' % phone_user['telephone']
+        supporterId = '%s-%s' % (self.id, supporter)
         supporter = Supporter.get(supporterId)
         if supporter is None:
             supporter = Supporter(
                 id=supporterId,
                 petition=self.id,
                 user=user,
-                telephone=telephone
+                phone_user=phone_user
             )
             self.supporters['amount'] += 1
             try:
@@ -204,11 +206,11 @@ class Supporter(Document):
         """
     )
 
-    telephone = Property(
+    phone_user = Property(
         default=None,
         doc="""
-          Telephone number of the supporting user if this user was identified
-          using the telephone number.
+          A user which was identified via a telephone number.
+          This is stored as an object.
         """
     )
 
