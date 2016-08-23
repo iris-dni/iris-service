@@ -68,6 +68,9 @@ class PetitionStateMachine(object):
         return supporters['amount'] >= supporters['required']
 
 
+HIDDEN_TRIGGERS = ['check', 'tick', 'reset']
+
+
 def fromYAML(raw=False):
     data = {}
     filename = os.path.join(os.path.dirname(__file__), 'states.yaml')
@@ -97,6 +100,17 @@ def fromYAML(raw=False):
         states = data.get('states', [])
         for tr in transitions:
             insert(tr, states)
+
+        def remove_hidden_triggers(state):
+            transitions = state.get('transitions', [])
+            for transition in list(transitions):
+                if transition['trigger'] in HIDDEN_TRIGGERS:
+                    transitions.remove(transition)
+            if 'children' in state:
+                for child_state in state['children']:
+                    remove_hidden_triggers(child_state)
+        for state in states:
+            remove_hidden_triggers(state)
         return data
 
     # prepare the data to be able to use it for the state machine
