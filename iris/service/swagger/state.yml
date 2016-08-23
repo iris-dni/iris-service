@@ -14,8 +14,6 @@ definitions:
           data:
             type: object
             properties:
-              user:
-                type: integer
               phone_user:
                 type: object
                 required:

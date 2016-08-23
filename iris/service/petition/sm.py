@@ -16,8 +16,9 @@ APPROVAL_TIME = 10
 
 class PetitionStateMachine(object):
 
-    def __init__(self, petition):
+    def __init__(self, petition, request):
         self.petition = petition
+        self.request = request
         self.sm = Machine(
             self,
             initial=petition.state.full_name,
@@ -46,7 +47,11 @@ class PetitionStateMachine(object):
         self.petition.state.timer = int(time.time())
 
     def support_petition(self, **kwargs):
-        self.petition.addSupporter(**kwargs.get('data', {}))
+        user = self.request.user
+        if user is not None:
+            user = user.id
+        self.petition.addSupporter(user=user,
+                                   **kwargs.get('data', {}))
 
     def send_rejected_mail_to_owner(self, **kwargs):
         pass

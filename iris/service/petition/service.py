@@ -103,7 +103,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         petition = Petition.get(contentId)
         if petition is None:
             return None
-        sm = PetitionStateMachine(petition)
+        sm = PetitionStateMachine(petition, self.request)
         transition_fn = getattr(sm, transitionName)
         if transition_fn is None:
             # transition doesn't exist

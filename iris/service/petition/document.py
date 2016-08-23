@@ -166,7 +166,7 @@ class Petition(Document):
 
     @property
     def sm(self):
-        return PetitionStateMachine(self)
+        return PetitionStateMachine(self, None)
 
     def __repr__(self):
         return "<%s [id=%r]>" % (self.__class__.__name__, self.id)

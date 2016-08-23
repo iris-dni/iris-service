@@ -99,3 +99,4 @@ def setupGlobs(globs, browser, app_getter):
     globs['HTTP_DELETE_JSON'] = functools.partial(DELETE_JSON, browser)
     globs['check_roles'] = security.RoleChecker(app_getter)
     globs['ssologin'] = security.ssologin
+    globs['ssologout'] = security.ssologout

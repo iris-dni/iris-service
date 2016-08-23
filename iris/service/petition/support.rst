@@ -36,7 +36,8 @@ Publish the petition::
 
 Support the pending petition::
 
-    >>> supporter = {"data": {"user": 42}}
+    >>> _ = ssologin(browser, {"email": "42@sso.login"})
+    >>> supporter = {"data": {}}
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -45,11 +46,11 @@ Support the pending petition::
     {u'amount': 1, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id)
-    [<Supporter [id=u'1-u:42']>]
+    [<Supporter [id=u'1-u:1']>]
 
 The same user supports again::
 
-    >>> supporter = {"data": {"user": 42}}
+    >>> supporter = {"data": {}}
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -58,10 +59,11 @@ The same user supports again::
     {u'amount': 1, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:42']>]
+    [<Supporter [id=u'1-u:1']>]
 
 Support using a telephone number::
 
+    >>> _ = ssologout(browser)
     >>> supporter = {
     ...     "data": {
     ...         "phone_user": {
@@ -85,7 +87,7 @@ Support using a telephone number::
     {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:42']>, <Supporter [id=u'1-t:0555 42']>]
+    [<Supporter [id=u'1-u:1']>, <Supporter [id=u'1-t:0555 42']>]
 
 The same telephone number again::
 
@@ -97,7 +99,7 @@ The same telephone number again::
     {u'amount': 2, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:42']>, <Supporter [id=u'1-t:0555 42']>]
+    [<Supporter [id=u'1-u:1']>, <Supporter [id=u'1-t:0555 42']>]
 
 Approve the petition::
 
@@ -106,7 +108,8 @@ Approve the petition::
     {u'name': u'active', u'parent': u'supportable'}
     {u'amount': 2, u'required': 5}
 
-    >>> supporter = {"data": {"user": 142}}
+    >>> _ = ssologin(browser, {"email": "142@sso.login"})
+    >>> supporter = {"data": {}}
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -116,9 +119,9 @@ Approve the petition::
 
 Support until the petition is a winner::
 
-
     >>> for userId in range(200, 204):
-    ...     supporter = {"data": {"user": userId}}
+    ...     supporter = {"data": {}}
+    ...     _ = ssologin(browser, {"email": "%s@sso.login" % userId})
     ...     response = browser.post_json(
     ...         '/v1/petitions/%s/event/support' % id,
     ...         supporter)
