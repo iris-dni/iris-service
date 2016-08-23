@@ -14,7 +14,7 @@ from ..errors import Errors
 from ..rest.swagger import swagger_reduce_response
 
 from .sm import PetitionStateMachine, fromYAML
-from .document import Petition
+from .document import Petition, Supporter
 
 
 @RestService("petition_admin_api",
@@ -131,23 +131,6 @@ class PetitionPublicRESTService(rest.RESTService):
     MAPPER_NAME = 'petitions'
 
     @rpcmethod_route(request_method='OPTIONS',
-                     route_suffix='/{contentId}/supporters}')
-    @rpcmethod_view(http_cache=0,
-                    permission=security.NO_PERMISSION_REQUIRED)
-    def options_supporters(self, **kwargs):
-        return {}
-
-    @rpcmethod_route(request_method='GET',
-                     route_suffix='/{contentId}/supporters}')
-    @rpcmethod_view(http_cache=0,
-                    permission=acl.Permissions.ListSupporters)
-    def get_supporters(self, **kwargs):
-        return {
-            "data": [],
-            "total": 0
-        }
-
-    @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
@@ -234,3 +217,33 @@ class PetitionPublicRESTService(rest.RESTService):
                 }
             )
         return {"data": result, "status": "ok"}
+
+
+@RestService("supporter_admin_api",
+             permission=acl.Permissions.AdminFull)
+class SupportersAdminRESTService(rest.RESTService):
+
+    MAPPER_NAME = 'supporters'
+
+
+class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
+                           rest.SearchableDocumentRESTMapperMixin,
+                           rest.RESTMapper):
+    """A mapper for the supporters admin REST API
+    """
+
+    NAME = 'supporters'
+
+    DOC_CLASS = Supporter
+
+    QUERY_PARAMS = {
+    }
+
+    FILTER_PARAMS = {
+        'petition': queries.termsFilter('petition'),
+    }
+
+    SORT_PARAMS = {
+        'created': queries.fieldSorter('dc.created'),
+        'default': queries.fieldSorter('dc.created', 'DESC'),
+    }

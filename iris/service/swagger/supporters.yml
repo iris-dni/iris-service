@@ -1,0 +1,33 @@
+definitions:
+    SupporterAdmin:
+        type: object
+        properties:
+            id:
+                type: string
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            provider:
+                type: string
+            user:
+                type: string
+            telephone:
+                type: string
+    ListResponseBodyAdmin:
+        description: User list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/SupporterAdmin'
+            total:
+                type: integer

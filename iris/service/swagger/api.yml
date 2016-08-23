@@ -28,6 +28,8 @@ tags:
     description: City Importer API
   - name: city_admin
     description: Administrative City API
+  - name: supporter_admin
+    description: Administrative Supporter API
   - name: statemachine
     description: Statemachine API
   - name: Options
@@ -92,6 +94,9 @@ paths:
     $ref: 'user_admin_path.yml#/users'
   /admin/users/{contentId}:
     $ref: 'user_admin_path.yml#/users_contentId'
+
+  /admin/supporters:
+    $ref: 'supporter_admin_path.yml#/supporters'
 
   /admin/statemachine/{name}:
     $ref: 'statemachine_path.yml#/statemachine_name'
