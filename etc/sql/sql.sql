@@ -62,8 +62,17 @@ CREATE TABLE petitions (
         required LONG
     ),
 
-    owner STRING,
     response_token STRING,
+
+    relations OBJECT(STRICT) AS (
+        owner STRING,
+        links ARRAY(
+            OBJECT(STRICT) AS (
+                id STRING,
+                state string
+            )
+        )
+    ),
 
     INDEX tags_ft
       USING FULLTEXT(tags)

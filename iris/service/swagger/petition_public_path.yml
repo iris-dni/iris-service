@@ -51,22 +51,8 @@ petitions:
       - name: suggested_solution_ft
         in: query
         type: string
-      - name: sort
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-        description: |
-            Possible options
-
-              - created (default)
-              - modified
-              - state
-              - state.parent
-              - supporters.amount
-              - score
-              - id
+      - $ref: "petition_parameters.yml#/parameters/sort"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: offset
         in: query
         type: integer
@@ -95,6 +81,7 @@ petitions:
     summary: Create Petition
     operationId: create
     parameters:
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:
@@ -120,6 +107,7 @@ petitions_contentId:
         type: integer
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       default:
         description: Empty Body
@@ -134,6 +122,7 @@ petitions_contentId:
         type: integer
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: Petition found
@@ -154,6 +143,7 @@ petitions_contentId:
         type: integer
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:

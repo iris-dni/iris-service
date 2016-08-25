@@ -3,8 +3,8 @@ Petition Document Management
 ============================
 
 
-Petion State
-============
+Petiton State
+=============
 
 The petition state is an instance of the StateContainer. The document provides
 the state as a StateContainer instance which is used as an ObjectProperty. The
@@ -28,8 +28,8 @@ With additional properties::
     '{"py/object": "iris.service.petition.document.StateContainer", "other": "other", "name": "draft", "parent": ""}'
 
 
-Petion Document
-===============
+Petiton Document
+================
 
 A petition is a `Document`::
 
@@ -94,6 +94,29 @@ The state container is also restored::
     >>> petition = Petition.get("1")
     >>> petition.state.other
     u'other'
+
+
+Petition Owner
+==============
+
+The petition owner is a relation to a User document::
+
+    >>> petition = Petition()
+    >>> petition.owner
+    <RelationResolver User[None]>
+    >>> petition.owner() is None
+    True
+
+    >>> user = creators.user(email='42@email.com')
+    >>> _ = user.store()
+
+    >>> petition.owner = user
+    >>> petition.owner
+    <RelationResolver User[1]>
+    >>> petition.owner()
+    <User [id=1, u'42@email.com']>
+    >>> petition._relations
+    {'owner': 1}
 
 
 Petition Support

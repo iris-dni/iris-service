@@ -112,7 +112,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         done = getattr(sm, transitionName)(**data)
         if done:
             petition.store(refresh=True)
-        return self.doc_as_dict(petition)
+        return self.to_api(petition)
 
     def statemachine(self):
         return fromYAML(raw=True)

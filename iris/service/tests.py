@@ -11,10 +11,12 @@ from .testing.suite import (
 def test_suite():
     s = unittest.TestSuite((
         create_suite('db/dc.rst'),
+
         create_suite('rest/service.rst'),
         create_suite('rest/mapper.rst'),
         create_suite('rest/document.rst'),
         create_suite('rest/swagger.rst'),
+        create_crate_suite('rest/transform.rst'),
 
         create_crate_suite('petition/document.rst'),
         create_crate_suite('petition/service.rst'),

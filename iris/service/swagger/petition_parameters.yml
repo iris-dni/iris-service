@@ -1,0 +1,28 @@
+parameters:
+    resolve:
+      name: resolve
+      in: query
+      type: array
+      items:
+        type: string
+        enum:
+          - owner
+          - city
+      collectionFormat: csv
+    sort:
+      name: sort
+      in: query
+      type: array
+      items:
+        type: string
+      collectionFormat: csv
+      description: |
+          Possible options
+
+            - created (default)
+            - modified
+            - state
+            - state.parent
+            - supporters.amount
+            - score
+            - id

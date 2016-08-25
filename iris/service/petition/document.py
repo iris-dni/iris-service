@@ -3,7 +3,7 @@ import jsonpickle
 import transitions
 
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property, ObjectProperty
+from lovely.esdb.properties import Property, ObjectProperty, Relation
 from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
@@ -113,12 +113,24 @@ class Petition(Document):
         """
     )
 
-    owner = Property(
-        default=None
+    owner = Relation(
+        '_relations.owner',
+        'User.id',
+        doc="""
+          The owner of the petition.
+        """
     )
 
     response_token = Property(
         default=None
+    )
+
+    _relations = Property(
+        name="relations",
+        default=lambda: {},
+        doc="""
+          The petition relations.
+        """
     )
 
     def addSupporter(self, user=None, phone_user=None):

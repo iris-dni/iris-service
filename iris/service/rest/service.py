@@ -40,22 +40,13 @@ class BaseRESTService(EndpointErrorMixin):
                                  {'mapperName': mapperName}
                                 )
 
-    def _queryParams(self, params):
-        queryParams = {k: v for k, v in params.items()}
-        if 'resolve' in queryParams:
-            queryParams['resolve'] = [
-                n.strip()
-                for n in queryParams['resolve'].split(',')
-                if n.strip()]
-        return queryParams
-
     def _mapperName(self, offset):
         return self.request.path.split('/')[offset]
 
-    def get_content(self, mapperName, contentId):
+    def get_content(self, mapperName, contentId, resolve=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.get(contentId)
+            data = mapper.get(contentId, resolve)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
@@ -66,18 +57,18 @@ class BaseRESTService(EndpointErrorMixin):
                                 )
         return {"data": data}
 
-    def create_content(self, mapperName, data):
+    def create_content(self, mapperName, data, resolve=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.create(data)
+            data = mapper.create(data, resolve)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         return {"data": data}
 
-    def update_content(self, mapperName, contentId, data):
+    def update_content(self, mapperName, contentId, data, resolve=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.update(contentId, data)
+            data = mapper.update(contentId, data, resolve)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
@@ -104,9 +95,8 @@ class BaseRESTService(EndpointErrorMixin):
 
     def search_content(self, mapperName, **kwargs):
         mapper = self._getMapper(mapperName)
-        queryParams = self._queryParams(kwargs)
         try:
-            data = mapper.search(**queryParams)
+            data = mapper.search(**kwargs)
         except (KeyError, ValueError) as e:
             raise self.bad_request(replacements={'message': e.message})
         except NotImplementedError as e:
@@ -205,13 +195,13 @@ class RESTMapper(object):
     def __init__(self, request):
         self.request = request
 
-    def get(self, contentId):
+    def get(self, contentId, resolve):
         raise NotImplementedError('%s.get' % self.__class__.__name__)
 
-    def create(self, data):
+    def create(self, data, resolve):
         raise NotImplementedError('%s.create' % self.__class__.__name__)
 
-    def update(self, contentId, data):
+    def update(self, contentId, data, resolve):
         raise NotImplementedError('%s.update' % self.__class__.__name__)
 
     def delete(self, contentId):

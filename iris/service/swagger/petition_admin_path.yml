@@ -51,22 +51,8 @@ petitions:
       - name: suggested_solution_ft
         in: query
         type: string
-      - name: sort
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-        description: |
-            Possible options
-
-              - created (default)
-              - modified
-              - state
-              - state.parent
-              - supporters.amount
-              - score
-              - id
+      - $ref: "petition_parameters.yml#/parameters/sort"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: offset
         in: query
         type: integer

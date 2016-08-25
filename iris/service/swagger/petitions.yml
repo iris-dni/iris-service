@@ -121,16 +121,32 @@ definitions:
         type: object
         properties:
             owner:
-                type: string
-                x-nullable: true
+                type: object
                 readOnly: true
+                properties:
+                    id:
+                        type: integer
+                        x-nullable: true
+                    class:
+                        type: string
+                    data:
+                        $ref: 'users.yml#/definitions/UserPublic'
+                        x-nullable: true
 
     PropertiesForAdmin:
         type: object
         properties:
             owner:
-                type: string
-                x-nullable: true
+                type: object
+                properties:
+                    id:
+                        type: integer
+                        x-nullable: true
+                    class:
+                        type: string
+                    data:
+                        $ref: 'users.yml#/definitions/UserPublic'
+                        x-nullable: true
 
     Petition:
         type: object
