@@ -81,8 +81,8 @@ Support using a telephone number::
     {u'amount': 2, u'required': 5}
 
     >>> obj = Supporter.get('1-t:0555 42')
-    >>> obj.user is None
-    True
+    >>> obj.user
+    <RelationResolver User[None]>
     >>> obj.phone_user
     {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
 

@@ -161,11 +161,11 @@ Support using a telephone number::
     >>> supporter = petition.addSupporter(phone_user=phone_user)
     >>> supporter
     <Supporter [id='2-t:0555 42']>
-    >>> supporter.user is None
+    >>> supporter.user() is None
     True
     >>> supporter.phone_user
     {'lastname': 'last', 'telephone': '0555 42', 'firstname': 'first'}
-    >>> supporter.petition == petition.id
+    >>> supporter.petition.id == petition.id
     True
 
     >>> from iris.service.petition.document import Supporter
@@ -186,10 +186,10 @@ Support using an existing user::
     >>> supporter
     <Supporter [id='2-u:42']>
     >>> supporter.user
-    42
+    <RelationResolver User[42]>
     >>> supporter.phone_user is None
     True
-    >>> supporter.petition == petition.id
+    >>> supporter.petition.id == petition.id
     True
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)

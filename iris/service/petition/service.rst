@@ -196,7 +196,7 @@ POST on the petition with the data which need to be changed::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "changed Admin petition"
+    ...         "title": "changed Admin petition",
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
@@ -206,6 +206,10 @@ POST on the petition with the data which need to be changed::
     >>> print_json(response)
     {
       "data": {
+        "city": {
+          "class": "City",
+          "id": null
+        },
         ...
         "dc": {
           "created": "...",
@@ -216,10 +220,47 @@ POST on the petition with the data which need to be changed::
         ...
         "id": ...,
         ...
+        "owner": {
+          "class": "User",
+          "id": null
+        },
+        ...
         "title": "changed Admin petition",
         ...
       }
     }
+
+Update the city relation::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "city": {"id": 'test:42'}
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "id": "test:42"
+        },
+    ...
+
+Request the result with a resolved city relation::
+
+    >>> response = browser.post_json('/v1/admin/petitions/%s?resolve=city,owner' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "data": null,
+          "id": "test:42"
+        },
+    ...
 
 
 Get a Petition by id
@@ -403,6 +444,7 @@ Relations can be resolved::
               "dc": {
                 ...
               },
+              "email": "...",
               "firstname": "...",
               ...
             },
@@ -505,17 +547,42 @@ The admin can request supporters::
             "created": "..."
           },
           "id": "10-t:03613949147",
+          "petition": {
+            "class": "Petition",
+            "id": ...
+          },
           "phone_user": {
             "firstname": "Jeffrey",
             "lastname": "James",
             "telephone": "03613949147"
           },
-          "user": null
+          "user": {
+            "class": "User",
+            "id": null
+          }
         },
         ...
       ],
       "total": 180
     }
+
+    >>> response = browser.get('/v1/admin/supporters?resolve=petition,user&sort=id')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          "dc": {
+            "created": "..."
+          },
+          "id": "10-t:03613949147",
+          "petition": {
+            "class": "Petition",
+            "data": {
+              "city": {
+                "class": "City",
+                "id": "test:19"
+              },
+    ...
 
 
 Permissions

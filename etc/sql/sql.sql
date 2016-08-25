@@ -99,14 +99,17 @@ CREATE TABLE supporters (
     dc OBJECT(STRICT) AS (
         created TIMESTAMP
     ),
-    -- relation to a petition
-    petition LONG,
-    -- relation to a user
-    user LONG,
     phone_user OBJECT(IGNORED) AS (
         telephone STRING,
         firstname STRING,
         lastname STRING
+    ),
+
+    relations OBJECT(STRICT) AS (
+        -- the user relation
+        user LONG,
+        -- the petition relation
+        petition LONG
     )
 )
 CLUSTERED INTO {{ Supporters.shards }} SHARDS

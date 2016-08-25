@@ -18,6 +18,21 @@ supporters:
         items:
           type: string
         collectionFormat: csv
+      - name: user
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: resolve
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+            - user
+            - petition
+        collectionFormat: csv
       - name: sort
         in: query
         type: array

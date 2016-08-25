@@ -88,7 +88,7 @@ definitions:
                     class:
                         type: string
                     data:
-                        $ref: 'cities.yml#/definitions/CityPublic'
+                        $ref: 'cities.yml#/definitions/City'
                         x-nullable: true
             city_answer:
                 type: string
@@ -139,7 +139,6 @@ definitions:
                         type: string
                     data:
                         $ref: 'users.yml#/definitions/UserPublic'
-                        x-nullable: true
 
     PropertiesForAdmin:
         type: object
@@ -153,8 +152,7 @@ definitions:
                     class:
                         type: string
                     data:
-                        $ref: 'users.yml#/definitions/UserPublic'
-                        x-nullable: true
+                        $ref: 'users.yml#/definitions/UserAdmin'
 
     Petition:
         type: object

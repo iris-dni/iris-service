@@ -23,7 +23,7 @@ class APITransformer(object):
         sources = self.build_resolveable_source()
         relations = self.extract_relations_to_resolve(sources)
         self.resolve_relations(relations)
-        self.prepare_result(sources)
+        self.prepare_result(sources, resolved=True)
         if self.single_doc:
             sources = sources[0]
         return sources
@@ -45,7 +45,7 @@ class APITransformer(object):
             del source['_relations']
         return source
 
-    def prepare_result(self, sources):
+    def prepare_result(self, sources, resolved):
         """Replaces relations
 
         If a relation is in the resolve list it will be expanded with the
@@ -54,10 +54,13 @@ class APITransformer(object):
         for doc in sources:
             for name, relation in self._iter_source_relations(doc):
                 rel_data = relation.relation_dict
-                if name in self.resolve:
-                    rel_data['data'] = self.resolved.get(relation.remote,
-                                                         {}
-                                                        ).get(relation.id)
+                if resolved and name in self.resolve:
+                    data = self.resolved.get(relation.remote,
+                                             {}
+                                            ).get(relation.id)
+                    if data is not None:
+                        self.prepare_result([data], resolved=False)
+                    rel_data['data'] = data
                 doc[name] = rel_data
 
     def extract_relations_to_resolve(self, sources):

@@ -207,12 +207,15 @@ class Supporter(Document):
         doc="Dublin Core data."
     )
 
-    petition = Property(
+    petition = Relation(
+        '_relations.petition',
+        'Petition.id',
         doc="Relation to the petition"
     )
 
-    user = Property(
-        default=None,
+    user = Relation(
+        '_relations.user',
+        'User.id',
         doc="""
           Relation to the supporting user.
           Not required if the user was identified with a telephone number.
@@ -224,6 +227,14 @@ class Supporter(Document):
         doc="""
           A user which was identified via a telephone number.
           This is stored as an object.
+        """
+    )
+
+    _relations = Property(
+        name="relations",
+        default=lambda: {},
+        doc="""
+          The petition relations.
         """
     )
 

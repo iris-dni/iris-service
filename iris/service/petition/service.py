@@ -241,7 +241,8 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
     }
 
     FILTER_PARAMS = {
-        'petition': queries.termsFilter('petition'),
+        'petition': queries.termsFilter('relations.petition'),
+        'user': queries.termsFilter('relations.user'),
     }
 
     SORT_PARAMS = {
