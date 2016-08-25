@@ -41,8 +41,6 @@ CREATE TABLE petitions (
     ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,
-    -- relation to cities table
-    city STRING,
     city_answer STRING INDEX OFF,
     type STRING,
     description STRING INDEX OFF,
@@ -65,7 +63,11 @@ CREATE TABLE petitions (
     response_token STRING,
 
     relations OBJECT(STRICT) AS (
-        owner STRING,
+        -- the owner relation
+        owner LONG,
+        -- the city relation
+        city STRING,
+
         links ARRAY(
             OBJECT(STRICT) AS (
                 id STRING,

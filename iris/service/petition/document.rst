@@ -119,6 +119,29 @@ The petition owner is a relation to a User document::
     {'owner': 1}
 
 
+Petition City
+==============
+
+The petition city is a relation to a City document::
+
+    >>> petition = Petition()
+    >>> petition.city
+    <RelationResolver City[None]>
+    >>> petition.city() is None
+    True
+
+    >>> city = creators.city(id='dahoam', provider="test", name='dahoam')
+    >>> _ = city.store()
+
+    >>> petition.city = city
+    >>> petition.city
+    <RelationResolver City[test:dahoam]>
+    >>> petition.city()
+    <City [id=u'test:dahoam', u'dahoam']>
+    >>> petition._relations
+    {'city': 'test:dahoam'}
+
+
 Petition Support
 ================
 

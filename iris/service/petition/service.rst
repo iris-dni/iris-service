@@ -380,6 +380,23 @@ Relations can be resolved::
     {
       "data": [
         ...
+          "city": {
+            "class": "City",
+            "data": {
+              "id": "test:...",
+              "name": "New Ashley",
+              "provider": "test",
+              "tags": [
+                "portal:gtb"
+              ],
+              "treshold": 10,
+              "zips": [
+                "30040"
+              ]
+            },
+            "id": "test:..."
+          },
+          ...
           "owner": {
             "class": "User",
             "data": {
@@ -389,7 +406,25 @@ Relations can be resolved::
               "firstname": "...",
               ...
             },
-            "id": 17
+            "id": ...
+          },
+    ...
+
+Unresolved::
+
+    >>> response = browser.get('/v1/admin/petitions?limit=1')
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+          "city": {
+            "class": "City",
+            "id": "test:..."
+          },
+          ...
+          "owner": {
+            "class": "User",
+            "id": ...
           },
     ...
 

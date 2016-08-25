@@ -50,8 +50,9 @@ class Petition(Document):
         default=''
     )
 
-    city = Property(
-        default=None,
+    city = Relation(
+        '_relations.city',
+        'City.id',
         doc="""
           A reference to a city (id).
         """
