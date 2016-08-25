@@ -1,28 +1,48 @@
 parameters:
-    resolve:
-      name: resolve
-      in: query
-      type: array
-      items:
-        type: string
-        enum:
-          - owner
-          - city
-      collectionFormat: csv
-    sort:
-      name: sort
-      in: query
-      type: array
-      items:
-        type: string
-      collectionFormat: csv
-      description: |
-          Possible options
+  state:
+    name: state
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+    description: |
+        States can be provided in dotted notation to filter parent states:
 
-            - created (default)
-            - modified
-            - state
-            - state.parent
-            - supporters.amount
-            - score
-            - id
+        - draft: all states with name 'draft'
+        - supportable.active: all states with name 'active' and parent 'supportable'
+        - supportable.*: all states with parent 'supportable'
+  city:
+    name: city
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+  resolve:
+    name: resolve
+    in: query
+    type: array
+    items:
+      type: string
+      enum:
+        - owner
+        - city
+    collectionFormat: csv
+  sort:
+    name: sort
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+    description: |
+        Possible options
+
+          - created (default)
+          - modified
+          - state
+          - state.parent
+          - supporters.amount
+          - score
+          - id

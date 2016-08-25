@@ -70,19 +70,8 @@ cities_search:
               - score
               - -score
         collectionFormat: csv
-      - name: offset
-        in: query
-        type: integer
-        minimum: 0
-        default: 0
-        description: The offset to the first city.
-      - name: limit
-        in: query
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 10
-        description: The number of cities in the result.
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
     responses:
       '200':
         description: Petition found

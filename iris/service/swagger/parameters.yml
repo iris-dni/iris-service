@@ -1,0 +1,27 @@
+parameters:
+  tags:
+    name: tags
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+  fulltext:
+    name: ft
+    in: query
+    type: string
+  offset:
+    name: offset
+    in: query
+    type: integer
+    minimum: 0
+    default: 0
+    description: The offset to the first petition.
+  limit:
+    name: limit
+    in: query
+    type: integer
+    minimum: 0
+    maximum: 50
+    default: 10
+    description: The number of petitions in the result.

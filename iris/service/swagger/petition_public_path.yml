@@ -12,33 +12,10 @@ petitions:
     summary: Petitions
     operationId: search
     parameters:
-      - name: state
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-        description: |
-            States can be provided in dotted notation to filter parent states:
-
-            - draft: all states with name 'draft'
-            - supportable.active: all states with name 'active' and parent 'supportable'
-            - supportable.*: all states with parent 'supportable'
-      - name: tags
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-      - name: city
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-      - name: ft
-        in: query
-        type: string
+      - $ref: "petition_parameters.yml#/parameters/state"
+      - $ref: "parameters.yml#/parameters/tags"
+      - $ref: "petition_parameters.yml#/parameters/city"
+      - $ref: "parameters.yml#/parameters/fulltext"
       - name: tags_ft
         in: query
         type: string
@@ -53,19 +30,8 @@ petitions:
         type: string
       - $ref: "petition_parameters.yml#/parameters/sort"
       - $ref: "petition_parameters.yml#/parameters/resolve"
-      - name: offset
-        in: query
-        type: integer
-        minimum: 0
-        default: 0
-        description: The offset to the first petition.
-      - name: limit
-        in: query
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 10
-        description: The number of petitions in the result.
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
     responses:
       '200':
         description: Petition found
