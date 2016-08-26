@@ -9,13 +9,13 @@ Prepare::
 
     >>> from iris.service.db import get_es
 
-    >>> from lovely.esdb.properties import Property, Relation
+    >>> from lovely.esdb.properties import Property, LocalRelation
     >>> from lovely.esdb.document import Document
     >>> class TestDoc(Document):
     ...     INDEX = 'testdocs'
     ...     id = Property(primary_key=True)
     ...     more = Property()
-    ...     other = Relation('_relations.other', 'OtherDoc.id')
+    ...     other = LocalRelation('_relations.other', 'OtherDoc.id')
     ...     _relations = Property(name="relations", default=lambda: {})
 
     >>> class OtherDoc(Document):

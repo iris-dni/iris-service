@@ -3,7 +3,7 @@ import jsonpickle
 import transitions
 
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property, ObjectProperty, Relation
+from lovely.esdb.properties import Property, ObjectProperty, LocalRelation
 from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
@@ -50,7 +50,7 @@ class Petition(Document):
         default=''
     )
 
-    city = Relation(
+    city = LocalRelation(
         '_relations.city',
         'City.id',
         doc="""
@@ -114,7 +114,7 @@ class Petition(Document):
         """
     )
 
-    owner = Relation(
+    owner = LocalRelation(
         '_relations.owner',
         'User.id',
         doc="""
@@ -207,13 +207,13 @@ class Supporter(Document):
         doc="Dublin Core data."
     )
 
-    petition = Relation(
+    petition = LocalRelation(
         '_relations.petition',
         'Petition.id',
         doc="Relation to the petition"
     )
 
-    user = Relation(
+    user = LocalRelation(
         '_relations.user',
         'User.id',
         doc="""

@@ -1,6 +1,6 @@
 import inspect
 
-from lovely.esdb.properties import Relation, RelationResolver
+from lovely.esdb.properties import LocalRelation, RelationResolver
 
 
 class APITransformer(object):
@@ -102,7 +102,7 @@ class APITransformer(object):
         """yield the relation properties of a document
         """
         def isRelation(obj):
-            return isinstance(obj, Relation)
+            return isinstance(obj, LocalRelation)
         for (name, prop) in inspect.getmembers(doc.__class__, isRelation):
             yield (name, prop)
 
