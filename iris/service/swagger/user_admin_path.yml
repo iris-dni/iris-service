@@ -51,17 +51,8 @@ users:
         items:
           type: string
         collectionFormat: csv
-      - name: offset
-        in: query
-        type: integer
-        minimum: 0
-        default: 0
-      - name: limit
-        in: query
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 10
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
       - name: debug
         in: query
         type: boolean

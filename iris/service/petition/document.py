@@ -3,7 +3,7 @@ import jsonpickle
 import transitions
 
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property, ObjectProperty
+from lovely.esdb.properties import Property, ObjectProperty, LocalRelation
 from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
@@ -50,8 +50,9 @@ class Petition(Document):
         default=''
     )
 
-    city = Property(
-        default=None,
+    city = LocalRelation(
+        '_relations.city',
+        'City.id',
         doc="""
           A reference to a city (id).
         """
@@ -113,12 +114,24 @@ class Petition(Document):
         """
     )
 
-    owner = Property(
-        default=None
+    owner = LocalRelation(
+        '_relations.owner',
+        'User.id',
+        doc="""
+          The owner of the petition.
+        """
     )
 
     response_token = Property(
         default=None
+    )
+
+    _relations = Property(
+        name="relations",
+        default=lambda: {},
+        doc="""
+          The petition relations.
+        """
     )
 
     def addSupporter(self, user=None, phone_user=None):
@@ -194,12 +207,15 @@ class Supporter(Document):
         doc="Dublin Core data."
     )
 
-    petition = Property(
+    petition = LocalRelation(
+        '_relations.petition',
+        'Petition.id',
         doc="Relation to the petition"
     )
 
-    user = Property(
-        default=None,
+    user = LocalRelation(
+        '_relations.user',
+        'User.id',
         doc="""
           Relation to the supporting user.
           Not required if the user was identified with a telephone number.
@@ -211,6 +227,14 @@ class Supporter(Document):
         doc="""
           A user which was identified via a telephone number.
           This is stored as an object.
+        """
+    )
+
+    _relations = Property(
+        name="relations",
+        default=lambda: {},
+        doc="""
+          The petition relations.
         """
     )
 

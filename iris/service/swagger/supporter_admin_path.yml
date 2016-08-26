@@ -18,6 +18,21 @@ supporters:
         items:
           type: string
         collectionFormat: csv
+      - name: user
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: resolve
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+            - user
+            - petition
+        collectionFormat: csv
       - name: sort
         in: query
         type: array
@@ -29,19 +44,8 @@ supporters:
               - id
               - -id
         collectionFormat: csv
-      - name: offset
-        in: query
-        type: integer
-        minimum: 0
-        default: 0
-        description: The offset to the first entry.
-      - name: limit
-        in: query
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 10
-        description: The number of entries in the result.
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
     responses:
       '200':
         description: Supporters found

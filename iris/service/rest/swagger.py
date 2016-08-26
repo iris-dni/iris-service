@@ -54,6 +54,8 @@ def reduce_mapping(mapping, data):
     """
     if mapping is True:
         return data
+    if data is None:
+        return data
     result = {}
     for k, v in mapping.iteritems():
         if data is None or k not in data:

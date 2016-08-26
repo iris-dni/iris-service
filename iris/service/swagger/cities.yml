@@ -1,6 +1,7 @@
 definitions:
     CityPublic:
         type: object
+        x-nullable: true
         properties:
             id:
                 type: string
@@ -21,6 +22,7 @@ definitions:
                 type: integer
     CityPrivate:
         type: object
+        x-nullable: true
         properties:
             dc:
                 type: object

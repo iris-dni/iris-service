@@ -12,33 +12,10 @@ petitions:
     summary: Search Petitions
     operationId: search
     parameters:
-      - name: state
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-        description: |
-            States can be provided in dotted notation to filter parent states:
-
-            - draft: all states with name 'draft'
-            - supportable.active: all states with name 'active' and parent 'supportable'
-            - supportable.*: all states with parent 'supportable'
-      - name: tags
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-      - name: city
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-      - name: ft
-        in: query
-        type: string
+      - $ref: "petition_parameters.yml#/parameters/state"
+      - $ref: "parameters.yml#/parameters/tags"
+      - $ref: "petition_parameters.yml#/parameters/city"
+      - $ref: "parameters.yml#/parameters/fulltext"
       - name: tags_ft
         in: query
         type: string
@@ -51,35 +28,10 @@ petitions:
       - name: suggested_solution_ft
         in: query
         type: string
-      - name: sort
-        in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
-        description: |
-            Possible options
-
-              - created (default)
-              - modified
-              - state
-              - state.parent
-              - supporters.amount
-              - score
-              - id
-      - name: offset
-        in: query
-        type: integer
-        minimum: 0
-        default: 0
-        description: The offset to the first petition.
-      - name: limit
-        in: query
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 10
-        description: The number of petitions in the result.
+      - $ref: "petition_parameters.yml#/parameters/sort"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
     responses:
       '200':
         description: Petition found
@@ -95,6 +47,7 @@ petitions:
     summary: Create Petition
     operationId: create
     parameters:
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:
@@ -130,6 +83,7 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: Petition found
@@ -148,6 +102,7 @@ petitions_contentId:
       - name: contentId
         in: path
         type: integer
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:

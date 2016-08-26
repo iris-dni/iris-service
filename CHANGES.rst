@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - API: allow to resolve relations
+
 2016/08/26 0.0.9
 ================
 

@@ -1,4 +1,5 @@
 from . import queries
+from .transform import APITransformer
 
 
 class DocumentRESTMapperMixin(object):
@@ -7,35 +8,36 @@ class DocumentRESTMapperMixin(object):
 
     DOC_CLASS = None
 
-    def get(self, contentId):
-        return self.doc_as_dict(self.DOC_CLASS.get(contentId))
+    def get(self, contentId, resolve=[]):
+        return self.to_api(self.DOC_CLASS.get(contentId), resolve)
 
-    def create(self, data):
+    def create(self, data, resolve=[]):
         doc = self.DOC_CLASS(**data['data'])
         doc.store(refresh=True)
-        return self.doc_as_dict(doc)
+        return self.to_api(doc, resolve)
 
-    def update(self, contentId, data):
+    def update(self, contentId, data, resolve=[]):
         doc = self.DOC_CLASS.get(contentId)
         if not doc:
             return None
         for name, value in data['data'].items():
             setattr(doc, name, value)
         doc.store(refresh=True)
-        return self.doc_as_dict(doc)
+        return self.to_api(doc, resolve)
 
     def delete(self, contentId):
         doc = self.DOC_CLASS.get(contentId)
         if doc is None:
             return
         doc.delete(refresh=True)
-        return self.doc_as_dict(doc)
+        return self.to_api(doc)
 
-    def doc_as_dict(self, doc):
-        """Provide the document as a dict to be able to JSON serialize it"""
+    def to_api(self, doc, resolve=[]):
+        """Provide the document as a dict to be able to JSON serialize it
+        """
         if doc is None:
             return None
-        return doc.get_source()
+        return APITransformer(doc, resolve=resolve).to_api()
 
 
 class SearchableDocumentRESTMapperMixin(object):
@@ -82,6 +84,10 @@ class SearchableDocumentRESTMapperMixin(object):
         filterMust = []
         queryMust = []
         order = []
+        resolve = []
+
+        if 'resolve' in params:
+            resolve = params.pop('resolve') or []
 
         def add_sort(add):
             if not add:
@@ -156,7 +162,7 @@ class SearchableDocumentRESTMapperMixin(object):
             if ids_only:
                 data = [d['fields']['id'][0] for d in hits]
             else:
-                data = [self.doc_as_dict(d) for d in hits]
+                data = self.to_api(hits, resolve)
             result = {
                 'data': data,
                 'total': total,

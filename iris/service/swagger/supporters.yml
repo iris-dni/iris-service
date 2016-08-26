@@ -12,13 +12,31 @@ definitions:
                         type: string
                         format: dateTime
                         description: ISO8601
-            provider:
-                type: string
+            petition:
+                type: object
+                readOnly: true
+                properties:
+                    id:
+                        type: integer
+                        x-nullable: true
+                    class:
+                        type: string
+                    data:
+                        $ref: 'petitions.yml#/definitions/Petition'
             user:
-                type: integer
-                x-nullable: true
+                type: object
+                readOnly: true
+                properties:
+                    id:
+                        type: integer
+                        x-nullable: true
+                    class:
+                        type: string
+                    data:
+                        $ref: 'users.yml#/definitions/UserPublic'
             phone_user:
                 type: object
+                x-nullable: true
                 properties:
                     telephone:
                         type: string

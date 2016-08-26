@@ -12,6 +12,14 @@ IRIS Services
    ./petition-management
    ./petitioner-flows
 
+General API Information
+-----------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   ./api.rst
+
 Not Implemented or Not Validated
 --------------------------------
 

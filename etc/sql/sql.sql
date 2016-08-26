@@ -41,8 +41,6 @@ CREATE TABLE petitions (
     ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,
-    -- relation to cities table
-    city STRING,
     city_answer STRING INDEX OFF,
     type STRING,
     description STRING INDEX OFF,
@@ -62,8 +60,21 @@ CREATE TABLE petitions (
         required LONG
     ),
 
-    owner STRING,
     response_token STRING,
+
+    relations OBJECT(STRICT) AS (
+        -- the owner relation
+        owner LONG,
+        -- the city relation
+        city STRING,
+
+        links ARRAY(
+            OBJECT(STRICT) AS (
+                id STRING,
+                state string
+            )
+        )
+    ),
 
     INDEX tags_ft
       USING FULLTEXT(tags)
@@ -88,14 +99,17 @@ CREATE TABLE supporters (
     dc OBJECT(STRICT) AS (
         created TIMESTAMP
     ),
-    -- relation to a petition
-    petition LONG,
-    -- relation to a user
-    user LONG,
     phone_user OBJECT(IGNORED) AS (
         telephone STRING,
         firstname STRING,
         lastname STRING
+    ),
+
+    relations OBJECT(STRICT) AS (
+        -- the user relation
+        user LONG,
+        -- the petition relation
+        petition LONG
     )
 )
 CLUSTERED INTO {{ Supporters.shards }} SHARDS

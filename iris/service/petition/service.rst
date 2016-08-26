@@ -196,7 +196,7 @@ POST on the petition with the data which need to be changed::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "changed Admin petition"
+    ...         "title": "changed Admin petition",
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
@@ -206,6 +206,10 @@ POST on the petition with the data which need to be changed::
     >>> print_json(response)
     {
       "data": {
+        "city": {
+          "class": "City",
+          "id": null
+        },
         ...
         "dc": {
           "created": "...",
@@ -216,10 +220,47 @@ POST on the petition with the data which need to be changed::
         ...
         "id": ...,
         ...
+        "owner": {
+          "class": "User",
+          "id": null
+        },
+        ...
         "title": "changed Admin petition",
         ...
       }
     }
+
+Update the city relation::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "city": {"id": 'test:42'}
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "id": "test:42"
+        },
+    ...
+
+Request the result with a resolved city relation::
+
+    >>> response = browser.post_json('/v1/admin/petitions/%s?resolve=city,owner' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "data": null,
+          "id": "test:42"
+        },
+    ...
 
 
 Get a Petition by id
@@ -336,24 +377,24 @@ Search results can be filtered by state::
           ...
         }
       ],
-      "total": 14
+      "total": 9
     }
 
 It is possible to provide multiple states::
 
     >>> response = browser.get('/v1/admin/petitions?state=active,draft')
     >>> response.json['total']
-    19
+    15
 
     >>> response = browser.get('/v1/admin/petitions?state=supportable.pending')
     >>> response.json['total']
-    7
+    10
     >>> response = browser.get('/v1/admin/petitions?state=supportable.active')
     >>> response.json['total']
-    5
+    6
     >>> response = browser.get('/v1/admin/petitions?state=supportable.*')
     >>> response.json['total']
-    16
+    21
 
 
 General Fulltext Search
@@ -363,11 +404,71 @@ Uses all existing fulltext fields::
 
     >>> response = browser.get('/v1/admin/petitions?ft=harum&sort=score')
     >>> response.json['total']
-    16
+    19
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
     >>> response.json['total']
-    16
+    19
+
+
+Resolve Relations
+-----------------
+
+Relations can be resolved::
+
+    >>> response = browser.get('/v1/admin/petitions?resolve=owner,city&limit=1')
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+          "city": {
+            "class": "City",
+            "data": {
+              "id": "test:...",
+              "name": "New Ashley",
+              "provider": "test",
+              "tags": [
+                "portal:gtb"
+              ],
+              "treshold": 10,
+              "zips": [
+                "30040"
+              ]
+            },
+            "id": "test:..."
+          },
+          ...
+          "owner": {
+            "class": "User",
+            "data": {
+              "dc": {
+                ...
+              },
+              "email": "...",
+              "firstname": "...",
+              ...
+            },
+            "id": ...
+          },
+    ...
+
+Unresolved::
+
+    >>> response = browser.get('/v1/admin/petitions?limit=1')
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+          "city": {
+            "class": "City",
+            "id": "test:..."
+          },
+          ...
+          "owner": {
+            "class": "User",
+            "id": ...
+          },
+    ...
 
 
 Sorting Search Results
@@ -419,10 +520,69 @@ Use the `state` sort::
     u''
 
     >>> response = browser.get('/v1/petitions?sort=-state.parent,id&limit=5')
-    >>> response.json['data'][0]['state']['name']
-    u'active'
     >>> response.json['data'][0]['state']['parent']
     u'supportable'
+
+
+Supporters Admin API
+====================
+
+The admin API is implemented via the REST mapper.
+
+
+Get Supporters List
+-------------------
+
+The admin can request supporters::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+    >>> response = browser.get('/v1/admin/supporters?sort=id')
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          "dc": {
+            "created": "..."
+          },
+          "id": "10-t:03613949147",
+          "petition": {
+            "class": "Petition",
+            "id": ...
+          },
+          "phone_user": {
+            "firstname": "Jeffrey",
+            "lastname": "James",
+            "telephone": "03613949147"
+          },
+          "user": {
+            "class": "User",
+            "id": null
+          }
+        },
+        ...
+      ],
+      "total": 180
+    }
+
+    >>> response = browser.get('/v1/admin/supporters?resolve=petition,user&sort=id')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          "dc": {
+            "created": "..."
+          },
+          "id": "10-t:03613949147",
+          "petition": {
+            "class": "Petition",
+            "data": {
+              "city": {
+                "class": "City",
+                "id": "test:19"
+              },
+    ...
 
 
 Permissions
@@ -457,38 +617,8 @@ Permission check for all endpoints::
     admin                                   200 OK
     apikey-user                             deny
 
-
-Supporters Admin API
-====================
-
-The admin API is implemented via the REST mapper.
-
-The browser must be logged in with an administrator::
-
-    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
-
-Get Supporters List
--------------------
-
-    >>> response = browser.get('/v1/admin/supporters?sort=id')
-    >>> response.status
-    '200 OK'
-    >>> print_json(response)
-    {
-      "data": [
-        {
-          "dc": {
-            "created": "..."
-          },
-          "id": "10-t:(185)363-7457x07224",
-          "phone_user": {
-            "firstname": "Tami",
-            "lastname": "Proctor",
-            "telephone": "(185)363-7457x07224"
-          },
-          "user": null
-        },
-        ...
-      ],
-      "total": 140
-    }
+    >>> check_roles("GET", "/v1/admin/supporters")
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   200 OK
+    apikey-user                             deny

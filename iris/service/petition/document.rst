@@ -3,8 +3,8 @@ Petition Document Management
 ============================
 
 
-Petion State
-============
+Petiton State
+=============
 
 The petition state is an instance of the StateContainer. The document provides
 the state as a StateContainer instance which is used as an ObjectProperty. The
@@ -28,8 +28,8 @@ With additional properties::
     '{"py/object": "iris.service.petition.document.StateContainer", "other": "other", "name": "draft", "parent": ""}'
 
 
-Petion Document
-===============
+Petiton Document
+================
 
 A petition is a `Document`::
 
@@ -96,6 +96,52 @@ The state container is also restored::
     u'other'
 
 
+Petition Owner
+==============
+
+The petition owner is a relation to a User document::
+
+    >>> petition = Petition()
+    >>> petition.owner
+    <RelationResolver User[None]>
+    >>> petition.owner() is None
+    True
+
+    >>> user = creators.user(email='42@email.com')
+    >>> _ = user.store()
+
+    >>> petition.owner = user
+    >>> petition.owner
+    <RelationResolver User[1]>
+    >>> petition.owner()
+    <User [id=1, u'42@email.com']>
+    >>> petition._relations
+    {'owner': 1}
+
+
+Petition City
+==============
+
+The petition city is a relation to a City document::
+
+    >>> petition = Petition()
+    >>> petition.city
+    <RelationResolver City[None]>
+    >>> petition.city() is None
+    True
+
+    >>> city = creators.city(id='dahoam', provider="test", name='dahoam')
+    >>> _ = city.store()
+
+    >>> petition.city = city
+    >>> petition.city
+    <RelationResolver City[test:dahoam]>
+    >>> petition.city()
+    <City [id=u'test:dahoam', u'dahoam']>
+    >>> petition._relations
+    {'city': 'test:dahoam'}
+
+
 Petition Support
 ================
 
@@ -115,11 +161,11 @@ Support using a telephone number::
     >>> supporter = petition.addSupporter(phone_user=phone_user)
     >>> supporter
     <Supporter [id='2-t:0555 42']>
-    >>> supporter.user is None
+    >>> supporter.user() is None
     True
     >>> supporter.phone_user
     {'lastname': 'last', 'telephone': '0555 42', 'firstname': 'first'}
-    >>> supporter.petition == petition.id
+    >>> supporter.petition.id == petition.id
     True
 
     >>> from iris.service.petition.document import Supporter
@@ -140,10 +186,10 @@ Support using an existing user::
     >>> supporter
     <Supporter [id='2-u:42']>
     >>> supporter.user
-    42
+    <RelationResolver User[42]>
     >>> supporter.phone_user is None
     True
-    >>> supporter.petition == petition.id
+    >>> supporter.petition.id == petition.id
     True
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)

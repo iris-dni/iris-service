@@ -73,6 +73,7 @@ def petitions(amount, seed='0'):
             ('supportable', 'active'),
             ('supportable', 'pending')])
         city = random.choice(cities)
+        owner = random.choice(users)
         petition = create_object(
             Petition,
             state=StateContainer(
@@ -92,6 +93,7 @@ def petitions(amount, seed='0'):
                 'expires': None,
             },
             city=city.id,
+            owner=owner.id,
             supporters={
                 'amount': 0,
                 'required': city.treshold

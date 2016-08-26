@@ -85,7 +85,8 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     FILTER_PARAMS = {
         'state': stateFilter,
         'tags': queries.termsFilter('tags'),
-        'city': queries.termsFilter('city'),
+        'city': queries.termsFilter('relations.city'),
+        'owner': queries.termsFilter('relations.owner'),
     }
 
     SORT_PARAMS = {
@@ -112,7 +113,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         done = getattr(sm, transitionName)(**data)
         if done:
             petition.store(refresh=True)
-        return self.doc_as_dict(petition)
+        return self.to_api(petition)
 
     def statemachine(self):
         return fromYAML(raw=True)
@@ -240,7 +241,8 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
     }
 
     FILTER_PARAMS = {
-        'petition': queries.termsFilter('petition'),
+        'petition': queries.termsFilter('relations.petition'),
+        'user': queries.termsFilter('relations.user'),
     }
 
     SORT_PARAMS = {
