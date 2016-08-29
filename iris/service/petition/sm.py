@@ -73,7 +73,7 @@ class PetitionStateMachine(object):
         return supporters['amount'] >= supporters['required']
 
 
-HIDDEN_TRIGGERS = ['check', 'tick', 'reset']
+HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']
 
 
 def fromYAML(raw=False):
