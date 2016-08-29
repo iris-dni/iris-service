@@ -150,7 +150,8 @@ CREATE TABLE weblocations (
         title STRING,
         site_name STRING,
         description STRING INDEX OFF,
-        image STRING INDEX OFF
+        image STRING INDEX OFF,
+        video STRING INDEX OFF
     )
 )
 CLUSTERED INTO {{ WebLocation.shards }} SHARDS
