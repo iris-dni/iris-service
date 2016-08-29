@@ -17,7 +17,7 @@ def test_suite():
         create_suite('rest/document.rst'),
         create_suite('rest/swagger.rst'),
         create_crate_suite('rest/transform.rst'),
-        create_crate_doc_suite('relations.rst'),
+        create_crate_doc_suite('api.rst'),
 
         create_crate_suite('petition/document.rst'),
         create_crate_suite('petition/service.rst'),
