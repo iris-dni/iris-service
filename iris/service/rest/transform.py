@@ -1,6 +1,12 @@
 import inspect
 
-from lovely.esdb.properties import LocalRelation, RelationResolver
+from lovely.esdb.properties import (
+    LocalRelation,
+    RelationResolver,
+)
+from lovely.esdb.properties.relation import (
+    ListRelationResolver,
+)
 
 
 class APITransformer(object):
@@ -55,26 +61,40 @@ class APITransformer(object):
             for name, relation in self._iter_source_relations(doc):
                 rel_data = relation.relation_dict
                 if resolved and name in self.resolve:
-                    data = self.resolved.get(relation.remote,
-                                             {}
-                                            ).get(relation.id)
-                    if data is not None:
-                        self.prepare_result([data], resolved=False)
-                    rel_data['data'] = data
+                    if isinstance(relation, ListRelationResolver):
+                        for item in rel_data:
+                            d = self.resolved.get(relation.remote,
+                                                  {}
+                                                 ).get(item["id"])
+                            if d is not None:
+                                self.prepare_result([d], resolved=False)
+                            item['data'] = d
+                    else:
+                        data = self.resolved.get(relation.remote,
+                                                 {}
+                                                ).get(relation.id)
+                        if data is not None:
+                            self.prepare_result([data], resolved=False)
+                        rel_data['data'] = data
                 doc[name] = rel_data
 
     def extract_relations_to_resolve(self, sources):
         """Build a mapping with relations to resolve
 
-        The resilt is a mapping where the key is the document class and the
+        The result is a mapping where the key is the document class and the
         values are sets with the ids of the documents to resolve.
         """
         relations = {}
         for source in sources:
             for name, value in self._iter_source_relations(source):
-                if name in self.resolve and value.id is not None:
-                    remote = relations.setdefault(value.remote, set([]))
-                    remote.add(value.id)
+                if name not in self.resolve:
+                    continue
+                if not isinstance(value, ListRelationResolver):
+                    value = [value]
+                for v in value:
+                    if v.id is not None:
+                        remote = relations.setdefault(v.remote, set([]))
+                        remote.add(v.id)
         return relations
 
     def resolve_relations(self, relations):
@@ -111,5 +131,5 @@ class APITransformer(object):
         """yield the relation resolver properties of a document source
         """
         for name, prop in doc.iteritems():
-            if isinstance(prop, RelationResolver):
+            if isinstance(prop, (RelationResolver, ListRelationResolver)):
                 yield (name, prop)

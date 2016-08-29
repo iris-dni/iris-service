@@ -1,0 +1,21 @@
+definitions:
+    FilePublic:
+        type: object
+        x-nullable: true
+        properties:
+            id:
+                type: string
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+    File:
+        $ref: '#/definitions/FilePublic'

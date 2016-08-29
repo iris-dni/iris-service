@@ -3,7 +3,12 @@ import jsonpickle
 import transitions
 
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property, ObjectProperty, LocalRelation
+from lovely.esdb.properties import (
+    Property,
+    ObjectProperty,
+    LocalRelation,
+    LocalOne2NRelation,
+)
 from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
@@ -80,23 +85,39 @@ class Petition(Document):
         default=''
     )
 
-    images = Property(
-        default=[],
-        doc="A list of file ids."
+    images = LocalOne2NRelation(
+        '_relations.images',
+        'File.id',
+        relationProperties={
+            'state': 'visible'
+        },
+        doc="An image list for the petition."
     )
 
-    links = Property(
-        default=lambda: [],
-        doc="A list of location ids."
+    videos = LocalOne2NRelation(
+        '_relations.videos',
+        'WebLocation.id',
+        relationProperties={
+            'state': 'visible'
+        },
+        doc="A list of  web locations to youtube videos."
     )
 
-    videos = Property(
-        default=lambda: [],
-        doc="A list of location ids to youtube videos."
+    links = LocalOne2NRelation(
+        '_relations.links',
+        'WebLocation.id',
+        relationProperties={
+            'state': 'visible'
+        },
+        doc="A list of web locations with links for the petition."
     )
 
-    connected_locations = Property(
-        default=lambda: [],
+    connected_locations = LocalOne2NRelation(
+        '_relations.connected_locations',
+        'WebLocation.id',
+        relationProperties={
+            'state': 'visible'
+        },
         doc="""
           A list of location ids to location which are connected to this
           petition.
@@ -128,7 +149,12 @@ class Petition(Document):
 
     _relations = Property(
         name="relations",
-        default=lambda: {},
+        default=lambda: {
+            "images": [],
+            "videos": [],
+            "links": [],
+            "connected_locations": []
+        },
         doc="""
           The petition relations.
         """

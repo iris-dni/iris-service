@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - petition API: provide relation lists for images, videos and links
  - API: allow to resolve relations
 
 2016/08/26 0.0.9

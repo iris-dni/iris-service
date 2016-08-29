@@ -101,15 +101,54 @@ definitions:
             images:
                 type: array
                 items:
-                    type: string
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        class:
+                            type: string
+                        data:
+                            $ref: 'files.yml#/definitions/File'
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
             links:
                 type: array
                 items:
-                    type: string
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        class:
+                            type: string
+                        data:
+                            $ref: 'weblocations.yml#/definitions/WebLocation'
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
             videos:
                 type: array
                 items:
-                    type: string
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        class:
+                            type: string
+                        data:
+                            $ref: 'weblocations.yml#/definitions/WebLocation'
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
             supporters:
                 type: object
                 readOnly: true

@@ -116,7 +116,7 @@ The petition owner is a relation to a User document::
     >>> petition.owner()
     <User [id=1, u'42@email.com']>
     >>> petition._relations
-    {'owner': 1}
+    {'images': [], 'owner': 1, 'links': [], 'videos': [], 'connected_locations': []}
 
 
 Petition City
@@ -139,7 +139,45 @@ The petition city is a relation to a City document::
     >>> petition.city()
     <City [id=u'test:dahoam', u'dahoam']>
     >>> petition._relations
-    {'city': 'test:dahoam'}
+    {'images': [], 'city': 'test:dahoam', 'links': [], 'videos': [], 'connected_locations': []}
+
+
+Petition Images
+===============
+
+The petition manages a list of images as a relation list to files::
+
+    >>> petition.images
+    <ListRelationResolver File([])>
+
+
+Petition Videos
+===============
+
+The petition manages a list of videos as a relation list to web locations::
+
+    >>> petition.videos
+    <ListRelationResolver WebLocation([])>
+
+
+Petition Links
+===============
+
+The petition manages a list of links as a relation list to web locations::
+
+    >>> petition.links
+    <ListRelationResolver WebLocation([])>
+
+
+Petition Connected Location
+===========================
+
+The petition manages a list of connected locations as a relation list to web
+locations. "connected locations" are web location on which the petition is
+used::
+
+    >>> petition.connected_locations
+    <ListRelationResolver WebLocation([])>
 
 
 Petition Support

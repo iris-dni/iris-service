@@ -46,15 +46,6 @@ CREATE TABLE petitions (
     description STRING INDEX OFF,
     suggested_solution STRING INDEX OFF,
 
-    -- relations for files table
-    images ARRAY(STRING),
-    -- relations to locations table
-    links ARRAY(STRING),
-    -- relations to files table,
-    videos ARRAY(STRING),
-    -- relations to locations table
-    connected_locations ARRAY(STRING),
-
     supporters OBJECT(STRICT) AS (
         amount LONG,
         required LONG
@@ -68,7 +59,25 @@ CREATE TABLE petitions (
         -- the city relation
         city STRING,
 
+        images ARRAY(
+            OBJECT(STRICT) AS (
+                id STRING,
+                state string
+            )
+        ),
+        videos ARRAY(
+            OBJECT(STRICT) AS (
+                id STRING,
+                state string
+            )
+        ),
         links ARRAY(
+            OBJECT(STRICT) AS (
+                id STRING,
+                state string
+            )
+        ),
+        connected_locations ARRAY(
             OBJECT(STRICT) AS (
                 id STRING,
                 state string
@@ -114,6 +123,38 @@ CREATE TABLE supporters (
 )
 CLUSTERED INTO {{ Supporters.shards }} SHARDS
           WITH (number_of_replicas='{{ Supporters.number_of_replicas }}',
+                column_policy='strict');
+
+
+CREATE TABLE files (
+    id STRING PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP,
+        modified TIMESTAMP
+    )
+)
+CLUSTERED INTO {{ File.shards }} SHARDS
+          WITH (number_of_replicas='{{ File.number_of_replicas }}',
+                column_policy='strict');
+
+
+CREATE TABLE weblocations (
+    id STRING PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP,
+        modified TIMESTAMP
+    ),
+    url STRING INDEX OFF,
+    og OBJECT(STRICT) AS (
+        url STRING INDEX OFF,
+        title STRING,
+        site_name STRING,
+        description STRING INDEX OFF,
+        image STRING INDEX OFF
+    )
+)
+CLUSTERED INTO {{ WebLocation.shards }} SHARDS
+          WITH (number_of_replicas='{{ WebLocation.number_of_replicas }}',
                 column_policy='strict');
 
 

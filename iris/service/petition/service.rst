@@ -524,6 +524,82 @@ Use the `state` sort::
     u'supportable'
 
 
+Links
+=====
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "petition with links",
+    ...         "images": [{"id": "42", "state": "hidden"}],
+    ...         "links": [{"id": "1"}],
+    ...         "videos": [{"id": "2", "state": "hidden"}],
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "images": [
+          {
+            "class": "File",
+            "id": "42",
+            "state": "hidden"
+          }
+        ],
+        "links": [
+          {
+            "class": "WebLocation",
+            "id": "1",
+            "state": "visible"
+          }
+        ],
+        ...
+        "videos": [
+          {
+            "class": "WebLocation",
+            "id": "2",
+            "state": "hidden"
+          }
+        ]
+      }
+    }
+    >>> id = response.json["data"]["id"]
+
+    >>> response = browser.get('/v1/petitions/%s?resolve=images,links,videos' % id)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "images": [
+          {
+            "class": "File",
+            "data": null,
+            "id": "42",
+            "state": "hidden"
+          }
+        ],
+        "links": [
+          {
+            "class": "WebLocation",
+            "data": null,
+            "id": "1",
+            "state": "visible"
+          }
+        ],
+        ...
+        "videos": [
+          {
+            "class": "WebLocation",
+            "data": null,
+            "id": "2",
+            "state": "hidden"
+          }
+        ]
+      }
+    }
+
+
 Supporters Admin API
 ====================
 

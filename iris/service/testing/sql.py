@@ -20,6 +20,16 @@ class Users():
     number_of_replicas = 0
 
 
+class File():
+    shards = 1
+    number_of_replicas = 0
+
+
+class WebLocation():
+    shards = 1
+    number_of_replicas = 0
+
+
 class SSOTokens():
     shards = 1
     number_of_replicas = 0

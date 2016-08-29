@@ -28,6 +28,9 @@ parameters:
       enum:
         - owner
         - city
+        - images
+        - links
+        - videos
     collectionFormat: csv
   sort:
     name: sort
