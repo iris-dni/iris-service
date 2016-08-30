@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - petition web location properties allow a "url" property to set the web
+   location
  - added weblocations admin API
  - do not provide trigger "support" on petition state machine
  - petition API: provide relation lists for images, videos and links

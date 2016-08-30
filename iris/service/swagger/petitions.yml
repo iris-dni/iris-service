@@ -108,6 +108,7 @@ definitions:
                             x-nullable: true
                         class:
                             type: string
+                            readOnly: true
                         data:
                             $ref: 'files.yml#/definitions/File'
                         state:
@@ -123,8 +124,12 @@ definitions:
                         id:
                             type: string
                             x-nullable: true
+                        url:
+                            type: string
+                            x-nullable: true
                         class:
                             type: string
+                            readOnly: true
                         data:
                             $ref: 'weblocations.yml#/definitions/WebLocation'
                         state:
@@ -140,8 +145,12 @@ definitions:
                         id:
                             type: string
                             x-nullable: true
+                        url:
+                            type: string
+                            x-nullable: true
                         class:
                             type: string
+                            readOnly: true
                         data:
                             $ref: 'weblocations.yml#/definitions/WebLocation'
                         state:
@@ -176,6 +185,7 @@ definitions:
                         x-nullable: true
                     class:
                         type: string
+                        readOnly: true
                     data:
                         $ref: 'users.yml#/definitions/UserPublic'
 

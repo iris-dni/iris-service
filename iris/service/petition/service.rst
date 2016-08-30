@@ -524,14 +524,14 @@ Use the `state` sort::
     u'supportable'
 
 
-Links
-=====
+Relations
+=========
 
     >>> petition = {
     ...     "data": {
     ...         "title": "petition with links",
     ...         "images": [{"id": "42", "state": "hidden"}],
-    ...         "links": [{"id": "1"}],
+    ...         "links": [{"id": "1"}, {"url": "http://www.iris.com"}],
     ...         "videos": [{"id": "2", "state": "hidden"}],
     ...     }
     ... }
@@ -551,6 +551,11 @@ Links
           {
             "class": "WebLocation",
             "id": "1",
+            "state": "visible"
+          },
+          {
+            "class": "WebLocation",
+            "id": "cd126eaf1870967a2f3d724ee935b379",
             "state": "visible"
           }
         ],
@@ -584,6 +589,21 @@ Links
             "class": "WebLocation",
             "data": null,
             "id": "1",
+            "state": "visible"
+          },
+          {
+            "class": "WebLocation",
+            "data": {
+              "dc": {
+                "created": "...",
+                "modified": "..."
+              },
+              "id": "cd126eaf1870967a2f3d724ee935b379",
+              "og": null,
+              "state": "visible",
+              "url": "http://www.iris.com"
+            },
+            "id": "cd126eaf1870967a2f3d724ee935b379",
             "state": "visible"
           }
         ],

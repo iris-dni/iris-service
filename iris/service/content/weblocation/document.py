@@ -6,10 +6,6 @@ from lovely.esdb.properties import Property
 from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 
 
-def hash_url(url):
-    return hashlib.md5(url).hexdigest()
-
-
 class WebLocation(Document):
     """A web location (URL) in the database
 
@@ -41,7 +37,7 @@ class WebLocation(Document):
     )
 
     def __init__(self, url=object, **kwargs):
-        id = hash_url(url)
+        id = self.hash_url(url)
         if "id" in kwargs:
             argsId = kwargs.pop("id")
             if argsId != id:
@@ -50,9 +46,18 @@ class WebLocation(Document):
 
     @url.setter
     def set_url(self, value):
-        if self.id != hash_url(value):
+        if self.id != self.hash_url(value):
             raise ValueError("WebLocation url hash doesn't match id!")
         return value
+
+    @classmethod
+    def mget_urls(cls, urls):
+        locations = WebLocation.mget([cls.hash_url(u) for u in urls])
+        return locations
+
+    @classmethod
+    def hash_url(cls, url):
+        return hashlib.md5(url).hexdigest()
 
     def __repr__(self):
         return "<WebLocation %r>" % self.url

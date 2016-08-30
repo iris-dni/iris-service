@@ -15,6 +15,8 @@ from transitions.extensions.nesting import NestedState
 
 from ..db.dc import dc_defaults, dc_defaults_all, DC_CREATED
 
+from iris.service.content.weblocation import WebLocation
+
 from .sm import PetitionStateMachine
 
 
@@ -159,6 +161,36 @@ class Petition(Document):
           The petition relations.
         """
     )
+
+    def _weblocation_setter(self, value):
+        """Set weblocations by url instead of id
+
+        This setter transforms a url property into a web location id for
+        LocalOne2NRelation referencing a WebLocation.
+
+        Missing WebLocations are created.
+        """
+        if not value:
+            return value
+        urls = {}
+        for item in value:
+            if isinstance(item, dict) and 'url' in item:
+                items = urls.setdefault(item['url'], [])
+                items.append(item)
+        if urls:
+            lookup_urls = sorted(urls.keys())
+            locations = WebLocation.mget_urls(lookup_urls)
+            for url, location in zip(lookup_urls, locations):
+                if location is None:
+                    location = WebLocation(url=url)
+                    location.store()
+                for item in urls[url]:
+                    item['id'] = location.id
+        return value
+
+    videos.setter(_weblocation_setter)
+    links.setter(_weblocation_setter)
+    connected_locations.setter(_weblocation_setter)
 
     def addSupporter(self, user=None, phone_user=None):
         """Add a supporter to the petition

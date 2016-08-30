@@ -40,3 +40,17 @@ Store it::
 
     >>> WebLocation.get(weblocation.id).url == weblocation.url
     True
+
+
+Get WebLocations by url
+-----------------------
+
+Build some locations::
+
+    >>> for i in range(5):
+    ...     _ = WebLocation(url='http://www.%s.com' % i).store()
+    >>> _ = WebLocation.refresh()
+
+    >>> locations = WebLocation.mget_urls(['http://www.1.com', 'http://www.3.com'])
+    >>> locations
+    [<WebLocation u'http://www.1.com'>, <WebLocation u'http://www.3.com'>]

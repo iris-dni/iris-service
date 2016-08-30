@@ -159,14 +159,34 @@ The petition manages a list of videos as a relation list to web locations::
     >>> petition.videos
     <ListRelationResolver WebLocation([])>
 
+The web locations can be assigned via a url and missing locations are created
+on the fly::
+
+    >>> petition.videos = [{"url": "http://www.iris.com"}]
+    >>> [v() for v in petition.videos]
+    [<WebLocation u'http://www.iris.com'>]
+
+    >>> petition.videos = [{"id": "cd126eaf1870967a2f3d724ee935b379"},
+    ...                    {"url": "http://www.iris.com/petitions"},
+    ...                   ]
+    >>> [v() for v in petition.videos]
+    [<WebLocation u'http://www.iris.com'>,
+     <WebLocation u'http://www.iris.com/petitions'>]
+
 
 Petition Links
-===============
+==============
 
 The petition manages a list of links as a relation list to web locations::
 
     >>> petition.links
     <ListRelationResolver WebLocation([])>
+
+The web locations can be assigned via a url::
+
+    >>> petition.links = [{"url": "http://www.iris.com"}]
+    >>> [v() for v in petition.links]
+    [<WebLocation u'http://www.iris.com'>]
 
 
 Petition Connected Location
@@ -178,6 +198,12 @@ used::
 
     >>> petition.connected_locations
     <ListRelationResolver WebLocation([])>
+
+The web locations can be assigned via a url::
+
+    >>> petition.connected_locations = [{"url": "http://www.iris.com"}]
+    >>> [v() for v in petition.connected_locations]
+    [<WebLocation u'http://www.iris.com'>]
 
 
 Petition Support
