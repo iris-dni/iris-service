@@ -26,6 +26,14 @@ A WebLocation is a `Document`::
     >>> weblocation.og is None
     True
 
+The url is not changeable::
+
+    >>> weblocation.url = 'www.nowhere.com'
+    Traceback (most recent call last):
+    ValueError: WebLocation url hash doesn't match id!
+
+    >>> weblocation.url = "http://www.iris.com"
+
 Store it::
 
     >>> _ = weblocation.store()
