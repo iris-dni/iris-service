@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added weblocations admin API
  - do not provide trigger "support" on petition state machine
  - petition API: provide relation lists for images, videos and links
  - API: allow to resolve relations

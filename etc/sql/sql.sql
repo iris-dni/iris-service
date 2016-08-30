@@ -131,7 +131,8 @@ CREATE TABLE files (
     dc OBJECT(STRICT) AS (
         created TIMESTAMP,
         modified TIMESTAMP
-    )
+    ),
+    state STRING
 )
 CLUSTERED INTO {{ File.shards }} SHARDS
           WITH (number_of_replicas='{{ File.number_of_replicas }}',
@@ -144,6 +145,7 @@ CREATE TABLE weblocations (
         created TIMESTAMP,
         modified TIMESTAMP
     ),
+    state STRING,
     url STRING INDEX OFF,
     og OBJECT(STRICT) AS (
         url STRING INDEX OFF,

@@ -114,19 +114,6 @@ definitions:
                     $ref: '#/definitions/CityAdmin'
             total:
                 type: integer
-    ListResponseBodyAdmin:
-        description: User list response
-        type: object
-        required: 
-            - data
-            - total
-        properties:
-            data:
-                type: array
-                items:
-                    $ref: '#/definitions/CityAdmin'
-            total:
-                type: integer
 
 # Importer defintions
 

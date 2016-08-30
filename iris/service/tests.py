@@ -19,6 +19,9 @@ def test_suite():
         create_crate_suite('rest/transform.rst'),
         create_crate_doc_suite('api.rst'),
 
+        create_crate_suite('content/weblocation/document.rst'),
+        create_crate_suite('content/weblocation/service.rst'),
+
         create_crate_suite('petition/document.rst'),
         create_crate_suite('petition/service.rst'),
         create_crate_suite('petition/events.rst'),

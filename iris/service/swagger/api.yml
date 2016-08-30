@@ -28,6 +28,8 @@ tags:
     description: City Importer API
   - name: city_admin
     description: Administrative City API
+  - name: weblocation_admin
+    description: Administrative WebLocation API
   - name: supporter_admin
     description: Administrative Supporter API
   - name: statemachine
@@ -89,6 +91,11 @@ paths:
     $ref: 'city_admin_path.yml#/cities'
   /admin/cities/{contentId}:
     $ref: 'city_admin_path.yml#/cities_contentId'
+
+  /admin/weblocations:
+    $ref: 'weblocation_admin_path.yml#/weblocations'
+  /admin/weblocations/{contentId}:
+    $ref: 'weblocation_admin_path.yml#/weblocations_contentId'
 
   /admin/users:
     $ref: 'user_admin_path.yml#/users'
