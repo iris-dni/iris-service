@@ -3,7 +3,7 @@ recursive-include iris/service *.jinja2
 recursive-include iris/service/docs *
 recursive-include iris/service/auth/templates *
 
-recursive-include iris/service/petition *.yaml
+recursive-include iris/service/content/petition *.yaml
 
 graft iris/service/swagger
 graft iris/service/swaggerui/dist
