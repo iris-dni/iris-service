@@ -9,26 +9,22 @@ from lovely.esdb.properties import (
     LocalRelation,
     LocalOne2NRelation,
 )
-from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
 
 from iris.service.db.dc import dc_defaults, dc_defaults_all, DC_CREATED
+from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.weblocation import WebLocation
 
 from .sm import PetitionStateMachine
 
 
-# IID generators to create the integer ids for the documents
-PETITIONS_IID = Sequence('petitions').next
-
-
 class Petition(Document):
 
     INDEX = 'petitions'
 
-    id = Property(primary_key=True, default=PETITIONS_IID)
+    id = Property(primary_key=True, default=IID_SHORTED)
 
     dc = Property(
         default=dc_defaults_all(),

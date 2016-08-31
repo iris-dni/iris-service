@@ -642,15 +642,15 @@ The admin can request supporters::
           "dc": {
             "created": "..."
           },
-          "id": "10-t:03613949147",
+          "id": "10XQv-t:+29(2)4975983164",
           "petition": {
             "class": "Petition",
-            "id": ...
+            "id": "10XQv"
           },
           "phone_user": {
-            "firstname": "Jeffrey",
-            "lastname": "James",
-            "telephone": "03613949147"
+            "firstname": "Laura",
+            "lastname": "King",
+            "telephone": "+29(2)4975983164"
           },
           "user": {
             "class": "User",
@@ -670,13 +670,13 @@ The admin can request supporters::
           "dc": {
             "created": "..."
           },
-          "id": "10-t:03613949147",
+          "id": "10XQv-t:+29(2)4975983164",
           "petition": {
             "class": "Petition",
             "data": {
               "city": {
                 "class": "City",
-                "id": "test:19"
+                "id": "test:1"
               },
     ...
 

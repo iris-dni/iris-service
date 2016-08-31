@@ -17,7 +17,7 @@ definitions:
                 readOnly: true
                 properties:
                     id:
-                        type: integer
+                        type: string
                         x-nullable: true
                     class:
                         type: string

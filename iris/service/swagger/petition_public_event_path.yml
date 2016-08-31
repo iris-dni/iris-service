@@ -10,7 +10,7 @@ petitions_contentId_event_reject:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - name: data
@@ -39,7 +39,7 @@ petitions_contentId_event_publish:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -63,7 +63,7 @@ petitions_contentId_event_delete:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -87,7 +87,7 @@ petitions_contentId_event_support:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - name: data
@@ -116,7 +116,7 @@ petitions_contentId_event_close:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -140,7 +140,7 @@ petitions_contentId_event_approved:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -164,7 +164,7 @@ petitions_contentId_event_sendLetter:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -188,7 +188,7 @@ petitions_contentId_event_setFeedback:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -212,7 +212,7 @@ petitions_contentId_event_check:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -236,7 +236,7 @@ petitions_contentId_event_tick:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:
@@ -256,7 +256,7 @@ petitions_contentId_event_transitionName:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - name: transitionName

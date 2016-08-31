@@ -36,7 +36,7 @@ A petition is a `Document`::
     >>> from iris.service.content.petition import Petition
     >>> petition = Petition()
     >>> petition
-    <Petition [id=1]>
+    <Petition [id=u'1n3gf']>
 
 Default dublin core data is set::
 
@@ -62,7 +62,7 @@ Store the petition::
 
     >>> pp(petition.store())
     {
-      "_id": "1",
+      "_id": "1n3gf",
       "_index": "petitions",
       "_type": "default",
       "_version": 1,
@@ -71,9 +71,9 @@ Store the petition::
 
 Get the petition back from the database::
 
-    >>> petition = Petition.get("1")
+    >>> petition = Petition.get("1n3gf")
     >>> petition
-    <Petition [id=1]>
+    <Petition [id=u'1n3gf']>
     >>> pp(petition.dc)
     {
       "created": "...T...+...",
@@ -91,7 +91,7 @@ The state container is also restored::
     >>> petition.state.other
     'other'
     >>> _ = petition.store()
-    >>> petition = Petition.get("1")
+    >>> petition = Petition.get("1n3gf")
     >>> petition.state.other
     u'other'
 
@@ -112,11 +112,11 @@ The petition owner is a relation to a User document::
 
     >>> petition.owner = user
     >>> petition.owner
-    <RelationResolver User[1n3gf]>
+    <RelationResolver User[1Zbfk]>
     >>> petition.owner()
-    <User [id=u'1n3gf', u'42@email.com']>
+    <User [id=u'1Zbfk', u'42@email.com']>
     >>> petition._relations
-    {'images': [], 'owner': u'1n3gf', 'links': [], 'videos': [], 'connected_locations': []}
+    {'images': [], 'owner': u'1Zbfk', 'links': [], 'videos': [], 'connected_locations': []}
 
 
 Petition City
@@ -224,7 +224,7 @@ Support using a telephone number::
     ... }
     >>> supporter = petition.addSupporter(phone_user=phone_user)
     >>> supporter
-    <Supporter [id='2-t:0555 42']>
+    <Supporter [id=u'1QjR3-t:0555 42']>
     >>> supporter.user() is None
     True
     >>> supporter.phone_user
@@ -248,7 +248,7 @@ Support using an existing user::
 
     >>> supporter = petition.addSupporter(user=42)
     >>> supporter
-    <Supporter [id='2-u:42']>
+    <Supporter [id=u'1QjR3-u:42']>
     >>> supporter.user
     <RelationResolver User[42]>
     >>> supporter.phone_user is None
@@ -266,7 +266,7 @@ Duplicate supporters are not counted::
 
     >>> supporter = petition.addSupporter(user=42)
     >>> supporter
-    <Supporter [id=u'2-u:42']>
+    <Supporter [id=u'1QjR3-u:42']>
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
@@ -276,7 +276,7 @@ Duplicate supporters are not counted::
 
 Supporters can be removed::
 
-    >>> petition.removeSupporter('2-u:42')
+    >>> petition.removeSupporter('1QjR3-u:42')
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
@@ -286,7 +286,7 @@ Supporters can be removed::
 
 Remove the already removed supporter again::
 
-    >>> petition.removeSupporter('2-u:42')
+    >>> petition.removeSupporter('1QjR3-u:42')
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {

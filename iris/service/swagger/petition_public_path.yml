@@ -70,7 +70,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
@@ -85,7 +85,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
@@ -106,7 +106,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
@@ -132,7 +132,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
         required: true
         description: The id of the petition
     responses:

@@ -70,7 +70,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       default:
         description: Empty Body
@@ -82,7 +82,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
       - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
@@ -101,7 +101,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
@@ -125,7 +125,7 @@ petitions_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: Petition found

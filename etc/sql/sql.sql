@@ -26,7 +26,7 @@ CREATE ANALYZER email_ngram_fulltext (
 
 
 CREATE TABLE petitions (
-    id LONG PRIMARY KEY,
+    id STRING PRIMARY KEY,
     dc OBJECT(STRICT) AS (
         created TIMESTAMP,
         modified TIMESTAMP,
@@ -118,7 +118,7 @@ CREATE TABLE supporters (
         -- the user relation
         user STRING,
         -- the petition relation
-        petition LONG
+        petition STRING
     )
 )
 CLUSTERED INTO {{ Supporters.shards }} SHARDS
