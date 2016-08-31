@@ -94,7 +94,7 @@ users_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       default:
         description: Empty Body
@@ -106,7 +106,7 @@ users_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: User found
@@ -124,7 +124,7 @@ users_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
       - name: data
         in: body
         schema:
@@ -147,7 +147,7 @@ users_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: User found

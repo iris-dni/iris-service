@@ -55,7 +55,7 @@ CREATE TABLE petitions (
 
     relations OBJECT(STRICT) AS (
         -- the owner relation
-        owner LONG,
+        owner STRING,
         -- the city relation
         city STRING,
 
@@ -116,7 +116,7 @@ CREATE TABLE supporters (
 
     relations OBJECT(STRICT) AS (
         -- the user relation
-        user LONG,
+        user STRING,
         -- the petition relation
         petition LONG
     )
@@ -194,7 +194,7 @@ CLUSTERED INTO {{ Cities.shards }} SHARDS
 
 
 CREATE TABLE users (
-    id LONG PRIMARY KEY,
+    id STRING PRIMARY KEY,
     dc OBJECT(STRICT) AS (
         created TIMESTAMP,
         modified TIMESTAMP

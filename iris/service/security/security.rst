@@ -18,7 +18,7 @@ The group finder creates a list of groups based on a user::
     >>> user = creators.user()
 
     >>> groupfinder(user.id, request)
-    ['system.Authenticated', 'u:1']
+    ['system.Authenticated', 'u:1n3gf']
 
     >>> user.roles = ['admin']
     >>> _ = user.store()
@@ -26,7 +26,7 @@ The group finder creates a list of groups based on a user::
 The roles stored on the user are also added::
 
     >>> groupfinder(user.id, request)
-    ['system.Authenticated', 'u:1', u'ur:admin']
+    ['system.Authenticated', 'u:1n3gf', u'ur:admin']
 
 With an unknown user id::
 

@@ -53,7 +53,7 @@ Now the redirect endpoint sets the authentication cookie and redirects::
     >>> response.headers['location']
     'http://localhost/'
     >>> response.headers['set-cookie']
-    'iris-tkt="...!userid_type:int"; Domain=.localhost; Path=/'
+    'iris-tkt="...!userid_type:b64unicode"; Domain=.localhost; Path=/'
 
 With an invalid token we are redirected::
 

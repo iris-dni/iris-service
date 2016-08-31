@@ -112,11 +112,11 @@ The petition owner is a relation to a User document::
 
     >>> petition.owner = user
     >>> petition.owner
-    <RelationResolver User[1]>
+    <RelationResolver User[1n3gf]>
     >>> petition.owner()
-    <User [id=1, u'42@email.com']>
+    <User [id=u'1n3gf', u'42@email.com']>
     >>> petition._relations
-    {'images': [], 'owner': 1, 'links': [], 'videos': [], 'connected_locations': []}
+    {'images': [], 'owner': u'1n3gf', 'links': [], 'videos': [], 'connected_locations': []}
 
 
 Petition City

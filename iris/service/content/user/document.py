@@ -1,19 +1,15 @@
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
-from lovely.essequence import Sequence
 
 from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
-
-
-# IID generator to create the integer ids for users
-IID = Sequence('users').next
+from iris.service.db.sequence import IID_SHORTED
 
 
 class User(Document):
 
     INDEX = 'users'
 
-    id = Property(primary_key=True, default=IID)
+    id = Property(primary_key=True, default=IID_SHORTED)
 
     dc = Property(
         default=dc_defaults(DC_CREATED, DC_MODIFIED),

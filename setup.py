@@ -50,6 +50,7 @@ requires = [
     'requests',
     'transitions',
     'python-dateutil',
+    'short_url',
     'crate',
     'crash',
     'lovely.pyrest',

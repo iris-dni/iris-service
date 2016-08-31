@@ -100,7 +100,7 @@ With valid data::
     ...     'apikey': '42'
     ... })
     >>> u1
-    <User [id=1, 'my_1@mail.com']>
+    <User [id=u'1n3gf', 'my_1@mail.com']>
     >>> u1.sso
     [{'trusted': False, 'provider': '42'}]
     >>> u2 = get_or_create_sso_user({
@@ -114,7 +114,7 @@ With valid data::
     ...     'apikey': '42'
     ... })
     >>> u2
-    <User [id=2, 'my_2@mail.com']>
+    <User [id=u'1Zbfk', 'my_2@mail.com']>
     >>> u2.firstname, u2.lastname
     ('first', 'last')
     >>> u2.roles
@@ -124,9 +124,9 @@ With valid data::
 
     >>> from iris.service.content.user import User
     >>> User.get(u1.id)
-    <User [id=1, u'my_1@mail.com']>
+    <User [id=u'1n3gf', u'my_1@mail.com']>
     >>> User.get(u2.id)
-    <User [id=2, u'my_2@mail.com']>
+    <User [id=u'1Zbfk', u'my_2@mail.com']>
 
 There is no error if more data is provided::
 
@@ -138,7 +138,7 @@ There is no error if more data is provided::
     ...     'apikey': '42'
     ... })
     >>> u3
-    <User [id=3, 'my_3@mail.com']>
+    <User [id=u'1QjR3', 'my_3@mail.com']>
 
 Update an existing user::
 

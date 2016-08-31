@@ -167,7 +167,7 @@ It can be used multiple times on the same user::
     [
       [
         "Set-Cookie",
-        "iris-tkt=\"...!userid_type:int\"; Path=/"
+        "iris-tkt=\"...!userid_type:b64unicode\"; Path=/"
       ],
     ...
     >>> print_json(response)
@@ -247,7 +247,7 @@ in the ssologin endpoint::
     [
       [
         "Set-Cookie",
-        "iris-tkt=\"...!userid_type:int\"; Path=/"
+        "iris-tkt=\"...!userid_type:b64unicode\"; Path=/"
       ],
     ...
     >>> print_json(response)

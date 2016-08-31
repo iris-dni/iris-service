@@ -46,7 +46,7 @@ Support the pending petition::
     {u'amount': 1, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id)
-    [<Supporter [id=u'1-u:1']>]
+    [<Supporter [id=u'1-u:1n3gf']>]
 
 The same user supports again::
 
@@ -59,7 +59,7 @@ The same user supports again::
     {u'amount': 1, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:1']>]
+    [<Supporter [id=u'1-u:1n3gf']>]
 
 Support using a telephone number::
 
@@ -87,7 +87,7 @@ Support using a telephone number::
     {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:1']>, <Supporter [id=u'1-t:0555 42']>]
+    [<Supporter [id=u'1-u:1n3gf']>, <Supporter [id=u'1-t:0555 42']>]
 
 The same telephone number again::
 
@@ -99,7 +99,7 @@ The same telephone number again::
     {u'amount': 2, u'required': 5}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1-u:1']>, <Supporter [id=u'1-t:0555 42']>]
+    [<Supporter [id=u'1-u:1n3gf']>, <Supporter [id=u'1-t:0555 42']>]
 
 Approve the petition::
 

@@ -8,7 +8,7 @@ A user is a `Document`::
     >>> from iris.service.content.user.document import User
     >>> user = User()
     >>> user
-    <User [id=1, '']>
+    <User [id=u'1n3gf', '']>
 
 Default dublin core data is set::
 
@@ -27,7 +27,7 @@ Store the user::
 
     >>> pp(user.store())
     {
-      "_id": "1",
+      "_id": "1n3gf",
       "_index": "users",
       "_type": "default",
       "_version": 1,
@@ -36,9 +36,9 @@ Store the user::
 
 Get the user back from the database::
 
-    >>> user = User.get("1")
+    >>> user = User.get("1n3gf")
     >>> user
-    <User [id=1, u'']>
+    <User [id=u'1n3gf', u'']>
     >>> pp(user.dc)
     {
       "created": "...T...+...",
