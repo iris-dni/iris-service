@@ -12,6 +12,8 @@ The public API contains the endpoints which are available for the frontend.
 Create Petition
 ---------------
 
+Create a new petition as an unauthenticated user::
+
     >>> petition = {
     ...     "data": {
     ...         "state": {"name": "test"},
@@ -42,11 +44,21 @@ Create Petition
       }
     }
 
+The owner is a session user because the browser was not logged in::
+
+    >>> print_json(response.json['data']['owner'])
+    {
+      "class": "User",
+      "id": "iris-session:..."
+    }
+
     >>> id = response.json['data']['id']
 
 
 Get Petition
 ------------
+
+Get a petition back using the petition id::
 
     >>> response = browser.get('/v1/petitions/%s' % id)
     >>> response.status
@@ -75,6 +87,8 @@ Get Petition
 
 Delete Petition
 ---------------
+
+Delete a petition using the petition id::
 
     >>> response = browser.delete('/v1/petitions/%s' % id)
     >>> response.status
@@ -222,7 +236,7 @@ POST on the petition with the data which need to be changed::
         ...
         "owner": {
           "class": "User",
-          "id": null
+          "id": "1Zbfk"
         },
         ...
         "title": "changed Admin petition",
@@ -696,12 +710,14 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
 
     >>> check_roles("GET", "/v1/admin/petitions/%s" % city_id)
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
 
     >>> def tmp_petition():
     ...     petition = creators.petition(title='tester')
@@ -712,9 +728,11 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
 
     >>> check_roles("GET", "/v1/admin/supporters")
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny

@@ -1,6 +1,7 @@
 from pyramid import security
 
 from iris.service.content.user import User
+from iris.service.content.user import SessionUser
 
 from . import acl
 
@@ -36,11 +37,17 @@ def groupfinder(user_id, request):
     return groups
 
 
-def login_user(request, response, user):
+def login_user(request, response, user=None):
     """Login a user by updating the settings in the response
 
     The user object provided must provide the property "id".
     """
+    if user is None:
+        # Create a session user from the iris session cookie or from a new
+        # session cookie.
+        user_id = get_session_user_id(request)
+        user = SessionUser(user_id)
+        response.set_cookie('iris-session', user_id)
     headers = security.remember(request, user.id)
     response.headers.extend(headers)
     # Force the user to be available on the request because it was already
@@ -54,3 +61,19 @@ def logout_user(request, response):
     headers = security.forget(request)
     response.headerlist.extend(headers)
     request.user = None
+
+
+def session_user(user_id):
+    """Provide a session user based on the user id
+
+    If the user_id is the id of a session user a SessionUser instance with
+    this id is returned.
+    """
+    return SessionUser.get(user_id)
+
+
+def get_session_user_id(request):
+    user_id = request.cookies.get('iris-session')
+    if user_id:
+        return user_id
+    return SessionUser().id

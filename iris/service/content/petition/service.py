@@ -118,6 +118,16 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     def statemachine(self):
         return fromYAML(raw=True)
 
+    def create(self, data, resolve=[]):
+        """Create a petition
+
+        The owner of the petition is set based on the current user from the
+        request. This can also be a session user.
+        """
+        user = self.request.session_user
+        data['data']['owner'] = {"id": user.id}
+        return super(PetitionsRESTMapper, self).create(data, resolve)
+
 
 @RestService("petition_public_api")
 class PetitionPublicRESTService(rest.RESTService):

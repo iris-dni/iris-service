@@ -7,6 +7,7 @@ import json
 import jsonschema
 
 from iris.service.content.user import User
+from iris.service.security.security import session_user, login_user
 
 from .ssotoken import SSOToken
 
@@ -56,14 +57,27 @@ def _user(request):
     user_id = request.authenticated_userid
     if not user_id:
         return None
-    return User.get(user_id)
+    return session_user(user_id) or User.get(user_id)
+
+
+def _session_user(request):
+    """The request method to get the user from the current request
+
+    The difference to the _user method is that a SessionUser is returned if no
+    authentication is available.
+    """
+    user = request.user
+    if user:
+        return user
+    login_user(request, request.response)
+    return request.user
 
 
 def get_or_create_sso_user(ssodata):
     """Get or create a user based on SSO credentials
 
-    The SSO credentials are a dict which must contain an `email` and optional
-    a `nickname`.
+    The SSO credentials are a dict providing the properties defined in
+    SSO_USER_SCHEMA below.
     """
     data = ssodata.get('data')
     if not data:
@@ -195,3 +209,4 @@ def includeme(config):
         logger.info('loaded sso api-key for "%s"', public)
     config.add_request_method(_sso_data, "sso_data")
     config.add_request_method(_user, "user", reify=True)
+    config.add_request_method(_session_user, "session_user", reify=True)

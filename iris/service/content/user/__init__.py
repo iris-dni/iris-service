@@ -1,5 +1,5 @@
 from . import service  # noqa
-from .document import User  # noqa
+from .document import User, SessionUser  # noqa
 
 
 def includeme(config):

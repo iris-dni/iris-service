@@ -330,12 +330,14 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
 
     >>> check_roles("GET", "/v1/admin/users/%s" % user_id)
     Anonymous                               deny
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
 
     >>> def tmp_obj():
     ...     obj = creators.user(email='tester@iris.com')
@@ -346,3 +348,4 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
