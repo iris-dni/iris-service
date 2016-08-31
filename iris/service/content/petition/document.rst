@@ -103,7 +103,7 @@ The petition owner is a relation to a User document::
 
     >>> petition = Petition()
     >>> petition.owner
-    <RelationResolver User[None]>
+    <RelationResolver User[{}]>
     >>> petition.owner() is None
     True
 
@@ -112,11 +112,11 @@ The petition owner is a relation to a User document::
 
     >>> petition.owner = user
     >>> petition.owner
-    <RelationResolver User[1Zbfk]>
+    <RelationResolver User[{'id': u'1Zbfk'}]>
     >>> petition.owner()
     <User [id=u'1Zbfk', u'42@email.com']>
     >>> petition._relations
-    {'images': [], 'owner': u'1Zbfk', 'links': [], 'connected_locations': []}
+    {'owner': {'id': u'1Zbfk'}, 'images': [], 'links': [], 'mentions': []}
 
 
 Petition City
@@ -139,7 +139,7 @@ The petition city is a relation to a City document::
     >>> petition.city()
     <City [id=u'test:dahoam', u'dahoam']>
     >>> petition._relations
-    {'images': [], 'city': 'test:dahoam', 'links': [], 'connected_locations': []}
+    {'owner': {}, 'images': [], 'city': 'test:dahoam', 'links': [], 'mentions': []}
 
 
 Petition Images
@@ -174,20 +174,20 @@ on the fly::
      <WebLocation u'http://www.iris.com/petitions'>]
 
 
-Petition Connected Location
-===========================
+Petition Mentions
+=================
 
 The petition manages a list of connected locations as a relation list to web
 locations. "connected locations" are web location on which the petition is
 used::
 
-    >>> petition.connected_locations
+    >>> petition.mentions
     <ListRelationResolver WebLocation([])>
 
 The web locations can be assigned via a url::
 
-    >>> petition.connected_locations = [{"url": "http://www.iris.com"}]
-    >>> [v() for v in petition.connected_locations]
+    >>> petition.mentions = [{"url": "http://www.iris.com"}]
+    >>> [v() for v in petition.mentions]
     [<WebLocation u'http://www.iris.com'>]
 
 

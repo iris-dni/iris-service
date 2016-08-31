@@ -54,8 +54,15 @@ CREATE TABLE petitions (
     response_token STRING,
 
     relations OBJECT(STRICT) AS (
-        -- the owner relation
-        owner STRING,
+        -- the owner relation with the properties of the owner at publication
+        -- time
+        owner OBJECT(STRICT) AS (
+            id STRING,
+            firstname STRING,
+            lastname STRING,
+            telephone STRING,
+            email STRING
+        ),
         -- the city relation
         city STRING,
 
@@ -71,7 +78,7 @@ CREATE TABLE petitions (
                 state string
             )
         ),
-        connected_locations ARRAY(
+        mentions ARRAY(
             OBJECT(STRICT) AS (
                 id STRING,
                 state string

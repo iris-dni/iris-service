@@ -101,8 +101,8 @@ class Petition(Document):
         doc="A list of web locations with links for the petition."
     )
 
-    connected_locations = LocalOne2NRelation(
-        '_relations.connected_locations',
+    mentions = LocalOne2NRelation(
+        '_relations.mentions',
         'WebLocation.id',
         relationProperties={
             'state': 'visible'
@@ -127,6 +127,12 @@ class Petition(Document):
     owner = LocalRelation(
         '_relations.owner',
         'User.id',
+        relationProperties={
+            'firstname': '',
+            'lastname': '',
+            'telephone': '',
+            'email': '',
+        },
         doc="""
           The owner of the petition.
         """
@@ -139,9 +145,10 @@ class Petition(Document):
     _relations = Property(
         name="relations",
         default=lambda: {
+            "owner": {},
             "images": [],
             "links": [],
-            "connected_locations": []
+            "mentions": []
         },
         doc="""
           The petition relations.
@@ -175,7 +182,7 @@ class Petition(Document):
         return value
 
     links.setter(_weblocation_setter)
-    connected_locations.setter(_weblocation_setter)
+    mentions.setter(_weblocation_setter)
 
     def addSupporter(self, user=None, phone_user=None):
         """Add a supporter to the petition

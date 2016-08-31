@@ -30,6 +30,7 @@ parameters:
         - city
         - images
         - links
+        - mentions
     collectionFormat: csv
   sort:
     name: sort

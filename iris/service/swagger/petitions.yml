@@ -137,6 +137,27 @@ definitions:
                             enum:
                                 - visible
                                 - hidden
+            mentions:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        url:
+                            type: string
+                            x-nullable: true
+                        class:
+                            type: string
+                            readOnly: true
+                        data:
+                            $ref: 'weblocations.yml#/definitions/WebLocation'
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
             supporters:
                 type: object
                 readOnly: true
