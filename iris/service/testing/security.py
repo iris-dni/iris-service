@@ -3,7 +3,7 @@ import urllib
 
 from webtest import TestApp
 
-from iris.service.auth.secret import sign_message
+from iris.service.auth.sso import sign_message
 
 from iris.service.security import acl
 from iris.service.content.user import User

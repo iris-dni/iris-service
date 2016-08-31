@@ -5,7 +5,7 @@ SSOToken Document
 SSOTokens store the sso messaage with the apikey which was used to create the
 sso message::
 
-    >>> from iris.service.auth.secret import sign_message
+    >>> from iris.service.auth.sso import sign_message
     >>> sso = sign_message({'some': 'data'}, 'test_public_api_key')
 
 SSOTokens are managed via the SSOToken document class::

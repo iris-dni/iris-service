@@ -31,7 +31,7 @@ SSO Login Redirect
 
 We need a valid token to use the redirect endpoint::
 
-    >>> from iris.service.auth.secret import sign_message
+    >>> from iris.service.auth.sso import sign_message
     >>> message = sign_message(
     ...     {
     ...         'email': 'me-sso@you.com',

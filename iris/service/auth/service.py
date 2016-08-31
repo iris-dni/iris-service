@@ -9,8 +9,7 @@ from ..endpoint import EndpointErrorMixin, BadRequest
 from ..errors import Errors
 
 from .ssotoken import SSOToken
-from .secret import verify_message
-from .sso import get_or_create_sso_user
+from .sso import get_or_create_sso_user, verify_message
 
 
 @RestService("auth_api")

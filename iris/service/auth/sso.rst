@@ -16,7 +16,7 @@ Using SSO Message
 
 We need a signed sso message::
 
-    >>> from iris.service.auth.secret import sign_message
+    >>> from iris.service.auth.sso import sign_message
     >>> message = sign_message({'some': 'data'}, 'test_public_api_key')
 
 Put the data into swagger_data::

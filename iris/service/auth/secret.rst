@@ -12,7 +12,7 @@ API keys are defined in the pyramid settings file in the form::
 
 Now the private key can be accessed via the public key::
 
-    >>> from iris.service.auth.secret import get_private_key
+    >>> from iris.service.auth.sso import get_private_key
     >>> get_private_key('test_public_api_key')
     'test_private_api_key'
 
@@ -29,12 +29,12 @@ before it can be used.
 
 First we need to create a signed SSO message::
 
-    >>> from iris.service.auth.secret import sign_message
+    >>> from iris.service.auth.sso import sign_message
     >>> message = sign_message({'some': 'data'}, 'test_public_api_key')
 
 Now the message can be verified::
 
-    >>> from iris.service.auth.secret import verify_message
+    >>> from iris.service.auth.sso import verify_message
 
     >>> verify_message(message, 'test_public_api_key')
     True
@@ -60,22 +60,22 @@ Change parts of the message::
 
 Signatures expire after a certain time::
 
-    >>> from iris.service.auth import secret
-    >>> secret.SIG_EXPIRATION   # in seconds
+    >>> from iris.service.auth import sso
+    >>> sso.SIG_EXPIRATION   # in seconds
     7200
 
 For testing purposes, we reduce this time::
 
-    >>> secret.SIG_EXPIRATION = 1   # second
+    >>> sso.SIG_EXPIRATION = 1   # second
     >>> import time
     >>> time.sleep(1)
-    >>> secret.verify_message(message, 'test_public_api_key')
+    >>> sso.verify_message(message, 'test_public_api_key')
     Traceback (most recent call last):
     ValueError: Invalid sso data
 
 Invalid message format::
 
-    >>> secret.verify_message('lorem ipsum', 'test_public_api_key')
+    >>> sso.verify_message('lorem ipsum', 'test_public_api_key')
     Traceback (most recent call last):
     ValueError: Invalid sso data
 
@@ -85,7 +85,7 @@ Message Data Extraction
 
 The data can be extracted from the message::
 
-    >>> from iris.service.auth.secret import get_message_data
+    >>> from iris.service.auth.sso import get_message_data
 
     >>> get_message_data(message)
     {u'some': u'data'}
