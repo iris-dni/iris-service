@@ -13,7 +13,7 @@ from lovely.essequence import Sequence
 
 from transitions.extensions.nesting import NestedState
 
-from ..db.dc import dc_defaults, dc_defaults_all, DC_CREATED
+from iris.service.db.dc import dc_defaults, dc_defaults_all, DC_CREATED
 
 from iris.service.content.weblocation import WebLocation
 

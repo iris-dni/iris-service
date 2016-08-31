@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - refactored module structure
+   DEPLOY:
+     Needs a new database to be created from the samples.
  - petition web location properties allow a "url" property to set the web
    location
  - added weblocations admin API

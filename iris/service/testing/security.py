@@ -6,7 +6,7 @@ from webtest import TestApp
 from iris.service.auth.secret import sign_message
 
 from iris.service.security import acl
-from iris.service.user import User
+from iris.service.content.user import User
 
 
 LOGIN_URL = '/v1/auth/ssologin'

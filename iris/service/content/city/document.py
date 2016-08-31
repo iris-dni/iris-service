@@ -1,7 +1,7 @@
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
 
-from ..db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
+from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 
 
 DEFAULT_TRESHOLD = 0

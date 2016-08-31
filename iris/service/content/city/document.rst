@@ -5,7 +5,7 @@ City Document
 
 A city is a `Document`::
 
-    >>> from iris.service.city.document import City
+    >>> from iris.service.content.city.document import City
     >>> city = City(id=1, provider='test')
     >>> city
     <City [id='test:1', '']>

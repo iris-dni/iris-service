@@ -10,8 +10,8 @@ from iris.service import rest
 from iris.service.rest import queries
 from iris.service.security import acl
 
-from ..errors import Errors
-from ..rest.swagger import swagger_reduce_response
+from iris.service.errors import Errors
+from iris.service.rest.swagger import swagger_reduce_response
 
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter

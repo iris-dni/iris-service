@@ -2,7 +2,7 @@ from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
 from lovely.essequence import Sequence
 
-from ..db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
+from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 
 
 # IID generator to create the integer ids for users

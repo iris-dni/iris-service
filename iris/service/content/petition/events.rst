@@ -7,8 +7,8 @@ The petition event endpoints control the petition state machine.
 ::
 
     >>> import time
-    >>> from iris.service.petition import Petition
-    >>> from iris.service.petition.sm import APPROVAL_TIME
+    >>> from iris.service.content.petition import Petition
+    >>> from iris.service.content.petition.sm import APPROVAL_TIME
     >>> def showState(response):
     ...     return response.json['data']['state']
 

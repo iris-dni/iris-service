@@ -3,10 +3,10 @@ from datetime import datetime
 
 from faker import Faker
 
-from iris.service.user import User
-from iris.service.petition import Petition
-from iris.service.petition.document import StateContainer
-from iris.service.city import City
+from iris.service.content.user import User
+from iris.service.content.petition import Petition
+from iris.service.content.petition.document import StateContainer
+from iris.service.content.city import City
 
 
 def create_object(cls, *args, **kwargs):

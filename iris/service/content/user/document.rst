@@ -5,7 +5,7 @@ User Document
 
 A user is a `Document`::
 
-    >>> from iris.service.user.document import User
+    >>> from iris.service.content.user.document import User
     >>> user = User()
     >>> user
     <User [id=1, '']>

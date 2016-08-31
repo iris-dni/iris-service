@@ -7,9 +7,9 @@ from webtest import TestApp
 
 from lovely.essequence import sequence
 
-from iris.service.petition import Petition
-from iris.service.user import User
-from iris.service.city import City
+from iris.service.content.petition import Petition
+from iris.service.content.user import User
+from iris.service.content.city import City
 
 from . import util
 from . import layer

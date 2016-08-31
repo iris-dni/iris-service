@@ -122,7 +122,7 @@ With valid data::
     >>> u2.sso
     [{'trusted': True, 'provider': '42'}]
 
-    >>> from iris.service.user import User
+    >>> from iris.service.content.user import User
     >>> User.get(u1.id)
     <User [id=1, u'my_1@mail.com']>
     >>> User.get(u2.id)

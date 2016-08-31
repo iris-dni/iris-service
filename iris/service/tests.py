@@ -22,19 +22,19 @@ def test_suite():
         create_crate_suite('content/weblocation/document.rst'),
         create_crate_suite('content/weblocation/service.rst'),
 
-        create_crate_suite('petition/document.rst'),
-        create_crate_suite('petition/service.rst'),
-        create_crate_suite('petition/events.rst'),
-        create_crate_suite('petition/support.rst'),
-        create_suite('petition/sm.rst'),
+        create_crate_suite('content/petition/document.rst'),
+        create_crate_suite('content/petition/service.rst'),
+        create_crate_suite('content/petition/events.rst'),
+        create_crate_suite('content/petition/support.rst'),
+        create_suite('content/petition/sm.rst'),
         create_crate_doc_suite('petitions.rst'),
 
-        create_crate_suite('user/document.rst'),
-        create_crate_suite('user/service.rst'),
+        create_crate_suite('content/user/document.rst'),
+        create_crate_suite('content/user/service.rst'),
 
-        create_crate_suite('city/document.rst'),
-        create_crate_suite('city/service.rst'),
-        create_crate_suite('city/import.rst'),
+        create_crate_suite('content/city/document.rst'),
+        create_crate_suite('content/city/service.rst'),
+        create_crate_suite('content/city/import.rst'),
 
         create_crate_suite('security/security.rst'),
 

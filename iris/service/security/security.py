@@ -1,6 +1,6 @@
 from pyramid import security
 
-from iris.service.user import User
+from iris.service.content.user import User
 
 from . import acl
 

@@ -42,7 +42,7 @@ Create a City
       ]
     }
 
-    >>> from iris.service.city import City
+    >>> from iris.service.content.city import City
     >>> City.get('local:1007').name
     u'aarau'
 

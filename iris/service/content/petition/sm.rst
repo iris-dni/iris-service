@@ -4,10 +4,10 @@ Petition State Machine
 
 The state machine needs an instance of a petition::
 
-    >>> from iris.service.petition import Petition
+    >>> from iris.service.content.petition import Petition
     >>> petition = Petition()
 
-    >>> from iris.service.petition.sm import PetitionStateMachine
+    >>> from iris.service.content.petition.sm import PetitionStateMachine
     >>> sm = PetitionStateMachine(petition, None)
     >>> sm.state
     'draft'

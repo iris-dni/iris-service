@@ -5,8 +5,8 @@ Petition Support
 
 ::
 
-    >>> from iris.service.petition import Petition
-    >>> from iris.service.petition.document import Supporter
+    >>> from iris.service.content.petition import Petition
+    >>> from iris.service.content.petition.document import Supporter
     >>> def showInfo(response):
     ...     print response.json['data']['state']
     ...     print response.json['data']['supporters']

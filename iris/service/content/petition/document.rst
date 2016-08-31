@@ -10,11 +10,11 @@ The petition state is an instance of the StateContainer. The document provides
 the state as a StateContainer instance which is used as an ObjectProperty. The
 StateContainer can be JSON serialized using the jsonpickle module::
 
-    >>> from iris.service.petition.document import StateContainer
+    >>> from iris.service.content.petition.document import StateContainer
     >>> s = StateContainer()
     >>> import jsonpickle
     >>> jsonpickle.encode(s)
-    '{"py/object": "iris.service.petition.document.StateContainer", "name": "draft", "parent": ""}'
+    '{"py/object": "iris.service.content.petition.document.StateContainer", "name": "draft", "parent": ""}'
     >>> jsonpickle.encode(s, unpicklable=False)
     '{"name": "draft", "parent": ""}'
 
@@ -25,7 +25,7 @@ With additional properties::
     >>> jsonpickle.encode(s, unpicklable=False)
     '{"other": "other", "name": "draft", "parent": ""}'
     >>> jsonpickle.encode(s)
-    '{"py/object": "iris.service.petition.document.StateContainer", "other": "other", "name": "draft", "parent": ""}'
+    '{"py/object": "iris.service.content.petition.document.StateContainer", "other": "other", "name": "draft", "parent": ""}'
 
 
 Petiton Document
@@ -33,7 +33,7 @@ Petiton Document
 
 A petition is a `Document`::
 
-    >>> from iris.service.petition.document import Petition
+    >>> from iris.service.content.petition import Petition
     >>> petition = Petition()
     >>> petition
     <Petition [id=1]>
@@ -232,7 +232,7 @@ Support using a telephone number::
     >>> supporter.petition.id == petition.id
     True
 
-    >>> from iris.service.petition.document import Supporter
+    >>> from iris.service.content.petition.document import Supporter
     >>> supporters = Supporter.search({"query": {"match_all": {}},})['hits']['hits']
     >>> len(supporters)
     1

@@ -1,6 +1,6 @@
 import jsonschema
 
-from iris.service.user import User
+from iris.service.content.user import User
 
 from .secret import verify_message, get_message_data
 
