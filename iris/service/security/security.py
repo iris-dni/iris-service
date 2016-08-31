@@ -54,7 +54,3 @@ def logout_user(request, response):
     headers = security.forget(request)
     response.headerlist.extend(headers)
     request.user = None
-
-
-class ApiKeyDummyUser(object):
-    pass
