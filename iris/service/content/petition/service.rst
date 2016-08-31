@@ -84,6 +84,16 @@ Get a petition back using the petition id::
       }
     }
 
+Resolve the session owner::
+
+    >>> response = browser.get('/v1/petitions/%s?resolve=owner' % id)
+    >>> print_json(response.json['data']['owner'])
+    {
+      "class": "User",
+      "data": null,
+      "id": "iris-session:..."
+    }
+
 
 Delete Petition
 ---------------
@@ -261,8 +271,6 @@ Update the city relation::
           "id": "test:42"
         },
     ...
-
-Request the result with a resolved city relation::
 
     >>> response = browser.post_json('/v1/admin/petitions/%s?resolve=city,owner' % id,
     ...                              petition)
@@ -546,7 +554,6 @@ Relations
     ...         "title": "petition with links",
     ...         "images": [{"id": "42", "state": "hidden"}],
     ...         "links": [{"id": "1"}, {"url": "http://www.iris.com"}],
-    ...         "videos": [{"id": "2", "state": "hidden"}],
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -574,18 +581,11 @@ Relations
           }
         ],
         ...
-        "videos": [
-          {
-            "class": "WebLocation",
-            "id": "2",
-            "state": "hidden"
-          }
-        ]
       }
     }
     >>> id = response.json["data"]["id"]
 
-    >>> response = browser.get('/v1/petitions/%s?resolve=images,links,videos' % id)
+    >>> response = browser.get('/v1/petitions/%s?resolve=images,links' % id)
     >>> print_json(response)
     {
       "data": {
@@ -622,14 +622,6 @@ Relations
           }
         ],
         ...
-        "videos": [
-          {
-            "class": "WebLocation",
-            "data": null,
-            "id": "2",
-            "state": "hidden"
-          }
-        ]
       }
     }
 

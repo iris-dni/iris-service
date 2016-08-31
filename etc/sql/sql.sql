@@ -65,12 +65,6 @@ CREATE TABLE petitions (
                 state string
             )
         ),
-        videos ARRAY(
-            OBJECT(STRICT) AS (
-                id STRING,
-                state string
-            )
-        ),
         links ARRAY(
             OBJECT(STRICT) AS (
                 id STRING,

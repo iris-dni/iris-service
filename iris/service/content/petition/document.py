@@ -92,15 +92,6 @@ class Petition(Document):
         doc="An image list for the petition."
     )
 
-    videos = LocalOne2NRelation(
-        '_relations.videos',
-        'WebLocation.id',
-        relationProperties={
-            'state': 'visible'
-        },
-        doc="A list of  web locations to youtube videos."
-    )
-
     links = LocalOne2NRelation(
         '_relations.links',
         'WebLocation.id',
@@ -149,7 +140,6 @@ class Petition(Document):
         name="relations",
         default=lambda: {
             "images": [],
-            "videos": [],
             "links": [],
             "connected_locations": []
         },
@@ -184,7 +174,6 @@ class Petition(Document):
                     item['id'] = location.id
         return value
 
-    videos.setter(_weblocation_setter)
     links.setter(_weblocation_setter)
     connected_locations.setter(_weblocation_setter)
 

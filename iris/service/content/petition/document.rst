@@ -116,7 +116,7 @@ The petition owner is a relation to a User document::
     >>> petition.owner()
     <User [id=u'1Zbfk', u'42@email.com']>
     >>> petition._relations
-    {'images': [], 'owner': u'1Zbfk', 'links': [], 'videos': [], 'connected_locations': []}
+    {'images': [], 'owner': u'1Zbfk', 'links': [], 'connected_locations': []}
 
 
 Petition City
@@ -139,7 +139,7 @@ The petition city is a relation to a City document::
     >>> petition.city()
     <City [id=u'test:dahoam', u'dahoam']>
     >>> petition._relations
-    {'images': [], 'city': 'test:dahoam', 'links': [], 'videos': [], 'connected_locations': []}
+    {'images': [], 'city': 'test:dahoam', 'links': [], 'connected_locations': []}
 
 
 Petition Images
@@ -151,29 +151,6 @@ The petition manages a list of images as a relation list to files::
     <ListRelationResolver File([])>
 
 
-Petition Videos
-===============
-
-The petition manages a list of videos as a relation list to web locations::
-
-    >>> petition.videos
-    <ListRelationResolver WebLocation([])>
-
-The web locations can be assigned via a url and missing locations are created
-on the fly::
-
-    >>> petition.videos = [{"url": "http://www.iris.com"}]
-    >>> [v() for v in petition.videos]
-    [<WebLocation u'http://www.iris.com'>]
-
-    >>> petition.videos = [{"id": "cd126eaf1870967a2f3d724ee935b379"},
-    ...                    {"url": "http://www.iris.com/petitions"},
-    ...                   ]
-    >>> [v() for v in petition.videos]
-    [<WebLocation u'http://www.iris.com'>,
-     <WebLocation u'http://www.iris.com/petitions'>]
-
-
 Petition Links
 ==============
 
@@ -182,11 +159,19 @@ The petition manages a list of links as a relation list to web locations::
     >>> petition.links
     <ListRelationResolver WebLocation([])>
 
-The web locations can be assigned via a url::
+The web locations can be assigned via a url and missing locations are created
+on the fly::
 
     >>> petition.links = [{"url": "http://www.iris.com"}]
     >>> [v() for v in petition.links]
     [<WebLocation u'http://www.iris.com'>]
+
+    >>> petition.links = [{"id": "cd126eaf1870967a2f3d724ee935b379"},
+    ...                    {"url": "http://www.iris.com/petitions"},
+    ...                   ]
+    >>> [v() for v in petition.links]
+    [<WebLocation u'http://www.iris.com'>,
+     <WebLocation u'http://www.iris.com/petitions'>]
 
 
 Petition Connected Location

@@ -62,7 +62,7 @@ class AuthService(EndpointErrorMixin):
         return self._whoami()
 
     def _ssouser(self, allow_login=False, allow_token_login=False):
-        """Get the sso user fro sso data
+        """Get the sso user from sso data
 
         Data can be provided as sso/apikey combination or as token.
 
