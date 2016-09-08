@@ -13,6 +13,7 @@ petitions_contentId_event_reject:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:
@@ -42,6 +43,7 @@ petitions_contentId_event_publish:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -66,6 +68,7 @@ petitions_contentId_event_delete:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -90,6 +93,7 @@ petitions_contentId_event_support:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
       - name: data
         in: body
         schema:
@@ -119,6 +123,7 @@ petitions_contentId_event_close:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -143,6 +148,7 @@ petitions_contentId_event_approved:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -167,6 +173,7 @@ petitions_contentId_event_sendLetter:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -191,6 +198,7 @@ petitions_contentId_event_setFeedback:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -215,6 +223,7 @@ petitions_contentId_event_check:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good
@@ -239,6 +248,7 @@ petitions_contentId_event_tick:
         type: string
         required: true
         description: The id of the petition
+      - $ref: "petition_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: all good

@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - allow to resolve petition relations in all event endpoints
  - refactored module structure
    DEPLOY:
      Needs a new database to be created from the samples.

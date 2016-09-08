@@ -334,3 +334,39 @@ An unknown event name is also allowed::
     '200 OK'
     >>> print_json(response)
     {}
+
+
+Resolving Event Response
+========================
+
+Event response can also reolve::
+
+    >>> city = creators.city(id='1111',
+    ...                      provider='petition_events',
+    ...                      name='Berlin')
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "Resolve Petition",
+    ...         "city": {"id": city.id}
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> id = response.json['data']['id']
+
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish?resolve=city' % id)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "data": {
+            "id": "petition_events:1111",
+            "name": "Berlin",
+            "provider": "petition_events",
+            "tags": [],
+            "treshold": 0,
+            "zips": []
+          },
+          "id": "petition_events:1111"
+        },
+        ...

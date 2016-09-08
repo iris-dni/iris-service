@@ -100,7 +100,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
 
-    def event(self, contentId, transitionName, data={}):
+    def event(self, contentId, transitionName, data={}, resolve=[]):
         petition = Petition.get(contentId)
         if petition is None:
             return None
@@ -113,7 +113,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         done = getattr(sm, transitionName)(**data)
         if done:
             petition.store(refresh=True)
-        return self.to_api(petition)
+        return self.to_api(petition, resolve)
 
     def statemachine(self):
         return fromYAML(raw=True)
