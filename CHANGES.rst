@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - set supporters treshold when setting the city on a petition
  - allow to resolve petition relations in all event endpoints
  - refactored module structure
    DEPLOY:

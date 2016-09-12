@@ -6,6 +6,8 @@ import os
 from transitions.extensions import MachineFactory
 from transitions.extensions.nesting import NestedState
 
+from iris.service.content.city.document import TRESHOLD_NOT_SET
+
 # create a state machine implementation from extensions
 Machine = MachineFactory.get_predefined(nested=True)
 NestedState.separator = '.'
@@ -70,7 +72,10 @@ class PetitionStateMachine(object):
 
     def is_supporter_limit_reached(self):
         supporters = self.petition.supporters
-        return supporters['amount'] >= supporters['required']
+        required = supporters.get('required')
+        if required == TRESHOLD_NOT_SET:
+            return False
+        return supporters['amount'] >= required
 
 
 HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']
@@ -137,3 +142,9 @@ def fromYAML(raw=False):
                     extractTransitions(s, name)
     extractTransitions(data.get('states', []))
     return data
+
+
+def includeme(config):
+    global APPROVAL_TIME
+    settings = config.get_settings()
+    APPROVAL_TIME = int(settings['iris.approval.days']) * 86400

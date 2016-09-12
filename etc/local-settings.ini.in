@@ -31,6 +31,7 @@ iris.apikey.local = local
 iris.apikey.nwch = b428db796829443ed2062702deb02b6c
 
 iris.city.treshold = 100
+iris.approval.days = 30
 
 static.docs = iris.service:docs
               docs

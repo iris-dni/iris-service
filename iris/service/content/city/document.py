@@ -4,6 +4,7 @@ from lovely.esdb.properties import Property
 from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 
 
+TRESHOLD_NOT_SET = -1
 DEFAULT_TRESHOLD = 0
 
 
@@ -64,7 +65,7 @@ class City(Document):
     )
 
     treshold = Property(
-        default=DEFAULT_TRESHOLD,
+        default=TRESHOLD_NOT_SET,
         doc="""
           The treshold for the petitions on this city.
         """,
@@ -101,4 +102,4 @@ class City(Document):
 def includeme(config):
     global DEFAULT_TRESHOLD
     settings = config.get_settings()
-    DEFAULT_TRESHOLD = settings.get('iris.city.treshold', 0)
+    DEFAULT_TRESHOLD = int(settings.get('iris.city.treshold', 0))

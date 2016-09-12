@@ -24,7 +24,7 @@ A city is a `Document`::
     >>> city.zips
     []
     >>> city.treshold
-    0
+    -1
     >>> city.contact
     {}
     >>> city.provider

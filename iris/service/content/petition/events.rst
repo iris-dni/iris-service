@@ -343,7 +343,9 @@ Event response can also reolve::
 
     >>> city = creators.city(id='1111',
     ...                      provider='petition_events',
-    ...                      name='Berlin')
+    ...                      name='Berlin',
+    ...                      treshold=42,
+    ...                     )
     >>> petition = {
     ...     "data": {
     ...         "title": "Resolve Petition",
@@ -364,7 +366,7 @@ Event response can also reolve::
             "name": "Berlin",
             "provider": "petition_events",
             "tags": [],
-            "treshold": 0,
+            "treshold": 42,
             "zips": []
           },
           "id": "petition_events:1111"
