@@ -54,6 +54,47 @@ The owner is a session user because the browser was not logged in::
 
     >>> id = response.json['data']['id']
 
+The required supporter amount is set to -1 because no city was provided::
+
+    >>> print_json(response.json['data']['supporters'])
+    {
+      "amount": 0,
+      "required": -1
+    }
+
+
+Update Petition
+---------------
+
+Update a petition::
+
+    >>> city = creators.city(id='1111',
+    ...                      provider='petition_events',
+    ...                      name='Berlin',
+    ...                      treshold=42,
+    ...                     )
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "updated title",
+    ...         "city": {"id": city.id},
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
+
+    >>> print_json(response.json['data']['city'])
+    {
+      "class": "City",
+      "id": "petition_events:1111"
+    }
+
+The required amount of supporters is updated to the treshold of the city::
+
+    >>> print_json(response.json['data']['supporters'])
+    {
+      "amount": 0,
+      "required": 42
+    }
+
 
 Get Petition
 ------------
@@ -447,15 +488,9 @@ Relations can be resolved::
             "class": "City",
             "data": {
               "id": "test:...",
-              "name": "New Ashley",
+              ...
               "provider": "test",
-              "tags": [
-                "portal:gtb"
-              ],
-              "treshold": 10,
-              "zips": [
-                "30040"
-              ]
+              ...
             },
             "id": "test:..."
           },
@@ -682,7 +717,7 @@ The admin can request supporters::
             "data": {
               "city": {
                 "class": "City",
-                "id": "test:1"
+                "id": "test:..."
               },
     ...
 

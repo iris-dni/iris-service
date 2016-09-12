@@ -98,6 +98,7 @@ def app_factory(global_config, **settings):
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.petition',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.content.petition.sm')
     config.include('iris.service.content.user',
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.city',

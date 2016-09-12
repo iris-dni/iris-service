@@ -139,6 +139,9 @@ petitions_contentId_event_approved:
       - petition_event
     summary: Approve a pending Petition
     description: |
+        Approval is allowed for administrators and only when a city is assigned
+        to the petition.
+
         For more information about the petition state machine see
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: approved

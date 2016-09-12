@@ -61,7 +61,7 @@ Create a new city::
         "tags": [
           "portal:aaz"
         ],
-        "treshold": 0,
+        "treshold": -1,
         "zips": [
           "5004"
         ]
@@ -119,7 +119,7 @@ Use the id from the response above::
         "tags": [
           "portal:aaz"
         ],
-        "treshold": 0,
+        "treshold": -1,
         "zips": [
           "5004"
         ]

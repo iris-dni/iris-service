@@ -33,6 +33,9 @@ sso.apikey.{{ key }} = {{ value }}
 iris.apikey.{{ key }} = {{ value }}
 {% endfor %}
 
+iris.city.treshold = 100
+iris.approval.days = context['iris']['approval_days']
+
 static.docs = iris.service:docs
               docs
 

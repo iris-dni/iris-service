@@ -19,7 +19,13 @@ definitions:
                 items:
                     type: string
             treshold:
+                description: |
+                    Defines the required amount of supporters for petitions
+                    assigned to the city. If not provided the required amount
+                    of supporters is set to a system default when the petition
+                    is created.
                 type: integer
+                default: -1
     CityPrivate:
         type: object
         x-nullable: true
@@ -137,7 +143,13 @@ definitions:
                 items:
                     type: string
             treshold:
+                description: |
+                    Defines the required amount of supporters for petitions
+                    assigned to the city. If not provided the required amount
+                    of supporters is set to a system default when the petition
+                    is created.
                 type: integer
+                default: -1
             contact:
                 type: object
                 properties:

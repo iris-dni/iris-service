@@ -16,6 +16,10 @@ from iris.service.db.dc import dc_defaults, dc_defaults_all, DC_CREATED
 from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.weblocation import WebLocation
+from iris.service.content.city.document import (
+    TRESHOLD_NOT_SET,
+    DEFAULT_TRESHOLD,
+)
 
 from .sm import PetitionStateMachine
 
@@ -116,7 +120,7 @@ class Petition(Document):
     supporters = Property(
         default=lambda: {
             "amount": 0,
-            "required": 0,
+            "required": TRESHOLD_NOT_SET,
         },
         doc="""
           An object which contains information about the supporters of the
@@ -183,6 +187,28 @@ class Petition(Document):
 
     links.setter(_weblocation_setter)
     mentions.setter(_weblocation_setter)
+
+    _city_changed = False
+
+    @city.setter
+    def city_setter(self, value):
+        """Setting the city needs an update of the required supporters
+        """
+        self._city_changed = True
+        return value
+
+    def store(self, *args, **kwargs):
+        if self._city_changed:
+            city = self.city()
+            if city is None:
+                # no city defined
+                required = TRESHOLD_NOT_SET
+            else:
+                required = city.treshold
+                if required == TRESHOLD_NOT_SET:
+                    required = DEFAULT_TRESHOLD
+            self.supporters['required'] = required
+        return super(Petition, self).store(*args, **kwargs)
 
     def addSupporter(self, user=None, phone_user=None):
         """Add a supporter to the petition

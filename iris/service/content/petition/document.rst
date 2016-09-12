@@ -58,6 +58,11 @@ The state of a petition is a state container::
     >>> petition.state.listable
     False
 
+Initial supporter settings::
+
+    >>> petition.supporters
+    {'amount': 0, 'required': -1}
+
 Store the petition::
 
     >>> pp(petition.store())
@@ -122,7 +127,7 @@ The petition owner is a relation to a User document::
 Petition City
 ==============
 
-The petition city is a relation to a City document::
+The city of a petition is a relation to a City document::
 
     >>> petition = Petition()
     >>> petition.city
@@ -130,7 +135,11 @@ The petition city is a relation to a City document::
     >>> petition.city() is None
     True
 
-    >>> city = creators.city(id='dahoam', provider="test", name='dahoam')
+    >>> city = creators.city(id='dahoam',
+    ...                      provider="test",
+    ...                      name='dahoam',
+    ...                      treshold=42,
+    ...                     )
     >>> _ = city.store()
 
     >>> petition.city = city
@@ -140,6 +149,12 @@ The petition city is a relation to a City document::
     <City [id=u'test:dahoam', u'dahoam']>
     >>> petition._relations
     {'owner': {}, 'images': [], 'city': 'test:dahoam', 'links': [], 'mentions': []}
+
+The required supporters are update to the treshold of the city::
+
+    >>> _ = petition.store()
+    >>> petition.supporters['required']
+    42
 
 
 Petition Images
@@ -209,7 +224,7 @@ Support using a telephone number::
     ... }
     >>> supporter = petition.addSupporter(phone_user=phone_user)
     >>> supporter
-    <Supporter [id=u'1QjR3-t:0555 42']>
+    <Supporter [id=u'...-t:0555 42']>
     >>> supporter.user() is None
     True
     >>> supporter.phone_user
@@ -233,7 +248,7 @@ Support using an existing user::
 
     >>> supporter = petition.addSupporter(user=42)
     >>> supporter
-    <Supporter [id=u'1QjR3-u:42']>
+    <Supporter [id=u'...-u:42']>
     >>> supporter.user
     <RelationResolver User[42]>
     >>> supporter.phone_user is None
@@ -251,7 +266,7 @@ Duplicate supporters are not counted::
 
     >>> supporter = petition.addSupporter(user=42)
     >>> supporter
-    <Supporter [id=u'1QjR3-u:42']>
+    <Supporter [id=u'...-u:42']>
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
@@ -261,7 +276,7 @@ Duplicate supporters are not counted::
 
 Supporters can be removed::
 
-    >>> petition.removeSupporter('1QjR3-u:42')
+    >>> petition.removeSupporter(supporter.id)
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
@@ -271,7 +286,7 @@ Supporters can be removed::
 
 Remove the already removed supporter again::
 
-    >>> petition.removeSupporter('1QjR3-u:42')
+    >>> petition.removeSupporter(supporter.id)
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
