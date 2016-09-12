@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/09/12 0.0.10
+=================
+
  - set supporters treshold when setting the city on a petition
  - undefined supporters treshold is set to -1
  - read approval days from settings
