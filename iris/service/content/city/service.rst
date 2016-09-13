@@ -271,3 +271,17 @@ Permission check for all endpoints::
     admin                                   200 OK
     apikey-user                             deny
     session-user                            deny
+
+    >>> check_roles("GET", "/v1/cities")
+    Anonymous                               200 OK
+    Authenticated                           200 OK
+    admin                                   200 OK
+    apikey-user                             200 OK
+    session-user                            200 OK
+
+    >>> check_roles("GET", "/v1/cities/%s" % city_id)
+    Anonymous                               200 OK
+    Authenticated                           200 OK
+    admin                                   200 OK
+    apikey-user                             200 OK
+    session-user                            200 OK

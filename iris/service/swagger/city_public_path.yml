@@ -89,7 +89,7 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       default:
         description: Empty Body
@@ -106,7 +106,7 @@ cities_contentId:
     parameters:
       - name: contentId
         in: path
-        type: integer
+        type: string
     responses:
       '200':
         description: City found
