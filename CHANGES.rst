@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/09/13 0.0.11
+=================
+
  - public city get endpoint allows strings as id
 
 2016/09/12 0.0.10
