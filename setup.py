@@ -35,6 +35,9 @@ def nailed_requires(requirements, pat=re.compile(r'^(.+)(\[.+\])?$')):
     return res
 
 requires = [
+    'tldextract',
+    'BeautifulSoup4',
+    'Pillow',
     'pytz',
     'gevent',
     'jinja2',
@@ -76,6 +79,7 @@ setup(
     include_package_data=True,
     extras_require=dict(
         test=nailed_requires([
+            'httmock',
             'collective.xmltestreport',
             'webtest',
             'fake-factory',

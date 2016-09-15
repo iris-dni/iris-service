@@ -1,0 +1,35 @@
+definitions:
+    OGCheckPOSTBody:
+        type: object
+        properties:
+            url:
+                type: string
+    OGData:
+        type: object
+        properties:
+            description:
+                type: string
+            image:
+                type: string
+            image_data:
+                type: object
+                properties:
+                    height:
+                        type: integer
+                    width:
+                        type: integer
+            site_name:
+                type: string
+            title:
+                type: string
+            url:
+                type: string
+    OGDataResponseBody:
+        type: object
+        required: 
+            - status
+        properties:
+            data:
+                $ref: '#/definitions/OGData'
+            status:
+                type: string
