@@ -9,6 +9,8 @@ definitions:
         properties:
             description:
                 type: string
+            favicon:
+                type: string
             image:
                 type: string
             image_data:

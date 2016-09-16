@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added automatic open graph data update for weblocations
+ - added election module
+ - added open graph service
+
 2016/09/13 0.0.11
 =================
 

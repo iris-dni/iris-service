@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from elasticsearch import exceptions
+import elasticsearch
 
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
@@ -43,10 +43,13 @@ class Elector(object):
 
         If this elector is elected try to prolong the current election
         """
-        isElected = self.election.ident == self.ident
-        if isElected:
-            self._prolong()
-        return isElected
+        try:
+            isElected = self.election.ident == self.ident
+            if isElected:
+                self._prolong()
+            return isElected
+        except elasticsearch.ElasticsearchException:
+            return False
 
     @property
     def election(self):
@@ -88,7 +91,7 @@ class Elector(object):
         version = self._election._meta.get('_version')
         try:
             self._election.store(version=version)
-        except exceptions.ConflictError:
+        except elasticsearch.ConflictError:
             self._election = Election.get(self.name)
 
     @property

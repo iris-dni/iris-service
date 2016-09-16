@@ -154,7 +154,9 @@ CREATE TABLE weblocations (
         title STRING,
         site_name STRING,
         description STRING INDEX OFF,
+        favicon STRING INDEX OFF,
         image STRING INDEX OFF,
+        image_data OBJECT(IGNORED),
         video STRING INDEX OFF
     )
 )

@@ -19,7 +19,10 @@ def test_suite():
         create_crate_suite('rest/transform.rst'),
         create_crate_doc_suite('api.rst'),
 
+        create_crate_suite('elector/election.rst'),
+
         create_crate_suite('og/service.rst'),
+        create_crate_suite('og/schedule.rst'),
 
         create_crate_suite('content/weblocation/document.rst'),
         create_crate_suite('content/weblocation/service.rst'),
@@ -48,7 +51,6 @@ def test_suite():
         create_suite('auth/secret.rst'),
         create_doc_suite('sso.rst'),
 
-        create_crate_suite('elector/election.rst'),
         create_suite('sm/service.rst'),
         create_suite('static.rst'),
 
