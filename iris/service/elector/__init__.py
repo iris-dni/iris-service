@@ -63,7 +63,7 @@ class Elector(object):
                 Election(id=self.name,
                          ident=self.ident,
                          until=self.now + TTL,
-                        ).store(refresh=True)
+                        ).store()
                 self._election = Election.get(self.name)
         now = self.now
         if self._election.until <= now:
@@ -92,7 +92,8 @@ class Elector(object):
         try:
             self._election.store(version=version)
         except elasticsearch.ConflictError:
-            self._election = Election.get(self.name)
+            pass
+        self._election = Election.get(self.name)
 
     @property
     def now(self):
