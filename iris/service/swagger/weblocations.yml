@@ -138,9 +138,11 @@ definitions:
                 x-nullable: true
                 properties:
                     height:
-                        type: string
+                        type: integer
+                        readOnly: true
                     width:
-                        type: string
+                        type: integer
+                        readOnly: true
             video:
                 type: string
                 readOnly: true
