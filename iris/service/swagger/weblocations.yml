@@ -101,5 +101,24 @@ definitions:
         readOnly: true
         x-nullable: true
         properties:
-            name:
+            url:
+                type: string
+            title:
+                type: string
+            site_name:
+                type: string
+            description:
+                type: string
+            favicon:
+                type: string
+            image:
+                type: string
+            image_data:
+                type: object
+                properties:
+                    height:
+                        type: string
+                    width:
+                        type: string
+            video:
                 type: string
