@@ -48,6 +48,7 @@ def test_suite():
         create_suite('auth/secret.rst'),
         create_doc_suite('sso.rst'),
 
+        create_crate_suite('elector/election.rst'),
         create_suite('sm/service.rst'),
         create_suite('static.rst'),
 

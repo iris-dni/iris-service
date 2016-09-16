@@ -149,6 +149,7 @@ CREATE TABLE weblocations (
     state STRING,
     url STRING INDEX OFF,
     og OBJECT(STRICT) AS (
+        ts TIMESTAMP,
         url STRING INDEX OFF,
         title STRING,
         site_name STRING,
@@ -240,6 +241,16 @@ CREATE TABLE ssotokens (
 )
 CLUSTERED INTO {{ SSOTokens.shards }} SHARDS
           WITH (number_of_replicas='{{ SSOTokens.number_of_replicas }}',
+                column_policy='strict');
+
+
+CREATE TABLE elections (
+    id STRING PRIMARY KEY,
+    ident STRING,
+    until TIMESTAMP
+)
+CLUSTERED INTO {{ Elections.shards }} SHARDS
+          WITH (number_of_replicas='{{ Elections.number_of_replicas }}',
                 column_policy='strict');
 
 
