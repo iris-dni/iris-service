@@ -41,6 +41,8 @@ cors.Max-Age = 86400
 
 es.hosts = localhost:19342
 
+og.noworker = don't start the og worker in test
+
 ###
 # wsgi server configuration
 ###

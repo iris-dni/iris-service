@@ -92,6 +92,8 @@ def app_factory(global_config, **settings):
     config.include('iris.service.endpoint')
     config.include('iris.service.swaggerui')
     config.include('iris.service.static')
+    config.include('iris.service.og',
+                   route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.file',
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.weblocation',
@@ -114,6 +116,7 @@ def app_factory(global_config, **settings):
     config.scan('iris.service.rest')
     config.scan('iris.service.swaggerui')
     config.scan('iris.service.static')
+    config.scan('iris.service.og')
     config.scan('iris.service.content.weblocation')
     config.scan('iris.service.content.file')
     config.scan('iris.service.content.petition')

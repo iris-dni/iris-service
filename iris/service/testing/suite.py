@@ -10,6 +10,7 @@ from lovely.essequence import sequence
 from iris.service.content.petition import Petition
 from iris.service.content.user import User
 from iris.service.content.city import City
+from iris.service.content.weblocation import WebLocation
 
 from . import util
 from . import layer
@@ -52,6 +53,7 @@ class Creators(object):
     petition = partial(create_object, Petition)
     user = partial(create_object, User)
     city = partial(create_object, City)
+    weblocation = partial(create_object, WebLocation)
 
 
 def setUp(test):

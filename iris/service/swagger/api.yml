@@ -32,6 +32,8 @@ tags:
     description: Administrative WebLocation API
   - name: supporter_admin
     description: Administrative Supporter API
+  - name: og
+    description: Open Graph
   - name: statemachine
     description: Statemachine API
   - name: Options
@@ -104,6 +106,9 @@ paths:
 
   /admin/supporters:
     $ref: 'supporter_admin_path.yml#/supporters'
+
+  /og/check:
+    $ref: 'og_path.yml#/og_check'
 
   /admin/statemachine/{name}:
     $ref: 'statemachine_path.yml#/statemachine_name'

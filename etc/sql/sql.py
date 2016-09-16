@@ -35,6 +35,11 @@ class SSOTokens():
     number_of_replicas = '0-all'
 
 
+class Elections():
+    shards = 1
+    number_of_replicas = '0-all'
+
+
 class Lovely_ESSequences():
     shards = 1
     number_of_replicas = '0-all'
