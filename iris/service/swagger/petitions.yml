@@ -116,6 +116,24 @@ definitions:
                             enum:
                                 - visible
                                 - hidden
+            supporters:
+                type: object
+                readOnly: true
+                properties:
+                    amount:
+                        type: integer
+                        readOnly: true
+                    required:
+                        type: integer
+                        readOnly: true
+            response_token:
+                type: string
+                x-nullable: true
+                readOnly: true
+
+    ReadProperties:
+        type: object
+        properties:
             links:
                 type: array
                 items:
@@ -158,20 +176,42 @@ definitions:
                             enum:
                                 - visible
                                 - hidden
-            supporters:
-                type: object
-                readOnly: true
-                properties:
-                    amount:
-                        type: integer
-                        readOnly: true
-                    required:
-                        type: integer
-                        readOnly: true
-            response_token:
-                type: string
-                x-nullable: true
-                readOnly: true
+
+    WriteProperties:
+        type: object
+        properties:
+            links:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        url:
+                            type: string
+                            x-nullable: true
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
+            mentions:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            x-nullable: true
+                        url:
+                            type: string
+                            x-nullable: true
+                        state:
+                            type: string
+                            enum:
+                                - visible
+                                - hidden
 
     PropertiesForPublic:
         type: object
@@ -209,6 +249,16 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/ReadProperties'
+            - $ref: '#/definitions/PropertiesForPublic'
+
+    PetitionWrite:
+        type: object
+        allOf:
+            - $ref: '#/definitions/ReadOnly'
+            - $ref: '#/definitions/PublicState'
+            - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/WriteProperties'
             - $ref: '#/definitions/PropertiesForPublic'
 
     AdminPetition:
@@ -217,6 +267,16 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PrivateState'
             - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/ReadProperties'
+            - $ref: '#/definitions/PropertiesForAdmin'
+
+    AdminPetitionWrite:
+        type: object
+        allOf:
+            - $ref: '#/definitions/ReadOnly'
+            - $ref: '#/definitions/PrivateState'
+            - $ref: '#/definitions/Properties'
+            - $ref: '#/definitions/ReadProperties'
             - $ref: '#/definitions/PropertiesForAdmin'
 
     POSTBody:
@@ -226,7 +286,7 @@ definitions:
             - data
         properties:
             data:
-                $ref: '#/definitions/Petition'
+                $ref: '#/definitions/PetitionWrite'
     ResponseBody:
         # The petition wrapped in a data property for the response body
         type: object
@@ -255,7 +315,7 @@ definitions:
             - data
         properties:
             data:
-                $ref: '#/definitions/AdminPetition'
+                $ref: '#/definitions/AdminPetitionWrite'
     ResponseBodyAdmin:
         # The petition wrapped in a data property for the response body
         type: object

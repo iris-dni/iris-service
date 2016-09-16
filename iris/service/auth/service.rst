@@ -165,6 +165,7 @@ It can be used multiple times on the same user::
     >>> response = browser.post('/v1/auth/ssologin?token=%s' % token)
     >>> print_json(response.headerlist)
     [
+      ...
       [
         "Set-Cookie",
         "iris-tkt=\"...!userid_type:b64unicode\"; Path=/"
@@ -189,6 +190,14 @@ The sso parameter is required::
         "description": "sso is a required parameter..."
       }
     }
+    >>> print_json({n: v for n,v in response.headers.items()})
+    {
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+      "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
+      "Access-Control-Allow-Origin": "http://localhost",
+      "Access-Control-Max-Age": "86400",
+      ...
 
 
 Logout
@@ -245,6 +254,7 @@ in the ssologin endpoint::
     >>> response = browser.get('/v1/auth/whoami?token=%s' % token)
     >>> print_json(response.headerlist)
     [
+      ...
       [
         "Set-Cookie",
         "iris-tkt=\"...!userid_type:b64unicode\"; Path=/"

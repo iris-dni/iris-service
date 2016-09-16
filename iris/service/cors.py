@@ -1,19 +1,23 @@
 import copy
 
-from pyramid.events import NewRequest
+from pyramid.response import Response
 
 
 CORS_HEADERS = {}
 
 
-def add_cors_headers_response_callback(event):
-    def cors_headers(request, response):
-        global CORS_HEADERS
-        headers = copy.copy(CORS_HEADERS)
-        origin = request.headers.get('Origin')
-        headers['Access-Control-Allow-Origin'] = origin or request.application_url
-        response.headers.update(headers)
-    event.request.add_response_callback(cors_headers)
+def response_factory(request):
+    """The response factory for pyramid
+
+    The created response contains the cors headers.
+    """
+    response = Response()
+    global CORS_HEADERS
+    headers = copy.copy(CORS_HEADERS)
+    origin = request.headers.get('Origin')
+    headers['Access-Control-Allow-Origin'] = origin or request.application_url
+    response.headers.update(headers)
+    return response
 
 
 def includeme(config):
@@ -23,4 +27,4 @@ def includeme(config):
         if not key.startswith('cors.'):
             continue
         CORS_HEADERS['Access-Control-' + key[5:]] = value
-    config.add_subscriber(add_cors_headers_response_callback, NewRequest)
+    config.set_response_factory(response_factory)
