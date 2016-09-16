@@ -39,7 +39,7 @@ class OGDataRequester(object):
         page = requests.get(self.url,
                             timeout=OG_PAGE_CHECK_TIMEOUT,
                             headers=headers)
-        soup = BeautifulSoup(page.content)
+        soup = BeautifulSoup(page.content, "html.parser")
         soup.prettify()
         for tag_name in OG_TAGS:
             tag_content = self._get_tag_content(soup, 'og:' + tag_name)
