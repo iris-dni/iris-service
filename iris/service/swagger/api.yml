@@ -98,6 +98,8 @@ paths:
     $ref: 'weblocation_admin_path.yml#/weblocations'
   /admin/weblocations/{contentId}:
     $ref: 'weblocation_admin_path.yml#/weblocations_contentId'
+  /admin/weblocations/{contentId}/resetog:
+    $ref: 'weblocation_admin_path.yml#/weblocations_contentId_resetog'
 
   /admin/users:
     $ref: 'user_admin_path.yml#/users'

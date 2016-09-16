@@ -139,3 +139,36 @@ Do a delete request::
     ...                        expect_errors=True)
     >>> response.status
     '404 Not Found'
+
+
+Reset OG Data
+=============
+
+Trigger a reread of open graph data::
+
+    >>> import time
+    >>> loc = creators.weblocation(
+    ...     url="http://www.lovelysystems.com",
+    ...     og={"ts": int(time.time() * 1000)}
+    ... )
+    >>> loc.og is not None
+    True
+
+    >>> response = browser.get('/v1/admin/weblocations/%s/resetog' % loc.id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "og": null,
+        ...
+      }
+    }
+
+The og data is also reset in the database::
+
+    >>> from iris.service.content.weblocation import WebLocation
+    >>> loc = WebLocation.get(loc.id)
+    >>> loc.og is None
+    True

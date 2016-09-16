@@ -36,13 +36,16 @@ class WebLocation(Document):
         doc="Open Graph data"
     )
 
-    def __init__(self, url=object, **kwargs):
+    def __init__(self, **kwargs):
+        if 'url' not in kwargs:
+            raise ValueError('url is a required property for WebLocation')
+        url = kwargs['url']
         id = self.hash_url(url)
         if "id" in kwargs:
             argsId = kwargs.pop("id")
             if argsId != id:
                 raise ValueError("WebLocation id doesn't match url hash!")
-        super(WebLocation, self).__init__(id=id, url=url, **kwargs)
+        super(WebLocation, self).__init__(id=id, **kwargs)
 
     @url.setter
     def set_url(self, value):

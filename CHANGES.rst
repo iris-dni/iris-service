@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - resetog endpoint for weblocations
  - added automatic open graph data update for weblocations
  - added election module
  - added open graph service

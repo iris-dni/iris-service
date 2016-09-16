@@ -135,3 +135,33 @@ weblocations_contentId:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
+weblocations_contentId_resetog:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - name: contentId
+        in: path
+        type: string
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - weblocation_admin
+    summary: Reset OG data of a WebLocation
+    operationId: resetog
+    parameters:
+      - name: contentId
+        in: path
+        type: string
+    responses:
+      '200':
+        description: WebLocation found
+        schema:
+          $ref: 'weblocations.yml#/definitions/ResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
