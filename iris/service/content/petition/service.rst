@@ -588,10 +588,13 @@ Relations
     ...     "data": {
     ...         "title": "petition with links",
     ...         "images": [{"id": "42", "state": "hidden"}],
-    ...         "links": [{"id": "1"}, {"url": "http://www.iris.com"}],
+    ...         "links": [{"id": "1"},
+    ...                   {"url": "http://www.iris.com",
+    ...                    "data": {"url": "http://www.iris.com"}
+    ...                   }],
     ...     }
     ... }
-    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> response = browser.post_json('/v1/petitions?resolve=links', petition)
     >>> print_json(response)
     {
       "data": {
@@ -599,36 +602,6 @@ Relations
         "images": [
           {
             "class": "File",
-            "id": "42",
-            "state": "hidden"
-          }
-        ],
-        "links": [
-          {
-            "class": "WebLocation",
-            "id": "1",
-            "state": "visible"
-          },
-          {
-            "class": "WebLocation",
-            "id": "cd126eaf1870967a2f3d724ee935b379",
-            "state": "visible"
-          }
-        ],
-        ...
-      }
-    }
-    >>> id = response.json["data"]["id"]
-
-    >>> response = browser.get('/v1/petitions/%s?resolve=images,links' % id)
-    >>> print_json(response)
-    {
-      "data": {
-        ...
-        "images": [
-          {
-            "class": "File",
-            "data": null,
             "id": "42",
             "state": "hidden"
           }
@@ -653,6 +626,70 @@ Relations
               "url": "http://www.iris.com"
             },
             "id": "cd126eaf1870967a2f3d724ee935b379",
+            "state": "visible"
+          }
+        ],
+        ...
+      }
+    }
+    >>> r_data = response.json['data']
+    >>> id = r_data["id"]
+
+Change links::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "links": [r_data['links'][0],
+    ...                   r_data['links'][1],
+    ...                   {"url": "http://www.lovelysystems.com",
+    ...                    "data": {"url": "http://lovelysystems.com"},
+    ...                   }],
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s?resolve=links' % id, petition)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "images": [
+          {
+            "class": "File",
+            "id": "42",
+            "state": "hidden"
+          }
+        ],
+        "links": [
+          {
+            "class": "WebLocation",
+            "data": null,
+            "id": "1",
+            "state": "visible"
+          },
+          {
+            "class": "WebLocation",
+            "data": {
+              "dc": {
+                "created": "...",
+                "modified": "..."
+              },
+              "id": "cd126eaf1870967a2f3d724ee935b379",
+              "og": null,
+              "state": "visible",
+              "url": "http://www.iris.com"
+            },
+            "id": "cd126eaf1870967a2f3d724ee935b379",
+            "state": "visible"
+          },
+          {
+            "class": "WebLocation",
+            "data": {
+              ...
+              "id": "7475a93ef23212288d3735f17847b32a",
+              "og": null,
+              "state": "visible",
+              "url": "http://www.lovelysystems.com"
+            },
+            "id": "7475a93ef23212288d3735f17847b32a",
             "state": "visible"
           }
         ],

@@ -131,7 +131,7 @@ definitions:
                             type: string
                             readOnly: true
                         data:
-                            $ref: 'weblocations.yml#/definitions/WebLocation'
+                            $ref: 'weblocations.yml#/definitions/WebLocationReadOnly'
                         state:
                             type: string
                             enum:
@@ -152,7 +152,7 @@ definitions:
                             type: string
                             readOnly: true
                         data:
-                            $ref: 'weblocations.yml#/definitions/WebLocation'
+                            $ref: 'weblocations.yml#/definitions/WebLocationReadOnly'
                         state:
                             type: string
                             enum:

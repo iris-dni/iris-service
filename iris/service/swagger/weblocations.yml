@@ -31,6 +31,13 @@ definitions:
             og:
                 $ref: "#definitions/og"
 
+    WebLocationReadOnly:
+        type: object
+        readOnly: true
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/WebLocation'
+
     WebLocationCreate:
         type: object
         allOf:
@@ -103,18 +110,32 @@ definitions:
         properties:
             url:
                 type: string
+                readOnly: true
+                x-nullable: true
             title:
                 type: string
+                readOnly: true
+                x-nullable: true
             site_name:
                 type: string
+                readOnly: true
+                x-nullable: true
             description:
                 type: string
+                readOnly: true
+                x-nullable: true
             favicon:
                 type: string
+                readOnly: true
+                x-nullable: true
             image:
                 type: string
+                readOnly: true
+                x-nullable: true
             image_data:
                 type: object
+                readOnly: true
+                x-nullable: true
                 properties:
                     height:
                         type: string
@@ -122,3 +143,5 @@ definitions:
                         type: string
             video:
                 type: string
+                readOnly: true
+                x-nullable: true
