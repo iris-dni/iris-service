@@ -79,17 +79,6 @@ definitions:
             description:
                 type: string
                 default: ''
-            city:
-                type: object
-                properties:
-                    id:
-                        type: string
-                        x-nullable: true
-                    class:
-                        type: string
-                    data:
-                        $ref: 'cities.yml#/definitions/City'
-                        x-nullable: true
             city_answer:
                 type: string
                 default: ''
@@ -134,6 +123,20 @@ definitions:
     ReadProperties:
         type: object
         properties:
+            city:
+                type: object
+                readOnly: true
+                properties:
+                    id:
+                        type: string
+                        readOnly: true
+                        x-nullable: true
+                    class:
+                        type: string
+                        readOnly: true
+                    data:
+                        $ref: 'cities.yml#/definitions/City'
+                        x-nullable: true
             links:
                 type: array
                 items:
@@ -180,6 +183,12 @@ definitions:
     WriteProperties:
         type: object
         properties:
+            city:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        x-nullable: true
             links:
                 type: array
                 items:
@@ -276,7 +285,7 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PrivateState'
             - $ref: '#/definitions/Properties'
-            - $ref: '#/definitions/ReadProperties'
+            - $ref: '#/definitions/WriteProperties'
             - $ref: '#/definitions/PropertiesForAdmin'
 
     POSTBody:

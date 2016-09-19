@@ -95,6 +95,25 @@ The required amount of supporters is updated to the treshold of the city::
       "required": 42
     }
 
+Resetting the city::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "city": {
+    ...             "id": None,
+    ...             "class": None,
+    ...             "data": None,
+    ...         },
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
+
+    >>> print_json(response.json['data']['city'])
+    {
+      "class": "City",
+      "id": null
+    }
+
 
 Get Petition
 ------------
@@ -584,11 +603,18 @@ Use the `state` sort::
 Relations
 =========
 
+Links
+-----
+
+The `links` property contains a list of WebLocations with an additional
+`state` property. The `state` property is stored on the relation to the
+locations::
+
     >>> petition = {
     ...     "data": {
     ...         "title": "petition with links",
     ...         "images": [{"id": "42", "state": "hidden"}],
-    ...         "links": [{"id": "1"},
+    ...         "links": [{"id": "1", "state": "hidden"},
     ...                   {"url": "http://www.iris.com",
     ...                    "data": {"url": "http://www.iris.com"}
     ...                   }],
@@ -611,7 +637,7 @@ Relations
             "class": "WebLocation",
             "data": null,
             "id": "1",
-            "state": "visible"
+            "state": "hidden"
           },
           {
             "class": "WebLocation",
@@ -663,7 +689,7 @@ Change links::
             "class": "WebLocation",
             "data": null,
             "id": "1",
-            "state": "visible"
+            "state": "hidden"
           },
           {
             "class": "WebLocation",
