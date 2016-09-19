@@ -1,5 +1,5 @@
 import os
-from fabric.api import run, sudo, env, task, put
+from fabric.api import run, sudo, env, task, put, cd
 
 import fabtools.python
 import fabtools.rpm
@@ -67,33 +67,34 @@ class LocalIndexCopy(IndexCopyBase):
 
 class RemoteIndexCopy(IndexCopyBase):
 
+    REMOTE_TMP = 'tmp/iris'
+
     def __call__(self):
         self.setupRemote()
-        cmd = [os.path.join(SRC_DIR, 'copyindex.py'),
+        cmd = ['sudo',
+               'docker',
+               'run',
+               '-ti',
+               '--rm',
+               'iris-migration',
+               'python',
+               'es_copyindex.py',
                self.from_es,
                self.from_idx,
                self.to_idx,
                self.to_es,
                self.force_copy
               ]
-        run(REMOTE_PY + ' ' + ' '.join(['"%s"' % c for c in cmd]))
+        cmd = ' '.join(['"%s"' % c for c in cmd])
+        run(cmd)
         self.shutdownRemote()
 
     def setupRemote(self):
-        sudo('rm -rf ' + TMP_VENV_DIR)
-        if not fabtools.rpm.is_installed('python-virtualenv'):
-            fabtools.rpm.install('python-virtualenv')
-        if not fabtools.python.virtualenv_exists(TMP_VENV_DIR):
-            fabtools.python.create_virtualenv(
-                TMP_VENV_DIR,
-                venv_python='/opt/python-2.7/bin/python',
-                )
-        run('mkdir %s' % SRC_DIR)
-        put(os.path.join(HERE, 'helpers/es_copyindex.py'),
-            os.path.join(SRC_DIR, 'copyindex.py'),
-        )
-        with fabtools.python.virtualenv(TMP_VENV_DIR):
-            fabtools.python.install('elasticsearch==1.9.0')
+        run('mkdir -p ' + self.REMOTE_TMP)
+        put('fabfile/helpers/es_copyindex.py', self.REMOTE_TMP)
+        put('fabfile/Dockerfile', self.REMOTE_TMP)
+        with cd(os.path.join(self.REMOTE_TMP)):
+            run('sudo docker build -t iris-migration .')
 
     def shutdownRemote(self):
-        fabtools.files.remove(TMP_VENV_DIR, recursive=True)
+        run('rm -rf ' + self.REMOTE_TMP)

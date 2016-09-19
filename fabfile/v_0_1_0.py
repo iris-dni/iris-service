@@ -1,6 +1,6 @@
 from functools import partial
 
-from fabric.api import execute
+from fabric.api import execute, local
 
 from .migrate import do_index
 from .helpers import get_settings
@@ -36,5 +36,8 @@ def migrate(env_name):
                     env_name,
                     "weblocations",
                    ), hosts=settings['hosts'])
+    local(('curl -sSXPOST \'{crate_host}/_sql?pretty\''
+           ' -d \'{{"stmt":"update weblocations set og = null"}}\''
+          ).format(**settings))
 
 addMigration(VERSION, migrate)
