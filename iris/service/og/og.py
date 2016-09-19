@@ -70,7 +70,7 @@ class OGDataRequester(dict):
                 }
         if not self:
             return
-        if 'url' in self:
+        if self.get('url'):
             self['url'] = self._ensure_url_http_scheme(self['url'])
         else:
             self['url'] = url
