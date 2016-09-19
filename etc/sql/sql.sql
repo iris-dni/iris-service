@@ -249,6 +249,15 @@ CLUSTERED INTO {{ Elections.shards }} SHARDS
           WITH (number_of_replicas='{{ Elections.number_of_replicas }}',
                 column_policy='strict');
 
+CREATE TABLE versions (
+    id STRING PRIMARY KEY,
+    version STRING,
+    updated TIMESTAMP
+)
+CLUSTERED INTO 4 SHARDS
+          WITH (number_of_replicas='0-2',
+                column_policy='strict');
+
 
 CREATE TABLE lovely_essequences (
     name STRING PRIMARY KEY,
