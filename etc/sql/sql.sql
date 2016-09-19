@@ -148,16 +148,10 @@ CREATE TABLE weblocations (
     ),
     state STRING,
     url STRING INDEX OFF,
-    og OBJECT(STRICT) AS (
+    og OBJECT(IGNORED) AS (
         ts TIMESTAMP,
-        url STRING INDEX OFF,
         title STRING,
-        site_name STRING,
-        description STRING INDEX OFF,
-        favicon STRING INDEX OFF,
-        image STRING INDEX OFF,
-        image_data OBJECT(IGNORED),
-        video STRING INDEX OFF
+        site_name STRING
     )
 )
 CLUSTERED INTO {{ WebLocation.shards }} SHARDS

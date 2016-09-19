@@ -58,9 +58,9 @@ Create a new WebLocation::
     >>> print_json(weblocation.og)
     {
       "description": "This is the place to grouch",
-      "image": "http://cdn.test.me/about_iris.jpg",
-      "image_data": {
+      "image": {
         "height": 1,
+        "url": "http://cdn.test.me/about_iris.jpg",
         "width": 1
       },
       "site_name": "IRIS grouching page",

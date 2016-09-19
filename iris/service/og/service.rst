@@ -20,6 +20,8 @@ provided by the given url::
     ... <meta property="og:site_name" content="Fresh Football News"/>
     ... <meta property="og:description" content="Believe it or not, Rönaldo is back in town"/>
     ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
+    ... <meta property="og:image:width" content="42"/>
+    ... <meta property="og:image:height" content="43"/>
     ... </head>
     ... <body>You love Football, so do we</body>
     ... </html>
@@ -49,10 +51,10 @@ provided by the given url::
     {
       "data": {
         "description": "Believe it or not, Rönaldo is back in town",
-        "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-        "image_data": {
-          "height": 1,
-          "width": 1
+        "image": {
+          "height": "43",
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": "42"
         },
         "site_name": "Fresh Football News",
         "title": "Rönaldo is back",
@@ -71,10 +73,10 @@ It is also possible to check urls without `http` scheme::
     {
       "data": {
         "description": "Believe it or not, Rönaldo is back in town",
-        "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-        "image_data": {
-          "height": 1,
-          "width": 1
+        "image": {
+          "height": "43",
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": "42"
         },
         "site_name": "Fresh Football News",
         "title": "Rönaldo is back",
@@ -102,9 +104,9 @@ If the URL provides a damaged page with broken html, the code does not fail::
     {
       "data": {
         "description": "Believe it or not, Rönaldo is back in town",
-        "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-        "image_data": {
+        "image": {
           "height": 1,
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
           "width": 1
         },
         "site_name": "Fresh Football News",
@@ -121,6 +123,8 @@ If tags do not exist, they are omitted in the output::
     ... <head>
     ... <meta property="og:url" content="http://test.me/cool-article-special"/>
     ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
+    ... <meta property="og:image:width" content="42"/>
+    ... <meta property="og:image:height" content="43"/>
     ... <body You love Football, so do we</body>
     ... </html>
     ... '''
@@ -129,45 +133,48 @@ If tags do not exist, they are omitted in the output::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print_json(res.body)
     {
-        "data": {
-            "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-            "image_data": {
-                "height": 1,
-                "width": 1
-            },
-            "url": "http://test.me/cool-article-special"
+      "data": {
+        "image": {
+          "height": "43",
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": "42"
         },
-        "status": "ok"
+        "url": "http://test.me/cool-article-special"
+      },
+      "status": "ok"
     }
 
-All og-tags different than the defined set of tags will be ignored::
+Open graph allowes to provide multiple properties with the same name.
+We only take the first occurrence of a property::
 
-    >>> from iris.service.og.og import OG_TAGS
-    >>> OG_TAGS
-    ['url', 'title', 'site_name', 'description', 'image']
+    >>> test_body = '''
+    ... <head>
+    ... <meta property="og:url" content="http://test.me/cool-article-special"/>
+    ... <meta property="og:url" content="another_url"/>
+    ... <body></body>
+    ... </html>
+    ... '''
+
+    >>> with HTTMock(test_res, favicon, img_res):
+    ...     res = browser.post_json('/v1/og/check', {"url": test_url})
+    >>> print_json(res.body)
+    {
+      "data": {
+        "url": "http://test.me/cool-article-special"
+      },
+      "status": "ok"
+    }
+
+All meta tags with properties starting with "og:" are provided::
 
     >>> test_body = '''
     ... <head>
     ... <meta property="og:url" content="http://test.me/cool-article-special"/>
     ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
-    ... <meta property="og:news" content="ignore me"/>
-    ... <meta property="og:public" content="ignore me"/>
-    ... <body You love Football, so do we</body>
-    ... </html>
-    ... '''
-
-    >>> with HTTMock(test_res, favicon, img_res):
-    ...     res = browser.post_json('/v1/og/check', {"url": test_url})
-    >>> set(OG_TAGS + ['image_data']).issuperset(set(res.json['data'].keys()))
-    True
-
-If the returned og-tags do not contain the url, the given url will be used
-for the response instead::
-
-    >>> test_body = '''
-    ... <head>
-    ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
-    ... <body You love Football, so do we</body>
+    ... <meta property="og:video" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
+    ... <meta property="og:news" content="news"/>
+    ... <meta property="og:public" content="public"/>
+    ... <body></body>
     ... </html>
     ... '''
 
@@ -175,15 +182,20 @@ for the response instead::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print_json(res.body)
     {
-        "data": {
-            "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-            "image_data": {
-                "height": 1,
-                "width": 1
-            },
-            "url": "http://iristest.com/cool-article"
+      "data": {
+        "image": {
+          "height": 1,
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": 1
         },
-        "status": "ok"
+        "news": "news",
+        "public": "public",
+        "url": "http://test.me/cool-article-special",
+        "video": {
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg"
+        }
+      },
+      "status": "ok"
     }
 
 The returned url always contains a valid scheme::
@@ -199,16 +211,16 @@ The returned url always contains a valid scheme::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print_json(res.body)
     {
-        "data": {
-            "url": "http://test.me/cool-article-special"
-        },
-        "status": "ok"
+      "data": {
+        "url": "http://test.me/cool-article-special"
+      },
+      "status": "ok"
     }
 
     >>> test_body = '''
     ... <head>
-    ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
-    ... <body You love Football, so do we</body>
+    ... <meta property="og:image:url" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
+    ... <body></body>
     ... </html>
     ... '''
     >>> test_url = 'iristest.com/cool-article'
@@ -216,15 +228,15 @@ The returned url always contains a valid scheme::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print_json(res.body)
     {
-        "data": {
-            "image": "http://cdn.test.me/ronaldo-is-back.jpg",
-            "image_data": {
-                "height": 1,
-                "width": 1
-            },
-            "url": "http://iristest.com/cool-article"
+      "data": {
+        "image": {
+          "height": 1,
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": 1
         },
-        "status": "ok"
+        "url": "http://iristest.com/cool-article"
+      },
+      "status": "ok"
     }
 
 If no og-tags are returned by the page the response will also not contain a
@@ -326,7 +338,7 @@ If the image url is relative, an absolute url with the url tag is built::
 
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
-    >>> print res.json['data']['image']
+    >>> print res.json['data']['image']['url']
     http://test.me/ronaldo-is-back.jpg
 
 The relative URL is on root::
@@ -341,7 +353,7 @@ The relative URL is on root::
 
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
-    >>> print res.json['data']['image']
+    >>> print res.json['data']['image']['url']
     http://test.me/ronaldo-is-back.jpg
 
 The image url is a relative url with a path::
@@ -356,7 +368,7 @@ The image url is a relative url with a path::
 
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
-    >>> print res.json['data']['image']
+    >>> print res.json['data']['image']['url']
     http://test.me/test/ronaldo-is-back.jpg
 
 Must also work if the url is not finished by slash::
@@ -371,7 +383,7 @@ Must also work if the url is not finished by slash::
 
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
-    >>> print res.json['data']['image']
+    >>> print res.json['data']['image']['url']
     http://test.me/test/ronaldo-is-back.jpg
 
 If the returned image url results in a status_code different than 200 no

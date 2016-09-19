@@ -8,15 +8,8 @@ from PIL import Image
 
 
 def og_data_for_url(url):
-    requester = OGDataRequester(url)
-    return requester()
+    return OGDataRequester(url)
 
-
-OG_TAGS = ["url",
-           "title",
-           "site_name",
-           "description",
-           "image"]
 
 OG_PAGE_CHECK_TIMEOUT = 5
 OG_IMAGE_CHECK_TIMEOUT = 5
@@ -26,48 +19,88 @@ URL_SCHEMA_PATTERN = re.compile('^[hH][tT][tT][pP][sS]?://.*$')
 URL_DEFAULT_SCHEME = 'http'
 
 
-class OGDataRequester(object):
-    """Provides Open Graph data for a url
+class OGDataRequester(dict):
+    """A dict like implementation for open graph data
+
     """
 
-    def __init__(self, url):
-        self.url = self._ensure_url_http_scheme(url)
+    FORCED_OBJECTS = ['image', 'video']
 
-    def __call__(self):
-        data = {}
+    def __init__(self, url):
+        url = self._ensure_url_http_scheme(url)
         headers = {'User-Agent': 'irisbot 1.0'}
-        page = requests.get(self.url,
+        page = requests.get(url,
                             timeout=OG_PAGE_CHECK_TIMEOUT,
                             headers=headers)
-        soup = BeautifulSoup(page.content, "html.parser")
-        soup.prettify()
-        for tag_name in OG_TAGS:
-            tag_content = self._get_tag_content(soup, 'og:' + tag_name)
-            if tag_content:
-                data[tag_name] = tag_content
-        url = data.get('url', self.url)
-        if data:
-            favicon = self._get_favicon(soup, url)
-            if favicon is not None:
-                data['favicon'] = favicon
-        img = data.get('image')
-        if img:
-            image_data = self._get_image_data(img, url)
-            if image_data:
-                data['image'] = image_data['url']
-                data['image_data'] = {
-                    'width': image_data['width'],
-                    'height': image_data['height']
+        doc = BeautifulSoup(page.content, "html.parser")
+        # extract all og properties
+        for og in self._og_meta_tags(doc):
+            if not og.has_attr(u'content'):
+                continue
+            name_parts = og['property'][3:].split(':')
+            name = name_parts[0]
+            prop_name = None
+            if len(name_parts) > 1:
+                prop_name = name_parts[1]
+            content = og['content']
+            if prop_name is None:
+                # don't overwrite existing properties
+                if name not in self:
+                    self[name] = content
+            else:
+                target = self.get(name, {})
+                if not isinstance(target, dict):
+                    target = {'url': target}
+                elif name in self:
+                    target = self[name]
+                    if not isinstance(target, dict):
+                        target = {
+                            'url': self[name]
+                        }
+                self[name] = target
+                # don't overwrite existing properties
+                if prop_name not in target:
+                    target[prop_name] = content
+        for name in self.FORCED_OBJECTS:
+            if name not in self:
+                continue
+            if not isinstance(self[name], dict):
+                self[name] = {
+                    'url': self[name]
                 }
-            else:
-                del data['image']
-        if data:
-            if 'url' in data:
-                data['url'] = self._ensure_url_http_scheme(
-                    data['url'])
-            else:
-                data['url'] = url
-        return data
+        if not self:
+            return
+        if 'url' in self:
+            self['url'] = self._ensure_url_http_scheme(self['url'])
+        else:
+            self['url'] = url
+        url = self['url']
+        favicon = self._get_favicon(doc, url)
+        if favicon is not None:
+            self['favicon'] = favicon
+        img = self.get('image')
+        if img:
+            extract_size = 'width' not in img or 'height' not in img
+            if extract_size:
+                data = self['image']
+                image_data = self._get_image_data(img['url'], url)
+                if image_data:
+                    data['url'] = image_data['url']
+                    data['width'] = image_data['width']
+                    data['height'] = image_data['height']
+                else:
+                    del self['image']
+
+    def __setattr__(self, name, val):
+        self[name] = val
+
+    def __getattr__(self, name):
+        return self[name]
+
+    def _og_meta_tags(self, doc):
+        for meta_tag in doc.findAll('meta'):
+            if meta_tag.get('property', '').startswith('og:'):
+                yield meta_tag
 
     def _get_favicon(self, soup, url):
         fq_favicon_url = None
