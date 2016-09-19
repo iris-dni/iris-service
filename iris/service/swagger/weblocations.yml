@@ -104,46 +104,4 @@ definitions:
                 type: integer
 
     og:
-        type: object
-        readOnly: true
-        x-nullable: true
-        properties:
-            url:
-                type: string
-                readOnly: true
-                x-nullable: true
-            title:
-                type: string
-                readOnly: true
-                x-nullable: true
-            site_name:
-                type: string
-                readOnly: true
-                x-nullable: true
-            description:
-                type: string
-                readOnly: true
-                x-nullable: true
-            favicon:
-                type: string
-                readOnly: true
-                x-nullable: true
-            image:
-                type: string
-                readOnly: true
-                x-nullable: true
-            image_data:
-                type: object
-                readOnly: true
-                x-nullable: true
-                properties:
-                    height:
-                        type: integer
-                        readOnly: true
-                    width:
-                        type: integer
-                        readOnly: true
-            video:
-                type: string
-                readOnly: true
-                x-nullable: true
+        $ref: 'og.yml#/definitions/OGData'

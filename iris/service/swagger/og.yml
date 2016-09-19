@@ -6,26 +6,10 @@ definitions:
                 type: string
     OGData:
         type: object
-        properties:
-            description:
-                type: string
-            favicon:
-                type: string
-            image:
-                type: string
-            image_data:
-                type: object
-                properties:
-                    height:
-                        type: integer
-                    width:
-                        type: integer
-            site_name:
-                type: string
-            title:
-                type: string
-            url:
-                type: string
+        readOnly: true
+        x-nullable: true
+        description: |
+            The full open graph data provided by the URL.
     OGDataResponseBody:
         type: object
         required: 
