@@ -46,6 +46,7 @@ Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
     >>> class TestMapper(DocumentRESTMapperMixin):
     ...
     ...     DOC_CLASS = DummyDocument
+    ...     request = get_test_request()
 
     >>> mapper = TestMapper()
     >>> mapper.get('1')
@@ -74,6 +75,7 @@ A searchable document mapper::
     ...                           ):
     ...
     ...     DOC_CLASS = DummyDocument
+    ...     request = get_test_request()
 
     >>> mapper = SearchableTestMapper()
     >>> mapper.search(limit='5')

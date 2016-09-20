@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added "supporting" extender for petition endpoints
+ - added generic "extend" query parameter for API calls
  - fix required supporters setup if a city has no treshold set
  - resetog endpoint for weblocations
  - added automatic open graph data update for weblocations

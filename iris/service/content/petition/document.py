@@ -234,8 +234,8 @@ class Petition(Document):
                 self.sm.check()
             except transitions.MachineError:
                 pass
-            self.store(refresh=True)
             supporter.store(refresh=True)
+            self.store(refresh=True)
         return supporter
 
     def removeSupporter(self, supporterId):
@@ -247,8 +247,8 @@ class Petition(Document):
         if supporter is not None:
             if self.supporters['amount'] > 0:
                 self.supporters['amount'] -= 1
-            supporter.delete(refresh=True)
             self.store(refresh=True)
+            supporter.delete(refresh=True)
 
     @property
     def sm(self):

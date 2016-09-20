@@ -32,6 +32,15 @@ parameters:
         - links
         - mentions
     collectionFormat: csv
+  extend:
+    name: extend
+    in: query
+    type: array
+    items:
+      type: string
+      enum:
+        - supporting
+    collectionFormat: csv
   sort:
     name: sort
     in: query

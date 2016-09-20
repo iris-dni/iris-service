@@ -30,6 +30,7 @@ petitions:
         type: string
       - $ref: "petition_parameters.yml#/parameters/sort"
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
       - $ref: "parameters.yml#/parameters/offset"
       - $ref: "parameters.yml#/parameters/limit"
     responses:
@@ -48,6 +49,7 @@ petitions:
     operationId: create
     parameters:
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
         in: body
         schema:
@@ -84,6 +86,7 @@ petitions_contentId:
         in: path
         type: string
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: Petition found
@@ -103,6 +106,7 @@ petitions_contentId:
         in: path
         type: string
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
         in: body
         schema:

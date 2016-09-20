@@ -12,6 +12,7 @@ from iris.service.security import acl
 
 from iris.service.errors import Errors
 from iris.service.rest.swagger import swagger_reduce_response
+from iris.service.rest.extender import APIExtender
 
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
@@ -100,7 +101,8 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
 
-    def event(self, contentId, transitionName, data={}, resolve=[]):
+    def event(self, contentId, transitionName, data={},
+              resolve=[], extend=[]):
         petition = Petition.get(contentId)
         if petition is None:
             return None
@@ -113,12 +115,12 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         done = getattr(sm, transitionName)(**data)
         if done:
             petition.store(refresh=True)
-        return self.to_api(petition, resolve)
+        return self.to_api(petition, resolve, extend)
 
     def statemachine(self):
         return fromYAML(raw=True)
 
-    def create(self, data, resolve=[]):
+    def create(self, data, resolve=[], extend=[]):
         """Create a petition
 
         The owner of the petition is set based on the current user from the
@@ -126,7 +128,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         """
         user = self.request.session_user
         data['data']['owner'] = {"id": user.id}
-        return super(PetitionsRESTMapper, self).create(data, resolve)
+        return super(PetitionsRESTMapper, self).create(data, resolve, extend)
 
 
 @RestService("petition_public_api")
@@ -260,3 +262,52 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
         'id': queries.fieldSorter('id'),
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
+
+
+class SupportingExtender(object):
+    """Extends a petition with the flag "supporting"
+
+    "supporting" is true if the currently logged in user already supports a
+    petition.
+    If no user is logged in "supporting" is set to false.
+    """
+
+    NAME = 'supporting'
+
+    def __init__(self, request, docs):
+        self.request = request
+        self.docs = docs
+
+    def extend(self, docs):
+        if not isinstance(docs, list):
+            docs = [docs]
+        user = self.request.user
+        if user is None:
+            for doc in docs:
+                APIExtender.applyExtensionData(doc, self.NAME, False)
+            return
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "terms": {
+                                "relations.petition": [d.id for d in self.docs]
+                            }
+                        },
+                        {
+                            "term": {
+                                "relations.user": user.id
+                            }
+                        },
+                    ]
+                }
+            }
+        }
+        supporters = Supporter.search(query)
+        supporters = {d.petition.id: d for d in supporters['hits']['hits']}
+        for doc in docs:
+            supporting = doc.get('id') in supporters
+            APIExtender.applyExtensionData(doc, self.NAME, supporting)
+
+APIExtender.register(SupportingExtender.NAME, SupportingExtender)

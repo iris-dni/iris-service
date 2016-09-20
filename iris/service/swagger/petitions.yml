@@ -222,6 +222,13 @@ definitions:
                                 - visible
                                 - hidden
 
+    Extender:
+        type: object
+        properties:
+            extensions:
+                type: object
+                readOnly: true
+
     PropertiesForPublic:
         type: object
         properties:
@@ -260,6 +267,7 @@ definitions:
             - $ref: '#/definitions/Properties'
             - $ref: '#/definitions/ReadProperties'
             - $ref: '#/definitions/PropertiesForPublic'
+            - $ref: '#/definitions/Extender'
 
     PetitionWrite:
         type: object
@@ -278,6 +286,7 @@ definitions:
             - $ref: '#/definitions/Properties'
             - $ref: '#/definitions/ReadProperties'
             - $ref: '#/definitions/PropertiesForAdmin'
+            - $ref: '#/definitions/Extender'
 
     AdminPetitionWrite:
         type: object

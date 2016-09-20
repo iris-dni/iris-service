@@ -1,4 +1,5 @@
 from . import queries
+from .extender import APIExtender
 from .transform import APITransformer
 
 
@@ -8,22 +9,22 @@ class DocumentRESTMapperMixin(object):
 
     DOC_CLASS = None
 
-    def get(self, contentId, resolve=[]):
-        return self.to_api(self.DOC_CLASS.get(contentId), resolve)
+    def get(self, contentId, resolve=[], extend=[]):
+        return self.to_api(self.DOC_CLASS.get(contentId), resolve, extend)
 
-    def create(self, data, resolve=[]):
+    def create(self, data, resolve=[], extend=[]):
         doc = self.DOC_CLASS(**data['data'])
         doc.store(refresh=True)
-        return self.to_api(doc, resolve)
+        return self.to_api(doc, resolve, extend)
 
-    def update(self, contentId, data, resolve=[]):
+    def update(self, contentId, data, resolve=[], extend=[]):
         doc = self.DOC_CLASS.get(contentId)
         if not doc:
             return None
         for name, value in data['data'].items():
             setattr(doc, name, value)
         doc.store(refresh=True)
-        return self.to_api(doc, resolve)
+        return self.to_api(doc, resolve, extend)
 
     def delete(self, contentId):
         doc = self.DOC_CLASS.get(contentId)
@@ -32,12 +33,15 @@ class DocumentRESTMapperMixin(object):
         doc.delete(refresh=True)
         return self.to_api(doc)
 
-    def to_api(self, doc, resolve=[]):
+    def to_api(self, doc, resolve=[], extend=[]):
         """Provide the document as a dict to be able to JSON serialize it
         """
         if doc is None:
             return None
-        return APITransformer(doc, resolve=resolve).to_api()
+        extender = APIExtender(self.request, doc, extend)
+        result = APITransformer(doc, resolve=resolve).to_api()
+        extender.extend(result)
+        return result
 
 
 class SearchableDocumentRESTMapperMixin(object):
@@ -85,9 +89,13 @@ class SearchableDocumentRESTMapperMixin(object):
         queryMust = []
         order = []
         resolve = []
+        extender = []
 
         if 'resolve' in params:
             resolve = params.pop('resolve') or []
+
+        if 'extender' in params:
+            extender = params.pop('extender') or []
 
         def add_sort(add):
             if not add:
@@ -162,7 +170,7 @@ class SearchableDocumentRESTMapperMixin(object):
             if ids_only:
                 data = [d['fields']['id'][0] for d in hits]
             else:
-                data = self.to_api(hits, resolve)
+                data = self.to_api(hits, resolve, extender)
             result = {
                 'data': data,
                 'total': total,

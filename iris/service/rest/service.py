@@ -25,13 +25,14 @@ class BaseRESTService(EndpointErrorMixin):
 
     def _getMapper(self, mapperName, method=None):
         """Get a mapper by name
-        
+
         Also check if the `method` exists on the mapper.
 
         raise a 404 error if the mapper or the method could not be found.
         """
         try:
-            mapper = RESTMapper.getMapperImplementation(mapperName, self.request)
+            mapper = RESTMapper.getMapperImplementation(mapperName,
+                                                        self.request)
             if method is not None and not hasattr(mapper, method):
                 raise KeyError()
             return mapper
@@ -43,10 +44,10 @@ class BaseRESTService(EndpointErrorMixin):
     def _mapperName(self, offset):
         return self.request.path.split('/')[offset]
 
-    def get_content(self, mapperName, contentId, resolve=[]):
+    def get_content(self, mapperName, contentId, resolve=[], extend=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.get(contentId, resolve)
+            data = mapper.get(contentId, resolve, extend)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
@@ -57,18 +58,19 @@ class BaseRESTService(EndpointErrorMixin):
                                 )
         return {"data": data}
 
-    def create_content(self, mapperName, data, resolve=[]):
+    def create_content(self, mapperName, data, resolve=[], extend=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.create(data, resolve)
+            data = mapper.create(data, resolve, extend)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         return {"data": data}
 
-    def update_content(self, mapperName, contentId, data, resolve=[]):
+    def update_content(self, mapperName, contentId, data,
+                       resolve=[], extend=[]):
         mapper = self._getMapper(mapperName)
         try:
-            data = mapper.update(contentId, data, resolve)
+            data = mapper.update(contentId, data, resolve, extend)
         except NotImplementedError as e:
             raise self.method_not_allowed(replacements={'message': e.message})
         if data is None:
@@ -195,13 +197,13 @@ class RESTMapper(object):
     def __init__(self, request):
         self.request = request
 
-    def get(self, contentId, resolve):
+    def get(self, contentId, resolve, extend):
         raise NotImplementedError('%s.get' % self.__class__.__name__)
 
-    def create(self, data, resolve):
+    def create(self, data, resolve, extend):
         raise NotImplementedError('%s.create' % self.__class__.__name__)
 
-    def update(self, contentId, data, resolve):
+    def update(self, contentId, data, resolve, extend):
         raise NotImplementedError('%s.update' % self.__class__.__name__)
 
     def delete(self, contentId):

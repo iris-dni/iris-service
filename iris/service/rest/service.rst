@@ -43,16 +43,16 @@ A mapper must derive from RESTMapper::
     >>> class MyRESTMapper(rest.RESTMapper):
     ...     NAME = 'myrestmapper'
     ...
-    ...     def get(self, contentId, resolve):
+    ...     def get(self, contentId, resolve, extend):
     ...         return {
     ...             'contentId': contentId
     ...         }
     ...
-    ...     def create(self, data, resolve):
+    ...     def create(self, data, resolve, extend):
     ...         data['id'] = 1
     ...         return data
     ...
-    ...     def update(self, contentId, data, resolve):
+    ...     def update(self, contentId, data, resolve, extend):
     ...         data['id'] = contentId
     ...         return data
     ...

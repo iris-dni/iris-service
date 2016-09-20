@@ -21,7 +21,6 @@ class APITransformer(object):
             self.docs = doc
         self.resolve = resolve or []
         self.resolved = {}
-        self
 
     def to_api(self):
         """Provide the document as a dict for the API

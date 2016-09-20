@@ -547,6 +547,48 @@ Unresolved::
     ...
 
 
+Extend Petitions
+================
+
+supporting
+----------
+
+Extends the petitions with the `supporting` flag which is set to true if the
+currently logged in user is supporting the petition.
+
+Create a petition::
+
+    >>> petition = creators.petition(title="supported")
+    >>> user = creators.user(email="me@home.com")
+    >>> supporter = petition.addSupporter(user=user)
+    >>> response = browser.get('/v1/petitions/%s' % petition.id)
+    >>> 'extensions' in response.json['data']
+    False
+
+With a user not supporting the petition::
+
+    >>> response = browser.get('/v1/petitions/%s?extend=supporting' % petition.id)
+    >>> print_json(response.json['data']['extensions'])
+    {
+      "supporting": false
+    }
+
+With a user supporting the petition::
+
+    >>> _ = ssologin(browser, {'email': 'me@home.com'})
+    >>> response = browser.get('/v1/petitions/%s?extend=supporting' % petition.id)
+    >>> print_json(response.json['data']['extensions'])
+    {
+      "supporting": true
+    }
+
+Clean up::
+
+    >>> _ = petition.removeSupporter(supporter.id)
+    >>> _ = petition.delete(refresh=True)
+    >>> _ = user.delete(refresh=True)
+
+
 Sorting Search Results
 ======================
 

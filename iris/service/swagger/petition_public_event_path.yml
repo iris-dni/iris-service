@@ -14,6 +14,7 @@ petitions_contentId_event_reject:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
         in: body
         schema:
@@ -44,6 +45,7 @@ petitions_contentId_event_publish:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -69,6 +71,7 @@ petitions_contentId_event_delete:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -94,6 +97,7 @@ petitions_contentId_event_support:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
         in: body
         schema:
@@ -124,6 +128,7 @@ petitions_contentId_event_close:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -152,6 +157,7 @@ petitions_contentId_event_approved:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -177,6 +183,7 @@ petitions_contentId_event_sendLetter:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -202,6 +209,7 @@ petitions_contentId_event_setFeedback:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -227,6 +235,7 @@ petitions_contentId_event_check:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good
@@ -252,6 +261,7 @@ petitions_contentId_event_tick:
         required: true
         description: The id of the petition
       - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
       '200':
         description: all good

@@ -372,3 +372,25 @@ Event response can also reolve::
           "id": "petition_events:1111"
         },
         ...
+
+Extending The Event Response
+============================
+
+Event response data can also be extended::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "Extend Petition",
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> id = response.json['data']['id']
+
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish?extend=supporting' % id)
+    >>> print_json(response)
+    {
+        ...
+        "extensions": {
+          "supporting": false
+        },
+        ...

@@ -17,6 +17,7 @@ def test_suite():
         create_suite('rest/document.rst'),
         create_suite('rest/swagger.rst'),
         create_crate_suite('rest/transform.rst'),
+        create_crate_suite('rest/extender.rst'),
         create_crate_doc_suite('api.rst'),
 
         create_crate_suite('elector/election.rst'),
