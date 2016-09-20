@@ -254,8 +254,8 @@ CREATE TABLE versions (
     version STRING,
     updated TIMESTAMP
 )
-CLUSTERED INTO 4 SHARDS
-          WITH (number_of_replicas='0-2',
+CLUSTERED INTO {{ Versions.shards }} SHARDS
+          WITH (number_of_replicas='{{ Versions.number_of_replicas }}',
                 column_policy='strict');
 
 

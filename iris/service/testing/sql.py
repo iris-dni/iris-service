@@ -43,3 +43,8 @@ class Elections():
 class Lovely_ESSequences():
     shards = 1
     number_of_replicas = 0
+
+
+class Versions():
+    shards = 1
+    number_of_replicas = 0
