@@ -168,18 +168,3 @@ With a reference to a document which is not stored::
         "id": 3
       }
     }
-
-
-Name Layer
-==========
-
-The transformer builds an internal name layer based on the resolver names::
-
-    >>> APITransformer(None).name_layer
-    {}
-    >>> APITransformer(None, ['other']).name_layer
-    {'other': {}}
-    >>> APITransformer(None, ['other',
-    ...                       'other.more',
-    ...                       'user.location']).name_layer
-    {'other': {'more': {}}, 'user': {'location': {}}}

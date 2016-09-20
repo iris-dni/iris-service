@@ -21,7 +21,7 @@ class APITransformer(object):
             self.docs = doc
         self.resolve = resolve or []
         self.resolved = {}
-        self.build_name_layer()
+        self
 
     def to_api(self):
         """Provide the document as a dict for the API
@@ -104,18 +104,6 @@ class APITransformer(object):
             class_docs = self.resolved.setdefault(doc_class, {})
             for i, doc in enumerate(docs):
                 class_docs[ids[i]] = self.build_doc_source(doc)
-
-    def build_name_layer(self):
-        self.name_layer = {}
-
-        def assign_name(name, layer):
-            parts = name.split('.', 1)
-            names = layer.setdefault(parts[0], {})
-            if len(parts) < 2:
-                return
-            assign_name(parts[1], names)
-        for name in self.resolve:
-            assign_name(name, self.name_layer)
 
     @staticmethod
     def _iter_relations(doc):
