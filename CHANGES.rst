@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - fix required supporters setup if a city has no treshold set
  - resetog endpoint for weblocations
  - added automatic open graph data update for weblocations
  - added election module

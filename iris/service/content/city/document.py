@@ -97,9 +97,3 @@ class City(Document):
         return "<%s [id=%r, %r]>" % (self.__class__.__name__,
                                      self.id,
                                      self.name)
-
-
-def includeme(config):
-    global DEFAULT_TRESHOLD
-    settings = config.get_settings()
-    DEFAULT_TRESHOLD = int(settings.get('iris.city.treshold', 0))

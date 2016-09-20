@@ -16,10 +16,7 @@ from iris.service.db.dc import dc_defaults, dc_defaults_all, DC_CREATED
 from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.weblocation import WebLocation
-from iris.service.content.city.document import (
-    TRESHOLD_NOT_SET,
-    DEFAULT_TRESHOLD,
-)
+from iris.service.content.city import document as city_module
 
 from .sm import PetitionStateMachine
 
@@ -120,7 +117,7 @@ class Petition(Document):
     supporters = Property(
         default=lambda: {
             "amount": 0,
-            "required": TRESHOLD_NOT_SET,
+            "required": city_module.TRESHOLD_NOT_SET,
         },
         doc="""
           An object which contains information about the supporters of the
@@ -202,11 +199,11 @@ class Petition(Document):
             city = self.city()
             if city is None:
                 # no city defined
-                required = TRESHOLD_NOT_SET
+                required = city_module.TRESHOLD_NOT_SET
             else:
                 required = city.treshold
-                if required == TRESHOLD_NOT_SET:
-                    required = DEFAULT_TRESHOLD
+                if required == city_module.TRESHOLD_NOT_SET:
+                    required = city_module.DEFAULT_TRESHOLD
             self.supporters['required'] = required
         return super(Petition, self).store(*args, **kwargs)
 
