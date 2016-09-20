@@ -20,6 +20,10 @@ First we implement a dummy document for simpler testing::
     ...     def get(cls, id):
     ...         print 'get(%r, %r)' % (cls.__name__, id)
     ...         return DummyDocument(id=id)
+    ...     @classmethod
+    ...     def mget(cls, ids):
+    ...         print 'mget(%r, %r)' % (cls.__name__, ids)
+    ...         return [DummyDocument(id=id) for id in ids]
     ...     def delete(self, **kwargs):
     ...         print 'delete(%r)' % kwargs
     ...         return self
@@ -52,6 +56,10 @@ Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
     >>> mapper.get('1')
     get('DummyDocument', '1')
     {'id': '1'}
+
+    >>> mapper.get(['1', '2'])
+    mget('DummyDocument', ['1', '2'])
+    [{'id': '1'}, {'id': '2'}]
 
     >>> mapper.create({'data': {'state': 'test'}})
     store({'refresh': True})

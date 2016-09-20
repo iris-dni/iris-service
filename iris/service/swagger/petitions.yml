@@ -1,6 +1,7 @@
 definitions:
     PublicState:
         type: object
+        x-nullable: true
         properties:
             state:
                 type: object
@@ -16,6 +17,7 @@ definitions:
                         default: ''
     PrivateState:
         type: object
+        x-nullable: true
         properties:
             state:
                 type: object
@@ -39,6 +41,7 @@ definitions:
 
     ReadOnly:
         type: object
+        x-nullable: true
         properties:
             id:
                 type: string
@@ -68,6 +71,7 @@ definitions:
 
     Properties:
         type: object
+        x-nullable: true
         properties:
             tags:
                 type: array
@@ -122,6 +126,7 @@ definitions:
 
     ReadProperties:
         type: object
+        x-nullable: true
         properties:
             city:
                 type: object
@@ -182,6 +187,7 @@ definitions:
 
     WriteProperties:
         type: object
+        x-nullable: true
         properties:
             city:
                 type: object
@@ -224,6 +230,8 @@ definitions:
 
     Extender:
         type: object
+        readOnly: true
+        x-nullable: true
         properties:
             extensions:
                 type: object
@@ -231,6 +239,7 @@ definitions:
 
     PropertiesForPublic:
         type: object
+        x-nullable: true
         properties:
             owner:
                 type: object
@@ -247,6 +256,7 @@ definitions:
 
     PropertiesForAdmin:
         type: object
+        x-nullable: true
         properties:
             owner:
                 type: object
@@ -261,6 +271,7 @@ definitions:
 
     Petition:
         type: object
+        x-nullable: true
         allOf:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PublicState'
@@ -280,6 +291,7 @@ definitions:
 
     AdminPetition:
         type: object
+        x-nullable: true
         allOf:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PrivateState'
@@ -307,12 +319,19 @@ definitions:
                 $ref: '#/definitions/PetitionWrite'
     ResponseBody:
         # The petition wrapped in a data property for the response body
+        description: |
+            Provides the result in the "data" property if only a single
+            petition was requested. For multiple petitions the result is in the
+            "items" property.
         type: object
-        required: 
-            - data
         properties:
             data:
                 $ref: '#/definitions/Petition'
+            items:
+                type: array
+                x-nullable: true
+                items:
+                    $ref: '#/definitions/AdminPetition'
     ListResponseBody:
         description: Petition list response
         type: object
@@ -336,12 +355,19 @@ definitions:
                 $ref: '#/definitions/AdminPetitionWrite'
     ResponseBodyAdmin:
         # The petition wrapped in a data property for the response body
+        description: |
+            Provides the result in the "data" property if only a single
+            petition was requested. For multiple petitions the result is in the
+            "items" property.
         type: object
-        required: 
-            - data
         properties:
             data:
                 $ref: '#/definitions/AdminPetition'
+            items:
+                type: array
+                x-nullable: true
+                items:
+                    $ref: '#/definitions/AdminPetition'
     ListResponseBodyAdmin:
         description: Petition list response
         type: object

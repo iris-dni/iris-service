@@ -56,7 +56,11 @@ class BaseRESTService(EndpointErrorMixin):
                                   'mapperName': mapperName
                                  }
                                 )
-        return {"data": data}
+        multirequest = isinstance(contentId, list) and len(contentId) > 1
+        if multirequest:
+            return {"items": data}
+        else:
+            return {"data": data}
 
     def create_content(self, mapperName, data, resolve=[], extend=[]):
         mapper = self._getMapper(mapperName)

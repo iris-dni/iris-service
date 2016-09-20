@@ -70,11 +70,7 @@ petitions_contentId:
       - Options
     summary: CORS Options
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/multiple_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -84,13 +80,22 @@ petitions_contentId:
     tags:
       - petition
     summary: Get a Petition
+    description: |
+        Provides a single petition in the "data" property of the response.
+
+        It is also possible to request multiple petitions by providing a comma
+        separated list of ids. In this case the requested petitions are
+        returned in the "items" property of the response.
+        The order of the petitions in "items" is the same as the order in the
+        "contentId" path parameter. If an id could not be found None is
+        returned in "items".
+
+        Please note that the response is always returned in the "data" property
+        if only one id is provided. If you want to force the result to always
+        appear int the "items" property add a "," at the end.
     operationId: get
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/multiple_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -108,11 +113,7 @@ petitions_contentId:
     summary: Update Petition
     operationId: update
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
@@ -135,11 +136,7 @@ petitions_contentId:
     summary: Update Petition
     operationId: delete
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
     responses:
       '200':
         description: Petition found

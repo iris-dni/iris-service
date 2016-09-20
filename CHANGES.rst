@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - allow to request multiple petitions in the GET endpoint
  - added "supporting" extender for petition endpoints
  - added generic "extend" query parameter for API calls
  - fix required supporters setup if a city has no treshold set

@@ -292,7 +292,9 @@ class SupportingExtender(object):
                     "must": [
                         {
                             "terms": {
-                                "relations.petition": [d.id for d in self.docs]
+                                "relations.petition": [d.id
+                                                       for d in self.docs
+                                                       if d]
                             }
                         },
                         {
@@ -307,6 +309,8 @@ class SupportingExtender(object):
         supporters = Supporter.search(query)
         supporters = {d.petition.id: d for d in supporters['hits']['hits']}
         for doc in docs:
+            if doc is None:
+                continue
             supporting = doc.get('id') in supporters
             APIExtender.applyExtensionData(doc, self.NAME, supporting)
 

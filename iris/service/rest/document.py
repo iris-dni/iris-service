@@ -10,6 +10,14 @@ class DocumentRESTMapperMixin(object):
     DOC_CLASS = None
 
     def get(self, contentId, resolve=[], extend=[]):
+        if isinstance(contentId, list):
+            # remove empty ids
+            if len(contentId) > 1:
+                ids = [c for c in contentId if c]
+                return self.to_api(self.DOC_CLASS.mget(ids),
+                                   resolve,
+                                   extend)
+            contentId = contentId[0]
         return self.to_api(self.DOC_CLASS.get(contentId), resolve, extend)
 
     def create(self, data, resolve=[], extend=[]):

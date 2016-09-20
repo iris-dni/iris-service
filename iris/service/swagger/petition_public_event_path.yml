@@ -8,11 +8,7 @@ petitions_contentId_event_reject:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: reject
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
@@ -39,11 +35,7 @@ petitions_contentId_event_publish:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: publish
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -65,11 +57,7 @@ petitions_contentId_event_delete:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: delete
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -91,11 +79,7 @@ petitions_contentId_event_support:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: support
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
       - name: data
@@ -122,11 +106,7 @@ petitions_contentId_event_close:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: close
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -151,11 +131,7 @@ petitions_contentId_event_approved:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: approved
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -177,11 +153,7 @@ petitions_contentId_event_sendLetter:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: sendLetter
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -203,11 +175,7 @@ petitions_contentId_event_setFeedback:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: setFeedback
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -229,11 +197,7 @@ petitions_contentId_event_check:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: check
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -255,11 +219,7 @@ petitions_contentId_event_tick:
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: tick
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
     responses:
@@ -277,11 +237,7 @@ petitions_contentId_event_transitionName:
       - Options
     summary: CORS Options
     parameters:
-      - name: contentId
-        in: path
-        type: string
-        required: true
-        description: The id of the petition
+      - $ref: "parameters.yml#/parameters/single_contentId"
       - name: transitionName
         in: path
         type: string

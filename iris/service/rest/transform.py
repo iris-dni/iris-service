@@ -108,6 +108,9 @@ class APITransformer(object):
     def _iter_relations(doc):
         """yield the relation properties of a document
         """
+        if doc is None:
+            return
+
         def isRelation(obj):
             return isinstance(obj, LocalRelation)
         for (name, prop) in inspect.getmembers(doc.__class__, isRelation):
@@ -117,6 +120,8 @@ class APITransformer(object):
     def _iter_source_relations(doc):
         """yield the relation resolver properties of a document source
         """
+        if doc is None:
+            return
         for name, prop in doc.iteritems():
             if isinstance(prop, (RelationResolver, ListRelationResolver)):
                 yield (name, prop)

@@ -371,6 +371,39 @@ Use the id from the response above::
       }
     }
 
+    >>> response = browser.get('/v1/admin/petitions/%s,unknown' % id)
+    >>> print_json(response)
+    {
+      "items": [
+        {
+          ...
+          "id": "...",
+          ...
+        },
+        null
+      ]
+    }
+    >>> len(response.json['items'])
+    2
+    >>> 'data' in response.json
+    False
+
+    >>> response = browser.get('/v1/admin/petitions/%s,' % id)
+    >>> print_json(response)
+    {
+      "items": [
+        {
+          ...
+          "id": "...",
+          ...
+        }
+      ]
+    }
+    >>> len(response.json['items'])
+    1
+    >>> 'data' in response.json
+    False
+
 
 List Petitions
 --------------
