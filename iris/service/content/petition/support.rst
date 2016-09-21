@@ -24,15 +24,16 @@ Create a new petition::
 Set the supporter.required count::
 
     >>> petition = Petition.get(id)
-    >>> petition.supporters['required'] = 5
+    >>> petition.supporters['required'] = 6
     >>> _ = petition.store(refresh=True)
 
-Publish the petition::
+Publish the petition, initially the publishing user is supporting the
+petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 0, u'required': 5}
+    {u'amount': 1, u'required': 6}
 
 Support the pending petition::
 
@@ -43,10 +44,11 @@ Support the pending petition::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 1, u'required': 5}
+    {u'amount': 2, u'required': 6}
 
-    >>> Supporter.get_by(Supporter.petition, id)
-    [<Supporter [id=u'1n3gf-u:1Zbfk']>]
+    >>> Supporter.get_by(Supporter.petition, id, size=10)
+    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+     <Supporter [id=u'1n3gf-u:...']>]
 
 The same user supports again::
 
@@ -56,10 +58,11 @@ The same user supports again::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 1, u'required': 5}
+    {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:1Zbfk']>]
+    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+     <Supporter [id=u'1n3gf-u:1Zbfk']>]
 
 Support using a telephone number::
 
@@ -78,7 +81,7 @@ Support using a telephone number::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 5}
+    {u'amount': 3, u'required': 6}
 
     >>> obj = Supporter.get('1n3gf-t:0555 42')
     >>> obj.user
@@ -87,7 +90,9 @@ Support using a telephone number::
     {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:1Zbfk']>, <Supporter [id=u'1n3gf-t:0555 42']>]
+    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+     <Supporter [id=u'1n3gf-u:1Zbfk']>,
+     <Supporter [id=u'1n3gf-t:0555 42']>]
 
 The same telephone number again::
 
@@ -96,17 +101,19 @@ The same telephone number again::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 5}
+    {u'amount': 3, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:1Zbfk']>, <Supporter [id=u'1n3gf-t:0555 42']>]
+    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+     <Supporter [id=u'1n3gf-u:1Zbfk']>,
+     <Supporter [id=u'1n3gf-t:0555 42']>]
 
 Approve the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showInfo(response)
     {u'name': u'active', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 5}
+    {u'amount': 3, u'required': 6}
 
     >>> _ = ssologin(browser, {"email": "142@sso.login"})
     >>> supporter = {"data": {}}
@@ -115,7 +122,7 @@ Approve the petition::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'active', u'parent': u'supportable'}
-    {u'amount': 3, u'required': 5}
+    {u'amount': 4, u'required': 6}
 
 Support until the petition is a winner::
 
@@ -127,13 +134,13 @@ Support until the petition is a winner::
     ...         supporter)
     ...     showInfo(response)
     {u'name': u'active', u'parent': u'supportable'}
-    {u'amount': 4, u'required': 5}
+    {u'amount': 5, u'required': 6}
     {u'name': u'winner', u'parent': u'supportable'}
-    {u'amount': 5, u'required': 5}
+    {u'amount': 6, u'required': 6}
     {u'name': u'winner', u'parent': u'supportable'}
-    {u'amount': 6, u'required': 5}
+    {u'amount': 7, u'required': 6}
     {u'name': u'winner', u'parent': u'supportable'}
-    {u'amount': 7, u'required': 5}
+    {u'amount': 8, u'required': 6}
 
 Invalid phone_user data::
 

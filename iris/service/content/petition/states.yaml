@@ -6,6 +6,9 @@ states:
       transitions:
         - trigger: publish
           dest: supportable.pending
+          after:
+            # let the publisher support the petition
+            - support_petition
 
     - name: rejected
       on_enter:

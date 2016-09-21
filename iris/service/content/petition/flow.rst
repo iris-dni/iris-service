@@ -5,6 +5,7 @@ Petition Flow
 Show the full petition creation and lifetime flow.
 
     >>> import time
+    >>> from iris.service.content.petition import Petition
 
 
 Create Petition
@@ -64,6 +65,60 @@ With an authenticated session the real user is assigned to the petition::
     }
 
 
+Publishing a Petition
+=====================
+
+Petition which are draft or rejected can be published::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "Authenticated"
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+
+    >>> id = response.json['data']['id']
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+
+After publishing the petition there is one supporter::
+
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "supporters": {
+          "amount": 1,
+          "required": ...
+        },
+        ...
+      },
+      "status": "ok"
+    }
+
+Reject the petition::
+
+    >>> body = {
+    ...     "notify": False
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s/event/reject' % id, body)
+
+Publishing again will not add a new supporter::
+
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "supporters": {
+          "amount": 1,
+          "required": ...
+        },
+        ...
+      },
+      "status": "ok"
+    }
+
+
 Manage Letter
 =============
 
@@ -79,7 +134,6 @@ Create a new petition::
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
-    >>> from iris.service.content.petition import Petition
     >>> petition = Petition.get(id)
     >>> petition.response_token is None
     True
@@ -182,6 +236,6 @@ The petition is no longer available via the token::
     {
       "error": {
         "code": 404,
-        "description": "Token '14Y6t' for content type 'petitions' not found"
+        "description": "Token '...' for content type 'petitions' not found"
       }
     }

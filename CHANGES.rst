@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - add the petition creator as supporter when publishing a petition
  - added force_state event endpoint
  - enable petition owner filter in swagger
  - added letter response flow to petition

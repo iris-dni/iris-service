@@ -71,6 +71,8 @@ class PetitionStateMachine(object):
         self.petition.state.timer = int(time.time())
 
     def support_petition(self, **kwargs):
+        if self.request is None:
+            return
         user = self.request.user
         if user is not None:
             user = user.id

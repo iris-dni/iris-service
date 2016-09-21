@@ -403,7 +403,7 @@ Event response data can also be extended::
     {
         ...
         "extensions": {
-          "supporting": false
+          "supporting": true
         },
         ...
 
