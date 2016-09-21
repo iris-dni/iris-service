@@ -6,6 +6,8 @@ import os
 from transitions.extensions import MachineFactory
 from transitions.extensions.nesting import NestedState
 
+from iris.service.db.sequence import IID_SHORTED
+
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 
 # create a state machine implementation from extensions
@@ -55,22 +57,40 @@ class PetitionStateMachine(object):
         self.petition.addSupporter(user=user,
                                    **kwargs.get('data', {}))
 
+    def set_response_token(self, **kwargs):
+        """Sets a new response token if no token is set
+        """
+        token = self.petition.response_token
+        if token is None:
+            self.petition.response_token = IID_SHORTED()
+
+    def reset_response_token(self, **kwargs):
+        """Reset the response token
+        """
+        self.petition.response_token = None
+
+    def feedback_has_valid_token(self, data, **kwargs):
+        return self.petition.response_token == data['token']
+
+    def set_petition_feedback(self, data, **kwargs):
+        self.petition.city_answer = data['answer']
+
     def send_rejected_mail_to_owner(self, **kwargs):
         pass
 
-    def send_winner_mail_to_owner(self):
+    def send_winner_mail_to_owner(self, **kwargs):
         pass
 
-    def send_approval_request_to_editor(self):
+    def send_approval_request_to_editor(self, **kwargs):
         pass
 
-    def send_approval_notifications(self):
+    def send_approval_notifications(self, **kwargs):
         pass
 
-    def is_support_timeout(self):
+    def is_support_timeout(self, **kwargs):
         return self.petition.state.timer < (time.time() - APPROVAL_TIME)
 
-    def is_supporter_limit_reached(self):
+    def is_supporter_limit_reached(self, **kwargs):
         supporters = self.petition.supporters
         required = supporters.get('required')
         if required == TRESHOLD_NOT_SET:

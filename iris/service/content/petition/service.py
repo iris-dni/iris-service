@@ -18,11 +18,14 @@ from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
 
 
+PETITIONS_MAPPER_NAME = 'petitions'
+
+
 @RestService("petition_admin_api",
              permission=acl.Permissions.AdminFull)
 class PetitionAdminRESTService(rest.RESTService):
 
-    MAPPER_NAME = 'petitions'
+    MAPPER_NAME = PETITIONS_MAPPER_NAME
 
 
 def stateFilter(value):
@@ -130,6 +133,13 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         data['data']['owner'] = {"id": user.id}
         return super(PetitionsRESTMapper, self).create(data, resolve, extend)
 
+    def get_by_token(self, token, resolve=[], extend=[]):
+        doc = None
+        found = self.DOC_CLASS.get_by(Petition.response_token, token)
+        if found:
+            doc = found[0]
+        return self.to_api(doc, resolve, extend)
+
 
 @RestService("petition_public_api")
 class PetitionPublicRESTService(rest.RESTService):
@@ -141,7 +151,7 @@ class PetitionPublicRESTService(rest.RESTService):
     not be configured in swagger.
     """
 
-    MAPPER_NAME = 'petitions'
+    MAPPER_NAME = PETITIONS_MAPPER_NAME
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')
@@ -187,15 +197,20 @@ class PetitionPublicRESTService(rest.RESTService):
         return self._event('approved')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/sendLetter')
+                     route_suffix='/{contentId}/event/letterSent')
     @swagger_reduce_response
-    def event_sendLetter(self, **kwargs):
-        return self._event('sendLetter')
+    def event_letterSent(self, **kwargs):
+        return self._event('letterSent')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/setFeedback')
     @swagger_reduce_response
     def event_setFeedback(self, **kwargs):
+        token = self.request.swagger_data['data']['data']['token']
+        contentId = self.request.swagger_data['contentId']
+        petition = Petition.get(contentId)
+        if petition is not None and petition.response_token != token:
+            raise self.bad_request(Errors.wrong_token)
         return self._event('setFeedback')
 
     @rpcmethod_route(request_method='POST',
@@ -262,6 +277,43 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
         'id': queries.fieldSorter('id'),
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
+
+
+@RestService("petition_by_token_api")
+class PetitionByTokenRESTService(rest.BaseRESTService):
+    """Public petition endpoint to get a petition by token
+    """
+
+    MAPPER_NAME = PETITIONS_MAPPER_NAME
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{token}/petitions')
+    @rpcmethod_view(http_cache=0)
+    def options(self, **kwargs):
+        return {}
+
+    @rpcmethod_route(request_method='GET',
+                     route_suffix='/{token}/petitions')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    @swagger_reduce_response
+    def get_petition_by_token(self, **kwargs):
+        return self.get_content(self.MAPPER_NAME,
+                                **self.request.swagger_data)
+
+    def get_content(self, mapperName, token, resolve=[], extend=[]):
+        mapper = self._getMapper(mapperName)
+        try:
+            data = mapper.get_by_token(token, resolve, extend)
+        except NotImplementedError as e:
+            raise self.method_not_allowed(replacements={'message': e.message})
+        if data is None:
+            raise self.not_found(Errors.token_not_found,
+                                 {'token': token,
+                                  'mapperName': mapperName
+                                 }
+                                )
+        return {"data": data}
 
 
 class SupportingExtender(object):

@@ -31,6 +31,8 @@ petitions_contentId_event_publish:
       - petition_event
     summary: Publish a Petition
     description: |
+        Puts the petition into a state in which it is possible to support it.
+
         For more information about the petition state machine see
         <a href="/docs/petition-management.html">petition-management</a>.
     operationId: publish
@@ -143,15 +145,17 @@ petitions_contentId_event_approved:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-petitions_contentId_event_sendLetter:
+petitions_contentId_event_letterSent:
   post:
     tags:
       - petition_event
-    summary: sendLetter for Petition
+    summary: letterSent for Petition
     description: |
+        This event confirms that a letter has been created and sent.
+
         For more information about the petition state machine see
         <a href="/docs/petition-management.html">petition-management</a>.
-    operationId: sendLetter
+    operationId: letterSent
     parameters:
       - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
@@ -178,6 +182,11 @@ petitions_contentId_event_setFeedback:
       - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/feedbackData'
+        required: true
     responses:
       '200':
         description: all good

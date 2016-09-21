@@ -208,13 +208,25 @@ will switch after the timeout::
 
 Go through the processing steps::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/sendLetter' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/letterSent' % id)
     >>> showState(response)
     {u'name': u'waitForLetterResponse', u'parent': u'processing'}
     >>> showListable(response)
     True
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/setFeedback' % id)
+    >>> petition = Petition.get(id)
+    >>> token = petition.response_token
+
+    >>> body = {
+    ...     "data": {
+    ...         "token": token,
+    ...         "answer": "machen wir gleich"
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/setFeedback' % id,
+    ...     body
+    ... )
     >>> showState(response)
     {u'name': u'letterResponseArrived', u'parent': u'processing'}
     >>> showListable(response)

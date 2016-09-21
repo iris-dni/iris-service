@@ -58,3 +58,8 @@ parameters:
           - supporters.amount
           - score
           - id
+  token_path:
+    name: token
+    in: path
+    type: string
+    required: true

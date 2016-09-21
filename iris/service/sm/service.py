@@ -18,7 +18,7 @@ class StatemachineRESTService(rest.BaseRESTService):
                      route_suffix='/{name}')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)
-    def options_contentId_support(self, **kwargs):
+    def options(self, **kwargs):
         data = self.request.swagger_data
         self._getMapper(data['name'], 'statemachine')
         return {}

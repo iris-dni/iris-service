@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added letter response flow to petition
  - allow to request multiple petitions in the GET endpoint
  - added "supporting" extender for petition endpoints
  - added generic "extend" query parameter for API calls

@@ -69,7 +69,7 @@ For information about the management of the petition state see
     state processing {
         [*] --> sendLetterRequested
         sendLetterRequested : editor needs to send a letter
-        sendLetterRequested --> waitForLetterResponse : [sendLetter]
+        sendLetterRequested --> waitForLetterResponse : [letterSent]
         waitForLetterResponse : enter: create response token
         waitForLetterResponse : exit: delete response token
         waitForLetterResponse --> letterResponseArrived : [setFeedback]

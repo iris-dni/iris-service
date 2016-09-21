@@ -119,10 +119,6 @@ definitions:
                     required:
                         type: integer
                         readOnly: true
-            response_token:
-                type: string
-                x-nullable: true
-                readOnly: true
 
     ReadProperties:
         type: object
@@ -268,6 +264,10 @@ definitions:
                         type: string
                     data:
                         $ref: 'users.yml#/definitions/UserAdmin'
+            response_token:
+                type: string
+                x-nullable: true
+                readOnly: true
 
     Petition:
         type: object

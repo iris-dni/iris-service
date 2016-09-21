@@ -25,6 +25,19 @@ definitions:
                     type: string
                   lastname:
                     type: string
+    feedbackData:
+        type: object
+        properties:
+            data:
+                type: object
+                required:
+                    - token
+                    - answer
+                properties:
+                    token:
+                        type: string
+                    answer:
+                        type: string
     eventResponseBody:
         type: object
         required:

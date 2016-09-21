@@ -44,6 +44,8 @@ paths:
     $ref: 'petition_public_path.yml#/petitions'
   /petitions/{contentId}:
     $ref: 'petition_public_path.yml#/petitions_contentId'
+  /token/{token}/petitions:
+    $ref: 'petition_public_path.yml#/petitions_by_token'
 
   /petitions/{contentId}/event/reject:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_reject'
@@ -57,8 +59,8 @@ paths:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_close'
   /petitions/{contentId}/event/approved:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_approved'
-  /petitions/{contentId}/event/sendLetter:
-    $ref: 'petition_public_event_path.yml#/petitions_contentId_event_sendLetter'
+  /petitions/{contentId}/event/letterSent:
+    $ref: 'petition_public_event_path.yml#/petitions_contentId_event_letterSent'
   /petitions/{contentId}/event/setFeedback:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_setFeedback'
   /petitions/{contentId}/event/check:

@@ -69,18 +69,25 @@ states:
           - name: sendLetterRequested
             on_enter:
                 - listable
+                - set_response_token
             transitions:
-                - trigger: sendLetter
+                - trigger: letterSent
                   dest: processing.waitForLetterResponse
           - name: waitForLetterResponse
             on_enter:
                 - listable
+                - set_response_token
             transitions:
                 - trigger: setFeedback
+                  conditions:
+                      - feedback_has_valid_token
+                  after:
+                    - set_petition_feedback
                   dest: processing.letterResponseArrived
           - name: letterResponseArrived
             on_enter:
                 - listable
+                - reset_response_token
             transitions:
                 - trigger: close
                   dest: closed
