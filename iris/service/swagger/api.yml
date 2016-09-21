@@ -67,6 +67,8 @@ paths:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_check'
   /petitions/{contentId}/event/tick:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_tick'
+  /petitions/{contentId}/event/force_state:
+    $ref: 'petition_public_event_path.yml#/petitions_contentId_event_force_state'
   /petitions/{contentId}/event/{transitionName}:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_transitionName'
 

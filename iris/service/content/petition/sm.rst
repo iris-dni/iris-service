@@ -40,3 +40,36 @@ state of the petition::
     >>> _ = sm.approved()
     >>> sm.state
     'supportable.active'
+
+
+Force A State
+=============
+
+This is an addition to make it easy to test a petition by being able to force
+the statemachine into any state::
+
+    >>> petition = Petition()
+    >>> sm = PetitionStateMachine(petition, None)
+    >>> sm.force_state('closed')
+    True
+    >>> sm.state
+    'closed'
+
+Enter and Exit code is also executed::
+
+    >>> petition.state.listable
+    False
+    >>> sm.force_state('processing.sendLetterRequested')
+    True
+    >>> sm.state
+    'processing.sendLetterRequested'
+    >>> petition.state.listable
+    True
+    >>> petition.state.timer
+    0
+    >>> sm.force_state('supportable.pending')
+    True
+    >>> sm.state
+    'supportable.pending'
+    >>> petition.state.timer != 0
+    True

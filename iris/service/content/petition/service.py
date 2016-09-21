@@ -115,7 +115,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # transition doesn't exist
             raise transitions.MachineError(
                 'Unknown transition "%s"' % transitionName)
-        done = getattr(sm, transitionName)(**data)
+        done = transition_fn(**data)
         if done:
             petition.store(refresh=True)
         return self.to_api(petition, resolve, extend)
@@ -224,6 +224,14 @@ class PetitionPublicRESTService(rest.RESTService):
     @swagger_reduce_response
     def event_tick(self, **kwargs):
         return self._event('tick')
+
+    @rpcmethod_route(request_method='POST',
+                     route_suffix='/{contentId}/event/force_state')
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminFull)
+    @swagger_reduce_response
+    def event_force_state(self, **kwargs):
+        return self._event('force_state')
 
     def _event(self, switch):
         mapper = self._getMapper(self.MAPPER_NAME)

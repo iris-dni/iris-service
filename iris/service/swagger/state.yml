@@ -10,6 +10,8 @@ definitions:
               type: string
     supportData:
         type: object
+        required:
+            - data
         properties:
           data:
             type: object
@@ -27,6 +29,8 @@ definitions:
                     type: string
     feedbackData:
         type: object
+        required:
+            - data
         properties:
             data:
                 type: object
@@ -38,6 +42,13 @@ definitions:
                         type: string
                     answer:
                         type: string
+    force_stateData:
+        type: object
+        required:
+            - to_state
+        properties:
+            to_state:
+                type: string
     eventResponseBody:
         type: object
         required:

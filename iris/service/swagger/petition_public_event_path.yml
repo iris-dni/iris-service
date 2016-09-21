@@ -254,3 +254,31 @@ petitions_contentId_event_transitionName:
     responses:
       default:
         description: Empty Body
+petitions_contentId_event_force_state:
+  post:
+    tags:
+      - petition_event
+    summary: Force the petition into any state
+    description: |
+        This is a developer/maintenance tool and must not be used in code. It
+        is only provided to be used using the swaggerui.
+
+        It is not guaranteed that any state switch works without problems.
+
+        Admin privilegs are needed to be able to use this endpoint.
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/force_stateData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

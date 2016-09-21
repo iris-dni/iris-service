@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added force_state event endpoint
  - enable petition owner filter in swagger
  - added letter response flow to petition
  - allow to request multiple petitions in the GET endpoint

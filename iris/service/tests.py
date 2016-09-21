@@ -33,7 +33,7 @@ def test_suite():
         create_crate_suite('content/petition/flow.rst'),
         create_crate_suite('content/petition/events.rst'),
         create_crate_suite('content/petition/support.rst'),
-        create_suite('content/petition/sm.rst'),
+        create_crate_suite('content/petition/sm.rst'),
         create_crate_doc_suite('petitions.rst'),
 
         create_crate_suite('content/user/document.rst'),

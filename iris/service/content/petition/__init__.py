@@ -6,7 +6,9 @@ def includeme(config):
     from iris.service.rest import auth
     config.add_route('petition_public_api',
                      'petitions',
-                     static=True)
+                     static=True,
+                     factory=auth.AdminServiceAuthFactory,
+                    )
     config.add_route('petition_by_token_api',
                      'token',
                      static=True)

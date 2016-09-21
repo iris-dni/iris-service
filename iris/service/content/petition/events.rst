@@ -406,3 +406,51 @@ Event response data can also be extended::
           "supporting": false
         },
         ...
+
+
+Force A State
+=============
+
+It is possible to force the state machine into any state::
+
+    >>> body = {
+    ...     "to_state": "closed"
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/force_state' % id,
+    ...     body,
+    ...     expect_errors=True
+    ... )
+    >>> response.status
+    '403 Forbidden'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "403",
+        "description": "Unauthorized: PetitionPublicRESTService failed permission check"
+      }
+    }
+
+The user must have the 'admin' role::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/force_state' % id,
+    ...     body
+    ... )
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "id": "15bHV",
+        ...
+        "state": {
+          "name": "closed",
+          "parent": ""
+        },
+        ...
+      },
+      "status": "ok"
+    }
+    >>> showState(response)
+    {u'name': u'closed', u'parent': u''}

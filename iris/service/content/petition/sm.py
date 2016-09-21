@@ -3,6 +3,7 @@ import time
 import yaml
 import os
 
+import transitions
 from transitions.extensions import MachineFactory
 from transitions.extensions.nesting import NestedState
 
@@ -40,6 +41,25 @@ class PetitionStateMachine(object):
         return self.petition.state.full_name
 
     state = property(get_state, set_state)
+
+    def force_state(self, to_state, **kwargs):
+        """Allow to force a state independent of the statemachine
+
+        This is a developer tool to be able to force the statemachine into any
+        state.
+        """
+        transition = transitions.Transition(self.state, to_state)
+        event_data = transitions.EventData(
+            state=None,
+            event=None,
+            machine=self.sm,
+            model=self,
+            args=[],
+            kwargs={}
+        )
+        # sets the state to the current state instance
+        event_data.update()
+        return transition.execute(event_data)
 
     def listable(self, **kwargs):
         self.petition.state.listable = True
