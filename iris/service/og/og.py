@@ -7,16 +7,24 @@ from bs4 import BeautifulSoup
 from PIL import Image
 
 
-def og_data_for_url(url):
-    return OGDataRequester(url)
-
-
 OG_PAGE_CHECK_TIMEOUT = 5
 OG_IMAGE_CHECK_TIMEOUT = 5
 OG_FAVICON_CHECK_TIMEOUT = 2
 
 URL_SCHEMA_PATTERN = re.compile('^[hH][tT][tT][pP][sS]?://.*$')
 URL_DEFAULT_SCHEME = 'http'
+
+
+def og_data_for_url(url):
+    return OGDataRequester(url)
+
+
+def normalize_url(url, scheme=URL_DEFAULT_SCHEME):
+    if ((url and not urlparse(url).scheme)
+        or not URL_SCHEMA_PATTERN.match(url)
+       ):
+        return "%s://%s" % (scheme, url)
+    return url
 
 
 class OGDataRequester(dict):
@@ -27,7 +35,7 @@ class OGDataRequester(dict):
     FORCED_OBJECTS = ['image', 'video']
 
     def __init__(self, url):
-        url = self._ensure_url_http_scheme(url)
+        url = normalize_url(url)
         headers = {'User-Agent': 'irisbot 1.0'}
         page = requests.get(url,
                             timeout=OG_PAGE_CHECK_TIMEOUT,
@@ -71,7 +79,7 @@ class OGDataRequester(dict):
         if not self:
             return
         if self.get('url'):
-            self['url'] = self._ensure_url_http_scheme(self['url'])
+            self['url'] = normalize_url(self['url'])
         else:
             self['url'] = url
         url = self['url']
@@ -115,30 +123,22 @@ class OGDataRequester(dict):
             return fq_favicon_url
 
     def _get_image_url(self, img, url):
-        parsed_img = urlparse(img)
         if not extract(img).suffix:
-            if url:
+            if not url:
+                return ''
+            parsed_img = urlparse(img)
+            if parsed_img.path.startswith("/"):
                 parsed_url = urlparse(url)
-                if parsed_img.path.startswith("/"):
-                    url = urlunparse((parsed_url.scheme,
-                                      parsed_url.netloc,
-                                      "",
-                                      "",
-                                      "",
-                                      ""))
-                elif not url.endswith("/"):
-                    url += "/"
-                return urljoin(url, img)
-            else:
-                return ""
-        else:
-            if not parsed_img.scheme:
-                if url and urlparse(url).scheme:
-                    img = self._ensure_url_http_scheme(img,
-                                                       urlparse(url).scheme)
-                else:
-                    img = self._ensure_url_http_scheme(img)
-        return img
+                url = urlunparse((parsed_url.scheme,
+                                  parsed_url.netloc,
+                                  "",
+                                  "",
+                                  "",
+                                  ""))
+            elif not url.endswith("/"):
+                url += "/"
+            return urljoin(url, img)
+        return normalize_url(img)
 
     def _get_image_data(self, img, url):
         """Parse an image and return the image data (url, width, height).
@@ -187,8 +187,3 @@ class OGDataRequester(dict):
 
     def _get_tags(self, soup, name, attrs):
         return soup.findAll(name, attrs=attrs)
-
-    def _ensure_url_http_scheme(self, url, scheme=URL_DEFAULT_SCHEME):
-        if not URL_SCHEMA_PATTERN.match(url):
-            return "%s://%s" % (scheme, url)
-        return url

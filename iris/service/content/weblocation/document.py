@@ -55,8 +55,7 @@ class WebLocation(Document):
 
     @classmethod
     def mget_urls(cls, urls):
-        locations = WebLocation.mget([cls.hash_url(u) for u in urls])
-        return locations
+        return WebLocation.mget([cls.hash_url(u) for u in urls])
 
     @classmethod
     def hash_url(cls, url):

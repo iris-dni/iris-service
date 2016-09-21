@@ -63,9 +63,63 @@ provided by the given url::
       "status": "ok"
     }
 
+The location is also stored as a new WebLocation::
+
+    >>> from iris.service.content.weblocation import WebLocation
+    >>> loc = WebLocation.mget_urls([test_url])[0]
+    >>> locId = loc.id
+    >>> print_json(loc.og)
+    {
+      "description": "Believe it or not, Rönaldo is back in town",
+      "image": {
+        "height": "43",
+        "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+        "width": "42"
+      },
+      "site_name": "Fresh Football News",
+      "title": "Rönaldo is back",
+      "ts": ...,
+      "url": "http://test.me/cool-article-special"
+    }
+
+Another request for the same url provides the data from the stored web
+location::
+
+    >>> res = browser.post_json('/v1/og/check', {"url": test_url})
+    >>> print_json(res.body)
+    {
+      "data": {
+        "description": "Believe it or not, Rönaldo is back in town",
+        "image": {
+          "height": "43",
+          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "width": "42"
+        },
+        "site_name": "Fresh Football News",
+        "title": "Rönaldo is back",
+        "ts": ...,
+        "url": "http://test.me/cool-article-special"
+      },
+      "status": "ok"
+    }
+
 It is also possible to check urls without `http` scheme::
 
-    >>> test_url = 'www.iristest.com/cool-article'
+    >>> test_url = 'iristest.com/cool-article'
+
+Because internally the urls are normalized the data is provided from the
+database::
+
+    >>> res = browser.post_json('/v1/og/check', {"url": test_url})
+    >>> print_json(res.body)
+    {
+      ...
+        "ts": ...,
+      ...
+
+After deleting the stored location::
+
+    >>> _ = WebLocation.get(locId).delete()
 
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
@@ -84,6 +138,8 @@ It is also possible to check urls without `http` scheme::
       },
       "status": "ok"
     }
+
+    >>> _ = WebLocation.get(locId).delete()
 
 If the URL provides a damaged page with broken html, the code does not fail::
 
@@ -116,6 +172,8 @@ If the URL provides a damaged page with broken html, the code does not fail::
       "status": "ok"
     }
 
+    >>> _ = WebLocation.get(locId).delete()
+
 If tags do not exist, they are omitted in the output::
 
     >>> test_url = 'http://iristest.com/cool-article'
@@ -144,6 +202,8 @@ If tags do not exist, they are omitted in the output::
       "status": "ok"
     }
 
+    >>> _ = WebLocation.get(locId).delete()
+
 Open graph allowes to provide multiple properties with the same name.
 We only take the first occurrence of a property::
 
@@ -164,6 +224,8 @@ We only take the first occurrence of a property::
       },
       "status": "ok"
     }
+
+    >>> _ = WebLocation.get(locId).delete()
 
 All meta tags with properties starting with "og:" are provided::
 
@@ -198,6 +260,8 @@ All meta tags with properties starting with "og:" are provided::
       "status": "ok"
     }
 
+    >>> _ = WebLocation.get(locId).delete()
+
 The returned url always contains a valid scheme::
 
     >>> test_body = '''
@@ -216,6 +280,8 @@ The returned url always contains a valid scheme::
       },
       "status": "ok"
     }
+
+    >>> _ = WebLocation.get(locId).delete()
 
     >>> test_body = '''
     ... <head>
@@ -239,6 +305,8 @@ The returned url always contains a valid scheme::
       "status": "ok"
     }
 
+    >>> _ = WebLocation.get(locId).delete()
+
 If no og-tags are returned by the page the response will also not contain a
 url::
 
@@ -255,6 +323,8 @@ url::
         "data": {},
         "status": "ok"
     }
+
+    >>> _ = WebLocation.get(locId).delete()
 
 
 Failures
@@ -340,6 +410,7 @@ If the image url is relative, an absolute url with the url tag is built::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
     http://test.me/ronaldo-is-back.jpg
+    >>> _ = WebLocation.get(locId).delete()
 
 The relative URL is on root::
 
@@ -355,6 +426,7 @@ The relative URL is on root::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
     http://test.me/ronaldo-is-back.jpg
+    >>> _ = WebLocation.get(locId).delete()
 
 The image url is a relative url with a path::
 
@@ -370,6 +442,7 @@ The image url is a relative url with a path::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
     http://test.me/test/ronaldo-is-back.jpg
+    >>> _ = WebLocation.get(locId).delete()
 
 Must also work if the url is not finished by slash::
 
@@ -385,6 +458,7 @@ Must also work if the url is not finished by slash::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
     http://test.me/test/ronaldo-is-back.jpg
+    >>> _ = WebLocation.get(locId).delete()
 
 If the returned image url results in a status_code different than 200 no
 og-tag `image` will be returned::
@@ -398,6 +472,7 @@ og-tag `image` will be returned::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> "image" in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 If the image url does not point to a location providing content of the type
 image/* no og-tag `image` will be returned::
@@ -411,6 +486,7 @@ image/* no og-tag `image` will be returned::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> "image" in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 If the request to fetch the image takes to long the og-tag `image` is also not
 included in the response::
@@ -429,6 +505,7 @@ included in the response::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> "image" in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 
 Favicons
@@ -464,6 +541,7 @@ If the favicon url is relative, an absolute url with the url tag is built::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/static/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 The relative URL is on root::
 
@@ -479,6 +557,7 @@ The relative URL is on root::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/static/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 The favicon url is relative to the url with a path::
 
@@ -494,6 +573,7 @@ The favicon url is relative to the url with a path::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/test/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 Must also work if the url is not finished by slash::
 
@@ -509,6 +589,7 @@ Must also work if the url is not finished by slash::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/test/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 The rel attribute of the link might contain additional values::
 
@@ -524,6 +605,7 @@ The rel attribute of the link might contain additional values::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/static/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 If no link with rel 'icon' was found the ogcheck tries to find a favicon.ico in
 the root of the page::
@@ -539,6 +621,7 @@ the root of the page::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['favicon']
     http://test.me/favicon.ico
+    >>> _ = WebLocation.get(locId).delete()
 
 If no link tag was found and also no favicon.ico was found in the root the
 favicon field is not included in the result::
@@ -559,6 +642,7 @@ favicon field is not included in the result::
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in res.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 If the found favicon url results in a status_code different than 200 no
 favicon field will be returned. It doesn't matter if the favicon url was one
@@ -576,6 +660,7 @@ defined by a link tag or the default one::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 It is ignored if the content-type of the link tag and actual content-type of
 the favicon does not match::
@@ -592,6 +677,7 @@ the favicon does not match::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     True
+    >>> _ = WebLocation.get(locId).delete()
 
 The returned favicon must be of type image/* ::
 
@@ -607,6 +693,7 @@ The returned favicon must be of type image/* ::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     True
+    >>> _ = WebLocation.get(locId).delete()
 
     >>> @urlmatch(path='.*favicon.ico')
     ... def favicon_wrong_type(url, request):
@@ -617,6 +704,7 @@ The returned favicon must be of type image/* ::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 The default favicon is always checked against content-type image/* ::
 
@@ -631,6 +719,7 @@ The default favicon is always checked against content-type image/* ::
     ...     resp= browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     True
+    >>> _ = WebLocation.get(locId).delete()
 
     >>> test_body = u'''<html>
     ... <head>
@@ -643,6 +732,7 @@ The default favicon is always checked against content-type image/* ::
     ...     resp = browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 If the request to fetch the favicon takes to long the favicon is also not
 included in the response::
@@ -660,6 +750,7 @@ included in the response::
     ...     resp = browser.post_json('/v1/og/check', {"url": test_url})
     >>> 'favicon' in resp.json['data']
     False
+    >>> _ = WebLocation.get(locId).delete()
 
 
 Security
