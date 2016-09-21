@@ -12,8 +12,15 @@ parameters:
         - draft: all states with name 'draft'
         - supportable.active: all states with name 'active' and parent 'supportable'
         - supportable.*: all states with parent 'supportable'
-  city:
+  city_filter:
     name: city
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+  owner_filter:
+    name: owner
     in: query
     type: array
     items:

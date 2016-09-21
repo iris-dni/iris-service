@@ -14,7 +14,8 @@ petitions:
     parameters:
       - $ref: "petition_parameters.yml#/parameters/state"
       - $ref: "parameters.yml#/parameters/tags"
-      - $ref: "petition_parameters.yml#/parameters/city"
+      - $ref: "petition_parameters.yml#/parameters/city_filter"
+      - $ref: "petition_parameters.yml#/parameters/owner_filter"
       - $ref: "parameters.yml#/parameters/fulltext"
       - name: tags_ft
         in: query

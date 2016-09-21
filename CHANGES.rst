@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - enable petition owner filter in swagger
  - added letter response flow to petition
  - allow to request multiple petitions in the GET endpoint
  - added "supporting" extender for petition endpoints
