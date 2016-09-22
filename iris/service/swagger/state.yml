@@ -41,7 +41,14 @@ definitions:
                     token:
                         type: string
                     answer:
-                        type: string
+                        type: object
+                        required:
+                            - text
+                        properties:
+                            text:
+                                type: string
+                            name:
+                                type: string
     force_stateData:
         type: object
         required:

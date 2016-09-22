@@ -220,7 +220,10 @@ Go through the processing steps::
     >>> body = {
     ...     "data": {
     ...         "token": token,
-    ...         "answer": "machen wir gleich"
+    ...         "answer": {
+    ...             "text": "machen wir gleich",
+    ...             "name": "I wrote it"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json(

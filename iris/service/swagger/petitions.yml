@@ -84,8 +84,14 @@ definitions:
                 type: string
                 default: ''
             city_answer:
-                type: string
-                default: ''
+                type: object
+                properties:
+                    text:
+                        type: string
+                        default: ''
+                    name:
+                        type: string
+                        default: ''
             type:
                 type: string
                 default: ''

@@ -41,7 +41,10 @@ CREATE TABLE petitions (
     ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,
-    city_answer STRING INDEX OFF,
+    city_answer OBJECT(IGNORED) AS (
+       text STRING INDEX OFF,
+       name STRING
+    ),
     type STRING,
     description STRING INDEX OFF,
     suggested_solution STRING INDEX OFF,

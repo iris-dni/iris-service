@@ -56,6 +56,10 @@ def copyIndex(from_es, from_idx, to_idx, to_es='', force_copy='0'):
                                  "raise_on_error": False,
                              },
                             )
+    if es_to:
+        es_to.indices.refresh()
+    else:
+        es_from.indices.refresh()
     duration = time.time() - start
     print
     if result[1]:

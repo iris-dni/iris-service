@@ -190,7 +190,10 @@ Now the feedback can be set if the token is correct::
     >>> body = {
     ...     "data": {
     ...         "token": "wrong token",
-    ...         "answer": "machen wir gleich"
+    ...         "answer": {
+    ...             "text": "machen wir gleich",
+    ...             "name": "I wrote it"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json(
@@ -211,7 +214,10 @@ With a valid token the feedback can be set::
     >>> body = {
     ...     "data": {
     ...         "token": token,
-    ...         "answer": "machen wir gleich"
+    ...         "answer": {
+    ...             "text": "machen wir gleich",
+    ...             "name": "I wrote it"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json(
@@ -224,7 +230,10 @@ With a valid token the feedback can be set::
       "parent": "processing"
     }
     >>> print_json(response.json['data']['city_answer'])
-    "machen wir gleich"
+    {
+      "name": "I wrote it",
+      "text": "machen wir gleich"
+    }
 
 The petition is no longer available via the token::
 

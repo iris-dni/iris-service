@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - petition.city_answer is now an object
+   DEPLOY:
+     run auto migration
+
 2016/09/22 0.1.1
 ================
 

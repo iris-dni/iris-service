@@ -63,6 +63,11 @@ Initial supporter settings::
     >>> petition.supporters
     {'amount': 0, 'required': -1}
 
+Initial city_answer settings::
+
+    >>> petition.city_answer
+    {'text': '', 'name': ''}
+
 Store the petition::
 
     >>> pp(petition.store())

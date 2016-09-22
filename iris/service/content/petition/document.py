@@ -63,7 +63,7 @@ class Petition(Document):
     )
 
     city_answer = Property(
-        default='',
+        default=lambda: {"text": "", "name": ""},
         doc="""
           The answer provided by the city authority
         """
