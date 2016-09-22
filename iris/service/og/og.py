@@ -29,7 +29,6 @@ def normalize_url(url, scheme=URL_DEFAULT_SCHEME):
 
 class OGDataRequester(dict):
     """A dict like implementation for open graph data
-
     """
 
     FORCED_OBJECTS = ['image', 'video']
@@ -41,41 +40,8 @@ class OGDataRequester(dict):
                             timeout=OG_PAGE_CHECK_TIMEOUT,
                             headers=headers)
         doc = BeautifulSoup(page.content, "html.parser")
-        # extract all og properties
-        for og in self._og_meta_tags(doc):
-            if not og.has_attr(u'content'):
-                continue
-            name_parts = og['property'][3:].split(':')
-            name = name_parts[0]
-            prop_name = None
-            if len(name_parts) > 1:
-                prop_name = name_parts[1]
-            content = og['content']
-            if prop_name is None:
-                # don't overwrite existing properties
-                if name not in self:
-                    self[name] = content
-            else:
-                target = self.get(name, {})
-                if not isinstance(target, dict):
-                    target = {'url': target}
-                elif name in self:
-                    target = self[name]
-                    if not isinstance(target, dict):
-                        target = {
-                            'url': self[name]
-                        }
-                self[name] = target
-                # don't overwrite existing properties
-                if prop_name not in target:
-                    target[prop_name] = content
-        for name in self.FORCED_OBJECTS:
-            if name not in self:
-                continue
-            if not isinstance(self[name], dict):
-                self[name] = {
-                    'url': self[name]
-                }
+        self._extract_og(doc)
+        self._extract_missing(doc)
         if not self:
             return
         if self.get('url'):
@@ -178,12 +144,69 @@ class OGDataRequester(dict):
         except requests.exceptions.RequestException:
             return False
 
-    def _get_tag_content(self, soup, og_tag):
-        """Get value of og tag
-        """
-        tag = soup.findAll(attrs={"property": og_tag})
-        if len(tag) > 0:
-            return tag[0].get('content')
-
     def _get_tags(self, soup, name, attrs):
         return soup.findAll(name, attrs=attrs)
+
+    def _extract_og(self, doc):
+        """Extract all open graph data into self
+        """
+        for og in self._og_meta_tags(doc):
+            if not og.has_attr(u'content'):
+                continue
+            name_parts = og['property'][3:].split(':')
+            name = name_parts[0]
+            prop_name = None
+            if len(name_parts) > 1:
+                prop_name = name_parts[1]
+            content = og['content']
+            if prop_name is None:
+                # don't overwrite existing properties
+                if name not in self:
+                    self[name] = content
+            else:
+                target = self.get(name, {})
+                if not isinstance(target, dict):
+                    target = {'url': target}
+                elif name in self:
+                    target = self[name]
+                    if not isinstance(target, dict):
+                        target = {
+                            'url': self[name]
+                        }
+                self[name] = target
+                # don't overwrite existing properties
+                if prop_name not in target:
+                    target[prop_name] = content
+        for name in self.FORCED_OBJECTS:
+            if name not in self:
+                continue
+            if not isinstance(self[name], dict):
+                self[name] = {
+                    'url': self[name]
+                }
+
+    REQUIRED_TAGS = [
+        ('title', 'title_fallback'),
+        ('description', 'description_fallback'),
+    ]
+
+    def _extract_missing(self, doc):
+        """Extract missing og tags from other places
+
+        """
+        for required, handler in self.REQUIRED_TAGS:
+            if required in self:
+                continue
+            getattr(self, handler)(doc)
+
+    def title_fallback(self, doc):
+        tag = doc.find('title')
+        if tag is not None and tag.text:
+            self['title'] = tag.text
+
+    def description_fallback(self, doc):
+        tag = doc.find('meta', {"name": "description"})
+        if tag is not None:
+            value = tag.get('content')
+            if value:
+                self['description'] = value

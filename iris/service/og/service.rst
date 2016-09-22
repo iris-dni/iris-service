@@ -327,6 +327,39 @@ url::
     >>> _ = WebLocation.get(locId).delete()
 
 
+Missing Property Fallback
+-------------------------
+
+There is a list of properties for which a fallback is implemented::
+
+    >>> from iris.service.og.og import OGDataRequester
+    >>> [r[0] for r in OGDataRequester.REQUIRED_TAGS]
+    ['title', 'description']
+
+    >>> test_body = '''
+    ... <head>
+    ...   <title>Fallback title</title>
+    ...   <meta name="description" content="Fallback title" />
+    ... </head>
+    ... <body></body>
+    ... </html>
+    ... '''
+
+    >>> with HTTMock(test_res, favicon, img_res):
+    ...     res = browser.post_json('/v1/og/check', {"url": test_url})
+    >>> print_json(res.body)
+    {
+      "data": {
+        "description": "Fallback title",
+        "title": "Fallback title",
+        "url": "http://iristest.com/cool-article"
+      },
+      "status": "ok"
+    }
+
+    >>> _ = WebLocation.get(locId).delete()
+
+
 Failures
 --------
 

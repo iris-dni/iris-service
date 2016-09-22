@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - og: fallback for title and description
  - og/check endpoint stores data in weblocation
  - add the petition creator as supporter when publishing a petition
  - added force_state event endpoint
