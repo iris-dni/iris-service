@@ -21,7 +21,7 @@ pyramid_swagger.pass_property_on_missing_spec = False
 pyramid_swagger.expand_missing_properties = False
 pyramid_swagger.dereference_served_schema = True
 
-api.app_url = http://{{ context['access']['url'] }}
+api.app_url = https://{{ context['access']['url'] }}
 
 auth.secret = {{ context['auth_secret'] }}
 auth.cookie_name = iris-tkt
