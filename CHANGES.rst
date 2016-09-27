@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added OPTION endpoint for og/check
  - petition.city_answer is now an object
    DEPLOY:
      run auto migration

@@ -19,6 +19,12 @@ class OGCheckServiceAPI(EndpointErrorMixin):
     def __init__(self, request):
         self.request = request
 
+    @rpcmethod_route(request_method='OPTIONS')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_event_generic(self, **kwargs):
+        return {}
+
     @rpcmethod_route(request_method='POST')
     @rpcmethod_view(http_cache=0,
                     permission=security.NO_PERMISSION_REQUIRED)

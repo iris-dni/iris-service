@@ -786,6 +786,26 @@ included in the response::
     >>> _ = WebLocation.get(locId).delete()
 
 
+OPTION request for CORS
+-----------------------
+
+CORS is supported for all endpoints::
+
+    >>> response = browser.options('/v1/og/check')
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {}
+    >>> print_json({n: v for n,v in response.headers.items() if n.startswith('Access')})
+    {
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+      "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
+      "Access-Control-Allow-Origin": "http://localhost",
+      "Access-Control-Max-Age": "86400"
+    }
+
+
 Security
 ========
 
