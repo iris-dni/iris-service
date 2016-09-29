@@ -102,25 +102,38 @@ With valid data::
     >>> u1
     <User [id=u'1n3gf', 'my_1@mail.com']>
     >>> u1.sso
-    [{'trusted': False, 'provider': '42'}]
+    [{'provider': '42'}]
     >>> u2 = get_or_create_sso_user({
     ...     'data': {
     ...         'email': 'my_2@mail.com',
+    ...         'email_trusted': True,
+    ...         'mobile': '555 123',
+    ...         'mobile_trusted': False,
     ...         'firstname': 'first',
     ...         'lastname': 'last',
-    ...         'trusted': True,
+    ...         'street': 'street 42',
+    ...         'zip': '42',
+    ...         'town': 'town 42',
     ...         'roles': ['admin', 'editor'],
     ...     },
     ...     'apikey': '42'
     ... })
     >>> u2
     <User [id=u'1Zbfk', 'my_2@mail.com']>
+    >>> u2.email_trusted
+    True
+    >>> u2.mobile
+    '555 123'
+    >>> u2.mobile_trusted
+    False
     >>> u2.firstname, u2.lastname
     ('first', 'last')
+    >>> u2.street, u2.zip, u2.town
+    ('street 42', '42', 'town 42')
     >>> u2.roles
     ['admin', 'editor']
     >>> u2.sso
-    [{'trusted': True, 'provider': '42'}]
+    [{'provider': '42'}]
 
     >>> from iris.service.content.user import User
     >>> User.get(u1.id)
@@ -153,6 +166,6 @@ Update an existing user::
     >>> u2.firstname, u2.lastname
     ('second', u'last')
     >>> u2.sso
-    [{u'trusted': False, u'provider': '42'}]
+    [{u'provider': u'42'}]
     >>> u2.roles
     [u'admin', u'editor']

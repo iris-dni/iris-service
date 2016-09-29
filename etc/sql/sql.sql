@@ -221,15 +221,21 @@ CREATE TABLE users (
     state STRING,
 
     email STRING,
+    email_trusted BOOLEAN,
+    mobile STRING,
+    mobile_trusted BOOLEAN,
+
     firstname STRING,
     lastname STRING,
+    street STRING,
+    zip STRING,
+    town STRING,
 
     roles ARRAY(STRING),
 
     sso ARRAY(
-        OBJECT(STRICT) AS (
-            provider STRING,
-            trusted BOOLEAN
+        OBJECT(IGNORED) AS (
+            provider STRING
         )
     ),
 

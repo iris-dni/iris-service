@@ -87,16 +87,14 @@ def get_or_create_sso_user(ssodata):
     except jsonschema.exceptions.ValidationError:
         return None
     user_properties = {
-        'email': data['email'],
-        'firstname': data.get('firstname'),
-        'lastname': data.get('lastname'),
-        'roles': data.get('roles'),
         'sso': {
-            'provider': ssodata['apikey'],
-            'trusted': data.get('trusted', False),
+            'provider': ssodata['apikey']
         },
     }
-    user_properties = {k: v for k, v in user_properties.iteritems() if v}
+    for name in SSO_USER_SCHEMA['properties'].keys():
+        value = data.get(name)
+        if value:
+            user_properties[name] = value
     return User.update_or_create_by_email(**user_properties)
 
 
@@ -107,14 +105,29 @@ SSO_USER_SCHEMA = {
         'email': {
             'type': 'string',
         },
+        'email_trusted': {
+            'type': 'boolean',
+        },
+        'mobile': {
+            'type': 'string',
+        },
+        'mobile_trusted': {
+            'type': 'boolean',
+        },
         'firstname': {
             'type': 'string',
         },
         'lastname': {
             'type': 'string',
         },
-        'trusted': {
-            'type': 'boolean',
+        'street': {
+            'type': 'string',
+        },
+        'zip': {
+            'type': 'string',
+        },
+        'town': {
+            'type': 'string',
         },
         'roles': {
             'type': 'array',

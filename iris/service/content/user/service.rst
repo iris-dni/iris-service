@@ -15,7 +15,7 @@ The browser must be logged in with an administrator::
 Get User List
 -------------
 
-Lists all cities::
+Lists all users::
 
     >>> response = browser.get('/v1/admin/users')
     >>> response.status
@@ -29,19 +29,24 @@ Lists all cities::
             "modified": "..."
           },
           "email": "tester@iris.com",
+          "email_trusted": false,
           "firstname": "",
           "id": ...,
           "lastname": "",
+          "mobile": "",
+          "mobile_trusted": false,
           "roles": [
             "admin"
           ],
           "sso": [
             {
-              "provider": "local",
-              "trusted": false
+              "provider": "local"
             }
           ],
-          "state": "active"
+          "state": "active",
+          "street": "",
+          "town": "",
+          "zip": ""
         }
       ],
       "total": 1
@@ -51,7 +56,7 @@ Lists all cities::
 Create a User
 -------------
 
-Create a new user::
+Create a new user. The state can not be set::
 
     >>> user = {
     ...     "data": {
@@ -74,7 +79,8 @@ Create a new user::
         ...
         "id": ...,
         ...
-        "state": "active"
+        "state": "active",
+        ...
       }
     }
 
@@ -88,7 +94,8 @@ POST on the user with the data which need to be changed::
 
     >>> user = {
     ...     "data": {
-    ...         "email": "hoschi+1@galoschi.at"
+    ...         "email": "hoschi+1@galoschi.at",
+    ...         "street": "street 42"
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/users/%s' % id,
@@ -105,6 +112,8 @@ POST on the user with the data which need to be changed::
         "email": "hoschi+1@galoschi.at",
         ...
         "id": ...,
+        ...
+        "street": "street 42",
         ...
       }
     }
@@ -282,12 +291,18 @@ Fulltext search::
             "modified": "2016-02-12T04:25:09"
           },
           "email": "christopher13@conway.com",
+          "email_trusted": false,
           "firstname": "Richard",
           "id": ...,
           "lastname": "Cooper",
+          "mobile": "",
+          "mobile_trusted": false,
           "roles": [],
           "sso": [],
-          "state": "active"
+          "state": "active",
+          "street": "",
+          "town": "",
+          "zip": ""
         }
       ],
       "total": 1
@@ -303,12 +318,18 @@ Fulltext search::
             "modified": "2016-02-12T04:25:09"
           },
           "email": "christopher13@conway.com",
+          "email_trusted": false,
           "firstname": "Richard",
           "id": ...,
           "lastname": "Cooper",
+          "mobile": "",
+          "mobile_trusted": false,
           "roles": [],
           "sso": [],
-          "state": "active"
+          "state": "active",
+          "street": "",
+          "town": "",
+          "zip": ""
         }
       ],
       "total": 1

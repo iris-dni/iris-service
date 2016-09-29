@@ -65,11 +65,20 @@ The data is validated with this json-schema::
         "email": {
           "type": "string"
         },
+        "email_trusted": {
+          "type": "boolean"
+        },
         "firstname": {
           "type": "string"
         },
         "lastname": {
           "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "mobile_trusted": {
+          "type": "boolean"
         },
         "roles": {
           "items": {
@@ -77,8 +86,14 @@ The data is validated with this json-schema::
           },
           "type": "array"
         },
-        "trusted": {
-          "type": "boolean"
+        "street": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
         }
       },
       "required": [

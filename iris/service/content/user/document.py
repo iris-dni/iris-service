@@ -9,7 +9,6 @@ from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 from iris.service.db.sequence import IID_SHORTED
 
 
-
 class User(Document):
 
     INDEX = 'users'
@@ -32,13 +31,23 @@ class User(Document):
         default=''
     )
 
-    firstname = Property(
+    email_trusted = Property(
+        default=False
+    )
+
+    mobile = Property(
         default=''
     )
 
-    lastname = Property(
-        default=''
+    mobile_trusted = Property(
+        default=False
     )
+
+    firstname = Property(default='')
+    lastname = Property(default='')
+    street = Property(default='')
+    zip = Property(default='')
+    town = Property(default='')
 
     roles = Property(
         default=lambda: [],
@@ -76,10 +85,10 @@ class User(Document):
         user = cls.get_by(cls.email, email)
         if user:
             user = user[0]
+            for k, v in kwargs.iteritems():
+                setattr(user, k, v)
         else:
-            user = User(email=email)
-        for k, v in kwargs.iteritems():
-            setattr(user, k, v)
+            user = User(email=email, **kwargs)
         user.store(refresh=True)
         return user
 

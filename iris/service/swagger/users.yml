@@ -47,13 +47,24 @@ definitions:
         properties:
             email:
                 type: string
+            email_trusted:
+                type: boolean
+                default: false
+            mobile:
+                type: string
+            mobile_trusted:
+                type: boolean
+                default: false
             firstname:
                 type: string
             lastname:
                 type: string
-            trusted:
-                type: boolean
-                default: false
+            street:
+                type: string
+            zip:
+                type: string
+            town:
+                type: string
             roles:
                 type: array
                 items:
@@ -82,6 +93,18 @@ definitions:
               x-nullable: true
               properties:
                 email:
+                    type: string
+                email_trusted:
+                    type: boolean
+                mobile:
+                    type: string
+                mobile_trusted:
+                    type: boolean
+                street:
+                    type: string
+                zip:
+                    type: string
+                town:
                     type: string
                 roles:
                     type: array

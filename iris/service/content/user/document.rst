@@ -23,6 +23,11 @@ The state of a user::
     >>> user.state
     'active'
 
+    >>> user.email = "me@home.com"
+    >>> user.email_trusted = True
+    >>> user.mobile = "555 123"
+    >>> user.mobile_trusted = False
+
 Store the user::
 
     >>> pp(user.store())
@@ -38,7 +43,7 @@ Get the user back from the database::
 
     >>> user = User.get("1n3gf")
     >>> user
-    <User [id=u'1n3gf', u'']>
+    <User [id=u'1n3gf', u'me@home.com']>
     >>> pp(user.dc)
     {
       "created": "...T...+...",
@@ -46,6 +51,14 @@ Get the user back from the database::
     }
     >>> user.state
     u'active'
+    >>> user.email
+    u'me@home.com'
+    >>> user.email_trusted
+    True
+    >>> user.mobile
+    u'555 123'
+    >>> user.mobile_trusted
+    False
 
 
 SSO Data
@@ -57,53 +70,51 @@ providers::
     >>> user.sso
     []
     >>> user.sso = [
-    ...     {'provider': '1', 'trusted': False},
-    ...     {'provider': '2', 'trusted': True},
+    ...     {'provider': '1', "more": "data"},
+    ...     {'provider': '2'},
     ... ]
     >>> pp(user.sso)
     [
       {
-        "provider": "1",
-        "trusted": false
+        "more": "data",
+        "provider": "1"
       },
       {
-        "provider": "2",
-        "trusted": true
+        "provider": "2"
       }
     ]
 
 To simplify the update of existing or adding new providers a dict can be
 assigned to the property::
 
-    >>> user.sso = {'provider': '1', 'trusted': True}
+    >>> user.sso = {'provider': '1', 'even': 'more data'}
     >>> pp(user.sso)
     [
       {
-        "provider": "1",
-        "trusted": true
+        "even": "more data",
+        "more": "data",
+        "provider": "1"
       },
       {
-        "provider": "2",
-        "trusted": true
+        "provider": "2"
       }
     ]
 
 Add a new provider::
 
-    >>> user.sso = {'provider': '3', 'trusted': False}
+    >>> user.sso = {'provider': '3'}
     >>> pp(user.sso)
     [
       {
-        "provider": "1",
-        "trusted": true
+        "even": "more data",
+        "more": "data",
+        "provider": "1"
       },
       {
-        "provider": "2",
-        "trusted": true
+        "provider": "2"
       },
       {
-        "provider": "3",
-        "trusted": false
+        "provider": "3"
       }
     ]
 

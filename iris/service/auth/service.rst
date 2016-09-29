@@ -141,6 +141,7 @@ The ssologin endpoint can use the token to login::
     {
       ...
       "email": "me@you.com",
+      ...
       "firstname": "hoschi",
       ...
         "roles": [
@@ -228,17 +229,22 @@ sso with apikey::
           "modified": "..."
         },
         "email": "me_check@you.com",
+        "email_trusted": false,
         "firstname": "me",
         "id": ...,
         "lastname": "",
+        "mobile": "",
+        "mobile_trusted": false,
         "roles": [],
         "sso": [
           {
-            "provider": "test_public_api_key",
-            "trusted": false
+            "provider": "test_public_api_key"
           }
         ],
-        "state": "active"
+        "state": "active",
+        "street": "",
+        "town": "",
+        "zip": ""
       },
       "status": "ok"
     }
@@ -268,17 +274,22 @@ in the ssologin endpoint::
           "modified": "..."
         },
         "email": "me_check@you.com",
+        "email_trusted": false,
         "firstname": "me",
         "id": ...,
         "lastname": "me last",
+        "mobile": "",
+        "mobile_trusted": false,
         "roles": [],
         "sso": [
           {
-            "provider": "test_public_api_key",
-            "trusted": false
+            "provider": "test_public_api_key"
           }
         ],
-        "state": "active"
+        "state": "active",
+        "street": "",
+        "town": "",
+        "zip": ""
       },
       "status": "ok"
     }
