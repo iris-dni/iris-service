@@ -138,10 +138,7 @@ import_cities:
         request (see body data description).
     operationId: import
     parameters:
-      - name: x-iris-api-key
-        in: header
-        type: string
-        required: true
+      - $ref: "parameters.yml#/parameters/api_key_header"
       - name: data
         in: body
         schema:

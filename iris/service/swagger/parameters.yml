@@ -38,3 +38,8 @@ parameters:
     maximum: 50
     default: 10
     description: The number of petitions in the result.
+  api_key_header:
+    name: x-iris-api-key
+    in: header
+    type: string
+    required: true

@@ -1,0 +1,76 @@
+confirmations:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - confirmations
+    summary: Create Confirmation
+    description: |
+        Create a new confirmation which can later be used via a token to
+        confirm it.
+
+        Returns a confirmation token which can then be used on the confirm
+        endpoint (/confirmations/{token}/confirm).
+    operationId: create
+    parameters:
+      - $ref: "parameters.yml#/parameters/api_key_header"
+      - name: data
+        in: body
+        schema:
+          $ref: 'confirmations.yml#/definitions/ConfirmationCreatePOSTBody'
+        required: true
+    responses:
+      '200':
+        description: Petition created
+        schema:
+          $ref: 'confirmations.yml#/definitions/ConfirmationCreateResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+
+
+confirmations_token_confirm:
+  options:
+    tags:
+      - Options
+    parameters:
+      - name: token
+        in: path
+        type: string
+        required: true
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - confirmation
+    operationId: confirm
+    summary: Confirm a token
+    description: |
+        Confirm a confirmation.
+
+        Returns the user data which was stored on the confirmation when it was
+        created. After a successful call the confirmation token is no longer
+        valid.
+    parameters:
+      - name: token
+        in: path
+        type: string
+        required: true
+      - $ref: "parameters.yml#/parameters/api_key_header"
+    responses:
+      '200':
+        description: Confirmation accepted
+        schema:
+          $ref: 'confirmations.yml#/definitions/ConfirmationResponseBody'
+      default:
+        description: Error Body
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

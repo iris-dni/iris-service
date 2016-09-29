@@ -30,6 +30,11 @@ class WebLocation():
     number_of_replicas = '0-all'
 
 
+class Confirmations():
+    shards = 5
+    number_of_replicas = '0-all'
+
+
 class SSOTokens():
     shards = 1
     number_of_replicas = '0-all'

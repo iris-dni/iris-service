@@ -43,6 +43,10 @@ def test_suite():
         create_crate_suite('content/city/service.rst'),
         create_crate_suite('content/city/import.rst'),
 
+        create_crate_suite('content/confirmation/document.rst'),
+        create_crate_suite('content/confirmation/handler.rst'),
+        create_crate_suite('content/confirmation/service.rst'),
+
         create_crate_suite('security/security.rst'),
 
         create_crate_suite('auth/service.rst'),

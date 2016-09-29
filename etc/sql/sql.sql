@@ -63,8 +63,13 @@ CREATE TABLE petitions (
             id STRING,
             firstname STRING,
             lastname STRING,
-            telephone STRING,
-            email STRING
+            street STRING,
+            zip STRING,
+            town STRING,
+            mobile STRING,
+            mobile_trusted BOOLEAN,
+            email STRING,
+            email_trusted BOOLEAN
         ),
         -- the city relation
         city STRING,
@@ -112,6 +117,7 @@ CREATE TABLE supporters (
     dc OBJECT(STRICT) AS (
         created TIMESTAMP
     ),
+    -- needs to be removed
     phone_user OBJECT(IGNORED) AS (
         telephone STRING,
         firstname STRING,
@@ -121,6 +127,18 @@ CREATE TABLE supporters (
     relations OBJECT(STRICT) AS (
         -- the user relation
         user STRING,
+        --user OBJECT(STRICT) AS (
+        --    id STRING,
+        --    firstname STRING,
+        --    lastname STRING,
+        --    street STRING,
+        --    zip STRING,
+        --    town STRING,
+        --    mobile STRING,
+        --    mobile_trusted BOOLEAN,
+        --    email STRING,
+        --    email_trusted BOOLEAN
+        --),
         -- the petition relation
         petition STRING
     )
@@ -227,6 +245,21 @@ CREATE TABLE users (
 )
 CLUSTERED INTO {{ Users.shards }} SHARDS
           WITH (number_of_replicas='{{ Users.number_of_replicas }}',
+                column_policy='strict');
+
+
+CREATE TABLE confirmations (
+    id STRING PRIMARY KEY,
+    dc OBJECT(STRICT) AS (
+        created TIMESTAMP,
+        expires TIMESTAMP
+    ),
+    handler STRING,
+    state STRING,
+    data OBJECT(IGNORED)
+)
+CLUSTERED INTO {{ Confirmations.shards }} SHARDS
+          WITH (number_of_replicas='{{ Confirmations.number_of_replicas }}',
                 column_policy='strict');
 
 

@@ -109,6 +109,11 @@ class BaseRESTService(EndpointErrorMixin):
             raise self.method_not_allowed(replacements={'message': e.message})
         return data
 
+    def prepare_request_data(self):
+        data = self.request.swagger_data
+        if 'x-iris-api-key' in data:
+            del data['x-iris-api-key']
+
 
 class RESTService(BaseRESTService):
     """A generic REST implementation
@@ -126,6 +131,7 @@ class RESTService(BaseRESTService):
     @rpcmethod_view(http_cache=0)
     @swagger_reduce_response
     def search(self, **kwargs):
+        self.prepare_request_data()
         return self.search_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
@@ -141,12 +147,14 @@ class RESTService(BaseRESTService):
     @rpcmethod_view(http_cache=0)
     @swagger_reduce_response
     def get(self, **kwargs):
+        self.prepare_request_data()
         return self.get_content(self.MAPPER_NAME,
                                 **self.request.swagger_data)
 
     @rpcmethod_route(request_method='POST')
     @swagger_reduce_response
     def create(self, **kwargs):
+        self.prepare_request_data()
         return self.create_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
@@ -154,6 +162,7 @@ class RESTService(BaseRESTService):
                      route_suffix='/{contentId}')
     @swagger_reduce_response
     def update(self, **kwargs):
+        self.prepare_request_data()
         return self.update_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
@@ -161,6 +170,7 @@ class RESTService(BaseRESTService):
                      route_suffix='/{contentId}')
     @swagger_reduce_response
     def delete(self, **kwargs):
+        self.prepare_request_data()
         return self.delete_content(self.MAPPER_NAME,
                                    **self.request.swagger_data)
 
