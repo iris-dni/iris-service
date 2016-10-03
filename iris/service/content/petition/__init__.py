@@ -1,4 +1,5 @@
 from . import service  # noqa
+from . import confirmation  # noqa
 from .document import Petition  # noqa
 
 

@@ -35,6 +35,7 @@ def test_suite():
         create_crate_suite('content/petition/support.rst'),
         create_crate_suite('content/petition/sm.rst'),
         create_crate_suite('content/petition/trusted.rst'),
+        create_crate_suite('content/petition/confirmation.rst'),
         create_crate_doc_suite('petitions.rst'),
 
         create_crate_suite('content/user/document.rst'),

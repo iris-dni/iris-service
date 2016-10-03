@@ -3,7 +3,6 @@ Petition State Machine
 ======================
 
     >>> request = get_test_request()
-    >>> request.to_api = lambda petition: {}
     >>> user = creators.user(email="me@iris.com")
     >>> request.user = user
 

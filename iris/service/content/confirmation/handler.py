@@ -35,14 +35,3 @@ class Handler(rest.DocumentRESTMapperMixin):
             request,
         )
         return handler.create({"data": data})
-
-
-class SMSHandler(Handler, rest.RESTMapper):
-
-    HANDLER_NAME = 'sms'
-    NAME = 'confirmations.' + HANDLER_NAME
-
-    def _create(self, confirmation):
-        """Send an SMS with the confirmation id
-        """
-        pass

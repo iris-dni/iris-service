@@ -44,10 +44,6 @@ First we implement a dummy document for simpler testing::
     ...         return self.doc
 
     >>> request = get_test_request()
-    >>> from iris.service.rest.service import to_api
-    >>> from functools import partial
-    >>> request.to_api = partial(to_api, request)
-    >>> request.swagger_data = {}
 
 Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
 `Document` implementation::

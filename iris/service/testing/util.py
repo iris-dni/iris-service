@@ -8,6 +8,8 @@ from pyramid.testing import DummyRequest
 
 from webtest.response import TestResponse
 
+from iris.service.rest.service import to_api
+
 from . import security
 
 
@@ -79,6 +81,8 @@ def get_test_request():
     request = DummyRequest()
     request.remote_addr = '127.0.0.1'
     request._LOCALE_ = 'en'
+    request.to_api = functools.partial(to_api, request)
+    request.swagger_data = {}
     return request
 
 
