@@ -113,7 +113,7 @@ The petition owner is a relation to a User document::
 
     >>> petition = Petition()
     >>> petition.owner
-    <RelationResolver User[{}]>
+    <RelationResolver User[None]>
     >>> petition.owner() is None
     True
 
@@ -122,11 +122,54 @@ The petition owner is a relation to a User document::
 
     >>> petition.owner = user
     >>> petition.owner
-    <RelationResolver User[{'id': u'1Zbfk'}]>
+    <RelationResolver User[{'town': '', 'zip': '', 'firstname': '', 'mobile_trusted': False, 'lastname': '', 'id': u'1Zbfk', 'mobile': '', 'street': '', 'email_trusted': False, 'email': ''}]>
     >>> petition.owner()
     <User [id=u'1Zbfk', u'42@email.com']>
-    >>> petition._relations
-    {'owner': {'id': u'1Zbfk'}, 'images': [], 'links': [], 'mentions': []}
+    >>> print_json(petition._relations)
+    {
+      "images": [],
+      "links": [],
+      "mentions": [],
+      "owner": {
+        "email": "",
+        "email_trusted": false,
+        "firstname": "",
+        "id": "...",
+        "lastname": "",
+        "mobile": "",
+        "mobile_trusted": false,
+        "street": "",
+        "town": "",
+        "zip": ""
+      }
+    }
+
+The ownber relation stores additional data::
+
+    >>> petition.owner = {"street": "21 jump street"}
+    >>> print_json(petition.owner.relation_dict)
+    {
+      "class": "User",
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "21 jump street",
+      "town": "",
+      "zip": ""
+    }
+    >>> petition.owner = {"town": "aarau"}
+    >>> print_json(petition.owner.relation_dict)
+    {
+      "class": "User",
+      ...
+      "street": "21 jump street",
+      "town": "aarau",
+      "zip": ""
+    }
 
 
 Petition City
@@ -153,7 +196,7 @@ The city of a petition is a relation to a City document::
     >>> petition.city()
     <City [id=u'test:dahoam', u'dahoam']>
     >>> petition._relations
-    {'owner': {}, 'images': [], 'city': 'test:dahoam', 'links': [], 'mentions': []}
+    {'owner': None, 'images': [], 'city': 'test:dahoam', 'links': [], 'mentions': []}
 
 The required supporters are update to the treshold of the city::
 
@@ -192,6 +235,19 @@ on the fly::
     >>> [v() for v in petition.links]
     [<WebLocation u'http://www.iris.com'>,
      <WebLocation u'http://www.iris.com/petitions'>]
+    >>> print_json([v.relation_dict for v in petition.links])
+    [
+      {
+        "class": "WebLocation",
+        "id": "cd126eaf1870967a2f3d724ee935b379",
+        "state": "visible"
+      },
+      {
+        "class": "WebLocation",
+        "id": "d965c5b9ba7363e74fb074e91af918ce",
+        "state": "visible"
+      }
+    ]
 
 
 Petition Mentions
@@ -209,6 +265,14 @@ The web locations can be assigned via a url::
     >>> petition.mentions = [{"url": "http://www.iris.com"}]
     >>> [v() for v in petition.mentions]
     [<WebLocation u'http://www.iris.com'>]
+    >>> print_json([v.relation_dict for v in petition.mentions])
+    [
+      {
+        "class": "WebLocation",
+        "id": "cd126eaf1870967a2f3d724ee935b379",
+        "state": "visible"
+      }
+    ]
 
 
 Petition Support

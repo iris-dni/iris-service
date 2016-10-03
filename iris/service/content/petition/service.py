@@ -14,6 +14,8 @@ from iris.service.errors import Errors
 from iris.service.rest.swagger import swagger_reduce_response
 from iris.service.rest.extender import APIExtender
 
+from iris.service.content.user import SessionUser
+
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
 
@@ -123,22 +125,66 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
     def statemachine(self):
         return fromYAML(raw=True)
 
-    def create(self, data, resolve=[], extend=[]):
-        """Create a petition
-
-        The owner of the petition is set based on the current user from the
-        request. This can also be a session user.
-        """
-        user = self.request.session_user
-        data['data']['owner'] = {"id": user.id}
-        return super(PetitionsRESTMapper, self).create(data, resolve, extend)
-
     def get_by_token(self, token, resolve=[], extend=[]):
         doc = None
         found = self.DOC_CLASS.get_by(Petition.response_token, token)
         if found:
             doc = found[0]
         return self.to_api(doc, resolve, extend)
+
+    def _prepare_data(self, doc, data):
+        """Prepare API POST data for a petition
+
+        The owner of the petition is set based on the current user from the
+        request. This can also be a session user. An already set owner will be
+        changed.
+        """
+        data_owner = data.get('owner', {})
+        if doc is None:
+            # New document, set the owner id to the currently logged in user
+            owner = data.setdefault('owner', {})
+            owner['id'] = self.request.session_user.id
+        elif (data_owner.get('id') is None
+              and (doc.owner.id is None
+                   or SessionUser.is_session_user_id(doc.owner.id)
+                  )
+             ):
+            # Existing document and no owner or owner is a session user.
+            # Force the owner to the currently logged in user.
+            doc.owner = self.request.session_user.id
+        # manage the trusted flags if this is a change of an existing petition
+        if doc is not None:
+            # Check if the trusted flags on the relations are different
+            # and reset the trusted flag is so.
+            owner_rel = doc.owner.relation_dict
+            if owner_rel.get('mobile') != data_owner.get('mobile'):
+                data_owner['mobile_trusted'] = False
+            if owner_rel.get('email') != data_owner.get('email'):
+                data_owner['email_trusted'] = False
+
+    def _prepare_document(self, doc, data, is_create):
+        """Prepare the document before it is stored
+
+        Manage the trusted flags.
+        """
+        owner = doc.owner()
+        if owner is None:
+            # No owner or a session owner, flags are already set in
+            # _prepare_data.
+            return
+        owner_rel = doc.owner.relation_dict
+        if (owner_rel['mobile'] == owner.mobile
+            and owner.mobile_trusted
+           ):
+            # The owners mobile is trusted so we can also trust the mobile
+            # on the relation.
+            doc.owner = {'mobile_trusted': True}
+        if (owner_rel['email'] == owner.email
+            and owner.email_trusted
+           ):
+            # The owners email is trusted so we can also trust the email
+            # on the relation.
+            doc.owner = {'email_trusted': True}
 
 
 @RestService("petition_public_api")

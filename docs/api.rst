@@ -49,7 +49,15 @@ Relations are always represented as an object.
               ...
               "owner": {
                 "class": "User",
-                "id": ...
+                "email": "",
+                "email_trusted": false,
+                "firstname": "",
+                "id": "...",
+                "lastname": "",
+                "mobile": "",
+                "mobile_trusted": false,
+                "street": "",
+                "zip": ""
               },
               ...
             },
@@ -83,20 +91,28 @@ Relations are always represented as an object.
                 "id": ...
               },
               ...
-              "owner": {
-                "class": "User",
-                "data": {
-                  "dc": {
-                    "created": "...",
-                    "modified": "..."
-                  },
-                  "firstname": "Gabriel",
-                  "id": ...,
-                  "lastname": "Taylor",
-                  "state": "active"
-                },
-                "id": ...
+          "owner": {
+            "class": "User",
+            "data": {
+              "dc": {
+                "created": "...",
+                "modified": "..."
               },
+              "firstname": "Gabriel",
+              "id": "...",
+              "lastname": "Taylor",
+              "state": "active"
+            },
+            "email": "",
+            "email_trusted": false,
+            "firstname": "",
+            "id": "...",
+            "lastname": "",
+            "mobile": "",
+            "mobile_trusted": false,
+            "street": "",
+            "zip": ""
+          },
               ...
             },
             ...

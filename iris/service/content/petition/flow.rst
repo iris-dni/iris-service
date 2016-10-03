@@ -30,7 +30,15 @@ The owner is a session owner::
     >>> print_json(response.json['data']['owner'])
     {
       "class": "User",
-      "id": "iris-session:..."
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "iris-session:...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "",
+      "zip": ""
     }
 
 The state is draft::
@@ -61,7 +69,15 @@ With an authenticated session the real user is assigned to the petition::
     >>> print_json(response.json['data']['owner'])
     {
       "class": "User",
-      "id": "1Zbfk"
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "",
+      "zip": ""
     }
 
 

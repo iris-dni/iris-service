@@ -49,7 +49,15 @@ The owner is a session user because the browser was not logged in::
     >>> print_json(response.json['data']['owner'])
     {
       "class": "User",
-      "id": "iris-session:..."
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "iris-session:...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "",
+      "zip": ""
     }
 
     >>> id = response.json['data']['id']
@@ -77,6 +85,7 @@ Update a petition::
     ...     "data": {
     ...         "title": "updated title",
     ...         "city": {"id": city.id},
+    ...         "owner": {"street": "21 jump street"},
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
@@ -85,6 +94,20 @@ Update a petition::
     {
       "class": "City",
       "id": "petition_events:1111"
+    }
+
+    >>> print_json(response.json['data']['owner'])
+    {
+      "class": "User",
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "iris-session:...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "21 jump street",
+      "zip": ""
     }
 
 The required amount of supporters is updated to the treshold of the city::
@@ -113,6 +136,58 @@ Resetting the city::
       "class": "City",
       "id": null
     }
+
+The owner id can be changed from a session user to a "real" user by logging in
+and updating the petition::
+
+    >>> _ = ssologin(browser,
+    ...              {
+    ...                 'email': 'writer1@iris.com',
+    ...                 'firstname': 'writer1'
+    ...              }
+    ...             )
+    >>> petition = {
+    ...     "data": {
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s?resolve=owner' % id, petition)
+    >>> print_json(response.json['data']['owner'])
+    {
+      "class": "User",
+      "data": {
+        ...
+        "firstname": "writer1",
+        ...
+      },
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "1Zbfk",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "21 jump street",
+      "zip": ""
+    }
+
+This is only possible if the previous owner was a session user::
+
+    >>> _ = ssologin(browser,
+    ...              {
+    ...                 'email': 'writer2@iris.com',
+    ...                 'firstname': 'writer2'
+    ...              }
+    ...             )
+    >>> response = browser.post_json('/v1/petitions/%s?resolve=owner' % id, petition)
+    >>> print_json(response.json['data']['owner'])
+    {
+      "class": "User",
+      "data": {
+        ...
+        "firstname": "writer1",
+        ...
+      },
+    ...
 
 
 Get Petition
@@ -150,8 +225,25 @@ Resolve the session owner::
     >>> print_json(response.json['data']['owner'])
     {
       "class": "User",
-      "data": null,
-      "id": "iris-session:..."
+      "data": {
+        "dc": {
+          "created": "...",
+          "modified": "..."
+        },
+        "firstname": "writer1",
+        "id": "...",
+        "lastname": "",
+        "state": "active"
+      },
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "21 jump street",
+      "zip": ""
     }
 
 
@@ -281,6 +373,9 @@ POST on the petition with the data which need to be changed::
     >>> petition = {
     ...     "data": {
     ...         "title": "changed Admin petition",
+    ...         "owner": {
+    ...             "street": "21 jump street"
+    ...         },
     ...     }
     ... }
     >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
@@ -306,7 +401,15 @@ POST on the petition with the data which need to be changed::
         ...
         "owner": {
           "class": "User",
-          "id": "1Zbfk"
+          "email": "",
+          "email_trusted": false,
+          "firstname": "",
+          "id": "...",
+          "lastname": "",
+          "mobile": "",
+          "mobile_trusted": false,
+          "street": "21 jump street",
+          "zip": ""
         },
         ...
         "title": "changed Admin petition",
@@ -558,7 +661,15 @@ Relations can be resolved::
               "firstname": "...",
               ...
             },
-            "id": ...
+            "email": "",
+            "email_trusted": false,
+            "firstname": "",
+            "id": "...",
+            "lastname": "",
+            "mobile": "",
+            "mobile_trusted": false,
+            "street": "",
+            "zip": ""
           },
     ...
 
@@ -576,7 +687,15 @@ Unresolved::
           ...
           "owner": {
             "class": "User",
-            "id": ...
+            "email": "",
+            "email_trusted": false,
+            "firstname": "",
+            "id": "...",
+            "lastname": "",
+            "mobile": "",
+            "mobile_trusted": false,
+            "street": "",
+            "zip": ""
           },
     ...
 
@@ -830,15 +949,15 @@ The admin can request supporters::
           "dc": {
             "created": "..."
           },
-          "id": "10XQv-t:+29(2)4975983164",
+          "id": "...",
           "petition": {
             "class": "Petition",
-            "id": "10XQv"
+            "id": "..."
           },
           "phone_user": {
-            "firstname": "Laura",
-            "lastname": "King",
-            "telephone": "+29(2)4975983164"
+            "firstname": "...",
+            "lastname": "...",
+            "telephone": "..."
           },
           "user": {
             "class": "User",
@@ -847,7 +966,7 @@ The admin can request supporters::
         },
         ...
       ],
-      "total": 180
+      "total": 183
     }
 
     >>> response = browser.get('/v1/admin/supporters?resolve=petition,user&sort=id')
@@ -858,7 +977,7 @@ The admin can request supporters::
           "dc": {
             "created": "..."
           },
-          "id": "10XQv-t:+29(2)4975983164",
+          "id": "...",
           "petition": {
             "class": "Petition",
             "data": {

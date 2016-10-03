@@ -129,10 +129,15 @@ class Petition(Document):
         '_relations.owner',
         'User.id',
         relationProperties={
+            'email': '',
+            'email_trusted': False,
+            'mobile': '',
+            'mobile_trusted': False,
             'firstname': '',
             'lastname': '',
-            'telephone': '',
-            'email': '',
+            'street': '',
+            'zip': '',
+            'town': '',
         },
         doc="""
           The owner of the petition.
@@ -146,7 +151,7 @@ class Petition(Document):
     _relations = Property(
         name="relations",
         default=lambda: {
-            "owner": {},
+            "owner": None,
             "images": [],
             "links": [],
             "mentions": []

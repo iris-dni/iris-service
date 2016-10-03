@@ -21,7 +21,10 @@ class DocumentRESTMapperMixin(object):
         return self.to_api(self.DOC_CLASS.get(contentId), resolve, extend)
 
     def create(self, data, resolve=[], extend=[]):
-        doc = self.DOC_CLASS(**data['data'])
+        doc_data = data['data']
+        self._prepare_data(None, doc_data)
+        doc = self.DOC_CLASS(**doc_data)
+        self._prepare_document(doc, doc_data, True)
         doc.store(refresh=True)
         return self.to_api(doc, resolve, extend)
 
@@ -29,8 +32,11 @@ class DocumentRESTMapperMixin(object):
         doc = self.DOC_CLASS.get(contentId)
         if not doc:
             return None
-        for name, value in data['data'].items():
+        doc_data = data['data']
+        self._prepare_data(doc, doc_data)
+        for name, value in doc_data.items():
             setattr(doc, name, value)
+        self._prepare_document(doc, doc_data, False)
         doc.store(refresh=True)
         return self.to_api(doc, resolve, extend)
 
@@ -50,6 +56,24 @@ class DocumentRESTMapperMixin(object):
         result = APITransformer(doc, resolve=resolve).to_api()
         extender.extend(result)
         return result
+
+    def _prepare_data(self, doc, data):
+        """Prepare the received data before assignemnt to doc
+
+        This is called from create and update to give subclasses the chance to
+        manipulate the received data before it is assigned to the document.
+        doc is None if this is a create request otherwise is it the document
+        before it is manipulated.
+        """
+        pass
+
+    def _prepare_document(self, doc, data, is_create):
+        """Prepare the received data before assignemnt to doc
+
+        This is called from create and update to give subclasses the chance to
+        manipulate the document just before it is stored.
+        """
+        pass
 
 
 class SearchableDocumentRESTMapperMixin(object):

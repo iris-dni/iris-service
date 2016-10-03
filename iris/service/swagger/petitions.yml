@@ -239,6 +239,65 @@ definitions:
                 type: object
                 readOnly: true
 
+    OwnerRelationProperties:
+      type: object
+      properties:
+        email:
+          type: string
+        email_trusted:
+          type: boolean
+          readOnly: true
+        mobile:
+          type: string
+        mobile_trusted:
+          type: boolean
+          readOnly: true
+        firstname:
+          type: string
+        lastname:
+          type: string
+        street:
+          type: string
+        zip:
+          type: string
+
+    OwnerRelationPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          x-nullable: true
+        class:
+          type: string
+          readOnly: true
+        data:
+          $ref: 'users.yml#/definitions/UserPublic'
+
+    OwnerRelationPublicWrite:
+      type: object
+      properties:
+        owner:
+          type: object
+          allOf:
+            - $ref: '#definitions/OwnerRelationProperties'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  x-nullable: true
+
+    OwnerRelationAdmin:
+      type: object
+      properties:
+        id:
+          type: string
+          x-nullable: true
+        class:
+          type: string
+          readOnly: true
+        data:
+          $ref: 'users.yml#/definitions/UserAdmin'
+
     PropertiesForPublic:
         type: object
         x-nullable: true
@@ -246,15 +305,9 @@ definitions:
             owner:
                 type: object
                 readOnly: true
-                properties:
-                    id:
-                        type: string
-                        x-nullable: true
-                    class:
-                        type: string
-                        readOnly: true
-                    data:
-                        $ref: 'users.yml#/definitions/UserPublic'
+                allOf:
+                  - $ref: '#definitions/OwnerRelationPublic'
+                  - $ref: '#definitions/OwnerRelationProperties'
 
     PropertiesForAdmin:
         type: object
@@ -262,14 +315,9 @@ definitions:
         properties:
             owner:
                 type: object
-                properties:
-                    id:
-                        type: string
-                        x-nullable: true
-                    class:
-                        type: string
-                    data:
-                        $ref: 'users.yml#/definitions/UserAdmin'
+                allOf:
+                  - $ref: '#definitions/OwnerRelationAdmin'
+                  - $ref: '#definitions/OwnerRelationProperties'
             response_token:
                 type: string
                 x-nullable: true
@@ -293,7 +341,7 @@ definitions:
             - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
             - $ref: '#/definitions/WriteProperties'
-            - $ref: '#/definitions/PropertiesForPublic'
+            - $ref: '#/definitions/OwnerRelationPublicWrite'
 
     AdminPetition:
         type: object
