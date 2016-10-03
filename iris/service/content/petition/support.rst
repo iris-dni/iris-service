@@ -15,11 +15,18 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Support Petition"
+    ...         "title": "Support Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Set the supporter.required count::
 

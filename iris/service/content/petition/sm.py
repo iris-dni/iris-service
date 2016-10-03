@@ -19,6 +19,27 @@ NestedState.separator = '.'
 APPROVAL_TIME = 10
 
 
+class ConditionError(Exception):
+
+    def __init__(self, reasons, data=None):
+        self.reasons = reasons
+        self.data = data
+        super(ConditionError, self).__init__("400")
+
+
+def condition_error_request_handler(exc, request):
+    """Handles response for ConditionError
+
+    Renders a proper json response
+    """
+    request.response.status = 200
+    return {
+        "data": exc.data,
+        "reasons": exc.reasons,
+        "status": "error"
+    }
+
+
 class PetitionStateMachine(object):
 
     def __init__(self, petition, request):
@@ -70,13 +91,38 @@ class PetitionStateMachine(object):
     def reset_timer(self, **kwargs):
         self.petition.state.timer = int(time.time())
 
+    def check_publish(self, **kwargs):
+        """Check if publishing is possible
+
+        This is called on the publish event in state draft.
+        Here we need to check if the publishing is allowed and provide an
+        exception for the view code to render an appropriate response.
+        """
+        missing = []
+        owner_rel = self.petition.owner.relation_dict
+        for required in ['mobile', 'email']:
+            if not owner_rel.get(required):
+                missing.append(required + '_missing')
+        if missing:
+            data = self.request.to_api(self.petition)
+            raise ConditionError(missing, data)
+        untrusted = []
+        if not owner_rel.get('email_trusted'):
+            untrusted.append('email_untrusted')
+        if not owner_rel.get('mobile_trusted'):
+            untrusted.append('mobile_untrusted')
+        if untrusted:
+            data = self.request.to_api(self.petition)
+            raise ConditionError(untrusted, data)
+
     def support_petition(self, **kwargs):
         if self.request is None:
             return
         user = self.request.user
         if user is not None:
             user = user.id
-        self.petition.addSupporter(user=user,
+        self.petition.addSupporter(request=self.request,
+                                   user=user,
                                    **kwargs.get('data', {}))
 
     def set_response_token(self, **kwargs):
@@ -190,3 +236,9 @@ def includeme(config):
     global APPROVAL_TIME
     settings = config.get_settings()
     APPROVAL_TIME = int(settings['iris.approval.days']) * 86400
+    config.add_view(
+        condition_error_request_handler,
+        renderer='json',
+        context=ConditionError,
+        http_cache=0,
+    )

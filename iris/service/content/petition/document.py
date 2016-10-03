@@ -212,7 +212,7 @@ class Petition(Document):
             self.supporters['required'] = required
         return super(Petition, self).store(*args, **kwargs)
 
-    def addSupporter(self, user=None, phone_user=None):
+    def addSupporter(self, request, user=None, phone_user=None):
         """Add a supporter to the petition
 
         Update the supporters amount.
@@ -236,7 +236,7 @@ class Petition(Document):
             )
             self.supporters['amount'] += 1
             try:
-                self.sm.check()
+                self.sm(request).check()
             except transitions.MachineError:
                 pass
             supporter.store(refresh=True)
@@ -255,9 +255,8 @@ class Petition(Document):
             self.store(refresh=True)
             supporter.delete(refresh=True)
 
-    @property
-    def sm(self):
-        return PetitionStateMachine(self, None)
+    def sm(self, request):
+        return PetitionStateMachine(self, request)
 
     def __repr__(self):
         return "<%s [id=%r]>" % (self.__class__.__name__, self.id)

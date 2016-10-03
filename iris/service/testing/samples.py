@@ -103,14 +103,14 @@ def petitions(amount, seed='0'):
             for _ in range(0, random.randint(0, 20)):
                 if bool(random.getrandbits(1)):
                     user = random.choice(users)
-                    petition.addSupporter(user=user.id)
+                    petition.addSupporter(request=None, user=user.id)
                 else:
                     phone_user = {
                         "telephone": faker.phone_number(),
                         "firstname": faker.first_name(),
                         "lastname": faker.last_name(),
                     }
-                    petition.addSupporter(phone_user=phone_user)
+                    petition.addSupporter(request=None, phone_user=phone_user)
     Petition.refresh()
 
 

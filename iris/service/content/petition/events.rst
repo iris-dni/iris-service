@@ -29,7 +29,11 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Create And Publish Petition"
+    ...         "title": "Create And Publish Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -38,6 +42,10 @@ Create a new petition::
     {u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Publish the petition::
 
@@ -57,7 +65,11 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Create And Publish Petition"
+    ...         "title": "Create And Publish Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -66,6 +78,10 @@ Create a new petition::
     {u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Publish the petition::
 
@@ -105,11 +121,19 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Create And Publish Petition"
+    ...         "title": "Create And Publish Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Publish the petition::
 
@@ -135,7 +159,11 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Create And Publish Petition"
+    ...         "title": "Create And Publish Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -144,6 +172,10 @@ Create a new petition::
     {u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Set supporters data::
 
@@ -249,7 +281,11 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Create And Publish Petition"
+    ...         "title": "Create And Publish Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -258,6 +294,10 @@ Create a new petition::
     {u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 Set supporters data::
 
@@ -364,11 +404,19 @@ Event response can also reolve::
     >>> petition = {
     ...     "data": {
     ...         "title": "Resolve Petition",
-    ...         "city": {"id": city.id}
+    ...         "city": {"id": city.id},
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish?resolve=city' % id)
     >>> print_json(response)
@@ -396,10 +444,18 @@ Event response data can also be extended::
     >>> petition = {
     ...     "data": {
     ...         "title": "Extend Petition",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish?extend=supporting' % id)
     >>> print_json(response)

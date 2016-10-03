@@ -1,6 +1,4 @@
 from . import queries
-from .extender import APIExtender
-from .transform import APITransformer
 
 
 class DocumentRESTMapperMixin(object):
@@ -50,12 +48,7 @@ class DocumentRESTMapperMixin(object):
     def to_api(self, doc, resolve=[], extend=[]):
         """Provide the document as a dict to be able to JSON serialize it
         """
-        if doc is None:
-            return None
-        extender = APIExtender(self.request, doc, extend)
-        result = APITransformer(doc, resolve=resolve).to_api()
-        extender.extend(result)
-        return result
+        return self.request.to_api(doc, resolve, extend)
 
     def _prepare_data(self, doc, data):
         """Prepare the received data before assignemnt to doc

@@ -144,7 +144,7 @@ The petition owner is a relation to a User document::
       }
     }
 
-The ownber relation stores additional data::
+The owner relation stores additional data::
 
     >>> petition.owner = {"street": "21 jump street"}
     >>> print_json(petition.owner.relation_dict)
@@ -280,6 +280,7 @@ Petition Support
 
 Users can support petitions::
 
+    >>> request = get_test_request()
     >>> petition = Petition()
     >>> _ = petition.store(refresh=True)
     >>> petition.supporters['required'] = 4
@@ -291,7 +292,8 @@ Support using a telephone number::
     ...     "firstname": "first",
     ...     "lastname": "last",
     ... }
-    >>> supporter = petition.addSupporter(phone_user=phone_user)
+    >>> supporter = petition.addSupporter(request=request,
+    ...                                   phone_user=phone_user)
     >>> supporter
     <Supporter [id=u'...-t:0555 42']>
     >>> supporter.user() is None
@@ -315,7 +317,7 @@ Support using a telephone number::
 
 Support using an existing user::
 
-    >>> supporter = petition.addSupporter(user=42)
+    >>> supporter = petition.addSupporter(request=request, user=42)
     >>> supporter
     <Supporter [id=u'...-u:42']>
     >>> supporter.user
@@ -333,7 +335,7 @@ Support using an existing user::
 
 Duplicate supporters are not counted::
 
-    >>> supporter = petition.addSupporter(user=42)
+    >>> supporter = petition.addSupporter(request=request, user=42)
     >>> supporter
     <Supporter [id=u'...-u:42']>
     >>> petition = Petition.get(petition.id)

@@ -2,25 +2,39 @@
 Petition State Machine
 ======================
 
+    >>> request = get_test_request()
+    >>> request.to_api = lambda petition: {}
+    >>> user = creators.user(email="me@iris.com")
+    >>> request.user = user
+
 The state machine needs an instance of a petition::
 
     >>> from iris.service.content.petition import Petition
     >>> petition = Petition()
 
     >>> from iris.service.content.petition.sm import PetitionStateMachine
-    >>> sm = PetitionStateMachine(petition, None)
+    >>> sm = PetitionStateMachine(petition, request)
     >>> sm.state
     'draft'
     >>> petition.state
     <StateContainer draft>
 
-The petition can also provide the state machine::
+Publish the petition::
 
-    >>> sm = petition.sm
+    >>> _ = sm.publish()
+    Traceback (most recent call last):
+    ConditionError: 400
     >>> sm.state
     'draft'
 
-Publish the petition::
+The petition must be in a publishable state::
+
+    >>> petition.owner = {
+    ...     "email": "email@iris.com",
+    ...     "email_trusted": True,
+    ...     "mobile": "555 1234",
+    ...     "mobile_trusted": True
+    ... }
 
     >>> _ = sm.publish()
     >>> sm.state

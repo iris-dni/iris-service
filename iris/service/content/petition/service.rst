@@ -711,9 +711,10 @@ currently logged in user is supporting the petition.
 
 Create a petition::
 
+    >>> request = get_test_request()
     >>> petition = creators.petition(title="supported")
     >>> user = creators.user(email="me@home.com")
-    >>> supporter = petition.addSupporter(user=user)
+    >>> supporter = petition.addSupporter(request=request, user=user)
     >>> response = browser.get('/v1/petitions/%s' % petition.id)
     >>> 'extensions' in response.json['data']
     False

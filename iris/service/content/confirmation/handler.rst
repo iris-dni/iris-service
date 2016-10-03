@@ -36,6 +36,10 @@ handler and provide an appropriate interface for the API::
 The handler can be requested using the RESTMapper::
 
     >>> request = get_test_request()
+    >>> from iris.service.rest.service import to_api
+    >>> from functools import partial
+    >>> request.to_api = partial(to_api, request)
+    >>> request.swagger_data = {}
     >>> handler = rest.RESTMapper.getMapperImplementation(
     ...     'confirmations.test',
     ...     request,

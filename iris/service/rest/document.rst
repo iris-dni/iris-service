@@ -43,6 +43,12 @@ First we implement a dummy document for simpler testing::
     ...     def get_source(self):
     ...         return self.doc
 
+    >>> request = get_test_request()
+    >>> from iris.service.rest.service import to_api
+    >>> from functools import partial
+    >>> request.to_api = partial(to_api, request)
+    >>> request.swagger_data = {}
+
 Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
 `Document` implementation::
 
@@ -50,7 +56,7 @@ Now with the `DocumentRESTMapperMixin` we can implement a mapper for a
     >>> class TestMapper(DocumentRESTMapperMixin):
     ...
     ...     DOC_CLASS = DummyDocument
-    ...     request = get_test_request()
+    ...     request = request
 
     >>> mapper = TestMapper()
     >>> mapper.get('1')
@@ -83,7 +89,7 @@ A searchable document mapper::
     ...                           ):
     ...
     ...     DOC_CLASS = DummyDocument
-    ...     request = get_test_request()
+    ...     request = request
 
     >>> mapper = SearchableTestMapper()
     >>> mapper.search(limit='5')

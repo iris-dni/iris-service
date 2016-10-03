@@ -64,5 +64,20 @@ definitions:
         properties:
             data:
                 $ref: 'petitions.yml#/definitions/Petition'
+            reasons:
+              description: |
+                Provides an array of string containing the reasons of an error.
+                Only provided if status == "error".
+
+                mobile_required: an SMS is sent to the mobile number with a
+                                 verification code.
+              type: array
+              items:
+                type: string
+                enum:
+                  - email_required
+                  - mobile_required
+                  - email_untrusted
+                  - mobile_untrusted
             status:
                 type: string

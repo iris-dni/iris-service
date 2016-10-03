@@ -92,12 +92,88 @@ Petition which are draft or rejected can be published::
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
-
     >>> id = response.json['data']['id']
+
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "id": null
+        },
+        ...
+        "owner": {
+          "class": "User",
+          "email": "",
+          "email_trusted": false,
+          "firstname": "",
+          "id": "1Zbfk",
+          "lastname": "",
+          "mobile": "",
+          "mobile_trusted": false,
+          "street": "",
+          "town": "",
+          "zip": ""
+        },
+        ...
+      },
+      "reasons": [
+        "mobile_missing",
+        "email_missing"
+      ],
+      "status": "error"
+    }
+
+    >>> petition = {
+    ...     "data": {
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "owner": {
+          "class": "User",
+          "email": "email@iris.com",
+          "email_trusted": false,
+          "firstname": "",
+          "id": "1Zbfk",
+          "lastname": "",
+          "mobile": "555 1234",
+          "mobile_trusted": false,
+          "street": "",
+          "town": "",
+          "zip": ""
+        },
+        ...
+      },
+      "reasons": [
+        "email_untrusted",
+        "mobile_untrusted"
+      ],
+      "status": "error"
+    }
+
+Set the petition data to be trusted::
+
+    >>> petition = Petition.get(id)
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
 After publishing the petition there is one supporter::
 
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
     >>> print_json(response)
     {
       "data": {
@@ -145,7 +221,11 @@ Create a new petition::
 
     >>> petition = {
     ...     "data": {
-    ...         "title": "Manage Letter"
+    ...         "title": "Manage Letter",
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions', petition)
@@ -153,6 +233,8 @@ Create a new petition::
     >>> petition = Petition.get(id)
     >>> petition.response_token is None
     True
+    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
+    >>> _ = petition.store(refresh=True)
 
     >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id)
     >>> _ = browser.post_json('/v1/petitions/%s/event/approved' % id)

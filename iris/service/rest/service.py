@@ -5,9 +5,12 @@ from pyramid import security
 
 from lovely.pyrest.rest import rpcmethod_route, rpcmethod_view
 
-from .swagger import swagger_reduce_response
 from ..errors import Errors
 from ..endpoint import EndpointErrorMixin
+
+from .swagger import swagger_reduce_response
+from .extender import APIExtender
+from .transform import APITransformer
 
 
 log = logging.getLogger(__name__)
@@ -234,6 +237,23 @@ class RESTMapper(object):
         return impl
 
 
+def to_api(request, doc, resolve=None, extend=None):
+    """Provide the document as a dict to be able to JSON serialize it
+
+    This method is added to all requests.
+    """
+    if doc is None:
+        return None
+    if resolve is None:
+        resolve = request.swagger_data.get('resolve', [])
+    if extend is None:
+        extend = request.swagger_data.get('extend', [])
+    extender = APIExtender(request, doc, extend)
+    result = APITransformer(doc, resolve=resolve).to_api()
+    extender.extend(result)
+    return result
+
+
 TESTING_STATE = []
 
 
@@ -245,3 +265,7 @@ def testing_push_state():
 def testing_pop_state():
     global TESTING_STATE
     RESTMapper._MAPPER_REGISTRY = TESTING_STATE.pop()
+
+
+def includeme(config):
+    config.add_request_method(to_api, "to_api")
