@@ -9,6 +9,7 @@ from transitions.extensions.nesting import NestedState
 
 from iris.service.db.sequence import IID_SHORTED
 
+from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 
 # create a state machine implementation from extensions
@@ -107,10 +108,16 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(missing, data)
         untrusted = []
-        if not owner_rel.get('email_trusted'):
-            untrusted.append('email_untrusted')
         if not owner_rel.get('mobile_trusted'):
             untrusted.append('mobile_untrusted')
+            data = {
+                "data": {
+                    "petition": self.petition.id
+                }
+            }
+            Handler.create_for_handler('petition_sms',
+                                       data,
+                                       self.request)
         if untrusted:
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)

@@ -159,11 +159,38 @@ Petition which are draft or rejected can be published::
         ...
       },
       "reasons": [
-        "email_untrusted",
         "mobile_untrusted"
       ],
       "status": "error"
     }
+
+A confirmation for the mobile number verification was created::
+
+    >>> from iris.service.content.confirmation import Confirmation
+    >>> confirmation = Confirmation.search({"query": {"match_all": {}}})['hits']['hits'][0]
+    >>> confirmation.data['petition'] == id
+    True
+    >>> token = confirmation.id
+
+Confirm::
+
+    >>> from iris.service.security.policy import API_KEY_HEADER_NAME
+    >>> headers = {
+    ...     API_KEY_HEADER_NAME: 'local'
+    ... }
+    >>> response = browser.get('/v1/confirmations/%s/confirm' % token,
+    ...                        headers=headers)
+    >>> print_json(response)
+    {
+      "data": {
+        "data": {
+          "mobile": "555 1234",
+          "petition": "..."
+        }
+      }
+    }
+    >>> response.json['data']['data']['petition'] == id
+    True
 
 Set the petition data to be trusted::
 
