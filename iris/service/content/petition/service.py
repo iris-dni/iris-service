@@ -16,7 +16,7 @@ from iris.service.rest.extender import APIExtender
 
 from iris.service.content.user import SessionUser
 
-from .sm import PetitionStateMachine, fromYAML, ConditionError
+from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
 
 

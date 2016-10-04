@@ -39,6 +39,8 @@ cors.Allow-Headers = Origin, Content-Type, Accept, Authorization
 cors.Allow-Credentials = true
 cors.Max-Age = 86400
 
+aws.testing = true
+
 es.hosts = localhost:19342
 
 og.noworker = don't start the og worker in test

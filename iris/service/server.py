@@ -89,6 +89,7 @@ def app_factory(global_config, **settings):
 
     config.include('pyramid_swagger')
 
+    config.include('iris.service.sms.sms')
     config.include('iris.service.db')
     config.include('iris.service.cors')
     config.include('iris.service.rest')

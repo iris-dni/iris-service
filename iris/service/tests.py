@@ -25,6 +25,8 @@ def test_suite():
         create_crate_suite('og/service.rst'),
         create_crate_suite('og/schedule.rst'),
 
+        create_suite('sms/sms.rst'),
+
         create_crate_suite('content/weblocation/document.rst'),
         create_crate_suite('content/weblocation/service.rst'),
 
