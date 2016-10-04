@@ -262,7 +262,8 @@ CREATE TABLE confirmations (
     ),
     handler STRING,
     state STRING,
-    data OBJECT(IGNORED)
+    data OBJECT(IGNORED),
+    debug OBJECT(IGNORED)
 )
 CLUSTERED INTO {{ Confirmations.shards }} SHARDS
           WITH (number_of_replicas='{{ Confirmations.number_of_replicas }}',

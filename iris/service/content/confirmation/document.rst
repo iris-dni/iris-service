@@ -11,6 +11,9 @@ A Confirmation is a `Document`::
     ...     data={
     ...         u'whatever': u'you',
     ...         u'like': True
+    ...     },
+    ...     debug={
+    ...         u'handlers': u'can store any debug information'
     ...     }
     ... )
     >>> confirmation
@@ -22,6 +25,8 @@ A Confirmation is a `Document`::
     'active'
     >>> confirmation.data
     {u'like': True, u'whatever': u'you'}
+    >>> confirmation.debug
+    {u'handlers': u'can store any debug information'}
 
     >>> _ = confirmation.store()
 
@@ -35,3 +40,5 @@ A Confirmation is a `Document`::
     u'active'
     >>> confirmation.data
     {u'like': True, u'whatever': u'you'}
+    >>> confirmation.debug
+    {u'handlers': u'can store any debug information'}

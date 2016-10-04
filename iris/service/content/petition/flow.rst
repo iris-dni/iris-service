@@ -137,6 +137,7 @@ Petition which are draft or rejected can be published::
     ... }
     >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    sendSMS(u'555 1234', 'Petition', u'Your verification code is "..."')
     >>> response.status
     '200 OK'
     >>> print_json(response)

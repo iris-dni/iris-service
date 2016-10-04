@@ -29,6 +29,7 @@ Create the confirmation::
 
     >>> from iris.service.content.confirmation.handler import Handler
     >>> response = Handler.create_for_handler('petition_sms', data, request)
+    sendSMS(u'555 1234', 'Petition', u'Your verification code is "..."')
     >>> print_json(response)
     {
       "data": {
@@ -38,6 +39,14 @@ Create the confirmation::
       "dc": {
         "created": "...",
         "expires": "..."
+      },
+      "debug": {
+        "sms": {
+          "phone_number": "555 1234",
+          "response": {},
+          "subject": "Petition",
+          "text": "Your verification code is \"...\""
+        }
       },
       "handler": "petition_sms",
       "id": "...",

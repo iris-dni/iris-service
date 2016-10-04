@@ -62,6 +62,7 @@ Now this hander can be used to create a confirmation::
         "created": "...",
         "expires": "..."
       },
+      "debug": {},
       "handler": "test",
       "id": "...",
       "state": "active"
@@ -83,6 +84,7 @@ The handler can be used to confirm::
         "created": "...",
         "expires": "..."
       },
+      "debug": {},
       "handler": "test",
       "id": "...",
       "state": "used"
@@ -119,6 +121,7 @@ Create a confirmation without the service request::
         "created": "...",
         "expires": "..."
       },
+      "debug": {},
       "handler": "test",
       "id": "...",
       "state": "active"

@@ -47,6 +47,13 @@ class Confirmation(Document):
         """
     )
 
+    debug = Property(
+        default=lambda: dict(),
+        doc="""
+        Additional debug data.
+        """
+    )
+
     @property
     def expired(self):
         at = self.dc['expires']

@@ -4,6 +4,8 @@ from iris.service import rest
 
 from iris.service.db.dc import dc_update, dc_now_offset
 from iris.service.content.confirmation.handler import Handler
+from iris.service import sms
+
 from .document import Petition
 
 
@@ -27,6 +29,14 @@ class SMSHandler(Handler, rest.RESTMapper):
             confirmation,
             expires=dc_now_offset(datetime.timedelta(minutes=5)),
         )
+        subject = 'Petition'
+        text = 'Your verification code is "%s"' % confirmation.id
+        confirmation.debug['sms'] = {
+            'phone_number': mobile,
+            'subject': subject,
+            'text': text,
+            'response': sms.sendSMS(mobile, subject, text)
+        }
 
     def _confirm(self, confirmation):
         petition = self._petition(confirmation)
