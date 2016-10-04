@@ -90,7 +90,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'state': stateFilter,
         'tags': queries.termsFilter('tags'),
         'city': queries.termsFilter('relations.city'),
-        'owner': queries.termsFilter('relations.owner'),
+        'owner': queries.termsFilter('relations.owner.id'),
     }
 
     SORT_PARAMS = {
