@@ -615,6 +615,14 @@ With a user supporting the petition::
       "supporting": true
     }
 
+Query results can also be extended::
+
+    >>> response = browser.get('/v1/petitions?extend=supporting')
+    >>> print_json(response.json['data'][0]['extensions'])
+    {
+      "supporting": false
+    }
+
 Clean up::
 
     >>> _ = petition.removeSupporter(supporter.id)

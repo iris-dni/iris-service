@@ -102,8 +102,8 @@ class SearchableDocumentRESTMapperMixin(object):
         if 'resolve' in params:
             resolve = params.pop('resolve') or []
 
-        if 'extender' in params:
-            extender = params.pop('extender') or []
+        if 'extend' in params:
+            extender = params.pop('extend') or []
 
         def add_sort(add):
             if not add:

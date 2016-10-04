@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - fix extend paramater for search endpoints
  - added OPTION endpoint for og/check
  - petition.city_answer is now an object
    DEPLOY:
