@@ -207,7 +207,7 @@ definitions:
       properties:
         mobile:
           type: string
-          pattern: "^(555|\\+43|\\+49|\\+41)[ 0-9]{4,}"
+          pattern: "^(555|\\+43|0043|\\+49|0049|\\+41|0041)[ 0-9]{4,}"
 
     UserRelationPublic:
       type: object
