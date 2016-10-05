@@ -139,3 +139,37 @@ petition owner to edit their rejected petition.
     end
 
     @enduml
+
+
+Petitioner Publishes Petition
+=============================
+
+Publishing a petition where the owners mobile number is untrusted.
+
+.. uml::
+
+    @startuml
+    Title Support a Petition
+
+    actor petitioner
+    participant "Browser" as browser
+    participant "IRIS-Service" as service
+    database "Database" as db
+    participant "SMS-Service" as sms
+
+    petitioner -> browser : publish
+    browser -> service : POST /event/publish
+    service -> db : create confirmation entry
+    service -> sms : send SMS to mobile number
+    service -> browser : {"status": "error",\n"reason": ["mobile_untrusted"]}
+    browser -> browser : show verification form
+    petitioner -> browser : enter code from SMS
+    petitioner -> browser : submit form
+    browser -> service : POST /event/publish with verification code
+    service -> db : confirm confirmation entry
+    service -> db : change petition state
+    service -> browser : {status: "ok"}
+    browser -> petitioner : show success page
+
+    @enduml
+

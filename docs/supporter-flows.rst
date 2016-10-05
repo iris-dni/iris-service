@@ -1,43 +1,40 @@
-===============
-Supporter Flows
-===============
+==============
+Supporter Flow
+==============
 
 .. contents::
 
 
-Supporter Signs Petition
-========================
+Support Petition
+================
 
-This diagram shows how the frontend needs to use the service to enable a
-supporter to support a petition.
+Petition support is implemented using the `support` event: `IRIS-Swagger-UI support </swaggerui#/petition_event/support>`_
 
 .. uml::
 
     @startuml
-    Title Supporter Signs Petition
+    Title Support a Petition
 
     actor supporter
     participant "Browser" as browser
     participant "IRIS-Service" as service
     database "Database" as db
+    participant "SMS-Service" as sms
 
-    supporter -> browser : opens petition page
-    supporter -> browser : clicks support
-
-    alt not authenticated
-      browser -> supporter : select auth type (mobile/sso)
-    else not trusted
-      browser -> supporter : trust via sso
-    end
-
-    browser -> service : /petition/<id>/support
-    alt status == OK
-        service -> db : store supporter for petition
-        service -> browser : status "OK"
-        browser -> supporter : thank you
-    else status == alreadySigned
-        service -> browser : status "alreadySigned"
-        browser -> supporter : duplicate supporter
-    end
+    supporter -> browser : open support screen
+    supporter -> browser : fill form
+    supporter -> browser : submit form
+    browser -> service : POST /event/support
+    service -> db : create confirmation entry
+    service -> sms : send SMS to mobile number
+    service -> browser : {"status": "error",\n"reason": ["mobile_untrusted"]}
+    browser -> browser : show verification form
+    supporter -> browser : enter code from SMS
+    supporter -> browser : submit form
+    browser -> service : POST /event/support with verification code
+    service -> db : confirm confirmation entry
+    service -> db : create support entry
+    service -> browser : {status: "ok"}
+    browser -> supporter : show success page
 
     @enduml
