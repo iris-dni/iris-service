@@ -37,7 +37,8 @@ Set the supporter.required count::
 Publish the petition, initially the publishing user is supporting the
 petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> publish_body = {"data": {}}
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 1, u'required': 6}

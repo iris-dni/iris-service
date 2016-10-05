@@ -14,12 +14,12 @@ class Handler(rest.DocumentRESTMapperMixin):
         confirmation.store(refresh=True)
         return self.to_api(confirmation)
 
-    def confirm(self, confirmation):
+    def confirm(self, confirmation, **kwargs):
         if confirmation.state == 'used':
             raise ValueError("Already used")
         if confirmation.expired:
             raise ValueError("Expired")
-        self._confirm(confirmation)
+        self._confirm(confirmation, **kwargs)
         confirmation.state = 'used'
         confirmation.store(refresh=True)
         return self.to_api(confirmation)
@@ -39,7 +39,7 @@ class Handler(rest.DocumentRESTMapperMixin):
         return handler.create({"data": data})
 
     @classmethod
-    def confirm_handler(cls, handler_name, token, request=None):
+    def confirm_handler(cls, handler_name, token, request=None, **kwargs):
         handler = rest.RESTMapper.getMapperImplementation(
             'confirmations.' + handler_name,
             request,
@@ -47,4 +47,4 @@ class Handler(rest.DocumentRESTMapperMixin):
         confirmation = Confirmation.get(token)
         if confirmation is None:
             return None
-        return handler.confirm(confirmation)
+        return handler.confirm(confirmation, **kwargs)

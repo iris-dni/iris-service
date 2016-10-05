@@ -27,6 +27,16 @@ definitions:
                   - $ref: 'supporters.yml#definitions/UserRelationProperties'
               mobile_token:
                 type: string
+    publishData:
+        type: object
+        required:
+            - data
+        properties:
+          data:
+            type: object
+            properties:
+              mobile_token:
+                type: string
     feedbackData:
         type: object
         required:

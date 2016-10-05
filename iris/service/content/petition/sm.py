@@ -110,15 +110,24 @@ class PetitionStateMachine(object):
             raise ConditionError(missing, data)
         untrusted = []
         if not owner_rel.get('mobile_trusted'):
-            untrusted.append('mobile_untrusted')
-            data = {
-                "data": {
-                    "petition": self.petition.id
+            token = kwargs['data'].get('mobile_token')
+            if token:
+                Handler.confirm_handler(
+                    'petition_sms',
+                    token,
+                    self.request,
+                    petition=self.petition
+                )
+            else:
+                untrusted.append('mobile_untrusted')
+                data = {
+                    "data": {
+                        "petition": self.petition.id
+                    }
                 }
-            }
-            Handler.create_for_handler('petition_sms',
-                                       data,
-                                       self.request)
+                Handler.create_for_handler('petition_sms',
+                                           data,
+                                           self.request)
         if untrusted:
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)

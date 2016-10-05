@@ -94,7 +94,8 @@ Petition which are draft or rejected can be published::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> publish_body = {"data": {}}
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> response.status
     '200 OK'
     >>> print_json(response)
@@ -136,7 +137,7 @@ Petition which are draft or rejected can be published::
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     sendSMS(u'555 1234', 'Petition', u'Your verification code is "..."')
     >>> response.status
     '200 OK'
@@ -173,46 +174,28 @@ A confirmation for the mobile number verification was created::
     True
     >>> token = confirmation.id
 
-Confirm::
+Now we can publish with the confirmation token in the body::
 
-    >>> from iris.service.security.policy import API_KEY_HEADER_NAME
-    >>> headers = {
-    ...     API_KEY_HEADER_NAME: 'local'
+    >>> publish_confirm_body = {
+    ...     "data": {
+    ...         "mobile_token": token
+    ...     }
     ... }
-    >>> response = browser.get('/v1/confirmations/%s/confirm' % token,
-    ...                        headers=headers)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_confirm_body)
     >>> print_json(response)
     {
       "data": {
-        "data": {
-          "mobile": "555 1234",
-          "petition": "..."
-        }
-      }
-    }
-    >>> response.json['data']['data']['petition'] == id
-    True
-
-Set the petition data to be trusted::
-
-    >>> petition = Petition.get(id)
-    >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
-    >>> _ = petition.store(refresh=True)
-
-After publishing the petition there is one supporter::
-
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
-    >>> print_json(response)
-    {
-      "data": {
-        ...
-        "supporters": {
-          "amount": 1,
-          "required": ...
-        },
         ...
       },
       "status": "ok"
+    }
+
+There is already a supporter::
+
+    >>> print_json(response.json['data']['supporters'])
+    {
+      "amount": 1,
+      "required": ...
     }
 
 Reject the petition::
@@ -224,7 +207,7 @@ Reject the petition::
 
 Publishing again will not add a new supporter::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> print_json(response)
     {
       "data": {
@@ -264,7 +247,7 @@ Create a new petition::
     >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
     >>> _ = petition.store(refresh=True)
 
-    >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> _ = browser.post_json('/v1/petitions/%s/event/approved' % id)
     >>> petition = Petition.get(id)
     >>> petition.supporters = {

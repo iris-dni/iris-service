@@ -40,6 +40,11 @@ petitions_contentId_event_publish:
       - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
       - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/publishData'
+        required: true
     responses:
       '200':
         description: all good

@@ -38,13 +38,14 @@ class PetitionSMSHandler(Handler, rest.RESTMapper):
             'response': sms.sendSMS(mobile, subject, text)
         }
 
-    def _confirm(self, confirmation):
+    def _confirm(self, confirmation, petition=None):
         """Confirms the mobile number on the petition
 
         If the mobile number on the owner relation matches the mobile number
         of this conrimation the mobile_trusted flag is set to true.
         """
-        petition = self._petition(confirmation)
+        if petition is None:
+            petition = self._petition(confirmation)
         mobile = petition.owner.relation_dict['mobile']
         if mobile != confirmation.data['mobile']:
             raise ValueError('Mobile number not matching')

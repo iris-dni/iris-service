@@ -49,7 +49,8 @@ Create a new petition::
 
 Publish the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> publish_body = {"data": {}}
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -85,7 +86,7 @@ Create a new petition::
 
 Publish the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -107,7 +108,7 @@ Reject the petition::
 
 Publish the petition again::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -137,7 +138,7 @@ Create a new petition::
 
 Publish the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -186,7 +187,7 @@ Set supporters data::
 
 Publish the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -308,7 +309,7 @@ Set supporters data::
 
 Publish the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
@@ -418,7 +419,7 @@ Event response can also reolve::
     >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish?resolve=city' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish?resolve=city' % id, publish_body)
     >>> print_json(response)
     {
       "data": {
@@ -457,7 +458,7 @@ Event response data can also be extended::
     >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/publish?extend=supporting' % id)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish?extend=supporting' % id, publish_body)
     >>> print_json(response)
     {
         ...
