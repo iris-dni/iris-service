@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/10/05 0.1.1
+================
+
  - fix petition owner filter
  - fix extend paramater for search endpoints
  - added OPTION endpoint for og/check
@@ -12,7 +15,7 @@ unreleased
    DEPLOY:
      run auto migration
 
-2016/09/22 0.1.1
+2016/09/22 0.1.0
 ================
 
  - og: fallback for title and description
