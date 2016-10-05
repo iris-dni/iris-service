@@ -1,4 +1,38 @@
 definitions:
+    UserRelationProperties:
+      type: object
+      properties:
+        email:
+          type: string
+        email_trusted:
+          type: boolean
+          readOnly: true
+        mobile:
+          type: string
+        mobile_trusted:
+          type: boolean
+          readOnly: true
+        firstname:
+          type: string
+        lastname:
+          type: string
+        street:
+          type: string
+        zip:
+          type: string
+
+    UserRelationPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          x-nullable: true
+        class:
+          type: string
+          readOnly: true
+        data:
+          $ref: 'users.yml#/definitions/UserPublic'
+
     SupporterAdmin:
         type: object
         properties:
@@ -26,24 +60,9 @@ definitions:
             user:
                 type: object
                 readOnly: true
-                properties:
-                    id:
-                        type: string
-                        x-nullable: true
-                    class:
-                        type: string
-                    data:
-                        $ref: 'users.yml#/definitions/UserPublic'
-            phone_user:
-                type: object
-                x-nullable: true
-                properties:
-                    telephone:
-                        type: string
-                    firstname:
-                        type: string
-                    lastname:
-                        type: string
+                allOf:
+                    - $ref: '#definitions/UserRelationPublic'
+                    - $ref: '#definitions/UserRelationProperties'
     ListResponseBodyAdmin:
         description: Supporters list response
         type: object

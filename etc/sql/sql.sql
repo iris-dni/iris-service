@@ -126,19 +126,18 @@ CREATE TABLE supporters (
 
     relations OBJECT(STRICT) AS (
         -- the user relation
-        user STRING,
-        --user OBJECT(STRICT) AS (
-        --    id STRING,
-        --    firstname STRING,
-        --    lastname STRING,
-        --    street STRING,
-        --    zip STRING,
-        --    town STRING,
-        --    mobile STRING,
-        --    mobile_trusted BOOLEAN,
-        --    email STRING,
-        --    email_trusted BOOLEAN
-        --),
+        user OBJECT(STRICT) AS (
+            id STRING,
+            firstname STRING,
+            lastname STRING,
+            street STRING,
+            zip STRING,
+            town STRING,
+            mobile STRING,
+            mobile_trusted BOOLEAN,
+            email STRING,
+            email_trusted BOOLEAN
+        ),
         -- the petition relation
         petition STRING
     )

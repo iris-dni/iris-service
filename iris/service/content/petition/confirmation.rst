@@ -4,8 +4,12 @@ SMS Confirmation Handler
 
     >>> request = get_test_request()
 
-Create a petition
-=================
+Petition Confirmation
+=====================
+
+
+Create a Mobile Confirmation
+----------------------------
 
 The handler `petition_sms` must be used to create an sms confirmation for a
 petition.
@@ -16,7 +20,7 @@ First a petition is needed::
     ...     owner={"mobile": "555 1234"}
     ... )
 
-The data needed to be stored in the confirmation data peroperty must contain
+The data needed to be stored in the confirmation data property must contain
 the petition id::
 
     >>> data = {
@@ -59,7 +63,7 @@ Create the confirmation::
 
 
 Confirm
-=======
+-------
 
 The confirmation API can be used with the id of the confirmation object::
 
@@ -105,7 +109,7 @@ Multiple confirmations are not allowed::
 
 
 Special Cases
-=============
+-------------
 
 The mobile number must be provided in the owner relation of the petition::
 
@@ -118,3 +122,98 @@ The mobile number must be provided in the owner relation of the petition::
     >>> response = Handler.create_for_handler('petition_sms', data)
     Traceback (most recent call last):
     ValueError: Missing mobile number
+
+
+Support Confirmation
+====================
+
+
+Create a Mobile Confirmation
+----------------------------
+
+The handler `support_sms` must be used to create an sms confirmation for a
+petition support.
+
+The data needed to be stored in the confirmation data property must contain
+the mobile number::
+
+    >>> data = {
+    ...     "data": {
+    ...         "user_id": None,
+    ...         "user": {
+    ...             "mobile": "555 1234"
+    ...         },
+    ...         "petition": petition.id
+    ...     }
+    ... }
+
+Create the confirmation::
+
+    >>> response = Handler.create_for_handler('support_sms', data, request)
+    sendSMS('555 1234', 'Support', u'Your verification code is "..."')
+    >>> print_json(response)
+    {
+      "data": {
+        "petition": "...",
+        "user": {
+          "mobile": "555 1234"
+        },
+        "user_id": null
+      },
+      "dc": {
+        "created": "...",
+        "expires": "..."
+      },
+      "debug": {
+        "sms": {
+          "phone_number": "555 1234",
+          "response": {},
+          "subject": "Support",
+          "text": "Your verification code is \"1fjnH\""
+        }
+      },
+      "handler": "support_sms",
+      "id": "...",
+      "state": "active"
+    }
+
+    >>> token = response["id"]
+
+
+Confirm
+-------
+
+Directly use the handler to confirm::
+
+    >>> response = Handler.confirm_handler('support_sms', token, request)
+    >>> print_json(response)
+    {
+      "data": {
+        "petition": "...",
+        "user": {
+          "mobile": "555 1234"
+        },
+        "user_id": null
+      },
+      "dc": {
+        "created": "...",
+        "expires": "..."
+      },
+      "debug": {
+        "sms": {
+          "phone_number": "555 1234",
+          "response": {},
+          "subject": "Support",
+          "text": "Your verification code is \"1fjnH\""
+        }
+      },
+      "handler": "support_sms",
+      "id": "...",
+      "state": "used"
+    }
+
+Multiple uses are not allowed::
+
+    >>> response = Handler.confirm_handler('support_sms', token, request)
+    Traceback (most recent call last):
+    ValueError: Already used

@@ -15,18 +15,18 @@ definitions:
         properties:
           data:
             type: object
+            required:
+              - user
             properties:
-              phone_user:
+              user:
                 type: object
                 required:
-                  - telephone
-                properties:
-                  telephone:
-                    type: string
-                  firstname:
-                    type: string
-                  lastname:
-                    type: string
+                  - mobile
+                  - email
+                allOf:
+                  - $ref: 'supporters.yml#definitions/UserRelationProperties'
+              mobile_token:
+                type: string
     feedbackData:
         type: object
         required:

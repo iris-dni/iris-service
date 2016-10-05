@@ -285,21 +285,33 @@ Users can support petitions::
     >>> _ = petition.store(refresh=True)
     >>> petition.supporters['required'] = 4
 
-Support using a telephone number::
+Support using a mobile number::
 
-    >>> phone_user = {
-    ...     "telephone": "0555 42",
+    >>> data = {
+    ...     "mobile": "0555 42",
     ...     "firstname": "first",
     ...     "lastname": "last",
     ... }
     >>> supporter = petition.addSupporter(request=request,
-    ...                                   phone_user=phone_user)
+    ...                                   data=data)
     >>> supporter
     <Supporter [id=u'...-t:0555 42']>
     >>> supporter.user() is None
     True
-    >>> supporter.phone_user
-    {'lastname': 'last', 'telephone': '0555 42', 'firstname': 'first'}
+    >>> print_json(supporter.user.relation_dict)
+    {
+      "class": "User",
+      "email": "",
+      "email_trusted": false,
+      "firstname": "first",
+      "id": null,
+      "lastname": "last",
+      "mobile": "0555 42",
+      "mobile_trusted": false,
+      "street": "",
+      "town": "",
+      "zip": ""
+    }
     >>> supporter.petition.id == petition.id
     True
 
@@ -317,13 +329,25 @@ Support using a telephone number::
 
 Support using an existing user::
 
-    >>> supporter = petition.addSupporter(request=request, user=42)
+    >>> supporter = petition.addSupporter(request=request, user_id=user.id)
     >>> supporter
-    <Supporter [id=u'...-u:42']>
+    <Supporter [id=u'1fjnH-u:...']>
     >>> supporter.user
-    <RelationResolver User[42]>
-    >>> supporter.phone_user is None
-    True
+    <RelationResolver User[{... 'id': u'...'}]>
+    >>> print_json(supporter.user.relation_dict)
+    {
+      "class": "User",
+      "email": "",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "...",
+      "lastname": "",
+      "mobile": "",
+      "mobile_trusted": false,
+      "street": "",
+      "town": "",
+      "zip": ""
+    }
     >>> supporter.petition.id == petition.id
     True
     >>> petition = Petition.get(petition.id)
@@ -335,13 +359,13 @@ Support using an existing user::
 
 Duplicate supporters are not counted::
 
-    >>> supporter = petition.addSupporter(request=request, user=42)
+    >>> supporter = petition.addSupporter(request=request, user_id='42')
     >>> supporter
     <Supporter [id=u'...-u:42']>
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
-      "amount": 2,
+      "amount": 3,
       "required": 4
     }
 
@@ -351,7 +375,7 @@ Supporters can be removed::
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
-      "amount": 1,
+      "amount": 2,
       "required": 4
     }
 
@@ -361,6 +385,38 @@ Remove the already removed supporter again::
     >>> petition = Petition.get(petition.id)
     >>> pp(petition.supporters)
     {
-      "amount": 1,
+      "amount": 2,
       "required": 4
     }
+
+
+Check if supporting
+-------------------
+
+Check if a data set which would be used to add support can be used for a new
+support::
+
+    >>> supporter = petition.addSupporter(request=request,
+    ...                                   user_id='42',
+    ...                                   data={"mobile": "555 4321"}
+    ...                                  )
+
+The user is supporting::
+
+    >>> petition.isSupporting(request, '42', {'mobile': '555 1234'})
+    True
+
+user and mobile doesn't match::
+
+    >>> petition.isSupporting(request, '55', {'mobile': '555 1234'})
+    False
+
+The mobile number is supporting::
+
+    >>> petition.isSupporting(request, '55', {'mobile': '555 4321'})
+    True
+
+user and mobile number is supporting::
+
+    >>> petition.isSupporting(request, '42', {'mobile': '555 4321'})
+    True

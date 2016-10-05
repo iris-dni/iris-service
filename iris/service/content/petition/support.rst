@@ -18,7 +18,7 @@ Create a new petition::
     ...         "title": "Support Petition",
     ...         "owner": {
     ...             "email": "email@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 4321"
     ...         }
     ...     }
     ... }
@@ -44,42 +44,16 @@ petition::
 
 Support the pending petition::
 
-    >>> _ = ssologin(browser, {"email": "42@sso.login"})
-    >>> supporter = {"data": {}}
-    >>> response = browser.post_json(
-    ...     '/v1/petitions/%s/event/support' % id,
-    ...     supporter)
-    >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 6}
-
-    >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
-     <Supporter [id=u'1n3gf-u:...']>]
-
-The same user supports again::
-
-    >>> supporter = {"data": {}}
-    >>> response = browser.post_json(
-    ...     '/v1/petitions/%s/event/support' % id,
-    ...     supporter)
-    >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 6}
-
-    >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
-     <Supporter [id=u'1n3gf-u:1Zbfk']>]
-
-Support using a telephone number::
-
-    >>> _ = ssologout(browser)
+    >>> _ = ssologin(browser,
+    ...     {"email": "42@sso.login",
+    ...      "mobile": "555 1234",
+    ...      "mobile_trusted": True,
+    ...     })
     >>> supporter = {
     ...     "data": {
-    ...         "phone_user": {
-    ...             "telephone": '0555 42',
-    ...             "firstname": 'first',
-    ...             "lastname": 'last',
+    ...         "user": {
+    ...             "email": "me@iris.com",
+    ...             "mobile": "555 1234",
     ...         }
     ...     }
     ... }
@@ -88,21 +62,91 @@ Support using a telephone number::
     ...     supporter)
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 3, u'required': 6}
-
-    >>> obj = Supporter.get('1n3gf-t:0555 42')
-    >>> obj.user
-    <RelationResolver User[None]>
-    >>> obj.phone_user
-    {u'lastname': u'last', u'telephone': u'0555 42', u'firstname': u'first'}
+    {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+    [<Supporter [id=u'1n3gf-t:555 4321']>,
+     <Supporter [id=u'1n3gf-u:...']>]
+
+The same user supports again::
+
+    >>> supporter = {
+    ...     "data": {
+    ...         "user": {
+    ...             "email": "me@iris.com",
+    ...             "mobile": "555 1234",
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter)
+    >>> showInfo(response)
+    {u'name': u'pending', u'parent': u'supportable'}
+    {u'amount': 2, u'required': 6}
+
+    >>> Supporter.get_by(Supporter.petition, id, size=10)
+    [<Supporter [id=u'1n3gf-t:555 4321']>,
+     <Supporter [id=u'1n3gf-u:...']>]
+
+Support using an untrusted mobile number::
+
+    >>> logged_in_user = ssologin(
+    ...     browser,
+    ...     {"email": "42-1@sso.login",
+    ...      "mobile": "555 1234",
+    ...      "mobile_trusted": True,
+    ...     })
+    >>> supporter = {
+    ...     "data": {
+    ...         "user": {
+    ...             "email": "42-1@sso.login",
+    ...             "mobile": '0555 42',
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter)
+    sendSMS(u'0555 42', 'Support', u'Your verification code is "1fjnH"')
+    >>> response.json['status']
+    u'error'
+    >>> response.json['reasons']
+    [u'mobile_untrusted']
+    >>> showInfo(response)
+    {u'listable': False, u'parent': u'supportable', u'name': u'pending', u'timer': ...}
+    {u'amount': 2, u'required': 6}
+
+We must provide the verification token with the support request::
+
+    >>> supporter['data']['mobile_token'] = "1fjnH"
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter)
+    >>> obj = Supporter.get('%s-u:%s' % (response.json['data']['id'], logged_in_user.id))
+    >>> print_json(obj.user.relation_dict)
+    {
+      "class": "User",
+      "email": "42-1@sso.login",
+      "email_trusted": false,
+      "firstname": "",
+      "id": "...",
+      "lastname": "",
+      "mobile": "0555 42",
+      "mobile_trusted": true,
+      "street": "",
+      "town": "",
+      "zip": ""
+    }
+
+    >>> Supporter.get_by(Supporter.petition, id, size=10)
+    [<Supporter [id=u'1n3gf-t:555 4321']>,
      <Supporter [id=u'1n3gf-u:1Zbfk']>,
-     <Supporter [id=u'1n3gf-t:0555 42']>]
+     <Supporter [id=u'1n3gf-u:1QjR3']>]
 
-The same telephone number again::
+The same mobile number again::
 
+    >>> del supporter['data']['mobile_token']
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -111,9 +155,9 @@ The same telephone number again::
     {u'amount': 3, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-u:iris-session:...']>,
+    [<Supporter [id=u'1n3gf-t:555 4321']>,
      <Supporter [id=u'1n3gf-u:1Zbfk']>,
-     <Supporter [id=u'1n3gf-t:0555 42']>]
+     <Supporter [id=u'1n3gf-u:1QjR3']>]
 
 Approve the petition::
 
@@ -122,8 +166,22 @@ Approve the petition::
     {u'name': u'active', u'parent': u'supportable'}
     {u'amount': 3, u'required': 6}
 
-    >>> _ = ssologin(browser, {"email": "142@sso.login"})
-    >>> supporter = {"data": {}}
+    >>> logged_in_user = ssologin(browser,
+    ...     {
+    ...         "email": "142@sso.login",
+    ...         "email_trusted": True,
+    ...         "mobile": "555 42 0142",
+    ...         "mobile_trusted": True,
+    ...     }
+    ... )
+    >>> supporter = {
+    ...     "data": {
+    ...         "user": {
+    ...             "email": logged_in_user.email,
+    ...             "mobile": logged_in_user.mobile,
+    ...         }
+    ...     }
+    ... }
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -134,8 +192,24 @@ Approve the petition::
 Support until the petition is a winner::
 
     >>> for userId in range(200, 204):
-    ...     supporter = {"data": {}}
-    ...     _ = ssologin(browser, {"email": "%s@sso.login" % userId})
+    ...     _ = ssologin(browser,
+    ...         {
+    ...             "email": "%s@sso.login" % userId,
+    ...             "email_trusted": True,
+    ...             "mobile": '0555 42 %s' % userId,
+    ...             "mobile_trusted": True,
+    ...         }
+    ...     )
+    ...     supporter = {
+    ...         "data": {
+    ...             "user": {
+    ...                 "email": "%s@sso.login" % userId,
+    ...                 "mobile": '0555 42 %s' % userId,
+    ...                 "firstname": 'first',
+    ...                 "lastname": 'last',
+    ...             }
+    ...         }
+    ...     }
     ...     response = browser.post_json(
     ...         '/v1/petitions/%s/event/support' % id,
     ...         supporter)
@@ -149,13 +223,12 @@ Support until the petition is a winner::
     {u'name': u'winner', u'parent': u'supportable'}
     {u'amount': 8, u'required': 6}
 
-Invalid phone_user data::
+Missing mobile number::
 
     >>> supporter = {
     ...     "data": {
-    ...         "phone_user": {
-    ...             "firstname": 'first',
-    ...             "lastname": 'last',
+    ...         "user": {
+    ...             "email": "me@iris.com",
     ...         }
     ...     }
     ... }
@@ -167,6 +240,27 @@ Invalid phone_user data::
     {
       "errors": {
         "code": "400",
-        "description": "'telephone' is a required property...
+        "description": "'mobile' is a required property...
+      }
+    }
+
+Missing email::
+
+    >>> supporter = {
+    ...     "data": {
+    ...         "user": {
+    ...             "mobile": '0555 42',
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter,
+    ...     expect_errors=True)
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "'email' is a required property...
       }
     }

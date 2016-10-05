@@ -9,7 +9,7 @@ from iris.service import sms
 from .document import Petition
 
 
-class SMSHandler(Handler, rest.RESTMapper):
+class PetitionSMSHandler(Handler, rest.RESTMapper):
     """SMS confirmation handler for petitions
 
     """
@@ -39,6 +39,11 @@ class SMSHandler(Handler, rest.RESTMapper):
         }
 
     def _confirm(self, confirmation):
+        """Confirms the mobile number on the petition
+
+        If the mobile number on the owner relation matches the mobile number
+        of this conrimation the mobile_trusted flag is set to true.
+        """
         petition = self._petition(confirmation)
         mobile = petition.owner.relation_dict['mobile']
         if mobile != confirmation.data['mobile']:
@@ -48,3 +53,39 @@ class SMSHandler(Handler, rest.RESTMapper):
 
     def _petition(self, confirmation):
         return Petition.get(confirmation.data['petition'])
+
+
+class SupportSMSHandler(Handler, rest.RESTMapper):
+    """SMS confirmation handler for supports
+
+    """
+
+    HANDLER_NAME = 'support_sms'
+    NAME = 'confirmations.' + HANDLER_NAME
+
+    ALLOW_API_CONFIRM = False
+
+    def _create(self, confirmation):
+        """Send an SMS with the confirmation id
+        """
+        dc_update(
+            confirmation,
+            expires=dc_now_offset(datetime.timedelta(minutes=5)),
+        )
+        mobile = confirmation.data['user']['mobile']
+        subject = 'Support'
+        text = 'Your verification code is "%s"' % confirmation.id
+        confirmation.debug['sms'] = {
+            'phone_number': mobile,
+            'subject': subject,
+            'text': text,
+            'response': sms.sendSMS(mobile, subject, text)
+        }
+
+    def _confirm(self, confirmation):
+        """Nothing to do here
+
+        The confirmation is handled in the "support" endpoint which provides
+        the confirmation token and just calls confirm.
+        """
+        pass

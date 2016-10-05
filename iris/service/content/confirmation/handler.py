@@ -5,14 +5,16 @@ from .document import Confirmation
 
 class Handler(rest.DocumentRESTMapperMixin):
 
-    def create(self, data, resolve=[], extend=[]):
+    ALLOW_API_CONFIRM = True
+
+    def create(self, data):
         confirmation = Confirmation(handler=self.HANDLER_NAME,
                                     **data['data'])
         self._create(confirmation)
         confirmation.store(refresh=True)
-        return self.to_api(confirmation, resolve, extend)
+        return self.to_api(confirmation)
 
-    def confirm(self, confirmation, resolve=[], extend=[]):
+    def confirm(self, confirmation):
         if confirmation.state == 'used':
             raise ValueError("Already used")
         if confirmation.expired:
@@ -20,7 +22,7 @@ class Handler(rest.DocumentRESTMapperMixin):
         self._confirm(confirmation)
         confirmation.state = 'used'
         confirmation.store(refresh=True)
-        return self.to_api(confirmation, resolve, extend)
+        return self.to_api(confirmation)
 
     def _create(self, confirmation):
         pass
@@ -35,3 +37,14 @@ class Handler(rest.DocumentRESTMapperMixin):
             request,
         )
         return handler.create({"data": data})
+
+    @classmethod
+    def confirm_handler(cls, handler_name, token, request=None):
+        handler = rest.RESTMapper.getMapperImplementation(
+            'confirmations.' + handler_name,
+            request,
+        )
+        confirmation = Confirmation.get(token)
+        if confirmation is None:
+            return None
+        return handler.confirm(confirmation)

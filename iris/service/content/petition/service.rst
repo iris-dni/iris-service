@@ -714,7 +714,7 @@ Create a petition::
     >>> request = get_test_request()
     >>> petition = creators.petition(title="supported")
     >>> user = creators.user(email="me@home.com")
-    >>> supporter = petition.addSupporter(request=request, user=user)
+    >>> supporter = petition.addSupporter(request=request, user_id=user.id)
     >>> response = browser.get('/v1/petitions/%s' % petition.id)
     >>> 'extensions' in response.json['data']
     False
@@ -955,14 +955,17 @@ The admin can request supporters::
             "class": "Petition",
             "id": "..."
           },
-          "phone_user": {
-            "firstname": "...",
-            "lastname": "...",
-            "telephone": "..."
-          },
           "user": {
             "class": "User",
-            "id": null
+            "email": "",
+            "email_trusted": false,
+            "firstname": "...",
+            "id": null,
+            "lastname": "...",
+            "mobile": "...",
+            "mobile_trusted": false,
+            "street": "",
+            "zip": ""
           }
         },
         ...
@@ -986,6 +989,20 @@ The admin can request supporters::
                 "class": "City",
                 "id": "test:..."
               },
+          ...
+          "user": {
+            "class": "User",
+            "data": null,
+            "email": "",
+            "email_trusted": false,
+            "firstname": "...",
+            "id": null,
+            "lastname": "...",
+            "mobile": "...",
+            "mobile_trusted": false,
+            "street": "",
+            "zip": ""
+          }
     ...
 
 

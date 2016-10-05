@@ -323,7 +323,7 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
 
     FILTER_PARAMS = {
         'petition': queries.termsFilter('relations.petition'),
-        'user': queries.termsFilter('relations.user'),
+        'user': queries.termsFilter('relations.user.id'),
     }
 
     SORT_PARAMS = {
@@ -405,7 +405,7 @@ class SupportingExtender(object):
                         },
                         {
                             "term": {
-                                "relations.user": user.id
+                                "relations.user.id": user.id
                             }
                         },
                     ]

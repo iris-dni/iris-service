@@ -10,7 +10,7 @@ states:
             - check_publish
           after:
             # let the publisher support the petition
-            - support_petition
+            - support_petition_on_publish
 
     - name: rejected
       on_enter:

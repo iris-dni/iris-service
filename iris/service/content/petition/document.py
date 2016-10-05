@@ -17,6 +17,7 @@ from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.weblocation import WebLocation
 from iris.service.content.city import document as city_module
+from iris.service.content.user import SessionUser
 
 from .sm import PetitionStateMachine
 
@@ -212,27 +213,65 @@ class Petition(Document):
             self.supporters['required'] = required
         return super(Petition, self).store(*args, **kwargs)
 
-    def addSupporter(self, request, user=None, phone_user=None):
+    def isSupporting(self, request, user_id=None, data=None):
+        """Check if the provided data is already supporting the petition
+
+        The user_id and the mobile number must not already support the
+        petition.
+        """
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "term": {
+                                "relations.petition": self.id
+                            }
+                        },
+                        {
+                            "bool": {
+                                "should": [
+                                    {
+                                        "term": {
+                                            "relations.user.id": user_id
+                                        }
+                                    },
+                                    {
+                                        "term": {
+                                            "mobile": data['mobile']
+                                        }
+                                    },
+                                ],
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+        return Supporter.count(query) != 0
+
+    def addSupporter(self, request, user_id=None, data=None):
         """Add a supporter to the petition
 
         Update the supporters amount.
 
-        The phone_user object must provide at least a 'telephone' property.
+        The data object must provide at least a 'mobile' property.
 
         returns the supporter document
         """
-        if user is not None:
-            supporter = 'u:%s' % user
+        if user_id is not None and not SessionUser.is_session_user_id(user_id):
+            supporter = 'u:%s' % user_id
         else:
-            supporter = 't:%s' % phone_user['telephone']
+            supporter = 't:%s' % data['mobile']
         supporterId = '%s-%s' % (self.id, supporter)
         supporter = Supporter.get(supporterId)
         if supporter is None:
+            user_rel = data and copy.deepcopy(data) or {}
+            user_rel['id'] = user_id
             supporter = Supporter(
                 id=supporterId,
                 petition=self.id,
-                user=user,
-                phone_user=phone_user
+                user=user_rel,
             )
             self.supporters['amount'] += 1
             try:
@@ -293,23 +332,28 @@ class Supporter(Document):
     user = LocalRelation(
         '_relations.user',
         'User.id',
+        relationProperties={
+            'email': '',
+            'email_trusted': False,
+            'mobile': '',
+            'mobile_trusted': False,
+            'firstname': '',
+            'lastname': '',
+            'street': '',
+            'zip': '',
+            'town': '',
+        },
         doc="""
           Relation to the supporting user.
           Not required if the user was identified with a telephone number.
         """
     )
 
-    phone_user = Property(
-        default=None,
-        doc="""
-          A user which was identified via a telephone number.
-          This is stored as an object.
-        """
-    )
-
     _relations = Property(
         name="relations",
-        default=lambda: {},
+        default=lambda: {
+            "user": None,
+        },
         doc="""
           The petition relations.
         """

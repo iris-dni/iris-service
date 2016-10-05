@@ -12,6 +12,7 @@ from iris.service.db.sequence import IID_SHORTED
 from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 
+
 # create a state machine implementation from extensions
 Machine = MachineFactory.get_predefined(nested=True)
 NestedState.separator = '.'
@@ -122,15 +123,77 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
 
+    def support_petition_on_publish(self, **kwargs):
+        """Petition owner supports when publishing
+
+        The data used for the supporter is based on the owner data stored on
+        the petition.
+        """
+        data = copy.deepcopy(self.petition.owner.relation_dict)
+        user = data['id']
+        del data['id']
+        del data['class']
+        self.petition.addSupporter(request=self.request,
+                                   user_id=user,
+                                   data=data)
+
     def support_petition(self, **kwargs):
-        if self.request is None:
+        """Check if supporting is allowed
+
+        This is called on the transition of trigger "support".
+        """
+        data = kwargs['data']
+        user_data = data['user']
+        session_user = self.request.session_user
+        if session_user is not None:
+            session_user = session_user.id
+        if self.petition.isSupporting(request=self.request,
+                                      user_id=session_user,
+                                      data=user_data):
             return
         user = self.request.user
-        if user is not None:
-            user = user.id
+        untrusted = []
+        mobile = user_data['mobile']
+        if (not user
+            or user.mobile != mobile
+            or not user.mobile_trusted
+           ):
+            token = data.get('mobile_token')
+            if token:
+                # check if the token matches the mobile number
+                msg = Handler.confirm_handler(
+                    'support_sms',
+                    token,
+                    self.request
+                )
+                if (msg
+                    and msg['data']['user']['mobile'] == mobile
+                    and msg['data']['petition'] == self.petition.id
+                   ):
+                    user_data['mobile_trusted'] = True
+                else:
+                    untrusted.append('mobile_verification_failed')
+            else:
+                # We have an untrusted mobile number, send an SMS with the
+                # verification code.
+                untrusted.append('mobile_untrusted')
+                data = {
+                    "data": {
+                        "user_id": user and user.id,
+                        "user": user_data,
+                        "petition": self.petition.id
+                    }
+                }
+                Handler.create_for_handler('support_sms',
+                                           data,
+                                           self.request)
+        if untrusted:
+            data = self.request.to_api(self.petition)
+            raise ConditionError(untrusted, data)
+        # support the petition
         self.petition.addSupporter(request=self.request,
-                                   user=user,
-                                   **kwargs.get('data', {}))
+                                   user_id=session_user,
+                                   data=user_data)
 
     def set_response_token(self, **kwargs):
         """Sets a new response token if no token is set
