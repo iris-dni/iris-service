@@ -24,7 +24,8 @@ definitions:
                   - mobile
                   - email
                 allOf:
-                  - $ref: 'supporters.yml#definitions/UserRelationProperties'
+                  - $ref: 'users.yml#definitions/UserRelationProperties'
+                  - $ref: 'users.yml#definitions/UserRelationMobilePattern'
               mobile_token:
                 type: string
     publishData:

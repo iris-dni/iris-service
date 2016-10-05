@@ -84,7 +84,7 @@ With an authenticated session the real user is assigned to the petition::
 Publishing a Petition
 =====================
 
-Petition which are draft or rejected can be published::
+Petitions which are draft or rejected can be published::
 
     >>> petition = {
     ...     "data": {

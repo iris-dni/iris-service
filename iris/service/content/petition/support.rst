@@ -102,14 +102,14 @@ Support using an untrusted mobile number::
     ...     "data": {
     ...         "user": {
     ...             "email": "42-1@sso.login",
-    ...             "mobile": '0555 42',
+    ...             "mobile": '555 4242',
     ...         }
     ...     }
     ... }
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
-    sendSMS(u'0555 42', 'Support', u'Your verification code is "1fjnH"')
+    sendSMS(u'555 4242', 'Support', u'Your verification code is "1fjnH"')
     >>> response.json['status']
     u'error'
     >>> response.json['reasons']
@@ -133,7 +133,7 @@ We must provide the verification token with the support request::
       "firstname": "",
       "id": "...",
       "lastname": "",
-      "mobile": "0555 42",
+      "mobile": "555 4242",
       "mobile_trusted": true,
       "street": "",
       "town": "",
@@ -197,7 +197,7 @@ Support until the petition is a winner::
     ...         {
     ...             "email": "%s@sso.login" % userId,
     ...             "email_trusted": True,
-    ...             "mobile": '0555 42 %s' % userId,
+    ...             "mobile": '555 42 %s' % userId,
     ...             "mobile_trusted": True,
     ...         }
     ...     )
@@ -205,7 +205,7 @@ Support until the petition is a winner::
     ...         "data": {
     ...             "user": {
     ...                 "email": "%s@sso.login" % userId,
-    ...                 "mobile": '0555 42 %s' % userId,
+    ...                 "mobile": '555 42 %s' % userId,
     ...                 "firstname": 'first',
     ...                 "lastname": 'last',
     ...             }
@@ -245,12 +245,34 @@ Missing mobile number::
       }
     }
 
+Invalid mobile number::
+
+    >>> supporter = {
+    ...     "data": {
+    ...         "user": {
+    ...             "email": "me@iris.com",
+    ...             "mobile": '555 42',
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter,
+    ...     expect_errors=True)
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "u'555 42' does not match...
+      }
+    }
+
 Missing email::
 
     >>> supporter = {
     ...     "data": {
     ...         "user": {
-    ...             "mobile": '0555 42',
+    ...             "mobile": '555 4242',
     ...         }
     ...     }
     ... }

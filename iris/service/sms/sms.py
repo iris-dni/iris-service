@@ -8,7 +8,7 @@ TESTING = False
 
 def sendSMS(to, subject, message):
     global AWS_CLIENT_CONFIG, AWS_PUBLISH_CONFIG
-    if TESTING:
+    if TESTING or to.startswith('555'):
         print 'sendSMS(%r, %r, %r)' % (to, subject, message)
         return {}
     client = boto3.client(

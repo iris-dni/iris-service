@@ -1006,6 +1006,39 @@ The admin can request supporters::
     ...
 
 
+Create Petition with invalid mobile number::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "Public petition",
+    ...         "owner": {
+    ...             "mobile": "555 42"
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition, expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "u'555 42' does not match..."
+      }
+    }
+
+    >>> response = browser.post_json('/v1/admin/petitions', petition, expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "u'555 42' does not match..."
+      }
+    }
+
+
 Permissions
 ===========
 

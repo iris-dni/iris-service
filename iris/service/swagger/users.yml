@@ -179,3 +179,44 @@ definitions:
                     $ref: '#/definitions/UserAdmin'
             total:
                 type: integer
+
+    UserRelationProperties:
+      type: object
+      properties:
+        email:
+          type: string
+        email_trusted:
+          type: boolean
+          readOnly: true
+        mobile:
+          type: string
+        mobile_trusted:
+          type: boolean
+          readOnly: true
+        firstname:
+          type: string
+        lastname:
+          type: string
+        street:
+          type: string
+        zip:
+          type: string
+
+    UserRelationMobilePattern:
+      type: object
+      properties:
+        mobile:
+          type: string
+          pattern: "^(555|\\+43|\\+49|\\+41)[ 0-9]{4,}"
+
+    UserRelationPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          x-nullable: true
+        class:
+          type: string
+          readOnly: true
+        data:
+          $ref: 'users.yml#/definitions/UserPublic'
