@@ -5,6 +5,12 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - incompatible change
+   DEPLOY:
+    - reset the database
+ - added trust flow when supporting petitions
+ - added trust flow when publishing petitions
+
 2016/10/05 0.1.1
 ================
 
