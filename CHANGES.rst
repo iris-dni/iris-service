@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - fixed support for not logged in users
  - incompatible change
    DEPLOY:
     - reset the database

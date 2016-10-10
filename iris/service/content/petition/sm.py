@@ -11,6 +11,7 @@ from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
+from iris.service.content.user import SessionUser
 
 
 # create a state machine implementation from extensions
@@ -161,6 +162,8 @@ class PetitionStateMachine(object):
                                       data=user_data):
             return
         user = self.request.user
+        if SessionUser.is_session_user(user):
+            user = None
         untrusted = []
         mobile = user_data['mobile']
         if (not user

@@ -140,6 +140,10 @@ class SessionUser(object):
     def is_session_user_id(cls, id):
         return id.startswith(cls.SESSION_USER_PREFIX)
 
+    @classmethod
+    def is_session_user(cls, user):
+        return isinstance(user, SessionUser)
+
     def __repr__(self):
         return "<%s %r>" % (self.__class__.__name__, self.id)
 
