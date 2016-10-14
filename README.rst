@@ -20,6 +20,16 @@ Development
 Setup the project
 -----------------
 
+Libmagic needs to be installed.
+
+Install using Macports::
+
+    $ port install libmagic
+
+Or install using brew::
+
+    $ brew install libmagic
+
 We are using buildout::
 
     $ python-27 bootstrap.py
@@ -57,7 +67,7 @@ Documentation is now available::
 
 Swagger client UI::
 
-    $ open http://localhost:8080/swagger
+    $ open http://localhost:8080/swaggerui
 
 Explore with: http://localhost:8080/api.json
 

@@ -43,6 +43,8 @@ tags:
     description: Statemachine API
   - name: Options
     description: The `OPTIONS` endpoints
+  - name: blob
+    description: Blob API
 
 paths:
   /petitions:
@@ -128,3 +130,8 @@ paths:
 
   /admin/statemachine/{name}:
     $ref: 'statemachine_path.yml#/statemachine_name'
+
+  /blobs:
+    $ref: 'blob_path.yml#/blobs'
+  /blobs/{contentId}:
+    $ref: 'blob_path.yml#/blobs_contentId'

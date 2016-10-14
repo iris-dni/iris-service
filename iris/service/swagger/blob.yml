@@ -1,0 +1,21 @@
+definitions:
+  UploadResponseBody:
+    description: File upload response
+    type: object
+    required:
+      - status
+    properties:
+      data:
+        type: object
+        items:
+          $ref: '#/definitions/BlobMeta'
+      status:
+        type: string
+  BlobMeta:
+    description: Blob meta data
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string

@@ -2,4 +2,6 @@ from .document import File  # noqa
 
 
 def includeme(config):
-    pass
+    config.add_route('blob_api',
+                     '/blobs',
+                     static=True)

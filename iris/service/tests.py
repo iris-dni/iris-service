@@ -51,6 +51,10 @@ def test_suite():
         create_crate_suite('content/confirmation/handler.rst'),
         create_crate_suite('content/confirmation/service.rst'),
 
+        create_crate_suite('content/file/document.rst'),
+        create_crate_suite('content/file/service.rst'),
+        create_crate_doc_suite('files.rst'),
+
         create_crate_suite('security/security.rst'),
 
         create_crate_suite('auth/service.rst'),

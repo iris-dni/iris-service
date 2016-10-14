@@ -1,0 +1,58 @@
+blobs:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  post:
+    tags:
+      - blob
+    summary: Create a blob
+    description: |
+        Store a blob by uploading multipart form data.
+    consumes:
+      - multipart/form-data
+    operationId: create
+    parameters:
+      - name: data
+        in: formData
+        description: the attachment content
+        required: true
+        type: file
+    responses:
+      '200':
+        description: The upload was successful
+        schema:
+          $ref: 'blob.yml#/definitions/UploadResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+blobs_contentId:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - blob
+    summary: Get a blob
+    description: |
+        Get a specific blob by `id`.
+    operationId: get
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+    responses:
+      '200':
+        description: blob found
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

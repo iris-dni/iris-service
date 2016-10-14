@@ -153,7 +153,11 @@ CREATE TABLE files (
         created TIMESTAMP,
         modified TIMESTAMP
     ),
-    state STRING
+    state STRING,
+    original_name STRING,
+    owner_id STRING,
+    storage_type STRING,
+    content_type STRING
 )
 CLUSTERED INTO {{ File.shards }} SHARDS
           WITH (number_of_replicas='{{ File.number_of_replicas }}',

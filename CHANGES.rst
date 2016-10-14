@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added blob service (upload and download)
+   DEPLOY:
+    - recreate files table in Crate
+    - enable libmagic in Docker containers
  - fixed support for not logged in users
  - incompatible change
    DEPLOY:
