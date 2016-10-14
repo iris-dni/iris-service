@@ -48,10 +48,6 @@ cors.Allow-Credentials = true
 cors.Max-Age = 86400
 
 aws.testing = true
-aws.s3.aws_access_key_id = AKIAITNU4PILSATVDCJQ
-aws.s3.aws_secret_access_key = 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
-aws.s3.region_name = eu-central-1
-aws.s3.bucket_name = iris-files-localdev
 
 temp.dir = /tmp/iris-service
 
