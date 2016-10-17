@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/10/17 0.2.0
+================
+
  - fixed support for not logged in users
  - incompatible change
    DEPLOY:
