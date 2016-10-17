@@ -1,4 +1,4 @@
-blobs:
+files:
   options:
     tags:
         - Options
@@ -8,10 +8,10 @@ blobs:
         description: Empty Body
   post:
     tags:
-      - blob
-    summary: Create a blob
+      - file
+    summary: Create a file
     description: |
-        Store a blob by uploading multipart form data.
+        Store a file by uploading multipart form data.
     consumes:
       - multipart/form-data
     operationId: create
@@ -25,12 +25,12 @@ blobs:
       '200':
         description: The upload was successful
         schema:
-          $ref: 'blob.yml#/definitions/UploadResponseBody'
+          $ref: 'files.yml#/definitions/UploadResponseBody'
       default:
         description: Unexpected error
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
-blobs_contentId:
+files_contentId:
   options:
     tags:
         - Options
@@ -42,16 +42,18 @@ blobs_contentId:
         description: Empty Body
   get:
     tags:
-      - blob
-    summary: Get a blob
+      - file
+    summary: Get a file's meta data
     description: |
-        Get a specific blob by `id`.
+        Get a specific file's meta data by `id`.
     operationId: get
     parameters:
       - $ref: "parameters.yml#/parameters/single_contentId"
     responses:
       '200':
-        description: blob found
+        description: file found
+        schema:
+          $ref: 'files.yml#/definitions/FileResponseBody'
       default:
         description: Unexpected error
         schema:

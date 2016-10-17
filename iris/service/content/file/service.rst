@@ -2,20 +2,19 @@
 File Service
 ============
 
-This document describes the REST API to manage blobs.
+This document describes the REST API to manage files.
 
-Blobs (Binary large objects) get used for plain files like images and so
-on. The base route of the blobs service is /v1/blobs.
+The base route of the file service is /v1/files.
 
 
-Uploading a blob
+Uploading a file
 ================
 
 Upload a file using the API::
 
     >>> import webtest
     >>> import collections
-    >>> response = browser.post('/v1/blobs',
+    >>> response = browser.post('/v1/files',
     ...                         collections.OrderedDict([
     ...                             ('data', webtest.Upload('sample.txt', 'sample'))
     ...                         ]))
@@ -28,7 +27,17 @@ Upload a file using the API::
     >>> print_json(response.body)
     {
       "data": {
-        "id": "..."
+        "content_type": "text/plain",
+        "dc": {
+          "created": "...",
+          "modified": "..."
+        },
+        "id": "...",
+        "original_name": "sample.txt",
+        "owner_id": "iris-session:...",
+        "state": "visible",
+        "storage_type": "tmp",
+        "url": "file:///tmp/iris-testing/uploads/..."
       },
       "status": "ok"
     }
@@ -43,7 +52,7 @@ A file object containing meta data is stored in the database::
     >>> print f.original_name
     sample.txt
 
-Blobs are in visible state by default::
+Files are in visible state by default::
 
     >>> print f.state
     visible
@@ -60,7 +69,7 @@ The user id is stored for authenticated users::
     >>> here = os.path.dirname(__file__)
     >>> img_file = open(os.path.join(here, "../../testing/blobs/iptc.jpeg"))
     >>> img_content = img_file.read()
-    >>> response = browser.post('/v1/blobs',
+    >>> response = browser.post('/v1/files',
     ...                         collections.OrderedDict([
     ...                             ('data', webtest.Upload('iptc.jpeg', img_content))
     ...                         ]))
@@ -74,56 +83,38 @@ The file meta data object contains the file's MIME type::
     image/jpeg
 
 
-Permissions
------------
+Get file meta data
+==================
 
-    >>> check_roles("POST", "/v1/blobs")
-    Anonymous                               200 OK
-    Authenticated                           200 OK
-    admin                                   200 OK
-    apikey-user                             200 OK
-    session-user                            200 OK
+Retrieve a file's meta data by providing the id in the URL::
 
-
-Retrieve a blob
-===============
-
-Retrieve a blob by providing the id in the URL::
-
-    >>> response = browser.get('/v1/blobs/%s' % f.id)
+    >>> response = browser.get('/v1/files/%s' % f.id)
     >>> print response.status
     200 OK
+    >>> print_json(response.body)
+    {
+      "data": {
+        "content_type": "image/jpeg",
+        "dc": {
+          "created": "...",
+          "modified": "..."
+        },
+        "id": "...",
+        "original_name": "iptc.jpeg",
+        "owner_id": "...",
+        "state": "visible",
+        "storage_type": "tmp",
+        "url": "file:///tmp/iris-testing/uploads/..."
+      }
+    }
 
-The MIME type is used from the file's meta data::
+An unknown file leads to a 404::
 
-    >>> print response.content_type
-    image/jpeg
-
-    >>> print response.charset
-    UTF-8
-    >>> print response.cache_control
-    max-age=86400
-    >>> response.body == img_content
-    True
-
-An unknown blob leads to a 404::
-
-    >>> response = browser.get('/v1/blobs/unknown', expect_errors=True)
+    >>> response = browser.get('/v1/files/unknown', expect_errors=True)
     >>> print response
     Response: 404 Not Found
     ...
-    {"error": {"code": 404, "description": "Id 'unknown' for content type 'blob' not found"}}
-
-
-Permissions
------------
-
-    >>> check_roles("GET", "/v1/blobs/%s" % f.id)
-    Anonymous                               200 OK
-    Authenticated                           200 OK
-    admin                                   200 OK
-    apikey-user                             200 OK
-    session-user                            200 OK
+    {"error": {"code": 404, "description": "Id 'unknown' for content type 'files' not found"}}
 
 
 OPTION requests for CORS
@@ -131,7 +122,7 @@ OPTION requests for CORS
 
 CORS is supported for the endpoints::
 
-    >>> response = browser.options('/v1/blobs')
+    >>> response = browser.options('/v1/files')
     >>> response.status
     '200 OK'
     >>> print_json(response)
@@ -145,7 +136,26 @@ CORS is supported for the endpoints::
       "Access-Control-Max-Age": "86400"
     }
 
-    >>> response = browser.options('/v1/blobs/something')
+    >>> response = browser.options('/v1/files/something')
     >>> response.status
     '200 OK'
+
+
+Permissions
+===========
+
+    >>> check_roles("POST", "/v1/files")
+    Anonymous                               200 OK
+    Authenticated                           200 OK
+    admin                                   200 OK
+    apikey-user                             200 OK
+    session-user                            200 OK
+
+    >>> check_roles("GET", "/v1/files/%s" % f.id)
+    Anonymous                               200 OK
+    Authenticated                           200 OK
+    admin                                   200 OK
+    apikey-user                             200 OK
+    session-user                            200 OK
+
 

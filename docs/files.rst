@@ -7,20 +7,16 @@ Files Service
 
 All files are handled as "blobs". There is no special image service.
 
-Files can be uploaded and fetched using the blobs service.
+Files can be uploaded and fetched using the files service.
 
 There is no image manipulation included in the IRIS backend. Instead external
 services should be used such as `pilbox <http://agschwender.github.io/pilbox/>`_.
 
 
-Blobs Service
-=============
+File Service
+============
 
-The service is described here: `IRIS-Swagger-UI blobs API </swaggerui#/blob>`_
-
-.. http:get:: /v1/blobs/(string:id)
-
-    Download a file.
+The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
 
 .. doctest::
     :hide:
@@ -28,7 +24,8 @@ The service is described here: `IRIS-Swagger-UI blobs API </swaggerui#/blob>`_
     >>> import webtest
     >>> import collections
 
-.. http:post:: /v1/blobs
+
+.. http:post:: /v1/files
 
     Upload a file.
 
@@ -43,12 +40,48 @@ The service is described here: `IRIS-Swagger-UI blobs API </swaggerui#/blob>`_
         >>> upload_form = collections.OrderedDict([
         ...     ('data', webtest.Upload('sample.txt', 'some_file_content'))
         ... ])
-        >>> response = browser.post('/v1/blobs', upload_form)
+        >>> response = browser.post('/v1/files', upload_form)
         >>> print_json(response.body)
         {
           "data": {
-            "id": "..."
+            "content_type": "text/plain",
+            "dc": {
+              "created": "...",
+              "modified": "..."
+            },
+            "id": "...",
+            "original_name": "sample.txt",
+            "owner_id": "iris-session:...",
+            "state": "visible",
+            "storage_type": "tmp",
+            "url": "file:///tmp/iris-testing/uploads/..."
           },
           "status": "ok"
         }
 
+.. http:get:: /v1/files/(string:id)
+
+    GET a file's meta data.
+
+    To download the real file use the provided `url` in the `data` object. The
+    file is currently downloaded from S3.
+
+    .. sourcecode:: python
+
+        >>> id = response.json['data']['id']
+        >>> HTTP_GET_JSON('/v1/files/%s' % id)
+        {
+          "data": {
+            "content_type": "text/plain",
+            "dc": {
+              "created": "...",
+              "modified": "..."
+            },
+            "id": "...",
+            "original_name": "sample.txt",
+            "owner_id": "iris-session:...",
+            "state": "visible",
+            "storage_type": "tmp",
+            "url": "file:///tmp/iris-testing/uploads/..."
+          }
+        }

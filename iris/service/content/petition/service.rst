@@ -807,6 +807,65 @@ Use the `state` sort::
 Relations
 =========
 
+Images
+------
+
+The `images` property contains a list of files with an additional
+`state` property.
+
+First upload an image::
+
+    >>> import os
+    >>> import webtest
+    >>> import collections
+    >>> here = os.path.dirname(__file__)
+    >>> img_file = open(os.path.join(here, "../../testing/blobs/iptc.jpeg"))
+    >>> img_content = img_file.read()
+    >>> response = browser.post('/v1/files',
+    ...                         collections.OrderedDict([
+    ...                             ('data', webtest.Upload('iptc.jpeg', img_content))
+    ...                         ]))
+    >>> image_id = response.json['data']['id']
+
+The `state` property is stored on the relation to the locations, other public
+properties are resolved::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "petition with images",
+    ...         "images": [{"id": image_id, "state": "hidden"}]
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions?resolve=images', petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": ...
+        "images": [
+          {
+            "class": "File",
+            "data": {
+              "content_type": "image/jpeg",
+              "dc": {
+                "created": "...",
+                "modified": "..."
+              },
+              "id": "...",
+              "original_name": "iptc.jpeg",
+              "owner_id": "iris-session:...",
+              "state": "visible",
+              "storage_type": "tmp",
+              "url": "file:///tmp/iris-testing/uploads/..."
+            },
+            "id": "...",
+            "state": "hidden"
+          }
+        ],
+        ...
+      }
+    }
+
+
 Links
 -----
 
