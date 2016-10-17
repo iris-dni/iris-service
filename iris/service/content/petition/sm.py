@@ -113,12 +113,15 @@ class PetitionStateMachine(object):
         if not owner_rel.get('mobile_trusted'):
             token = kwargs['data'].get('mobile_token')
             if token:
-                Handler.confirm_handler(
-                    'petition_sms',
-                    token,
-                    self.request,
-                    petition=self.petition
-                )
+                try:
+                    Handler.confirm_handler(
+                        'petition_sms',
+                        token,
+                        self.request,
+                        petition=self.petition
+                    )
+                except ValueError:
+                    untrusted.append("mobile_token_error")
             else:
                 untrusted.append('mobile_untrusted')
                 data = {

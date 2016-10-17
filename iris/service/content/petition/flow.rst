@@ -244,6 +244,33 @@ SMS send errors provide a bad request response::
       }
     }
 
+Providing a wrong confirmation code::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "owner": {
+    ...             "mobile": "555 444"
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
+    >>> publish_body = {
+    ...     "data": {
+    ...         "mobile_token": "unknown"
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+      },
+      "reasons": [
+        "mobile_token_error"
+      ],
+      "status": "error"
+    }
+
 
 Manage Letter
 =============

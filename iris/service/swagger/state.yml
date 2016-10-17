@@ -82,13 +82,15 @@ definitions:
 
                 mobile_required: an SMS is sent to the mobile number with a
                                  verification code.
+                mobile_token_error: token verification failed
               type: array
               items:
                 type: string
                 enum:
                   - email_required
-                  - mobile_required
                   - email_untrusted
+                  - mobile_required
                   - mobile_untrusted
+                  - mobile_token_error
             status:
                 type: string
