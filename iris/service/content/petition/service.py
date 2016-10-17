@@ -289,6 +289,8 @@ class PetitionPublicRESTService(rest.RESTService):
                                    replacements={
                                        'text': e.value
                                    })
+        except (KeyError, ValueError) as e:
+            raise self.bad_request(replacements={'message': e.message})
         if result is None:
             raise self.not_found(
                 Errors.document_not_found,

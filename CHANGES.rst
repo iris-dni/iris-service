@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - handle SMS send exceptions with a ValueError
+
 2016/10/17 0.2.0
 ================
 
