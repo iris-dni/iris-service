@@ -9,6 +9,10 @@ unreleased
    DEPLOY:
     - recreate files table in Crate
     - enable libmagic in Docker containers
+
+2016/10/17 0.2.0
+================
+
  - fixed support for not logged in users
  - incompatible change
    DEPLOY:
