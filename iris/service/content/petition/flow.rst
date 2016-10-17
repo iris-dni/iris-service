@@ -266,7 +266,7 @@ Providing a wrong confirmation code::
         ...
       },
       "reasons": [
-        "mobile_token_error"
+        "mobile_verification_failed"
       ],
       "status": "error"
     }

@@ -121,7 +121,7 @@ class PetitionStateMachine(object):
                         petition=self.petition
                     )
                 except ValueError:
-                    untrusted.append("mobile_token_error")
+                    untrusted.append("mobile_verification_failed")
             else:
                 untrusted.append('mobile_untrusted')
                 data = {
@@ -176,11 +176,16 @@ class PetitionStateMachine(object):
             token = data.get('mobile_token')
             if token:
                 # check if the token matches the mobile number
-                msg = Handler.confirm_handler(
-                    'support_sms',
-                    token,
-                    self.request
-                )
+                msg = None
+                try:
+                    msg = Handler.confirm_handler(
+                        'support_sms',
+                        token,
+                        self.request
+                    )
+                except ValueError:
+                    # a ValueError means that confirmation failed
+                    pass
                 if (msg
                     and msg['data']['user']['mobile'] == mobile
                     and msg['data']['petition'] == self.petition.id
