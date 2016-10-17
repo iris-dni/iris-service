@@ -19,6 +19,11 @@ states:
       transitions:
         - trigger: publish
           dest: supportable.pending
+          before:
+            - check_publish
+          after:
+            # let the publisher support the petition
+            - support_petition_on_publish
 
     - name: supportable
       on_enter:

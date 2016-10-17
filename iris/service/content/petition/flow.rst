@@ -221,6 +221,29 @@ Publishing again will not add a new supporter::
       "status": "ok"
     }
 
+SMS send errors provide a bad request response::
+
+    >>> body = {
+    ...     "notify": False
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s/event/reject' % id, body)
+    >>> petition = {
+    ...     "data": {
+    ...         "owner": {
+    ...             "mobile": "555 333"
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
+    >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body, expect_errors=True)
+    >>> print_json(response)
+    {
+      "error": {
+        "code": 400,
+        "description": "Bad request: Can't send SMS"
+      }
+    }
+
 
 Manage Letter
 =============
