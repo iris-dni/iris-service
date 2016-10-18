@@ -50,6 +50,16 @@ def fetch(iid):
     return None
 
 
+def get_s3_url(iid):
+    """Get the S3 url.
+    """
+    return "https://s3.%s.amazonaws.com/%s/%s" % (
+        AWS_CLIENT_CONFIG['region_name'],
+        BUCKET_NAME,
+        iid
+    )
+
+
 def includeme(config):
     global AWS_CLIENT_CONFIG, BUCKET_NAME
     settings = config.get_settings()

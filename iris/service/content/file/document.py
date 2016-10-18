@@ -57,7 +57,8 @@ class File(Document):
         """The download URL to retrieve the file.
         """
         if self.storage_type == StorageType.S3:
-            return "test"
+            from .s3 import get_s3_url
+            return get_s3_url(self.id)
         elif self.storage_type == StorageType.TMP:
             # for local environment or testing
             return "file://%s/%s" % (get_temp_upload_path(), self.id)
