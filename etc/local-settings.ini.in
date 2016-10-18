@@ -49,6 +49,8 @@ cors.Max-Age = 86400
 
 aws.testing = true
 
+temp.dir = /tmp/iris-service
+
 es.hosts = localhost:${ports:crate}
 
 ###

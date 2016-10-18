@@ -1,5 +1,6 @@
 import os
 import doctest
+import shutil
 from functools import partial
 
 from pyramid import paster
@@ -66,7 +67,7 @@ def setUp(test):
 
 
 def tearDown(test):
-    pass
+    shutil.rmtree('/tmp/iris-testing', ignore_errors=True)
 
 
 def setUpCrate(test):

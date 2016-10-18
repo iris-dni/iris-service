@@ -153,7 +153,16 @@ CREATE TABLE files (
         created TIMESTAMP,
         modified TIMESTAMP
     ),
-    state STRING
+    state STRING,
+    original_name STRING,
+    owner_id STRING,
+    storage_type STRING,
+    content_type STRING,
+
+    INDEX original_name_ft
+      USING FULLTEXT(original_name)
+      WITH (ANALYZER = 'edge_ngram_fulltext')
+
 )
 CLUSTERED INTO {{ File.shards }} SHARDS
           WITH (number_of_replicas='{{ File.number_of_replicas }}',

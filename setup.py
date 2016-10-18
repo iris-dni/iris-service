@@ -69,6 +69,7 @@ requires = [
     'rfc3987',
     'webcolors',
     'strict-rfc3339',
+    'python-magic'
 ]
 
 setup(

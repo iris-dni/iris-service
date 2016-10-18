@@ -43,6 +43,10 @@ tags:
     description: Statemachine API
   - name: Options
     description: The `OPTIONS` endpoints
+  - name: file
+    description: File API
+  - name: file_admin
+    description: Administrative File API
 
 paths:
   /petitions:
@@ -128,3 +132,13 @@ paths:
 
   /admin/statemachine/{name}:
     $ref: 'statemachine_path.yml#/statemachine_name'
+
+  /files:
+    $ref: 'file_public_path.yml#/files'
+  /files/{contentId}:
+    $ref: 'file_public_path.yml#/files_contentId'
+
+  /admin/files:
+    $ref: 'file_admin_path.yml#/files'
+  /admin/files/{contentId}:
+    $ref: 'file_admin_path.yml#/files_contentId'

@@ -101,6 +101,8 @@ def app_factory(global_config, **settings):
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.file',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.content.file.s3')
+    config.include('iris.service.content.file.tempstorage')
     config.include('iris.service.content.weblocation',
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.petition',
