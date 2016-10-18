@@ -1,5 +1,5 @@
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property
+from lovely.esdb.properties import Property, LocalRelation
 
 from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 from .tempstorage import get_temp_upload_path
@@ -37,6 +37,7 @@ class File(Document):
     owner_id = Property(
         doc="The ID of the user/session user who uploaded the file"
     )
+    owner = LocalRelation('owner_id', 'User.id')
 
     storage_type = Property(
         doc="""The kind of storage that has been used for the file.

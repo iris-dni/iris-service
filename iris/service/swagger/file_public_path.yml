@@ -25,7 +25,7 @@ files:
       '200':
         description: The upload was successful
         schema:
-          $ref: 'files.yml#/definitions/UploadResponseBody'
+          $ref: 'files.yml#/definitions/UploadResponseBodyPublic'
       default:
         description: Unexpected error
         schema:
@@ -53,7 +53,7 @@ files_contentId:
       '200':
         description: file found
         schema:
-          $ref: 'files.yml#/definitions/FileResponseBody'
+          $ref: 'files.yml#/definitions/FileResponseBodyPublic'
       default:
         description: Unexpected error
         schema:

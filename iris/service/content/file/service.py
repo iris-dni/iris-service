@@ -4,15 +4,17 @@ import uuid
 from lovely.pyrest.rest import RestService, rpcmethod_route
 
 from iris.service import rest
+from iris.service.rest import queries
 from iris.service.rest.swagger import swagger_reduce_response
+from iris.service.security import acl
 
 from .document import File
 from .s3 import upload
 
 
-@RestService("file_api")
-class FileRESTService(rest.RESTService):
-    """The file service API.
+@RestService("file_public_api")
+class FilePublicRESTService(rest.RESTService):
+    """The public file service API.
 
     Allows upload and download of arbitrary files. Files are stored to and
     fetched from S3.
@@ -51,7 +53,15 @@ class FileRESTService(rest.RESTService):
                 }
 
 
+@RestService("file_admin_api",
+             permission=acl.Permissions.AdminFull)
+class FileAdminRESTService(FilePublicRESTService):
+    """The admin file service API.
+    """
+
+
 class FileRESTMapper(rest.DocumentRESTMapperMixin,
+                     rest.SearchableDocumentRESTMapperMixin,
                      rest.RESTMapper):
     """A mapper for the file REST API
     """
@@ -59,3 +69,25 @@ class FileRESTMapper(rest.DocumentRESTMapperMixin,
     NAME = 'files'
 
     DOC_CLASS = File
+
+    QUERY_PARAMS = {
+        'ft': queries.fulltextQuery(['original_name_ft'])
+    }
+
+    FILTER_PARAMS = {
+        'state': queries.termsFilter('state'),
+        'storage_type': queries.termsFilter('storage_type'),
+        'content_type': queries.termsFilter('content_type'),
+        'owner_id': queries.termsFilter('owner_id'),
+    }
+
+    SORT_PARAMS = {
+        'created': queries.fieldSorter('dc.created'),
+        'modified': queries.fieldSorter('dc.modified'),
+        'id': queries.fieldSorter('id'),
+        'state': queries.fieldSorter('state'),
+        'original_name': queries.fieldSorter('original_name'),
+        'owner_id': queries.fieldSorter('owner_id'),
+        'storage_type': queries.fieldSorter('storage_type'),
+        'content_type': queries.fieldSorter('content_type'),
+    }

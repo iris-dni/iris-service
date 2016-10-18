@@ -840,7 +840,7 @@ properties are resolved::
     >>> print_json(response)
     {
       "data": {
-        "city": ...
+        ...
         "images": [
           {
             "class": "File",
@@ -851,10 +851,6 @@ properties are resolved::
                 "modified": "..."
               },
               "id": "...",
-              "original_name": "iptc.jpeg",
-              "owner_id": "iris-session:...",
-              "state": "visible",
-              "storage_type": "tmp",
               "url": "file:///tmp/iris-testing/uploads/..."
             },
             "id": "...",

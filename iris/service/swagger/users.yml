@@ -128,7 +128,7 @@ definitions:
     AdminPOSTCreateBody:
         # The user wrapped in a data property for the POST bodies
         type: object
-        required: 
+        required:
             - data
         properties:
             data:
@@ -136,7 +136,7 @@ definitions:
     AdminPOSTEditBody:
         # The user wrapped in a data property for the POST bodies
         type: object
-        required: 
+        required:
             - data
         properties:
             data:
@@ -145,7 +145,7 @@ definitions:
     ResponseBodyPublic:
         description: Response body providing the public user data wrapped in a data property.
         type: object
-        required: 
+        required:
             - data
         properties:
             data:
@@ -153,7 +153,7 @@ definitions:
     ResponseBodyPrivate:
         description: Response body providing the private user data wrapped in a data property.
         type: object
-        required: 
+        required:
             - data
         properties:
             data:
@@ -161,7 +161,7 @@ definitions:
     ResponseBodyAdmin:
         description: Response body providing the full user data wrapped in a data property.
         type: object
-        required: 
+        required:
             - data
         properties:
             data:
@@ -169,7 +169,7 @@ definitions:
     ListResponseBodyAdmin:
         description: User list response
         type: object
-        required: 
+        required:
             - data
             - total
         properties:
@@ -220,3 +220,30 @@ definitions:
           readOnly: true
         data:
           $ref: 'users.yml#/definitions/UserPublic'
+
+    OwnerRelationPublicWrite:
+      type: object
+      properties:
+        owner:
+          type: object
+          allOf:
+            - $ref: '#definitions/UserRelationProperties'
+            - $ref: '#definitions/UserRelationMobilePattern'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  x-nullable: true
+
+    OwnerRelationAdmin:
+      type: object
+      properties:
+        id:
+          type: string
+          x-nullable: true
+        class:
+          type: string
+          readOnly: true
+        data:
+          $ref: '#/definitions/UserAdmin'
+

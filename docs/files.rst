@@ -45,15 +45,7 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
         {
           "data": {
             "content_type": "text/plain",
-            "dc": {
-              "created": "...",
-              "modified": "..."
-            },
             "id": "...",
-            "original_name": "sample.txt",
-            "owner_id": "iris-session:...",
-            "state": "visible",
-            "storage_type": "tmp",
             "url": "file:///tmp/iris-testing/uploads/..."
           },
           "status": "ok"
@@ -73,15 +65,7 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
         {
           "data": {
             "content_type": "text/plain",
-            "dc": {
-              "created": "...",
-              "modified": "..."
-            },
             "id": "...",
-            "original_name": "sample.txt",
-            "owner_id": "iris-session:...",
-            "state": "visible",
-            "storage_type": "tmp",
             "url": "file:///tmp/iris-testing/uploads/..."
           }
         }
