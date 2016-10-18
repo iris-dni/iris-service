@@ -5,6 +5,11 @@ File Document Tests
 File objects are not real file object, but objects containing meta data for
 files stored on an external location (e.g. S3).
 
+Create a user::
+
+    >>> from iris.service.content.user.document import User
+    >>> user = User()
+
 Create a file object with valid data::
 
     >>> from iris.service.content.file.document import File, StorageType
@@ -12,7 +17,7 @@ Create a file object with valid data::
     ...     id="some_hash",
     ...     state='visible',
     ...     original_name="sample.txt",
-    ...     owner_id="some_owner",
+    ...     owner=user,
     ...     storage_type=StorageType.S3,
     ...     content_type="text/plain"
     ... )

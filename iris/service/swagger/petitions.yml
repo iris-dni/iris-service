@@ -257,7 +257,7 @@ definitions:
             owner:
                 type: object
                 allOf:
-                  - $ref: 'users.yml#definitions/OwnerRelationAdmin'
+                  - $ref: 'users.yml#definitions/UserRelationAdmin'
                   - $ref: 'users.yml#definitions/UserRelationProperties'
             response_token:
                 type: string
@@ -271,7 +271,7 @@ definitions:
             owner:
                 type: object
                 allOf:
-                  - $ref: 'users.yml#definitions/OwnerRelationAdmin'
+                  - $ref: 'users.yml#definitions/UserRelationAdmin'
                   - $ref: 'users.yml#definitions/UserRelationProperties'
                   - $ref: 'users.yml#definitions/UserRelationMobilePattern'
             response_token:
@@ -297,7 +297,7 @@ definitions:
             - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
             - $ref: '#/definitions/WriteProperties'
-            - $ref: 'users.yml#/definitions/OwnerRelationPublicWrite'
+            - $ref: 'users.yml#/definitions/UserRelationPublicWrite'
 
     AdminPetition:
         type: object

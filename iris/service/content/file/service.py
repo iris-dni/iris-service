@@ -47,7 +47,7 @@ class FilePublicRESTService(rest.RESTService):
                     "id": iid,
                     "state": "visible",
                     "original_name": data.filename,
-                    "owner_id": owner and owner.id,
+                    "owner": owner.id,
                     "storage_type": storage_type,
                     "content_type": content_type
                 }
@@ -78,7 +78,7 @@ class FileRESTMapper(rest.DocumentRESTMapperMixin,
         'state': queries.termsFilter('state'),
         'storage_type': queries.termsFilter('storage_type'),
         'content_type': queries.termsFilter('content_type'),
-        'owner_id': queries.termsFilter('owner_id'),
+        'owner': queries.termsFilter('owner_id'),
     }
 
     SORT_PARAMS = {
@@ -87,7 +87,7 @@ class FileRESTMapper(rest.DocumentRESTMapperMixin,
         'id': queries.fieldSorter('id'),
         'state': queries.fieldSorter('state'),
         'original_name': queries.fieldSorter('original_name'),
-        'owner_id': queries.fieldSorter('owner_id'),
+        'owner': queries.fieldSorter('owner_id'),
         'storage_type': queries.fieldSorter('storage_type'),
         'content_type': queries.fieldSorter('content_type'),
     }

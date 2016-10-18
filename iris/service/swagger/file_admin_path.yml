@@ -30,7 +30,7 @@ files:
         items:
           type: string
         collectionFormat: csv
-      - name: owner_id
+      - name: owner
         in: query
         type: array
         items:
@@ -55,8 +55,8 @@ files:
             - -state
             - original_name
             - -original_name
-            - owner_id
-            - -owner_id
+            - owner
+            - -owner
             - storage_type
             - -storage_type
             - content_type

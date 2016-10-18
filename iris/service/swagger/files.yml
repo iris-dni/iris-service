@@ -66,7 +66,7 @@ definitions:
       original_name:
         type: string
       owner:
-        $ref: 'users.yml#/definitions/OwnerRelationAdmin'
+        $ref: 'users.yml#/definitions/UserRelationAdmin'
       state:
         type: string
       storage_type:

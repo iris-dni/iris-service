@@ -846,10 +846,6 @@ properties are resolved::
             "class": "File",
             "data": {
               "content_type": "image/jpeg",
-              "dc": {
-                "created": "...",
-                "modified": "..."
-              },
               "id": "...",
               "url": "file:///tmp/iris-testing/uploads/..."
             },

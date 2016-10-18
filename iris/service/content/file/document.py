@@ -34,10 +34,11 @@ class File(Document):
         doc="The original file name before upload"
     )
 
-    owner_id = Property(
+    _owner_id = Property(
+        name="owner_id",
         doc="The ID of the user/session user who uploaded the file"
     )
-    owner = LocalRelation('owner_id', 'User.id')
+    owner = LocalRelation('_owner_id', 'User.id')
 
     storage_type = Property(
         doc="""The kind of storage that has been used for the file.

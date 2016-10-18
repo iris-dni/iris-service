@@ -60,7 +60,7 @@ Files are in visible state by default::
 
 The session user id is stored for unauthenticated users::
 
-    >>> print f.owner_id
+    >>> print f.owner.id
     iris-session:...
 
 The user id is stored for authenticated users::
@@ -75,7 +75,7 @@ The user id is stored for authenticated users::
     ...                             ('data', webtest.Upload('iptc.jpeg', img_content))
     ...                         ]))
     >>> f = File.get(response.json['data']['id'])
-    >>> f.owner_id == user.id
+    >>> f.owner.id == user.id
     True
 
 The file meta data object contains the file's MIME type::
@@ -318,6 +318,19 @@ List files with the admin GET endpoint::
       ],
       "total": 1
     }
+
+Sort by owner::
+
+    >>> _ = browser.get('/v1/admin/files?sort=-owner')
+
+Filter by owner::
+
+    >>> response = browser.get('/v1/admin/files?owner=%s' % user.id)
+    >>> response.json['total']
+    1
+    >>> response.json['data'][0]['owner']['id'] == user.id
+    True
+
 
 Delete file
 -----------

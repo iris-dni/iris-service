@@ -221,7 +221,7 @@ definitions:
         data:
           $ref: 'users.yml#/definitions/UserPublic'
 
-    OwnerRelationPublicWrite:
+    UserRelationPublicWrite:
       type: object
       properties:
         owner:
@@ -235,7 +235,7 @@ definitions:
                   type: string
                   x-nullable: true
 
-    OwnerRelationAdmin:
+    UserRelationAdmin:
       type: object
       properties:
         id:
