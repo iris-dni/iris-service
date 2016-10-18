@@ -9,6 +9,8 @@ unreleased
    DEPLOY:
     - recreate files table in Crate
     - enable libmagic in Docker containers
+ - provide a reason in the support endpoint if the token is invalid
+ - handle SMS send exceptions with a ValueError
 
 2016/10/17 0.2.0
 ================

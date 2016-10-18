@@ -87,8 +87,9 @@ definitions:
                 type: string
                 enum:
                   - email_required
-                  - mobile_required
                   - email_untrusted
+                  - mobile_required
                   - mobile_untrusted
+                  - mobile_verification_failed
             status:
                 type: string

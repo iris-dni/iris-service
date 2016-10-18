@@ -46,5 +46,5 @@ class Handler(rest.DocumentRESTMapperMixin):
         )
         confirmation = Confirmation.get(token)
         if confirmation is None:
-            return None
+            raise ValueError('Confirmation "%s" not found' % token)
         return handler.confirm(confirmation, **kwargs)
