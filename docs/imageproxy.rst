@@ -42,8 +42,7 @@ Additional information:
   can skip the hostname and only use the file's ID with a leading slash.
   It's also possible to use images from other locations by providing the
   full URL.
-- `client`: The client parameter is required and must contain the value
-  ``iris``.
+- `client`: The client parameter is required and must have the value ``iris``.
 
 
 Signature
@@ -58,9 +57,8 @@ signing::
 
     url=/ba1deb533c324cadbe4a8187fed2b5a2&w=200&h=200&mode=crop&client=iris
 
-The ``passphrase`` is the secret key for signing the request. This should not
-be provided to users, so the signed URLs should be generated in the (Node)
-backend.
+The ``passphrase`` is the secret key for signing the request. The secret key
+must remain secret. Signed URLs have to be generated backend-side.
 
 Signing with NodeJS using the built-in crypto module::
 
