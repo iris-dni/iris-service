@@ -1,5 +1,4 @@
 {%- set aws_config = config['containers']['iris-api-service']['aws'] -%}
 {%- set pilbox = config['containers']['iris-pilbox'] -%}
-client_name = "iris"
 client_key = "{{ pilbox['client_key'] }}"
 implicit_base_url = "http://{{ aws_config['s3.bucket_name'] }}.s3-website.{{ aws_config['s3.region_name'] }}.amazonaws.com"
