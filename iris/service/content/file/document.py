@@ -5,6 +5,9 @@ from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 from .tempstorage import get_temp_upload_path
 
 
+IMAGE_PROXY_URL = None
+
+
 class StorageType(object):
     S3 = "s3"
     TMP = "tmp"
@@ -52,9 +55,16 @@ class File(Document):
         doc="The file's guessed MIME type (e.g. `text/plain`, `image/jpeg`)"
     )
 
+    dimensions = Property(
+        doc="""The dimension (width, height) of an image file.
+
+        Is null for other file types.
+        """
+    )
+
     @property
-    def url(self):
-        """The download URL to retrieve the file.
+    def original_url(self):
+        """The original URL of the file without image proxy.
         """
         if self.storage_type == StorageType.S3:
             from .s3 import get_s3_url
@@ -64,7 +74,23 @@ class File(Document):
             return "file://%s/%s" % (get_temp_upload_path(), self.id)
         return None
 
+    @property
+    def image_proxy_base_url(self):
+        """The image proxy base URL of the file.
+
+        This URL must be extended with further pilbox parameters and a
+        signature.
+        """
+        return "%s/?url=%s" % (IMAGE_PROXY_URL, self.id)
+
     def get_source(self):
         res = super(File, self).get_source()
-        res['url'] = self.url
+        res['original_url'] = self.original_url
+        res['image_proxy_base_url'] = self.image_proxy_base_url
         return res
+
+
+def includeme(config):
+    global IMAGE_PROXY_URL
+    settings = config.get_settings()
+    IMAGE_PROXY_URL = settings['imageproxy.url']

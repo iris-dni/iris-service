@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added dimension and image proxy base url in files
+   DEPLOY: add column dimensions in files table
  - added file service (upload and download)
    DEPLOY:
     - recreate files table in Crate

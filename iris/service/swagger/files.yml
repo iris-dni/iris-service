@@ -42,9 +42,20 @@ definitions:
       id:
         type: string
         readOnly: true
-      url:
+      original_url:
         type: string
         readOnly: true
+      image_proxy_base_url:
+        type: string
+        readOnly: true
+      dimensions:
+        type: object
+        x-nullable: true
+        properties:
+          width:
+            type: integer
+          height:
+            type: integer
       content_type:
         type: string
   FilePrivate:

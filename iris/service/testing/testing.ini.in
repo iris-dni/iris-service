@@ -42,6 +42,7 @@ cors.Max-Age = 86400
 aws.testing = true
 
 temp.dir = /tmp/iris-testing
+imageproxy.url = http://imageproxy
 
 es.hosts = localhost:19342
 

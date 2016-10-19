@@ -31,8 +31,10 @@ Upload a file using the API::
     {
       "data": {
         "content_type": "text/plain",
+        "dimensions": null,
         "id": "...",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "original_url": "file:///tmp/iris-testing/uploads/..."
       },
       "status": "ok"
     }
@@ -41,7 +43,7 @@ Upload a file using the API::
 These properties are contained in the data property::
 
     >>> sorted(response.json['data'].keys())
-    [u'content_type', u'id', u'url']
+    [u'content_type', u'dimensions', u'id', u'image_proxy_base_url', u'original_url']
 
 A file object containing meta data is stored in the database::
 
@@ -96,15 +98,20 @@ Retrieve a file's meta data by providing the id in the URL::
     {
       "data": {
         "content_type": "image/jpeg",
+        "dimensions": {
+          "height": 1,
+          "width": 1
+        },
         "id": "...",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "original_url": "file:///tmp/iris-testing/uploads/..."
       }
     }
 
 These properties are contained in the data property::
 
     >>> sorted(response.json['data'].keys())
-    [u'content_type', u'id', u'url']
+    [u'content_type', u'dimensions', u'id', u'image_proxy_base_url', u'original_url']
 
 An unknown file leads to a 404::
 
@@ -169,15 +176,17 @@ Upload a file using the API::
           "created": "...",
           "modified": "..."
         },
+        "dimensions": null,
         "id": "...",
+        "image_proxy_base_url": "http://imageproxy/?url=...",
         "original_name": "sample.txt",
+        "original_url": "file:///tmp/iris-testing/uploads/...",
         "owner": {
           "class": "User",
           "id": "..."
         },
         "state": "visible",
-        "storage_type": "tmp",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        "storage_type": "tmp"
       },
       "status": "ok"
     }
@@ -199,15 +208,20 @@ Retrieve a file's meta data by providing the id in the URL::
           "created": "...",
           "modified": "..."
         },
+        "dimensions": {
+          "height": 1,
+          "width": 1
+        },
         "id": "...",
+        "image_proxy_base_url": "http://imageproxy/?url=...",
         "original_name": "iptc.jpeg",
+        "original_url": "file:///tmp/iris-testing/uploads/...",
         "owner": {
           "class": "User",
           "id": "..."
         },
         "state": "visible",
-        "storage_type": "tmp",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        "storage_type": "tmp"
       }
     }
 
@@ -217,10 +231,7 @@ Users can be resolved with the `resolve=owner` parameter::
     >>> print_json(response.body)
     {
       "data": {
-        "content_type": "image/jpeg",
-        "dc": {...},
-        "id": "...",
-        "original_name": "iptc.jpeg",
+        ...
         "owner": {
           "class": "User",
           "data": {
@@ -245,9 +256,7 @@ Users can be resolved with the `resolve=owner` parameter::
           },
           "id": "..."
         },
-        "state": "visible",
-        "storage_type": "tmp",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        ...
       }
     }
 
@@ -286,15 +295,19 @@ changed::
           "created": "...",
           "modified": "..."
         },
+        "dimensions": {
+          "height": 1,
+          "width": 1
+        },
         "id": "...",
         "original_name": "iptc.jpeg",
+        "original_url": "file:///tmp/iris-testing/uploads/...",
         "owner": {
           "class": "User",
           "id": "..."
         },
         "state": "hidden",
-        "storage_type": "tmp",
-        "url": "file:///tmp/iris-testing/uploads/..."
+        "storage_type": "tmp"
       }
     }
 

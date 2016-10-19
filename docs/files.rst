@@ -45,8 +45,10 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
         {
           "data": {
             "content_type": "text/plain",
+            "dimensions": null,
             "id": "...",
-            "url": "file:///tmp/iris-testing/uploads/..."
+            "image_proxy_base_url": "http://imageproxy/?url=...",
+            "original_url": "file:///tmp/iris-testing/uploads/..."
           },
           "status": "ok"
         }
@@ -55,10 +57,11 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
 
     GET a file's meta data.
 
-    To download the real file use the provided `url` in the `data` object. The
-    file is currently downloaded from S3.
+    To download the original file use the provided `original_url` in the `data`
+    object.
 
-    Use the :doc:`imageproxy` to fetch image files.
+    To fetch `image` files and possibly resize or crop them, use the
+    :doc:`imageproxy` by enhancing the ``image_proxy_base_url``.
 
     .. sourcecode:: python
 
@@ -67,7 +70,9 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
         {
           "data": {
             "content_type": "text/plain",
+            "dimensions": null,
             "id": "...",
-            "url": "file:///tmp/iris-testing/uploads/..."
+            "image_proxy_base_url": "http://imageproxy/?url=...",
+            "original_url": "file:///tmp/iris-testing/uploads/..."
           }
         }

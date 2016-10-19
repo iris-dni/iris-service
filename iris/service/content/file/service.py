@@ -1,6 +1,8 @@
 import magic
 import uuid
 
+from PIL import Image
+
 from lovely.pyrest.rest import RestService, rpcmethod_route
 
 from iris.service import rest
@@ -39,6 +41,7 @@ class FilePublicRESTService(rest.RESTService):
         if data is not None:
             content_type = magic.from_buffer(data.file.read(1024), mime=True)
             data.file.seek(0)
+            dimensions = self.get_dimensions(data.file)
             iid = uuid.uuid4().hex
             storage_type = upload(iid, data.file, content_type)
             if storage_type:
@@ -49,8 +52,27 @@ class FilePublicRESTService(rest.RESTService):
                     "original_name": data.filename,
                     "owner": owner.id,
                     "storage_type": storage_type,
-                    "content_type": content_type
+                    "content_type": content_type,
+                    "dimensions": dimensions,
                 }
+
+    def get_dimensions(self, f):
+        """Get a dimension object for image files.
+
+        Returns None if not possible (failure or not an image file).
+        """
+        try:
+            image = Image.open(f)
+            size = image.size
+            if size:
+                return {
+                    "width": size[0],
+                    "height": size[1],
+                }
+        except IOError:
+            # not an image file or file corrupted
+            pass
+        return None
 
 
 @RestService("file_admin_api",
