@@ -77,7 +77,7 @@ Resize
 Resize an image by providing the width ``w``. The height will be auto-scaled
 in the original ratio::
 
-    https://imageproxy-iris-dev.lovelysystems.com/?url=/bc3168972802460da7af413ffa6125a7&w=200sig=ec187c34eef0cea77dff7b3f676c0ab39339fe2b
+    https://imageproxy-iris-dev.lovelysystems.com/?url=/bc3168972802460da7af413ffa6125a7&w=200&sig=ec187c34eef0cea77dff7b3f676c0ab39339fe2b
 
 .. image:: ./images/pilbox_resized.jpeg
 
