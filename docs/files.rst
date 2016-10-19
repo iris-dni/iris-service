@@ -58,6 +58,8 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
     To download the real file use the provided `url` in the `data` object. The
     file is currently downloaded from S3.
 
+    Use the :doc:`imageproxy` to fetch image files.
+
     .. sourcecode:: python
 
         >>> id = response.json['data']['id']
