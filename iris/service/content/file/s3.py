@@ -11,7 +11,7 @@ AWS_CLIENT_CONFIG = {}
 BUCKET_NAME = None
 
 
-def upload(iid, file_obj):
+def upload(iid, file_obj, content_type):
     """Upload a file to S3.
 
     Returns the storage type `s3` on success or None on a failure.
@@ -22,7 +22,9 @@ def upload(iid, file_obj):
     if AWS_CLIENT_CONFIG and BUCKET_NAME:
         try:
             s3 = boto3.resource('s3', **AWS_CLIENT_CONFIG)
-            s3.Bucket(BUCKET_NAME).put_object(Key=iid, Body=file_obj)
+            s3.Bucket(BUCKET_NAME).put_object(Key=iid,
+                                              Body=file_obj,
+                                              ContentType=content_type)
             return StorageType.S3
         except botocore.exceptions.ClientError as e:
             logger.error(e)
@@ -53,9 +55,9 @@ def fetch(iid):
 def get_s3_url(iid):
     """Get the S3 url.
     """
-    return "https://s3.%s.amazonaws.com/%s/%s" % (
-        AWS_CLIENT_CONFIG['region_name'],
+    return "http://%s.s3-website.%s.amazonaws.com/%s" % (
         BUCKET_NAME,
+        AWS_CLIENT_CONFIG['region_name'],
         iid
     )
 

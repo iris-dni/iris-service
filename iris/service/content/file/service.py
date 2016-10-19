@@ -40,7 +40,7 @@ class FilePublicRESTService(rest.RESTService):
             content_type = magic.from_buffer(data.file.read(1024), mime=True)
             data.file.seek(0)
             iid = uuid.uuid4().hex
-            storage_type = upload(iid, data.file)
+            storage_type = upload(iid, data.file, content_type)
             if storage_type:
                 owner = self.request.user or self.request.session_user
                 return {
