@@ -11,6 +11,8 @@ IRIS Services
    ./petitions
    ./petition-management
    ./petitioner-flows
+   ./files
+   ./imageproxy
 
 General API Information
 -----------------------
@@ -27,7 +29,6 @@ Not Implemented or Not Validated
    :maxdepth: 2
 
    ./cities
-   ./files
    ./locations
    ./supporter-flows
 
