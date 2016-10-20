@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added town property user relation in swagger spec
  - added file service (upload and download)
    DEPLOY:
     - recreate files table in Crate

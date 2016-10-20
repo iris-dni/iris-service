@@ -38,6 +38,7 @@ The owner is a session owner::
       "mobile": "",
       "mobile_trusted": false,
       "street": "",
+      "town": "",
       "zip": ""
     }
 
@@ -77,6 +78,7 @@ With an authenticated session the real user is assigned to the petition::
       "mobile": "",
       "mobile_trusted": false,
       "street": "",
+      "town": "",
       "zip": ""
     }
 
