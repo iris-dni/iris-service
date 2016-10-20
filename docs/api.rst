@@ -57,6 +57,7 @@ Relations are always represented as an object.
                 "mobile": "",
                 "mobile_trusted": false,
                 "street": "",
+                "town": "",
                 "zip": ""
               },
               ...
@@ -111,6 +112,7 @@ Relations are always represented as an object.
             "mobile": "",
             "mobile_trusted": false,
             "street": "",
+            "town": "",
             "zip": ""
           },
               ...

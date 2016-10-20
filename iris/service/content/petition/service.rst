@@ -57,6 +57,7 @@ The owner is a session user because the browser was not logged in::
       "mobile": "",
       "mobile_trusted": false,
       "street": "",
+      "town": "",
       "zip": ""
     }
 
@@ -107,6 +108,7 @@ Update a petition::
       "mobile": "",
       "mobile_trusted": false,
       "street": "21 jump street",
+      "town": "",
       "zip": ""
     }
 
@@ -167,6 +169,7 @@ and updating the petition::
       "mobile": "",
       "mobile_trusted": false,
       "street": "21 jump street",
+      "town": "",
       "zip": ""
     }
 
@@ -243,6 +246,7 @@ Resolve the session owner::
       "mobile": "",
       "mobile_trusted": false,
       "street": "21 jump street",
+      "town": "",
       "zip": ""
     }
 
@@ -409,6 +413,7 @@ POST on the petition with the data which need to be changed::
           "mobile": "",
           "mobile_trusted": false,
           "street": "21 jump street",
+          "town": "",
           "zip": ""
         },
         ...
@@ -669,6 +674,7 @@ Relations can be resolved::
             "mobile": "",
             "mobile_trusted": false,
             "street": "",
+            "town": "",
             "zip": ""
           },
     ...
@@ -695,6 +701,7 @@ Unresolved::
             "mobile": "",
             "mobile_trusted": false,
             "street": "",
+            "town": "",
             "zip": ""
           },
     ...
@@ -1021,6 +1028,7 @@ The admin can request supporters::
             "mobile": "...",
             "mobile_trusted": false,
             "street": "",
+            "town": "",
             "zip": ""
           }
         },
@@ -1057,6 +1065,7 @@ The admin can request supporters::
             "mobile": "...",
             "mobile_trusted": false,
             "street": "",
+            "town": "",
             "zip": ""
           }
     ...
