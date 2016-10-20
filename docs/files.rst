@@ -50,7 +50,7 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
           "data": {
             "content_type": "image/jpeg",
             "id": "...",
-            "image_proxy_base_url": "http://imageproxy/?url=...",
+            "image_proxy_base_url": "http://imageproxy/?url=/...",
             "info": {
               "height": 1,
               "width": 1
@@ -81,7 +81,7 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
           "data": {
             "content_type": "image/jpeg",
             "id": "...",
-            "image_proxy_base_url": "http://imageproxy/?url=...",
+            "image_proxy_base_url": "http://imageproxy/?url=/...",
             "info": {
               "height": 1,
               "width": 1

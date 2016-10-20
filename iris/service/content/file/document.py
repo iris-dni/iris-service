@@ -82,7 +82,7 @@ class File(Document):
         This URL must be extended with further pilbox parameters and a
         signature.
         """
-        return "%s/?url=%s" % (IMAGE_PROXY_URL, self.id)
+        return "%s/?url=/%s" % (IMAGE_PROXY_URL, self.id)
 
     def get_source(self):
         res = super(File, self).get_source()

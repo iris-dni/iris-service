@@ -40,9 +40,9 @@ class FilePublicRESTService(rest.RESTService):
         """
         if data is not None:
             content_type = magic.from_buffer(data.file.read(1024), mime=True)
-            data.file.seek(0)
             info = self.get_info(data.file, content_type)
             iid = uuid.uuid4().hex
+            data.file.seek(0)
             storage_type = upload(iid, data.file, content_type)
             if storage_type:
                 owner = self.request.user or self.request.session_user
@@ -67,6 +67,7 @@ class FilePublicRESTService(rest.RESTService):
         """Get image infos about a file.
         """
         try:
+            f.seek(0)
             image = Image.open(f)
             size = image.size
             if size:

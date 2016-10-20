@@ -32,7 +32,7 @@ Upload a file using the API::
       "data": {
         "content_type": "text/plain",
         "id": "...",
-        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "image_proxy_base_url": "http://imageproxy/?url=/...",
         "info": {},
         "original_url": "file:///tmp/iris-testing/uploads/..."
       },
@@ -76,9 +76,15 @@ The user id is stored for authenticated users::
     ...                         collections.OrderedDict([
     ...                             ('data', webtest.Upload('iptc.jpeg', img_content))
     ...                         ]))
-    >>> f = File.get(response.json['data']['id'])
+    >>> image_file_id = response.json['data']['id']
+    >>> f = File.get(image_file_id)
     >>> f.owner.id == user.id
     True
+
+The whole file is stored (file pointer reseted to 0)::
+
+    >>> os.path.getsize('/tmp/iris-testing/uploads/%s' % image_file_id)
+    858
 
 The file meta data object contains the file's MIME type::
 
@@ -99,7 +105,7 @@ Retrieve a file's meta data by providing the id in the URL::
       "data": {
         "content_type": "image/jpeg",
         "id": "...",
-        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "image_proxy_base_url": "http://imageproxy/?url=/...",
         "info": {
           "height": 1,
           "width": 1
@@ -177,7 +183,7 @@ Upload a file using the API::
           "modified": "..."
         },
         "id": "...",
-        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "image_proxy_base_url": "http://imageproxy/?url=/...",
         "info": {},
         "original_name": "sample.txt",
         "original_url": "file:///tmp/iris-testing/uploads/...",
@@ -209,7 +215,7 @@ Retrieve a file's meta data by providing the id in the URL::
           "modified": "..."
         },
         "id": "...",
-        "image_proxy_base_url": "http://imageproxy/?url=...",
+        "image_proxy_base_url": "http://imageproxy/?url=/...",
         "info": {
           "height": 1,
           "width": 1
