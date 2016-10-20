@@ -853,12 +853,12 @@ properties are resolved::
             "class": "File",
             "data": {
               "content_type": "image/jpeg",
-              "dimensions": {
+              "id": "...",
+              "image_proxy_base_url": "http://imageproxy/?url=...",
+              "info": {
                 "height": 1,
                 "width": 1
               },
-              "id": "...",
-              "image_proxy_base_url": "http://imageproxy/?url=...",
               "original_url": "file:///tmp/iris-testing/uploads/..."
             },
             "id": "...",

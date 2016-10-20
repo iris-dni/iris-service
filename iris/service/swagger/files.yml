@@ -48,14 +48,8 @@ definitions:
       image_proxy_base_url:
         type: string
         readOnly: true
-      dimensions:
+      info:
         type: object
-        x-nullable: true
-        properties:
-          width:
-            type: integer
-          height:
-            type: integer
       content_type:
         type: string
   FilePrivate:

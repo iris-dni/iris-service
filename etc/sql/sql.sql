@@ -158,10 +158,7 @@ CREATE TABLE files (
     owner_id STRING,
     storage_type STRING,
     content_type STRING,
-    dimensions OBJECT(STRICT) AS (
-        width INTEGER,
-        height INTEGER
-    ),
+    info OBJECT(IGNORED),
 
     INDEX original_name_ft
       USING FULLTEXT(original_name)

@@ -41,7 +41,7 @@ class FilePublicRESTService(rest.RESTService):
         if data is not None:
             content_type = magic.from_buffer(data.file.read(1024), mime=True)
             data.file.seek(0)
-            dimensions = self.get_dimensions(data.file)
+            info = self.get_info(data.file, content_type)
             iid = uuid.uuid4().hex
             storage_type = upload(iid, data.file, content_type)
             if storage_type:
@@ -53,13 +53,18 @@ class FilePublicRESTService(rest.RESTService):
                     "owner": owner.id,
                     "storage_type": storage_type,
                     "content_type": content_type,
-                    "dimensions": dimensions,
+                    "info": info,
                 }
 
-    def get_dimensions(self, f):
-        """Get a dimension object for image files.
+    def get_info(self, f, content_type):
+        """Get additional infos about a file.
+        """
+        if content_type.startswith('image/'):
+            return self.get_image_info(f)
+        return {}
 
-        Returns None if not possible (failure or not an image file).
+    def get_image_info(self, f):
+        """Get image infos about a file.
         """
         try:
             image = Image.open(f)
@@ -72,7 +77,7 @@ class FilePublicRESTService(rest.RESTService):
         except IOError:
             # not an image file or file corrupted
             pass
-        return None
+        return {}
 
 
 @RestService("file_admin_api",

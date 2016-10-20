@@ -6,7 +6,7 @@ unreleased
 ==========
 
  - added dimension and image proxy base url in files
-   DEPLOY: add column dimensions in files table
+   DEPLOY: add column info in files table
  - added town property user relation in swagger spec
  - added file service (upload and download)
    DEPLOY:

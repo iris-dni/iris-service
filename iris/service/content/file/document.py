@@ -55,11 +55,12 @@ class File(Document):
         doc="The file's guessed MIME type (e.g. `text/plain`, `image/jpeg`)"
     )
 
-    dimensions = Property(
-        doc="""The dimension (width, height) of an image file.
+    info = Property(
+        doc="""Additional file info dependent on file type.
 
-        Is null for other file types.
-        """
+        E.g. contains width and height of an image files.
+        """,
+        default=lambda: {},
     )
 
     @property
