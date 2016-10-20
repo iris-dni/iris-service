@@ -854,7 +854,12 @@ properties are resolved::
             "data": {
               "content_type": "image/jpeg",
               "id": "...",
-              "url": "file:///tmp/iris-testing/uploads/..."
+              "image_proxy_base_url": "http://imageproxy/?url=...",
+              "info": {
+                "height": 1,
+                "width": 1
+              },
+              "original_url": "file:///tmp/iris-testing/uploads/..."
             },
             "id": "...",
             "state": "hidden"

@@ -52,6 +52,8 @@ cors.Max-Age = 86400
 aws.{{ key }} = {{ value }}
 {% endfor %}
 
+imageproxy.url = {{ context['imageproxy']['url'] }}
+
 es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:{{config['containers']['iris-crate']['ports'][0][0]}} {%endfor%}
 
 ###
