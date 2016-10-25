@@ -627,11 +627,11 @@ Uses all existing fulltext fields::
 
     >>> response = browser.get('/v1/admin/petitions?ft=harum&sort=score')
     >>> response.json['total']
-    19
+    18
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
     >>> response.json['total']
-    19
+    18
 
 
 Resolve Relations

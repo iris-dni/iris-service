@@ -1,3 +1,4 @@
+import time
 import transitions
 
 from transitions.extensions.nesting import NestedState
@@ -64,17 +65,22 @@ def stateFilter(value):
     }
 
 
+def trendingAggregate(value):
+    return {}
+
+
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
                           rest.SearchableDocumentRESTMapperMixin,
                           rest.RESTMapper):
     """A mapper for the petitions admin REST API
     """
 
-    NAME = 'petitions'
+    NAME = PETITIONS_MAPPER_NAME
 
     DOC_CLASS = Petition
 
     QUERY_PARAMS = {
+        'created_range': queries.rangeFilter('dc.created'),
         'ft': queries.fulltextQuery(['tags_ft',
                                      'title_ft',
                                      'description_ft',
@@ -105,6 +111,9 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'score': queries.scoreSorter,
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
+
+    TRENDING_STEP_START = 7  # days
+    TRENDING_STEP_MAX = 12 * 7
 
     def event(self, contentId, transitionName, data={},
               resolve=[], extend=[]):
@@ -185,6 +194,69 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # The owners email is trusted so we can also trust the email
             # on the relation.
             doc.owner = {'email_trusted': True}
+
+    DEFAULT_TRENDING = (7, 90, 7)
+
+    def search(self,
+               offset=0,
+               limit=10,
+               sort=None,
+               testing_only=False,
+               debug=None,
+               trending=None,
+               **params):
+        if (trending is None
+            and (sort is None
+                 or 'trending' not in sort)
+           ):
+            # use the standard search
+            return super(PetitionsRESTMapper, self).search(
+                offset, limit, sort, testing_only, debug, **params)
+        if trending is None:
+            # provide trending because of the sort
+            trending = self.DEFAULT_TRENDING
+        try:
+            current, tr_max, tr_step = trending
+        except:
+            raise ValueError(
+                'Wrong number (expected 3)'
+                ' of parameters in trending: "%s"' % trending)
+        while True:
+            fromTs = (int(time.time()) - 86400 * current) * 1000
+            query = queries.rangeFilter('dc.created', ['gte'])([fromTs])
+            aggregations = {
+                "trending": {
+                    "terms": {
+                        "field": "relations.petition",
+                        "size": limit
+                    }
+                }
+            }
+            body = {
+                "from": 0,
+                "size": 0,
+                "query": query,
+                "aggregations": aggregations,
+            }
+            searchresult = Supporter.search(body)
+            buckets = searchresult['aggregations']['trending']['buckets']
+            if tr_step > 0 and current < tr_max and len(buckets) < limit:
+                current += tr_step
+                if current > tr_max:
+                    # don't go above the requested days
+                    current = tr_max
+                # next time use a bigger step
+                tr_step *= 2
+                continue
+            data = []
+            keys = [b['key'] for b in buckets[:limit]]
+            if keys:
+                data = self.get(keys)
+            result = {
+                'data': data,
+                'total': len(data),
+            }
+            return result
 
 
 @RestService("petition_public_api")

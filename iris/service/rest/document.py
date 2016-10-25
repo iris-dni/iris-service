@@ -7,7 +7,7 @@ class DocumentRESTMapperMixin(object):
 
     DOC_CLASS = None
 
-    def get(self, contentId, resolve=[], extend=[]):
+    def get(self, contentId, resolve=None, extend=None):
         if isinstance(contentId, list):
             # remove empty ids
             if len(contentId) > 1:
@@ -45,7 +45,7 @@ class DocumentRESTMapperMixin(object):
         doc.delete(refresh=True)
         return self.to_api(doc)
 
-    def to_api(self, doc, resolve=[], extend=[]):
+    def to_api(self, doc, resolve=None, extend=None):
         """Provide the document as a dict to be able to JSON serialize it
         """
         return self.request.to_api(doc, resolve, extend)
@@ -113,14 +113,7 @@ class SearchableDocumentRESTMapperMixin(object):
         filterMust = []
         queryMust = []
         order = []
-        resolve = []
-        extender = []
-
-        if 'resolve' in params:
-            resolve = params.pop('resolve') or []
-
-        if 'extend' in params:
-            extender = params.pop('extend') or []
+        ids_only = 'ids_only' in params
 
         def add_sort(add):
             if not add:
@@ -132,12 +125,12 @@ class SearchableDocumentRESTMapperMixin(object):
         def sortOrder(s):
             return 'desc' if s[0:1] == '-' else 'asc'
 
-        ids_only = 'ids_only' in params
-
         if sort is not None:
             try:
                 for s in sort:
-                    add_sort(self.SORT_PARAMS[s.strip('-')](sortOrder(s)))
+                    sorter = self.SORT_PARAMS[s.strip('-')](sortOrder(s))
+                    if sortOrder is not None:
+                        add_sort(sorter)
             except KeyError as e:
                 raise ValueError("Sorting '%s' not supported" % e.message)
         if not order and 'default' in self.SORT_PARAMS:
@@ -157,7 +150,7 @@ class SearchableDocumentRESTMapperMixin(object):
                 filterMust.append(self.FILTER_PARAMS[key](value))
             elif key in self.GENERIC_FILTER_PARAMS:
                 filterMust.append(self.GENERIC_FILTER_PARAMS[key](value))
-            else:
+            elif key not in ['resolve', 'extend', 'ids_only']:
                 raise KeyError("Parameter '%s' not allowed" % key)
         self._extend_query(queryMust)
         self._extend_filter(filterMust)
@@ -181,6 +174,9 @@ class SearchableDocumentRESTMapperMixin(object):
             "sort": order,
             "query": query,
         }
+        return self._do_query(body, ids_only, testing_only, debug)
+
+    def _do_query(self, body, ids_only, testing_only, debug):
         if ids_only:
             body['fields'] = ["id"]
         result = {
@@ -195,7 +191,7 @@ class SearchableDocumentRESTMapperMixin(object):
             if ids_only:
                 data = [d['fields']['id'][0] for d in hits]
             else:
-                data = self.to_api(hits, resolve, extender)
+                data = self.to_api(hits)
             result = {
                 'data': data,
                 'total': total,

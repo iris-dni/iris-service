@@ -17,6 +17,7 @@ petitions:
       - $ref: "petition_parameters.yml#/parameters/city_filter"
       - $ref: "petition_parameters.yml#/parameters/owner_filter"
       - $ref: "parameters.yml#/parameters/fulltext"
+      - $ref: "petition_parameters.yml#/parameters/trending"
       - name: tags_ft
         in: query
         type: string

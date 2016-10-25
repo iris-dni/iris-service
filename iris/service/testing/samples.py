@@ -5,6 +5,7 @@ from faker import Faker
 
 from iris.service.content.user import User
 from iris.service.content.petition import Petition
+from iris.service.content.petition.document import Supporter
 from iris.service.content.petition.document import StateContainer
 from iris.service.content.city import City
 
@@ -54,7 +55,7 @@ def users(amount, seed='0'):
     User.refresh()
 
 
-def petitions(amount, seed='0'):
+def petitions(amount, seed='0', timerange=None):
     faker = Faker()
     faker.seed(seed)
     random.seed(seed)
@@ -62,10 +63,15 @@ def petitions(amount, seed='0'):
                         )['hits']['hits']
     users = User.search({"query": {"match_all": {}}, "size": 1000}
                        )['hits']['hits']
+    if timerange is None:
+        timerange = (
+            datetime(2016, 1, 1),
+            datetime(2016, 7, 21),
+        )
     for i in range(amount):
         time = faker.date_time_between_dates(
-            datetime_start=datetime(2016, 1, 1),
-            datetime_end=datetime(2016, 7, 21),
+            datetime_start=timerange[0],
+            datetime_end=timerange[1],
             tzinfo=None,
         )
         state_parent, state_name = random.choice([
@@ -103,14 +109,24 @@ def petitions(amount, seed='0'):
             for _ in range(0, random.randint(0, 20)):
                 if bool(random.getrandbits(1)):
                     user = random.choice(users)
-                    petition.addSupporter(request=None, user_id=user.id)
+                    supporter = petition.addSupporter(request=None,
+                                                      user_id=user.id)
                 else:
                     data = {
                         "mobile": faker.phone_number(),
                         "firstname": faker.first_name(),
                         "lastname": faker.last_name(),
                     }
-                    petition.addSupporter(request=None, data=data)
+                    supporter = petition.addSupporter(request=None,
+                                                      data=data)
+                support_time = faker.date_time_between_dates(
+                    datetime_start=time,
+                    datetime_end=timerange[1],
+                    tzinfo=None,
+                )
+                supporter.dc['created'] = support_time
+                supporter.store()
+    Supporter.refresh()
     Petition.refresh()
 
 
