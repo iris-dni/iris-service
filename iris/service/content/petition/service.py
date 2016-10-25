@@ -65,10 +65,6 @@ def stateFilter(value):
     }
 
 
-def trendingAggregate(value):
-    return {}
-
-
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
                           rest.SearchableDocumentRESTMapperMixin,
                           rest.RESTMapper):
