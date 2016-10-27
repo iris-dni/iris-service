@@ -86,7 +86,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
             city = City.get(City.buildPrimaryKey(city_id, provider))
             if operation == 'delete':
                 if city is not None:
-                    #TODO: also remove relations
+                    # TODO: also remove relations
                     city.delete()
                     result.append({'id': city_id,
                                    'irisId': city.id,

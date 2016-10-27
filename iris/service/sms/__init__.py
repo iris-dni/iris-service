@@ -1,1 +1,1 @@
-from .sms import sendSMS
+from .sms import sendSMS  # noqa

@@ -9,7 +9,7 @@ SHORT_ALPHABET = ('17HSkUENfxta3uqdgZGowKIBRDsOPzX'
 SHORT = short_url.UrlEncoder(alphabet=SHORT_ALPHABET)
 
 
-#====================================================================
+# ====================================================================
 #
 # IID generator
 #
