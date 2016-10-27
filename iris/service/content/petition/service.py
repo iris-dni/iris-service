@@ -191,7 +191,10 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # on the relation.
             doc.owner = {'email_trusted': True}
 
-    DEFAULT_TRENDING = (7, 90, 7)
+    DEFAULT_TRENDING = (7,   # look back days
+                        90,  # max look back days
+                        7    # increment
+                       )
 
     def search(self,
                offset=0,
@@ -201,6 +204,23 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
                debug=None,
                trending=None,
                **params):
+        """Extends the search endpoint with the special `trending` sort.
+
+        It is possible to provide the sort name `trending` which will then
+        sort by trending petitions.
+        If this sort is used all parameters except the `limit` are ignored.
+
+        This is implemented by looking up for the petitions with the most
+        supports in the last `look back days` (see DEFAULT_TRENDING).
+        If the query provides less than `limit` petitions the time range is
+        extended by `increment`. This repeated until `max look back days` is
+        reached.
+
+        For testing it is also possible to provide the trending parameters as
+        `trending` query parameter. The parameter must provide a list with
+        exactly 3 integer values. The values are used the same way as
+        DEFAULT_TRENDING is defined.
+        """
         if (trending is None
             and (sort is None
                  or 'trending' not in sort)
