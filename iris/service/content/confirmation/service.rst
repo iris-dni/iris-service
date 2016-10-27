@@ -7,7 +7,6 @@ Prepare test::
     >>> from iris.service.rest.service import testing_push_state
     >>> testing_push_state()
 
-    >>> from iris.service.db.dc import dc_update, dc_now_offset
     >>> from iris.service.content.confirmation.handler import Handler
     >>> from iris.service import rest
     >>> class TestHandler(Handler, rest.RESTMapper):

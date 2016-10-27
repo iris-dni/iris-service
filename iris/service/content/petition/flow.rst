@@ -5,6 +5,7 @@ Petition Flow
 Show the full petition creation and lifetime flow.
 
     >>> import time
+    >>> from iris.service.db import dc
     >>> from iris.service.content.petition import Petition
 
 
@@ -301,6 +302,9 @@ Create a new petition::
 
     >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> _ = browser.post_json('/v1/petitions/%s/event/approved' % id)
+
+Make the petition a winner::
+
     >>> petition = Petition.get(id)
     >>> petition.supporters = {
     ...     "amount": 11,
@@ -309,9 +313,14 @@ Create a new petition::
     >>> _ = petition.store(refresh=True)
     >>> _ = browser.post_json('/v1/petitions/%s/event/check' % id)
     >>> petition = Petition.get(id)
+    >>> petition.state
+    <StateContainer supportable.winner>
     >>> petition.response_token is None
     True
-    >>> petition.state.timer = 0
+
+Let the support time expire::
+
+    >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
     >>> _ = browser.post_json('/v1/petitions/%s/event/tick' % id)
 

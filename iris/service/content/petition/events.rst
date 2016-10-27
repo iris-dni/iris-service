@@ -8,7 +8,7 @@ The petition event endpoints control the petition state machine.
 
     >>> import time
     >>> from iris.service.content.petition import Petition
-    >>> from iris.service.content.petition.sm import APPROVAL_TIME
+    >>> from iris.service.db import dc
     >>> def showState(response):
     ...     return response.json['data']['state']
 
@@ -230,7 +230,7 @@ will switch after the timeout::
     True
 
     >>> petition = Petition.get(id)
-    >>> petition.state.timer = int(time.time()) - APPROVAL_TIME - 1
+    >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
 
     >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
@@ -333,7 +333,7 @@ supporter limit is reached::
     True
 
     >>> petition = Petition.get(id)
-    >>> petition.state.timer = int(time.time()) - APPROVAL_TIME - 1
+    >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
 
     >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)

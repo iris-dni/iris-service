@@ -1,21 +1,30 @@
 import pytz
 import datetime
+import dateutil.parser
 
 
-def now():
+def iso_now():
+    return time_now_offset().isoformat()
+
+
+def iso_now_offset(offset=None):
+    def do():
+        return time_now_offset().isoformat()
+    return do
+
+
+def time_now():
     utc = datetime.datetime.utcnow()
     utc = utc.replace(tzinfo=pytz.UTC)
-    return utc.isoformat()
+    return utc
 
 
-def dc_now_offset(offset=None):
-    def do():
-        utc = datetime.datetime.utcnow()
-        utc = utc.replace(tzinfo=pytz.UTC)
-        if offset is not None:
-            utc += offset
-        return utc.isoformat()
-    return do
+def time_now_offset(offset=None):
+    utc = datetime.datetime.utcnow()
+    utc = utc.replace(tzinfo=pytz.UTC)
+    if offset is not None:
+        utc += offset
+    return utc
 
 
 DC_CREATED = 'created'
@@ -24,11 +33,18 @@ DC_EFFECTIVE = 'effective'
 DC_EXPIRES = 'expires'
 
 DC_DEFAULT = {
-    DC_MODIFIED: now,
-    DC_CREATED: now,
+    DC_MODIFIED: iso_now,
+    DC_CREATED: iso_now,
     DC_EFFECTIVE: None,
     DC_EXPIRES: None,
 }
+
+DC_TIME_PROPERTIES = set([
+    DC_MODIFIED,
+    DC_CREATED,
+    DC_EFFECTIVE,
+    DC_EXPIRES,
+])
 
 
 def dc_defaults(*args, **kwargs):
@@ -61,3 +77,16 @@ def dc_update(doc, **kwargs):
             value = value()
         dc[key] = value
     return dc
+
+
+def dc_time(doc):
+    """Provide an object containing the dc time properties as datetime objects
+    """
+    dc = doc.dc
+    result = {}
+    for key, value in dc.items():
+        if not value:
+            result[key] = value
+        elif key in DC_TIME_PROPERTIES:
+            result[key] = dateutil.parser.parse(value)
+    return result

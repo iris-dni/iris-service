@@ -73,3 +73,25 @@ A special generator which sets all properties to the defaults::
       "expires": null,
       "modified": "...T...+..."
     }
+
+
+Helpers
+=======
+
+Time functions::
+
+    >>> dc.time_now()
+    datetime.datetime(..., tzinfo=<UTC>)
+    >>> dc.iso_now()
+    '...+00:00'
+
+    >>> class DummyDoc(object):
+    ...     dc = dc.dc_defaults_all()()
+
+Convert dc document data to python datetime::
+
+    >>> pprint(dc.dc_time(DummyDoc))
+    {'created': datetime.datetime(..., tzinfo=tzutc()),
+     'effective': None,
+     'expires': None,
+     'modified': datetime.datetime(..., tzinfo=tzutc())}
