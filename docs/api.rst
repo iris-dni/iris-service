@@ -79,7 +79,12 @@ Relations are always represented as an object.
                 "class": "City",
                 "data": {
                   "id": "...",
+                  "location": {
+                    "class": "WebLocation",
+                    "id": null
+                  },
                   "name": "Brookestad",
+                  "portal": {},
                   "provider": "test",
                   "tags": [
                     "portal:aaz"

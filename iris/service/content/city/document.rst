@@ -29,6 +29,10 @@ A city is a `Document`::
     {}
     >>> city.provider
     'test'
+    >>> city.location
+    <RelationResolver WebLocation[None]>
+    >>> city.portal
+    {}
 
 Store the city::
 

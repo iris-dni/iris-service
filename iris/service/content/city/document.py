@@ -1,7 +1,8 @@
 from lovely.esdb.document import Document
-from lovely.esdb.properties import Property
+from lovely.esdb.properties import Property, LocalRelation
 
 from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
+from iris.service.content.weblocation import WebLocation
 
 
 TRESHOLD_NOT_SET = -1
@@ -83,6 +84,45 @@ class City(Document):
         The provider which created the city.
         """
     )
+
+    portal = Property(
+        default=lambda: {},
+        doc="""
+          An object containing information about the associated portal.
+        """,
+    )
+
+    _location = Property(
+        name='location'
+    )
+
+    location = LocalRelation(
+        '_location',
+        'WebLocation.id',
+        doc="""
+          A reference to a WebLocation (id).
+        """
+    )
+
+    @location.setter
+    def _weblocation_setter(self, value):
+        """Set weblocations by url instead of id
+
+        This setter transforms a url property into a web location id for
+        LocalRelation referencing a WebLocation.
+
+        Missing WebLocations are created.
+        """
+        if not value:
+            return value
+        if isinstance(value, dict) and 'url' in value:
+            url = value['url']
+            location = WebLocation.get_url(url)
+            if location is None:
+                location = WebLocation(url=url)
+                location.store()
+            value['id'] = location.id
+        return value
 
     @classmethod
     def buildPrimaryKey(cls, id, provider):

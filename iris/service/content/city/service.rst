@@ -37,7 +37,13 @@ Create a new city::
     ...     "data": {
     ...         "id": "10042",
     ...         "provider": "test",
+    ...         "location": {"url": "https://www.aargauerzeitung.ch"},
     ...         "name": "aarau",
+    ...         "portal": {
+    ...             "id": "nwch:aaz2016",
+    ...             "title": "Aargauer Zeitung",
+    ...             "rss2": "https://newsbox:8004/gemeinde/urlpart-234/rss2.xml"
+    ...         },
     ...         "tags": ["portal:aaz"],
     ...         "zips": ["5004"],
     ...     }
@@ -55,7 +61,16 @@ Create a new city::
           "modified": "..."
         },
         "id": "test:10042",
+        "location": {
+          "class": "WebLocation",
+          "id": "9badb72136e94347c3caf7a37e4f7947"
+        },
         "name": "aarau",
+        "portal": {
+          "id": "nwch:aaz2016",
+          "rss2": "https://newsbox:8004/gemeinde/urlpart-234/rss2.xml",
+          "title": "Aargauer Zeitung"
+        },
         "provider": "test",
         "state": "active",
         "tags": [
@@ -90,6 +105,7 @@ POST on the city with the data which need to be changed::
       "data": {
         ...
         "id": "test:10042",
+        ...
         "name": "Aarau",
         ...
       }
@@ -113,7 +129,16 @@ Use the id from the response above::
           "modified": "..."
         },
         "id": "test:10042",
+        "location": {
+          "class": "WebLocation",
+          "id": "9badb72136e94347c3caf7a37e4f7947"
+        },
         "name": "Aarau",
+        "portal": {
+          "id": "nwch:aaz2016",
+          "rss2": "https://newsbox:8004/gemeinde/urlpart-234/rss2.xml",
+          "title": "Aargauer Zeitung"
+        },
         "provider": "test",
         "state": "active",
         "tags": [

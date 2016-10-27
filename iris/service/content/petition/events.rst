@@ -401,6 +401,7 @@ Event response can also reolve::
     ...                      provider='petition_events',
     ...                      name='Berlin',
     ...                      treshold=42,
+    ...                      location={'url':'https://www.aargauerzeitung.ch'},
     ...                     )
     >>> petition = {
     ...     "data": {
@@ -427,7 +428,12 @@ Event response can also reolve::
           "class": "City",
           "data": {
             "id": "petition_events:1111",
-            "name": "Berlin",
+              "location": {
+                "class": "WebLocation",
+                "id": "9badb72136e94347c3caf7a37e4f7947"
+              },
+              "name": "Berlin",
+              "portal": {},
             "provider": "petition_events",
             "tags": [],
             "treshold": 42,
