@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added trending petition sort
  - added dimension and image proxy base url in files
    DEPLOY: add column info in files table
  - added town property user relation in swagger spec

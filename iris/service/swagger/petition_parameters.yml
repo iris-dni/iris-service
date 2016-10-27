@@ -26,6 +26,19 @@ parameters:
     items:
       type: string
     collectionFormat: csv
+  trending:
+    description: |
+      trending must provide 3 values in the form '7,90,7'
+
+      - 1 = number of days to look back for supporters
+      - 2 = maximum number of days to look back
+      - 3 = increment step if not enough petitions could be found (less than limit)
+    name: trending
+    in: query
+    type: array
+    items:
+      type: integer
+    collectionFormat: csv
   resolve:
     name: resolve
     in: query
@@ -54,17 +67,22 @@ parameters:
     type: array
     items:
       type: string
+      enum:
+        - created
+        - -created
+        - modified
+        - -modified
+        - state
+        - -state
+        - state.parent
+        - -state.parent
+        - supporters.amount
+        - -supporters.amount
+        - trending
+        - score
+        - id
+        - -id
     collectionFormat: csv
-    description: |
-        Possible options
-
-          - created (default)
-          - modified
-          - state
-          - state.parent
-          - supporters.amount
-          - score
-          - id
   token_path:
     name: token
     in: path

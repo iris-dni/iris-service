@@ -79,6 +79,23 @@ def genericTermsQuery(value):
     }
 
 
+def rangeFilter(field, operators=('gte', 'lt')):
+    def handleFilter(value):
+        operations = {}
+        for i, op in enumerate(operators):
+            if i > len(value):
+                break
+            v = value[i]
+            if v:
+                operations[op] = v
+        return {
+            "range": {
+                field: operations
+            }
+        }
+    return handleFilter
+
+
 def fulltextQuery(fields, cutoff_frequency=None):
     """Build a fulltext search query
 
