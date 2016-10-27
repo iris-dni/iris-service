@@ -323,7 +323,7 @@ Approve the petition::
     >>> showListable(response)
     True
 
-Now the petition is a loser when the support timeout occures before the
+Now the petition is a loser when the support timeout occurs before the
 supporter limit is reached::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
@@ -372,8 +372,8 @@ Delete the petition::
 Options Requests
 ================
 
-THe options request on the event endpoint is implementated as a generic
-endpoint allowing to provide any event name.
+The options request on the event endpoint is implemented as a generic endpoint
+allowing to provide any event name.
 
 An existing event name::
 

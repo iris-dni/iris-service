@@ -121,7 +121,7 @@ definitions:
             total:
                 type: integer
 
-# Importer defintions
+# Importer definitions
 
     CityImportData:
         type: object
