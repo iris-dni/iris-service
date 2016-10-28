@@ -9,6 +9,7 @@ unreleased
    DEPLOY: add column 'portal' to Cities table
     - ALTER TABLE cities ADD COLUMN portal OBJECT(IGNORED);
     - ALTER TABLE cities ADD COLUMN location string;
+ - added trending petition sort
  - added dimension and image proxy base url in files
    DEPLOY: add column info in files table
  - added town property user relation in swagger spec
