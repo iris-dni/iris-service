@@ -116,6 +116,12 @@ All Properties::
     ...                 "name": "Aarau",
     ...                 "tags": ["portal:aaz", "kanton:aargau"],
     ...                 "zips": ["5004", "5000", "5001"],
+    ...                 "location": {"url": "https://www.aargauerzeitung.ch"},
+    ...                 "portal": {
+    ...                     "id": "nwch:1007",
+    ...                     "rss2": "https://www.aargauerzeitung.ch/gemeinde/urlpart-1007/rss.xml",
+    ...                     "title": "Aargauer Zeitung"
+    ...                 },
     ...                 "treshold": 100
     ...             }
     ...         },
@@ -143,6 +149,12 @@ All Properties::
     100
     >>> city.contact
     {}
+    >>> pprint(city.portal)
+    {u'id': u'nwch:1007',
+     u'rss2': u'https://www.aargauerzeitung.ch/gemeinde/urlpart-1007/rss.xml',
+     u'title': u'Aargauer Zeitung'}
+    >>> city.location
+    <RelationResolver WebLocation[9badb72136e94347c3caf7a37e4f7947]>
 
 
 Delete a City
