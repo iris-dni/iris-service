@@ -205,6 +205,9 @@ CREATE TABLE cities (
         salutation STRING,
         address STRING
     ),
+    portal OBJECT(IGNORED),
+    -- location: WebLocation relation
+    location STRING,
 
     INDEX tags_ft
       USING FULLTEXT(tags)

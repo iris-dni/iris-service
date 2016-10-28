@@ -26,6 +26,30 @@ definitions:
                     is created.
                 type: integer
                 default: -1
+            portal:
+                type: object
+                x-nullable: true
+                properties:
+                    id:
+                        type: string
+                    title:
+                        type: string
+                    rss2:
+                        type: string
+            location:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        x-nullable: true
+                    url:
+                        type: string
+                        x-nullable: true
+                    class:
+                        type: string
+                        readOnly: true
+                    data:
+                        $ref: 'weblocations.yml#/definitions/WebLocationReadOnly'
     CityPrivate:
         type: object
         x-nullable: true
@@ -121,7 +145,7 @@ definitions:
             total:
                 type: integer
 
-# Importer defintions
+# Importer definitions
 
     CityImportData:
         type: object

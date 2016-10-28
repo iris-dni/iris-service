@@ -31,7 +31,7 @@ def login_embed(request):
 def sso_login_redirect(request):
     loggedIn = False
     data = request.GET
-    #TODO: get a default redirect
+    # TODO: get a default redirect
     redirecturl = data.get('redirecturl')
     response = HTTPFound(redirecturl)
     token = data.get('token')
