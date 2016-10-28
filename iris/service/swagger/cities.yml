@@ -183,6 +183,13 @@ definitions:
                     address:
                         type: string
                         default: ''
+            location:
+                type: object
+                properties:
+                    url:
+                        type: string
+            portal:
+                type: object
     CityImportEntry:
         type: object
         required:
