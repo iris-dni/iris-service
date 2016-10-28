@@ -70,6 +70,7 @@ cities_search:
               - score
               - -score
         collectionFormat: csv
+      - $ref: "city_parameters.yml#/parameters/resolve"
       - $ref: "parameters.yml#/parameters/offset"
       - $ref: "parameters.yml#/parameters/limit"
     responses:
@@ -107,6 +108,7 @@ cities_contentId:
       - name: contentId
         in: path
         type: string
+      - $ref: "city_parameters.yml#/parameters/resolve"
     responses:
       '200':
         description: City found
