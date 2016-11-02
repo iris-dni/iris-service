@@ -14,7 +14,7 @@ A confirmation handler is responsible to create and confirm confirmations. A
 handler must be implemented as a RESTMapper which is needed to register the
 handler and provide an appropriate interface for the API::
 
-    >>> from iris.service.db.dc import dc_update, dc_now_offset
+    >>> from iris.service.db.dc import dc_update, iso_now_offset
     >>> from iris.service.content.confirmation.handler import Handler
     >>> from iris.service import rest
     >>> class TestHandler(Handler, rest.RESTMapper):
@@ -27,7 +27,7 @@ handler and provide an appropriate interface for the API::
     ...         """
     ...         dc_update(
     ...             confirmation,
-    ...             expires=dc_now_offset(datetime.timedelta(seconds=5)),
+    ...             expires=iso_now_offset(datetime.timedelta(seconds=5)),
     ...         )
     ...
     ...     def _confirm(self, confirmation):

@@ -1,12 +1,13 @@
 import copy
-import time
 import yaml
 import os
+from datetime import timedelta
 
 import transitions
 from transitions.extensions import MachineFactory
 from transitions.extensions.nesting import NestedState
 
+from iris.service.db import dc
 from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.confirmation.handler import Handler
@@ -19,7 +20,7 @@ Machine = MachineFactory.get_predefined(nested=True)
 NestedState.separator = '.'
 
 
-APPROVAL_TIME = 10
+APPROVAL_DAYS = 30
 
 
 class ConditionError(Exception):
@@ -90,9 +91,6 @@ class PetitionStateMachine(object):
 
     def not_listable(self, **kwargs):
         self.petition.state.listable = False
-
-    def reset_timer(self, **kwargs):
-        self.petition.state.timer = int(time.time())
 
     def check_publish(self, **kwargs):
         """Check if publishing is possible
@@ -245,10 +243,34 @@ class PetitionStateMachine(object):
     def send_approval_notifications(self, **kwargs):
         pass
 
+    def start_support(self, **kwargs):
+        """Called when switching into a support state
+
+        Sets dc.effective to the current time and dc.expires to current time +
+        APPROVAL_DAYS.
+        """
+        dc.dc_update(self.petition,
+                     **{dc.DC_EFFECTIVE: dc.time_now(),
+                        dc.DC_EXPIRES: dc.time_now_offset(
+                            timedelta(days=APPROVAL_DAYS)
+                        ),
+                       }
+                    )
+
     def is_support_timeout(self, **kwargs):
-        return self.petition.state.timer < (time.time() - APPROVAL_TIME)
+        """Check if support time is over
+
+        If the current time is past dc.expires support time is over.
+        """
+        times = dc.dc_time(self.petition)
+        expire = times.get(dc.DC_EXPIRES, None)
+        return (not expire
+                or expire <= dc.time_now()
+               )
 
     def is_supporter_limit_reached(self, **kwargs):
+        """Check if the supporter treshold is reached
+        """
         supporters = self.petition.supporters
         required = supporters.get('required')
         if required == TRESHOLD_NOT_SET:
@@ -323,9 +345,9 @@ def fromYAML(raw=False):
 
 
 def includeme(config):
-    global APPROVAL_TIME
+    global APPROVAL_DAYS
     settings = config.get_settings()
-    APPROVAL_TIME = int(settings['iris.approval.days']) * 86400
+    APPROVAL_DAYS = int(settings['iris.approval.days'])
     config.add_view(
         condition_error_request_handler,
         renderer='json',

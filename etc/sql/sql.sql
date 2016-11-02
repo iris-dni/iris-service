@@ -36,8 +36,7 @@ CREATE TABLE petitions (
     state OBJECT(IGNORED) AS (
         name STRING,
         parent STRING,
-        listable BOOLEAN,
-        timer LONG
+        listable BOOLEAN
     ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,

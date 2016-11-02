@@ -30,6 +30,13 @@ crate_layer = CrateLayer('crate',
 
 crateDBLayer = CascadedLayer('crateDBLayer', crate_layer)
 
+crate2_layer = CrateLayer('crate2',
+                          crate_home=crate_path(),
+                          crate_config=crate_settings,
+                          crate_exec=crate_path('bin', 'crate'),
+                          port=crate_port)
+crate2DBLayer = CascadedLayer('crate2DBLayer', crate2_layer)
+
 
 def delete_crate_indexes():
     """Deletes the Crate indexes.

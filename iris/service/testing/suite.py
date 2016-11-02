@@ -1,6 +1,7 @@
 import os
 import doctest
 import shutil
+import random
 from functools import partial
 
 from pyramid import paster
@@ -106,8 +107,9 @@ def create_suite(testfile,
 
 
 def create_crate_suite(testfile, level=None):
+    l = random.choice([layer.crateDBLayer, layer.crate2DBLayer])
     return create_suite(testfile,
-                        layer=layer.crateDBLayer,
+                        layer=l,
                         setUp=setUpCrate,
                         tearDown=tearDownCrate,
                         level=level,

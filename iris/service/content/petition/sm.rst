@@ -10,6 +10,13 @@ The state machine needs an instance of a petition::
 
     >>> from iris.service.content.petition import Petition
     >>> petition = Petition()
+    >>> pprint(petition.dc)
+    {'created': '...+00:00',
+     'effective': None,
+     'expires': None,
+     'modified': '...+00:00'}
+
+The initial state::
 
     >>> from iris.service.content.petition.sm import PetitionStateMachine
     >>> sm = PetitionStateMachine(petition, request)
@@ -18,13 +25,22 @@ The state machine needs an instance of a petition::
     >>> petition.state
     <StateContainer draft>
 
-Publish the petition::
+
+Publish the petition
+====================
+
+Transition to publish::
 
     >>> _ = sm.publish()
     Traceback (most recent call last):
     ConditionError: 400
     >>> sm.state
     'draft'
+    >>> pprint(petition.dc)
+    {'created': '...+00:00',
+     'effective': None,
+     'expires': None,
+     'modified': '...+00:00'}
 
 The petition must be in a publishable state::
 
@@ -40,6 +56,11 @@ The petition must be in a publishable state::
     'supportable.pending'
     >>> petition.state
     <StateContainer supportable.pending>
+    >>> pprint(petition.dc)
+    {'created': '...+00:00',
+     'effective': datetime.datetime(..., tzinfo=<UTC>),
+     'expires': datetime.datetime(..., tzinfo=<UTC>),
+     'modified': '...+00:00'}
 
 A new instance of the petition state machine initializes with the current
 state of the petition::
@@ -84,5 +105,3 @@ Enter and Exit code is also executed::
     True
     >>> sm.state
     'supportable.pending'
-    >>> petition.state.timer != 0
-    True
