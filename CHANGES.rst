@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - allow to resolve "city.location" on petitions
  - added Cities.portal
    DEPLOY: add column 'portal' to Cities table
     - ALTER TABLE cities ADD COLUMN portal OBJECT(IGNORED);

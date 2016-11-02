@@ -452,6 +452,62 @@ Update the city relation::
         },
     ...
 
+Resolve the location of a city::
+
+    >>> city = creators.city(
+    ...     id="100042",
+    ...     provider="test",
+    ...     location={"url": "https://www.aargauerzeitung.ch"},
+    ...     name="aarau",
+    ... )
+    >>> petition = {
+    ...     "data": {
+    ...         "city": {"id": city.id}
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/admin/petitions/%s' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "id": "test:100042"
+        },
+    ...
+    >>> response = browser.post_json('/v1/admin/petitions/%s?resolve=city.location' % id,
+    ...                              petition)
+    >>> print_json(response)
+    {
+      "data": {
+        "city": {
+          "class": "City",
+          "data": {
+            "id": "test:100042",
+            "location": {
+              "class": "WebLocation",
+              "data": {
+                "dc": {
+                  ...
+                },
+                "id": "...",
+                "og": null,
+                "state": "visible",
+                "url": "https://www.aargauerzeitung.ch"
+              },
+              "id": "9badb72136e94347c3caf7a37e4f7947"
+            },
+            "name": "aarau",
+            "portal": {},
+            "provider": "test",
+            "tags": [],
+            "treshold": -1,
+            "zips": []
+          },
+          "id": "test:100042"
+        },
+    ...
+
 
 Get a Petition by id
 --------------------
