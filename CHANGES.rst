@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - dc.expires provides the time when support if over
+ - dc.effective provides the publish time
  - allow to resolve "city.location" on petitions
  - added Cities.portal
    DEPLOY: add column 'portal' to Cities table
