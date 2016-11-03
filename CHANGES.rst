@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/11/03 0.3.0
+================
+
  - dc.expires provides the time when support if over
  - dc.effective provides the publish time
  - allow to resolve "city.location" on petitions
