@@ -37,7 +37,7 @@ class Petition(Document):
         default=lambda: StateContainer(name='draft',
                                        parent='',
                                        listable=False,
-                                       timer=0),
+                                       tick=False),
         doc="""
           The current state information of the petition.
           The state is controlled via a state machine.

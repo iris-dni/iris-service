@@ -46,6 +46,9 @@ states:
           - name: active
             on_enter:
                 - listable
+                - enable_tick
+            on_exit:
+                - disable_tick
             transitions:
                 - trigger: check
                   dest: supportable.winner
@@ -63,6 +66,9 @@ states:
             on_enter:
                 - send_winner_mail_to_owner
                 - listable
+                - enable_tick
+            on_exit:
+                - disable_tick
             transitions:
                 - trigger: tick
                   dest: processing.sendLetterRequested

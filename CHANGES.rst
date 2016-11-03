@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added tick property on the petition state
+   DEPLOY:
+    - ALTER TABLE petitions ADD COLUMN state['tick'] BOOLEAN;
+
 2016/11/03 0.3.0
 ================
 

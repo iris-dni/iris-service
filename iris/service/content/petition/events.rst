@@ -18,6 +18,9 @@ petition is allowed to be seen in the public list endpoints::
     >>> def showListable(response):
     ...     return Petition.get(response.json['data']['id']).state.listable
 
+    >>> def showTick(response):
+    ...     return Petition.get(response.json['data']['id']).state.tick
+
 
 Create And Publish Petition
 ===========================
@@ -42,6 +45,8 @@ Create a new petition::
     {u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
+    >>> showTick(response)
+    False
 
     >>> petition = Petition.get(id)
     >>> petition.owner = {"mobile_trusted": True, "email_trusted": True}
@@ -54,6 +59,8 @@ Publish the petition::
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
+    False
+    >>> showTick(response)
     False
 
 
@@ -143,6 +150,8 @@ Publish the petition::
     {u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
+    >>> showTick(response)
+    False
 
 Approve the petition::
 
@@ -150,6 +159,8 @@ Approve the petition::
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
+    True
+    >>> showTick(response)
     True
 
 
@@ -200,6 +211,8 @@ Approve the petition::
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
+    >>> showTick(response)
+    True
 
 Now the 'check' event will switch to state winner if the supporter amount is
 reached::
@@ -208,6 +221,8 @@ reached::
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
+    True
+    >>> showTick(response)
     True
 
     >>> petition = Petition.get(id)
@@ -219,6 +234,8 @@ reached::
     {u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
     True
+    >>> showTick(response)
+    True
 
 The winner state waits until the support time is reached. The 'tick' event
 will switch after the timeout::
@@ -227,6 +244,8 @@ will switch after the timeout::
     >>> showState(response)
     {u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
+    True
+    >>> showTick(response)
     True
 
     >>> petition = Petition.get(id)
@@ -238,6 +257,8 @@ will switch after the timeout::
     {u'name': u'sendLetterRequested', u'parent': u'processing'}
     >>> showListable(response)
     True
+    >>> showTick(response)
+    False
 
 Go through the processing steps::
 

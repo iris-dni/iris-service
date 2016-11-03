@@ -99,8 +99,8 @@ Enter and Exit code is also executed::
     'processing.sendLetterRequested'
     >>> petition.state.listable
     True
-    >>> petition.state.timer
-    0
+    >>> petition.state.tick
+    False
     >>> sm.force_state('supportable.pending')
     True
     >>> sm.state

@@ -115,7 +115,7 @@ Support using an untrusted mobile number::
     >>> response.json['reasons']
     [u'mobile_untrusted']
     >>> showInfo(response)
-    {u'listable': False, u'parent': u'supportable', u'name': u'pending', u'timer': ...}
+    {u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
 
 We must provide the verification token with the support request::

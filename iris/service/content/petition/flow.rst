@@ -302,6 +302,9 @@ Create a new petition::
 
     >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> _ = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> petition = Petition.get(id)
+    >>> petition.state.tick
+    True
 
 Make the petition a winner::
 
@@ -317,6 +320,8 @@ Make the petition a winner::
     <StateContainer supportable.winner>
     >>> petition.response_token is None
     True
+    >>> petition.state.tick
+    True
 
 Let the support time expire::
 
@@ -329,6 +334,8 @@ Now we are requesting to send a letter::
     >>> petition = Petition.get(id)
     >>> petition.state
     <StateContainer processing.sendLetterRequested>
+    >>> petition.state.tick
+    False
 
 The token is set::
 
