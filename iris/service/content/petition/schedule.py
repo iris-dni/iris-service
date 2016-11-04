@@ -1,4 +1,5 @@
 import logging
+from elasticsearch import helpers
 
 from iris.service.elector import Elector
 
@@ -18,16 +19,19 @@ class TickWorker(object):
 
     def __call__(self):
         logging.info('Running petition tick worker')
-        petitions = Petition.search(
-            {
-                "query": {
-                    "term": {
-                        "state.tick": True
-                    }
+        query = {
+            "query": {
+                "term": {
+                    "state.tick": True
                 }
             }
-        )
-        for petition in petitions['hits']['hits']:
+        }
+        for result in helpers.scan(Petition.ES,
+                                   query=query,
+                                   index=Petition.INDEX,
+                                   doc_type=Petition.DOC_TYPE,
+                                  ):
+            petition = Petition.from_raw_es_data(result)
             logging.info('Sending tick to petition "%s"' % petition.id)
             if petition.sm(None).tick():
                 petition.store()
