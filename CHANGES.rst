@@ -5,6 +5,14 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added petition tick worker as distributed cron job
+ - added tick property on the petition state
+   DEPLOY:
+    - ALTER TABLE petitions ADD COLUMN state['tick'] BOOLEAN;
+
+2016/11/03 0.3.0
+================
+
  - dc.expires provides the time when support if over
  - dc.effective provides the publish time
  - allow to resolve "city.location" on petitions

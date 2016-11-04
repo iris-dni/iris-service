@@ -10,11 +10,9 @@ definitions:
                     name:
                         type: string
                         readOnly: true
-                        default: 'draft'
                     parent:
                         type: string
                         readOnly: true
-                        default: ''
     PrivateState:
         type: object
         x-nullable: true
@@ -26,18 +24,15 @@ definitions:
                     name:
                         type: string
                         readOnly: true
-                        default: 'draft'
                     parent:
                         type: string
                         readOnly: true
-                        default: ''
                     listable:
                         type: boolean
                         readOnly: true
-                    timer:
-                        type: integer
+                    tick:
+                        type: boolean
                         readOnly: true
-                        default: 0
 
     ReadOnly:
         type: object
@@ -294,7 +289,6 @@ definitions:
         type: object
         allOf:
             - $ref: '#/definitions/ReadOnly'
-            - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
             - $ref: '#/definitions/WriteProperties'
             - $ref: 'users.yml#/definitions/UserRelationPublicWrite'
@@ -341,7 +335,7 @@ definitions:
                 type: array
                 x-nullable: true
                 items:
-                    $ref: '#/definitions/AdminPetition'
+                    $ref: '#/definitions/Petition'
     ListResponseBody:
         description: Petition list response
         type: object

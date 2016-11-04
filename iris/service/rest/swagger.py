@@ -14,39 +14,43 @@ def swagger_reduce_response(f):
     """
 
     def do(self, *args, **kwargs):
-        global TWEEN_SETTINGS, SPEC_MAPPING_CACHE
-        # call the view method
-        result = f(self, *args, **kwargs)
-        route_mapper = self.request.registry.queryUtility(IRoutesMapper)
-        if route_mapper is None:
-            # for testing
-            return result
-        route_info = route_mapper(self.request)
-        route = route_info['route']
-        cacheKey = route.path + route.predicates[0].text()
-        if cacheKey not in SPEC_MAPPING_CACHE:
-            if TWEEN_SETTINGS is None:
-                TWEEN_SETTINGS = tween.load_settings(self.request.registry)
-            swagger_handler, spec = tween.get_swagger_objects(
-                TWEEN_SETTINGS,
-                route_info,
-                self.request.registry
-            )
-            op = swagger_handler.op_for_request(
-                self.request,
-                route_info=route_info,
-                spec=spec
-            )
-            response_spec = tween.get_response_spec(
-                self.request.response.status_int, op
-            )
-            resolved = api.resolve_refs(spec, response_spec).get('schema', {})
-            spec_mapping = build_spec_mapping(resolved)
-            SPEC_MAPPING_CACHE[cacheKey] = spec_mapping
-        else:
-            spec_mapping = SPEC_MAPPING_CACHE[cacheKey]
-        return reduce_mapping(spec_mapping, result)
+        return reduce_result(self.request,
+                             f(self, *args, **kwargs),
+                            )
     return do
+
+
+def reduce_result(request, result):
+    global TWEEN_SETTINGS, SPEC_MAPPING_CACHE
+    route_mapper = request.registry.queryUtility(IRoutesMapper)
+    if route_mapper is None:
+        # for testing
+        return result
+    route_info = route_mapper(request)
+    route = route_info['route']
+    cacheKey = route.path + route.predicates[0].text()
+    if cacheKey not in SPEC_MAPPING_CACHE:
+        if TWEEN_SETTINGS is None:
+            TWEEN_SETTINGS = tween.load_settings(request.registry)
+        swagger_handler, spec = tween.get_swagger_objects(
+            TWEEN_SETTINGS,
+            route_info,
+            request.registry
+        )
+        op = swagger_handler.op_for_request(
+            request,
+            route_info=route_info,
+            spec=spec
+        )
+        response_spec = tween.get_response_spec(
+            request.response.status_int, op
+        )
+        resolved = api.resolve_refs(spec, response_spec).get('schema', {})
+        spec_mapping = build_spec_mapping(resolved)
+        SPEC_MAPPING_CACHE[cacheKey] = spec_mapping
+    else:
+        spec_mapping = SPEC_MAPPING_CACHE[cacheKey]
+    return reduce_mapping(spec_mapping, result)
 
 
 def reduce_mapping(mapping, data):

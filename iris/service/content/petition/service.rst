@@ -358,7 +358,7 @@ Create a new petition::
           "listable": false,
           "name": "draft",
           "parent": "",
-          "timer": 0
+          "tick": false
         },
         ...
         "title": "Admin petition",
@@ -651,7 +651,7 @@ Search results can be filtered by state::
             "listable": false,
             "name": "draft",
             "parent": "",
-            "timer": 0
+            "tick": false
           },
           ...
         }

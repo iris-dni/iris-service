@@ -33,6 +33,8 @@ iris.apikey.nwch = b428db796829443ed2062702deb02b6c
 iris.city.treshold = 100
 iris.approval.days = 30
 
+statemachine.petitions.cron = */5 * * * *
+
 static.docs = iris.service:docs
               docs
 static.admin = ${buildout:directory}/../iris-admin/public

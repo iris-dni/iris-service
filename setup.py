@@ -39,6 +39,7 @@ requires = [
     'boto3',
     'BeautifulSoup4',
     'Pillow',
+    'croniter',
     'pytz',
     'gevent',
     'jinja2',

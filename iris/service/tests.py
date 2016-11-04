@@ -11,6 +11,7 @@ from .testing.suite import (
 def test_suite():
     s = unittest.TestSuite((
         create_suite('db/dc.rst'),
+        create_suite('cron/README.rst'),
 
         create_suite('rest/service.rst'),
         create_suite('rest/mapper.rst'),
@@ -37,6 +38,7 @@ def test_suite():
         create_crate_suite('content/petition/events.rst'),
         create_crate_suite('content/petition/support.rst'),
         create_crate_suite('content/petition/sm.rst'),
+        create_crate_suite('content/petition/schedule.rst'),
         create_crate_suite('content/petition/trusted.rst'),
         create_crate_suite('content/petition/confirmation.rst'),
         create_crate_doc_suite('petitions.rst'),

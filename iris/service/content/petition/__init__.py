@@ -23,3 +23,13 @@ def includeme(config):
                      static=True,
                      factory=auth.AdminServiceAuthFactory,
                     )
+    settings = config.get_settings()
+    petitions_cron = settings.get('statemachine.petitions.cron')
+    if petitions_cron:
+        from iris.service.elector import Elector
+        from iris.service import cron
+        from . import schedule
+        cron.distributed_spawn(schedule.TickWorker(),
+                               petitions_cron,
+                               Elector('statemachine.petitions.cron')
+                              )

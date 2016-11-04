@@ -36,6 +36,8 @@ iris.apikey.{{ key }} = {{ value }}
 iris.city.treshold = 100
 iris.approval.days = {{ context['iris']['approval_days'] }}
 
+statemachine.petitions.cron = */5 * * * *
+
 static.docs = iris.service:docs
               docs
 

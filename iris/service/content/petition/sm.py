@@ -10,6 +10,8 @@ from transitions.extensions.nesting import NestedState
 from iris.service.db import dc
 from iris.service.db.sequence import IID_SHORTED
 
+from iris.service.rest import swagger
+
 from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 from iris.service.content.user import SessionUser
@@ -37,11 +39,14 @@ def condition_error_request_handler(exc, request):
     Renders a proper json response
     """
     request.response.status = 200
-    return {
-        "data": exc.data,
-        "reasons": exc.reasons,
-        "status": "error"
-    }
+    return swagger.reduce_result(
+        request,
+        {
+            "data": exc.data,
+            "reasons": exc.reasons,
+            "status": "error"
+        }
+    )
 
 
 class PetitionStateMachine(object):
@@ -91,6 +96,12 @@ class PetitionStateMachine(object):
 
     def not_listable(self, **kwargs):
         self.petition.state.listable = False
+
+    def enable_tick(self, **kwargs):
+        self.petition.state.tick = True
+
+    def disable_tick(self, **kwargs):
+        self.petition.state.tick = False
 
     def check_publish(self, **kwargs):
         """Check if publishing is possible
