@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added petition tick worker as distributed cron job
  - added tick property on the petition state
    DEPLOY:
     - ALTER TABLE petitions ADD COLUMN state['tick'] BOOLEAN;
