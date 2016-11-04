@@ -11,6 +11,7 @@ from .testing.suite import (
 def test_suite():
     s = unittest.TestSuite((
         create_suite('db/dc.rst'),
+        create_suite('cron/README.rst'),
 
         create_suite('rest/service.rst'),
         create_suite('rest/mapper.rst'),
