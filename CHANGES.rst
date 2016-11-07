@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/11/07 0.3.1
+================
+
  - approving a petition is only possible if a city is assigned to the petition
  - added petition tick worker as distributed cron job
  - added tick property on the petition state
@@ -14,7 +17,7 @@ unreleased
 2016/11/03 0.3.0
 ================
 
- - dc.expires provides the time when support if over
+ - dc.expires provides the time when support is over
  - dc.effective provides the publish time
  - allow to resolve "city.location" on petitions
  - added Cities.portal
