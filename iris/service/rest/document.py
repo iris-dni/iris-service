@@ -51,17 +51,17 @@ class DocumentRESTMapperMixin(object):
         return self.request.to_api(doc, resolve, extend)
 
     def _prepare_data(self, doc, data):
-        """Prepare the received data before assignemnt to doc
+        """Prepare the received data before assignement to doc
 
         This is called from create and update to give subclasses the chance to
         manipulate the received data before it is assigned to the document.
-        doc is None if this is a create request otherwise is it the document
+        doc is None if this is a create request otherwise it is the document
         before it is manipulated.
         """
         pass
 
     def _prepare_document(self, doc, data, is_create):
-        """Prepare the received data before assignemnt to doc
+        """Prepare the received data before the document is stored
 
         This is called from create and update to give subclasses the chance to
         manipulate the document just before it is stored.

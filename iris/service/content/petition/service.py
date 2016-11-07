@@ -12,7 +12,7 @@ from iris.service.rest.swagger import swagger_reduce_response
 from iris.service.rest.extender import APIExtender
 
 from .document import Petition, Supporter
-from .mapper import PETITIONS_MAPPER_NAME
+from .mapper import PETITIONS_MAPPER_NAME, PETITIONS_PUBLIC_MAPPER_NAME
 
 
 @RestService("petition_admin_api",
@@ -32,7 +32,7 @@ class PetitionPublicRESTService(rest.RESTService):
     not be configured in swagger.
     """
 
-    MAPPER_NAME = PETITIONS_MAPPER_NAME
+    MAPPER_NAME = PETITIONS_PUBLIC_MAPPER_NAME
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')

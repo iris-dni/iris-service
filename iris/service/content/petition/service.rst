@@ -687,7 +687,7 @@ Uses all existing fulltext fields::
 
     >>> response = browser.get('/v1/petitions?ft=Harum&sort=score')
     >>> response.json['total']
-    18
+    15
 
 
 Resolve Relations
@@ -856,13 +856,15 @@ Use the `state` sort::
 
 `state.parent` sorts by parent state::
 
-    >>> response = browser.get('/v1/petitions?sort=state.parent,id&limit=5')
+    >>> response = browser.get('/v1/petitions?sort=state.parent,state,id&limit=5')
     >>> response.json['data'][0]['state']['name']
-    u'draft'
+    u'active'
     >>> response.json['data'][0]['state']['parent']
-    u''
+    u'supportable'
 
-    >>> response = browser.get('/v1/petitions?sort=-state.parent,id&limit=5')
+    >>> response = browser.get('/v1/petitions?sort=-state.parent,-state,id&limit=5')
+    >>> response.json['data'][0]['state']['name']
+    u'winner'
     >>> response.json['data'][0]['state']['parent']
     u'supportable'
 
