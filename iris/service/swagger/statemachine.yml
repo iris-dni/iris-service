@@ -6,6 +6,10 @@ definitions:
                 type: string
             dest:
                 type: string
+            conditions:
+                type: array
+                items:
+                  type: string
 
     SimpleState:
         type: object

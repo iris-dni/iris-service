@@ -236,7 +236,7 @@ class PetitionStateMachine(object):
         """
         self.petition.response_token = None
 
-    def feedback_has_valid_token(self, data, **kwargs):
+    def if_feedback_has_valid_token(self, data, **kwargs):
         return self.petition.response_token == data['token']
 
     def set_petition_feedback(self, data, **kwargs):
@@ -268,7 +268,7 @@ class PetitionStateMachine(object):
                        }
                     )
 
-    def is_support_timeout(self, **kwargs):
+    def if_support_timeout(self, **kwargs):
         """Check if support time is over
 
         If the current time is past dc.expires support time is over.
@@ -279,7 +279,7 @@ class PetitionStateMachine(object):
                 or expire <= dc.time_now()
                )
 
-    def is_supporter_limit_reached(self, **kwargs):
+    def if_supporter_limit_reached(self, **kwargs):
         """Check if the supporter treshold is reached
         """
         supporters = self.petition.supporters
@@ -288,11 +288,20 @@ class PetitionStateMachine(object):
             return False
         return supporters['amount'] >= required
 
+    def if_city_assigned(self, **kwargs):
+        return self.petition.city() is not None
+
 
 HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']
 
 
 def fromYAML(raw=False):
+    """Get state machine configuration from a yml file
+
+    raw=false: result is modified so that it can be used with the transitions
+               package
+    raw=true: result is provided as is to be used in the API
+    """
     data = {}
     filename = os.path.join(os.path.dirname(__file__), 'states.yaml')
     with open(filename, 'r') as yamlFile:

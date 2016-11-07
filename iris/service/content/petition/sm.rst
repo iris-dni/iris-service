@@ -71,6 +71,19 @@ state of the petition::
     >>> petition.state
     <StateContainer supportable.pending>
 
+Approval is only possible if the petition has a city::
+
+    >>> _ = sm.approved()
+    >>> sm.state
+    'supportable.pending'
+
+    >>> city = creators.city(id='4242',
+    ...                      provider='petition_events',
+    ...                      name='HongKong',
+    ...                      treshold=42,
+    ...                      location={'url':'https://www.hongkong.com'},
+    ...                     )
+    >>> petition.city = city
     >>> _ = sm.approved()
     >>> sm.state
     'supportable.active'

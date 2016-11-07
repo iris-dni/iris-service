@@ -283,9 +283,16 @@ response token on the petition.
 
 Create a new petition::
 
+    >>> city = creators.city(id='4242',
+    ...                      provider='petition_events',
+    ...                      name='HongKong',
+    ...                      treshold=42,
+    ...                      location={'url':'https://www.hongkong.com'},
+    ...                     )
     >>> petition = {
     ...     "data": {
     ...         "title": "Manage Letter",
+    ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "email@iris.com",
     ...             "mobile": "555 1234"

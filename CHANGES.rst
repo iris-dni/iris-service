@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - approving a petition is only possible if a city is assigned to the petition
  - added petition tick worker as distributed cron job
  - added tick property on the petition state
    DEPLOY:

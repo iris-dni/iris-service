@@ -37,6 +37,8 @@ states:
             transitions:
                 - trigger: approved
                   dest: supportable.active
+                  conditions:
+                    - if_city_assigned
                 - trigger: reject
                   dest: rejected
                 - trigger: support
@@ -53,11 +55,11 @@ states:
                 - trigger: check
                   dest: supportable.winner
                   conditions:
-                      - is_supporter_limit_reached
+                      - if_supporter_limit_reached
                 - trigger: tick
                   dest: loser
                   conditions:
-                      - is_support_timeout
+                      - if_support_timeout
                 - trigger: support
                   after:
                     - support_petition
@@ -73,7 +75,7 @@ states:
                 - trigger: tick
                   dest: processing.sendLetterRequested
                   conditions:
-                      - is_support_timeout
+                      - if_support_timeout
                 - trigger: support
                   after:
                     - support_petition
@@ -95,7 +97,7 @@ states:
             transitions:
                 - trigger: setFeedback
                   conditions:
-                      - feedback_has_valid_token
+                      - if_feedback_has_valid_token
                   after:
                     - set_petition_feedback
                   dest: processing.letterResponseArrived
