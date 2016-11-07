@@ -157,6 +157,24 @@ Approve the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
+    {u'name': u'pending', u'parent': u'supportable'}
+
+The petition needs a city::
+
+    >>> city = creators.city(id='4242',
+    ...                      provider='petition_events',
+    ...                      name='HongKong',
+    ...                      treshold=42,
+    ...                      location={'url':'https://www.hongkong.com'},
+    ...                     )
+    >>> petition = {
+    ...     "data": {
+    ...         "city": {"id": city.id}
+    ...     }
+    ... }
+    >>> _ = browser.post_json('/v1/petitions/%s' % id, petition)
+    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
@@ -172,6 +190,7 @@ Create a new petition::
     >>> petition = {
     ...     "data": {
     ...         "title": "Create And Publish Petition",
+    ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "email@iris.com",
     ...             "mobile": "555 1234"
@@ -304,6 +323,7 @@ Create a new petition::
     >>> petition = {
     ...     "data": {
     ...         "title": "Create And Publish Petition",
+    ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "email@iris.com",
     ...             "mobile": "555 1234"

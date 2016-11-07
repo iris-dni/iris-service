@@ -20,8 +20,17 @@ An instance of the TickWorker needs to be called::
 
 Create a petition::
 
+    >>> city = creators.city(id='4242',
+    ...                      provider='petition_events',
+    ...                      name='HongKong',
+    ...                      treshold=42,
+    ...                      location={'url':'https://www.hongkong.com'},
+    ...                     )
     >>> from iris.service.content.petition import Petition
-    >>> p1 = creators.petition(title="petition 1")
+    >>> p1 = creators.petition(
+    ...     title="petition 1",
+    ...     city=city,
+    ... )
     >>> p1_id = p1.id
     >>> p1.state, p1.state.tick
     (<StateContainer draft>, False)

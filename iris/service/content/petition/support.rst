@@ -10,12 +10,19 @@ Petition Support
     >>> def showInfo(response):
     ...     print response.json['data']['state']
     ...     print response.json['data']['supporters']
+    >>> city = creators.city(id='4242',
+    ...                      provider='petition_events',
+    ...                      name='HongKong',
+    ...                      treshold=42,
+    ...                      location={'url':'https://www.hongkong.com'},
+    ...                     )
 
 Create a new petition::
 
     >>> petition = {
     ...     "data": {
     ...         "title": "Support Petition",
+    ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "email@iris.com",
     ...             "mobile": "555 4321"
