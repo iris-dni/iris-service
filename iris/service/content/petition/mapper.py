@@ -5,6 +5,7 @@ from transitions.extensions.nesting import NestedState
 
 from iris.service import rest
 from iris.service.rest import queries
+from iris.service.rest.extender import APIExtender
 
 from iris.service.content.user import SessionUser
 
@@ -327,3 +328,26 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
         'id': queries.fieldSorter('id'),
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
+
+
+class SecurityExtender(object):
+    """Makes sure that private data is filtered
+
+    This extender is called for every petition which is converted using to_api
+    on the request.
+    """
+
+    NAME = 'Petition.secure'
+
+    def __init__(self, request, docs):
+        self.request = request
+        self.docs = docs
+
+    def extend(self, docs):
+        if not docs:
+            return
+        user = self.request.user
+        is_session_user = SessionUser.is_session_user(user)
+        owner = self.docs.owner()
+
+APIExtender.register(SecurityExtender.NAME, SecurityExtender)
