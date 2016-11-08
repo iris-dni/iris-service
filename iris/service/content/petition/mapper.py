@@ -3,6 +3,7 @@ import transitions
 
 from transitions.extensions.nesting import NestedState
 
+from iris.service.security import acl
 from iris.service import rest
 from iris.service.rest import queries
 from iris.service.rest.extender import APIExtender
@@ -330,14 +331,21 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
     }
 
 
-class SecurityExtender(object):
+class PetitionExtender(object):
     """Makes sure that private data is filtered
 
     This extender is called for every petition which is converted using to_api
     on the request.
     """
 
-    NAME = 'Petition.secure'
+    NAME = 'Petition.extend'
+
+    PUBLIC_OWNER_PROPS = [
+        'id',
+        'class',
+        'firstname',
+        'lastname',
+    ]
 
     def __init__(self, request, docs):
         self.request = request
@@ -346,8 +354,18 @@ class SecurityExtender(object):
     def extend(self, docs):
         if not docs:
             return
-        user = self.request.user
-        is_session_user = SessionUser.is_session_user(user)
-        owner = self.docs.owner()
+        if not self.request.has_permission(acl.Permissions.AdminFull):
+            user = self.request.user
+            if not user or (user.id != docs['owner']['id']):
+                self.remove_private_data(docs)
 
-APIExtender.register(SecurityExtender.NAME, SecurityExtender)
+    def remove_private_data(self, doc):
+        owner = doc['owner']
+        filtered_owner = {}
+        for name in self.PUBLIC_OWNER_PROPS:
+            if name in owner:
+                filtered_owner[name] = owner[name]
+        doc['owner'] = filtered_owner
+
+
+APIExtender.register(PetitionExtender.NAME, PetitionExtender)

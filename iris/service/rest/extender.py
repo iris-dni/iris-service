@@ -8,9 +8,9 @@ class APIExtender(object):
     parameter.
 
     Additional the extender checks if there is an extender with the name
-    `<__class__.__name__>` and executes it. This can be used to do additional
-    operations on the response data without the need of an explicit request of
-    the extend.
+    `<__class__.__name__>.extend` and executes it. This can be used to do
+    additional operations on the response data without the need of an explicit
+    request of the extend.
     """
 
     EXTENDER_REGISTRY = {}
@@ -27,13 +27,17 @@ class APIExtender(object):
     def extend(self, docs):
         for extender in self.extenders:
             extender.extend(docs)
-        for doc, api_doc in itertools.izip(self.docs, docs):
+        if not isinstance(docs, list):
+            zip_docs = [docs]
+        else:
+            zip_docs = docs
+        for doc, api_doc in itertools.izip(self.docs, zip_docs):
             if doc is None or api_doc is None:
                 continue
-            secure_name = doc.__class__.__name__ + '.secure'
-            if secure_name not in self.EXTENDER_REGISTRY:
+            extend_name = doc.__class__.__name__ + '.extend'
+            if extend_name not in self.EXTENDER_REGISTRY:
                 continue
-            self.EXTENDER_REGISTRY[secure_name](self.request,
+            self.EXTENDER_REGISTRY[extend_name](self.request,
                                                 doc
                                                ).extend(api_doc)
 

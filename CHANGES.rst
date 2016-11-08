@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added general petition extender to remove private data from the owner
+   relation.
+
 2016/11/07 0.3.1
 ================
 
