@@ -40,6 +40,11 @@ def create_object(cls, *args, **kwargs):
     return obj
 
 
+def browser_getter():
+    app = get_app()
+    return TestApp(app, extra_environ={'REMOTE_ADDR': '127.0.0.1'})
+
+
 class Creators(object):
     """Provides access to document classes
 
@@ -62,6 +67,7 @@ def setUp(test):
     app = get_app()
     testapp = TestApp(app, extra_environ={'REMOTE_ADDR': '127.0.0.1'})
     test.globs['browser'] = testapp
+    test.globs['get_browser'] = browser_getter
     util.setupGlobs(test.globs, testapp, app)
     test.globs['creators'] = Creators
     test.globs['samples'] = samples

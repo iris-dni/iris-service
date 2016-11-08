@@ -21,6 +21,11 @@ petition is allowed to be seen in the public list endpoints::
     >>> def showTick(response):
     ...     return Petition.get(response.json['data']['id']).state.tick
 
+A browser which is logged in as an administrator::
+
+    >>> admin = get_browser()
+    >>> _ = ssologin(admin, {'email': 'tester@iris.com', 'roles': ['admin']})
+
 
 Create And Publish Petition
 ===========================
@@ -104,7 +109,7 @@ Reject the petition::
     >>> body = {
     ...     "notify": False
     ... }
-    >>> response = browser.post_json(
+    >>> response = admin.post_json(
     ...     '/v1/petitions/%s/event/reject' % id,
     ...     body
     ... )
@@ -155,7 +160,7 @@ Publish the petition::
 
 Approve the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
     {u'name': u'pending', u'parent': u'supportable'}
 
@@ -173,7 +178,7 @@ The petition needs a city::
     ...     }
     ... }
     >>> _ = browser.post_json('/v1/petitions/%s' % id, petition)
-    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -225,7 +230,7 @@ Publish the petition::
 
 Approve the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -236,7 +241,7 @@ Approve the petition::
 Now the 'check' event will switch to state winner if the supporter amount is
 reached::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/check' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -248,7 +253,7 @@ reached::
     >>> petition.supporters['amount'] = 11
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/check' % id)
     >>> showState(response)
     {u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
@@ -259,7 +264,7 @@ reached::
 The winner state waits until the support time is reached. The 'tick' event
 will switch after the timeout::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
@@ -271,7 +276,7 @@ will switch after the timeout::
     >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'sendLetterRequested', u'parent': u'processing'}
     >>> showListable(response)
@@ -281,7 +286,7 @@ will switch after the timeout::
 
 Go through the processing steps::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/letterSent' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
     >>> showState(response)
     {u'name': u'waitForLetterResponse', u'parent': u'processing'}
     >>> showListable(response)
@@ -299,7 +304,7 @@ Go through the processing steps::
     ...         }
     ...     }
     ... }
-    >>> response = browser.post_json(
+    >>> response = admin.post_json(
     ...     '/v1/petitions/%s/event/setFeedback' % id,
     ...     body
     ... )
@@ -308,7 +313,7 @@ Go through the processing steps::
     >>> showListable(response)
     True
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/close' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/close' % id)
     >>> showState(response)
     {u'name': u'closed', u'parent': u''}
     >>> showListable(response)
@@ -358,7 +363,7 @@ Publish the petition::
 
 Approve the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -367,7 +372,7 @@ Approve the petition::
 Now the petition is a loser when the support timeout occurs before the
 supporter limit is reached::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
@@ -377,7 +382,7 @@ supporter limit is reached::
     >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'name': u'loser', u'parent': u''}
     >>> showListable(response)
@@ -403,7 +408,7 @@ Create a new petition::
 
 Delete the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/delete' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/delete' % id)
     >>> showState(response)
     {u'name': u'deleted', u'parent': u''}
     >>> showListable(response)
@@ -540,8 +545,7 @@ It is possible to force the state machine into any state::
 
 The user must have the 'admin' role::
 
-    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
-    >>> response = browser.post_json(
+    >>> response = admin.post_json(
     ...     '/v1/petitions/%s/event/force_state' % id,
     ...     body
     ... )
@@ -549,7 +553,7 @@ The user must have the 'admin' role::
     {
       "data": {
         ...
-        "id": "15bHV",
+        "id": "...",
         ...
         "state": {
           "name": "closed",

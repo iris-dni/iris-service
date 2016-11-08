@@ -8,6 +8,11 @@ Show the full petition creation and lifetime flow.
     >>> from iris.service.db import dc
     >>> from iris.service.content.petition import Petition
 
+A browser which is logged in as an administrator::
+
+    >>> admin = get_browser()
+    >>> _ = ssologin(admin, {'email': 'admin@iris.com', 'roles': ['admin']})
+
 
 Create Petition
 ===============
@@ -114,7 +119,7 @@ Petitions which are draft or rejected can be published::
           "email": "",
           "email_trusted": false,
           "firstname": "",
-          "id": "1Zbfk",
+          "id": "...",
           "lastname": "",
           "mobile": "",
           "mobile_trusted": false,
@@ -153,7 +158,7 @@ Petitions which are draft or rejected can be published::
           "email": "email@iris.com",
           "email_trusted": false,
           "firstname": "",
-          "id": "1Zbfk",
+          "id": "...",
           "lastname": "",
           "mobile": "555 1234",
           "mobile_trusted": false,
@@ -206,7 +211,7 @@ Reject the petition::
     >>> body = {
     ...     "notify": False
     ... }
-    >>> response = browser.post_json('/v1/petitions/%s/event/reject' % id, body)
+    >>> response = admin.post_json('/v1/petitions/%s/event/reject' % id, body)
 
 Publishing again will not add a new supporter::
 
@@ -229,7 +234,7 @@ SMS send errors provide a bad request response::
     >>> body = {
     ...     "notify": False
     ... }
-    >>> response = browser.post_json('/v1/petitions/%s/event/reject' % id, body)
+    >>> response = admin.post_json('/v1/petitions/%s/event/reject' % id, body)
     >>> petition = {
     ...     "data": {
     ...         "owner": {
@@ -308,7 +313,7 @@ Create a new petition::
     >>> _ = petition.store(refresh=True)
 
     >>> _ = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
-    >>> _ = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> _ = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> petition = Petition.get(id)
     >>> petition.state.tick
     True
@@ -321,7 +326,7 @@ Make the petition a winner::
     ...     "required": 10,
     ... }
     >>> _ = petition.store(refresh=True)
-    >>> _ = browser.post_json('/v1/petitions/%s/event/check' % id)
+    >>> _ = admin.post_json('/v1/petitions/%s/event/check' % id)
     >>> petition = Petition.get(id)
     >>> petition.state
     <StateContainer supportable.winner>
@@ -334,7 +339,7 @@ Let the support time expire::
 
     >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})
     >>> _ = petition.store(refresh=True)
-    >>> _ = browser.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> _ = admin.post_json('/v1/petitions/%s/event/tick' % id)
 
 Now we are requesting to send a letter::
 
@@ -352,7 +357,7 @@ The token is set::
 
 Now someone created the letter::
 
-    >>> _ = browser.post_json('/v1/petitions/%s/event/letterSent' % id)
+    >>> _ = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
 
     >>> petition = Petition.get(id)
     >>> petition.state
@@ -380,7 +385,7 @@ Now the feedback can be set if the token is correct::
     ...         }
     ...     }
     ... }
-    >>> response = browser.post_json(
+    >>> response = admin.post_json(
     ...     '/v1/petitions/%s/event/setFeedback' % id,
     ...     body,
     ...     expect_errors=True
@@ -404,7 +409,7 @@ With a valid token the feedback can be set::
     ...         }
     ...     }
     ... }
-    >>> response = browser.post_json(
+    >>> response = admin.post_json(
     ...     '/v1/petitions/%s/event/setFeedback' % id,
     ...     body
     ... )

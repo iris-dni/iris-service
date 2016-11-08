@@ -17,6 +17,11 @@ Petition Support
     ...                      location={'url':'https://www.hongkong.com'},
     ...                     )
 
+A browser which is logged in as an administrator::
+
+    >>> admin = get_browser()
+    >>> _ = ssologin(admin, {'email': 'admin@iris.com', 'roles': ['admin']})
+
 Create a new petition::
 
     >>> petition = {
@@ -73,8 +78,8 @@ Support the pending petition::
     {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-t:555 4321']>,
-     <Supporter [id=u'1n3gf-u:...']>]
+    [<Supporter [id=u'...-t:555 4321']>,
+     <Supporter [id=u'...-u:...']>]
 
 The same user supports again::
 
@@ -94,8 +99,8 @@ The same user supports again::
     {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-t:555 4321']>,
-     <Supporter [id=u'1n3gf-u:...']>]
+    [<Supporter [id=u'...-t:555 4321']>,
+     <Supporter [id=u'...-u:...']>]
 
 Support using an untrusted mobile number::
 
@@ -116,7 +121,7 @@ Support using an untrusted mobile number::
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
-    sendSMS(u'555 4242', 'Support', u'Your verification code is "1fjnH"')
+    sendSMS(u'555 4242', 'Support', u'Your verification code is "..."')
     >>> response.json['status']
     u'error'
     >>> response.json['reasons']
@@ -127,7 +132,7 @@ Support using an untrusted mobile number::
 
 We must provide the verification token with the support request::
 
-    >>> supporter['data']['mobile_token'] = "1fjnH"
+    >>> supporter['data']['mobile_token'] = "14Y6t"
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
@@ -148,9 +153,9 @@ We must provide the verification token with the support request::
     }
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-t:555 4321']>,
-     <Supporter [id=u'1n3gf-u:1Zbfk']>,
-     <Supporter [id=u'1n3gf-u:1QjR3']>]
+    [<Supporter [id=u'...-t:555 4321']>,
+     <Supporter [id=u'...-u:...']>,
+     <Supporter [id=u'...-u:...']>]
 
 The same mobile number again::
 
@@ -163,13 +168,13 @@ The same mobile number again::
     {u'amount': 3, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'1n3gf-t:555 4321']>,
-     <Supporter [id=u'1n3gf-u:1Zbfk']>,
-     <Supporter [id=u'1n3gf-u:1QjR3']>]
+    [<Supporter [id=u'...-t:555 4321']>,
+     <Supporter [id=u'...-u:...']>,
+     <Supporter [id=u'...-u:...']>]
 
 Approve the petition::
 
-    >>> response = browser.post_json('/v1/petitions/%s/event/approved' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showInfo(response)
     {u'name': u'active', u'parent': u'supportable'}
     {u'amount': 3, u'required': 6}

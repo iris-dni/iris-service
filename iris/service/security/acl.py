@@ -17,4 +17,6 @@ class Permissions(object):
     Import = 'import'
     ListSupporters = 'listsupporters'
 
+    AdminPetition = 'admin:petition'
+
     AdminFull = 'admin:full'
