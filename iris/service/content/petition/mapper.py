@@ -3,8 +3,10 @@ import transitions
 
 from transitions.extensions.nesting import NestedState
 
+from iris.service.security import acl
 from iris.service import rest
 from iris.service.rest import queries
+from iris.service.rest.extender import APIExtender
 
 from iris.service.content.user import SessionUser
 
@@ -12,6 +14,7 @@ from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
 
 PETITIONS_MAPPER_NAME = 'petitions'
+PETITIONS_PUBLIC_MAPPER_NAME = 'petitions_public'
 
 
 def stateFilter(value):
@@ -51,7 +54,7 @@ def stateFilter(value):
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
                           rest.SearchableDocumentRESTMapperMixin,
                           rest.RESTMapper):
-    """A mapper for the petitions admin REST API
+    """A mapper for the petitions REST API
     """
 
     NAME = PETITIONS_MAPPER_NAME
@@ -221,7 +224,16 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             raise ValueError(
                 'Wrong number (expected 3)'
                 ' of parameters in trending: "%s"' % trending)
+        first = True
         while True:
+            if not first:
+                current += tr_step
+                if current > tr_max:
+                    # don't go above the requested days
+                    current = tr_max
+                # next time use a bigger step
+                tr_step *= 2
+            first = False
             fromTs = (int(time.time()) - 86400 * current) * 1000
             query = queries.rangeFilter('dc.created', ['gte'])([fromTs])
             aggregations = {
@@ -241,22 +253,57 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             searchresult = Supporter.search(body)
             buckets = searchresult['aggregations']['trending']['buckets']
             if tr_step > 0 and current < tr_max and len(buckets) < limit:
-                current += tr_step
-                if current > tr_max:
-                    # don't go above the requested days
-                    current = tr_max
-                # next time use a bigger step
-                tr_step *= 2
+                # not enough results
                 continue
             data = []
             keys = [b['key'] for b in buckets[:limit]]
             if keys:
-                data = self.get(keys)
+                data = self.listable_get(keys)
+            if tr_step > 0 and current < tr_max and len(data) < limit:
+                # not enough results
+                continue
             result = {
-                'data': data,
+                'data': self.to_api(data),
                 'total': len(data),
             }
             return result
+
+    def listable_get(self, ids):
+        """Get only listable petitions by id
+        """
+        query = {
+            "filtered": {
+                "filter": {
+                    "bool": {
+                        "must": queries.termFilter('state.listable')(True)
+                    }
+                },
+                "query": {
+                    "bool": {
+                        "must": queries.termsFilter('id')(ids)
+                    }
+                }
+            }
+        }
+        body = {
+            "from": 0,
+            "size": len(ids),
+            "query": query,
+        }
+        searchresult = Petition.search(body)
+        return searchresult['hits']['hits']
+
+
+class PetitionsPublicRESTMapper(PetitionsRESTMapper):
+    """A mapper for the petitions public REST API
+
+    Adds a filter which makes sure only `listable` petitions are provided.
+    """
+
+    NAME = PETITIONS_PUBLIC_MAPPER_NAME
+
+    def _extend_filter(self, filters):
+        filters.append(queries.termFilter('state.listable')(True))
 
 
 class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
@@ -282,3 +329,43 @@ class SupportersRESTMapper(rest.DocumentRESTMapperMixin,
         'id': queries.fieldSorter('id'),
         'default': queries.fieldSorter('dc.created', 'DESC'),
     }
+
+
+class PetitionExtender(object):
+    """Makes sure that private data is filtered
+
+    This extender is called for every petition which is converted using to_api
+    on the request.
+    """
+
+    NAME = 'Petition.extend'
+
+    PUBLIC_OWNER_PROPS = [
+        'id',
+        'class',
+        'firstname',
+        'lastname',
+    ]
+
+    def __init__(self, request, docs):
+        self.request = request
+        self.docs = docs
+
+    def extend(self, docs):
+        if not docs:
+            return
+        if not self.request.has_permission(acl.Permissions.AdminFull):
+            user = self.request.user
+            if not user or (user.id != docs['owner']['id']):
+                self.remove_private_data(docs)
+
+    def remove_private_data(self, doc):
+        owner = doc['owner']
+        filtered_owner = {}
+        for name in self.PUBLIC_OWNER_PROPS:
+            if name in owner:
+                filtered_owner[name] = owner[name]
+        doc['owner'] = filtered_owner
+
+
+APIExtender.register(PetitionExtender.NAME, PetitionExtender)

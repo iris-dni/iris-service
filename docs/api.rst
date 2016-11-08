@@ -16,7 +16,7 @@ API
 Relation Handling
 =================
 
-All data API's allow the additionall query parameter ``resolve``. This
+All data API's allow the additional query parameter ``resolve``. This
 parameter specifies which relations of a documents should be expanded for the
 response.
 
@@ -47,20 +47,6 @@ Relations are always represented as an object.
                 "id": ...
               },
               ...
-              "owner": {
-                "class": "User",
-                "email": "",
-                "email_trusted": false,
-                "firstname": "",
-                "id": "...",
-                "lastname": "",
-                "mobile": "",
-                "mobile_trusted": false,
-                "street": "",
-                "town": "",
-                "zip": ""
-              },
-              ...
             },
             ...
           ],
@@ -71,7 +57,7 @@ Relations are always represented as an object.
 
     .. sourcecode:: python
 
-        >>> HTTP_GET_JSON('/v1/petitions?resolve=city,owner')
+        >>> HTTP_GET_JSON('/v1/petitions?resolve=city')
         {
           "data": [
             {
@@ -96,30 +82,6 @@ Relations are always represented as an object.
                 },
                 "id": ...
               },
-              ...
-          "owner": {
-            "class": "User",
-            "data": {
-              "dc": {
-                "created": "...",
-                "modified": "..."
-              },
-              "firstname": "Gabriel",
-              "id": "...",
-              "lastname": "Taylor",
-              "state": "active"
-            },
-            "email": "",
-            "email_trusted": false,
-            "firstname": "",
-            "id": "...",
-            "lastname": "",
-            "mobile": "",
-            "mobile_trusted": false,
-            "street": "",
-            "town": "",
-            "zip": ""
-          },
               ...
             },
             ...

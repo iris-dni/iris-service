@@ -11,6 +11,12 @@ petitions:
       - petition
     summary: Petitions
     operationId: search
+    description: |
+      Provides a petition list with different filter possibilities.
+
+      Please note that this endpoint provides `listable` petitions only.
+      For example `draft` petitions are not listed even if `draft` is provided
+      in the state filter.
     parameters:
       - $ref: "petition_parameters.yml#/parameters/state"
       - $ref: "parameters.yml#/parameters/tags"
@@ -93,9 +99,9 @@ petitions_contentId:
         "contentId" path parameter. If an id could not be found None is
         returned in "items".
 
-        Please note that the response is always returned in the "data" property
-        if only one id is provided. If you want to force the result to always
-        appear int the "items" property add a "," at the end.
+        Please note that the response is returned in the "data" property if
+        only one id is provided. If you want to force the result to always
+        appear in the "items" property add a "," at the end.
     operationId: get
     parameters:
       - $ref: "parameters.yml#/parameters/multiple_contentId"

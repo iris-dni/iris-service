@@ -1,7 +1,16 @@
+import itertools
 
 
 class APIExtender(object):
-    """
+    """Extend API response data for documents
+
+    Allows to use registered extenders using the `extend` query request
+    parameter.
+
+    Additional the extender checks if there is an extender with the name
+    `<__class__.__name__>.extend` and executes it. This can be used to do
+    additional operations on the response data without the need of an explicit
+    request of the extend.
     """
 
     EXTENDER_REGISTRY = {}
@@ -18,6 +27,19 @@ class APIExtender(object):
     def extend(self, docs):
         for extender in self.extenders:
             extender.extend(docs)
+        if not isinstance(docs, list):
+            zip_docs = [docs]
+        else:
+            zip_docs = docs
+        for doc, api_doc in itertools.izip(self.docs, zip_docs):
+            if doc is None or api_doc is None:
+                continue
+            extend_name = doc.__class__.__name__ + '.extend'
+            if extend_name not in self.EXTENDER_REGISTRY:
+                continue
+            self.EXTENDER_REGISTRY[extend_name](self.request,
+                                                doc
+                                               ).extend(api_doc)
 
     def _build_extenders(self, extenders):
         if not extenders:
@@ -32,9 +54,9 @@ class APIExtender(object):
     def applyExtensionData(cls, doc, name, data):
         """Can be used by extenders to apply extension data
 
-        doc must be the result document which is the used in the API
-        name is the name of the extension
-        data is the data which should be applied as extension data
+        doc: must be the result document which is then used in the API
+        name: is the name of the extension
+        data: is the data which should be applied as extension data
         """
         extension = doc.setdefault('extensions', {})
         extension[name] = data

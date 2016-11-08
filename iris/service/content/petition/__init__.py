@@ -5,10 +5,11 @@ from .document import Petition  # noqa
 
 def includeme(config):
     from iris.service.rest import auth
+    from .acl import PublicPetitionServiceAuthFactory
     config.add_route('petition_public_api',
                      'petitions',
                      static=True,
-                     factory=auth.AdminServiceAuthFactory,
+                     factory=PublicPetitionServiceAuthFactory,
                     )
     config.add_route('petition_by_token_api',
                      'token',

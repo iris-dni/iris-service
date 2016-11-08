@@ -12,7 +12,7 @@ from iris.service.rest.swagger import swagger_reduce_response
 from iris.service.rest.extender import APIExtender
 
 from .document import Petition, Supporter
-from .mapper import PETITIONS_MAPPER_NAME
+from .mapper import PETITIONS_MAPPER_NAME, PETITIONS_PUBLIC_MAPPER_NAME
 
 
 @RestService("petition_admin_api",
@@ -32,7 +32,7 @@ class PetitionPublicRESTService(rest.RESTService):
     not be configured in swagger.
     """
 
-    MAPPER_NAME = PETITIONS_MAPPER_NAME
+    MAPPER_NAME = PETITIONS_PUBLIC_MAPPER_NAME
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')
@@ -42,7 +42,11 @@ class PetitionPublicRESTService(rest.RESTService):
         return {}
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/reject')
+                     route_suffix='/{contentId}/event/reject',
+                    )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_reject(self, **kwargs):
         return self._event('reject')
@@ -54,7 +58,11 @@ class PetitionPublicRESTService(rest.RESTService):
         return self._event('publish')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/delete')
+                     route_suffix='/{contentId}/event/delete',
+                     )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_delete(self, **kwargs):
         return self._event('delete')
@@ -66,25 +74,41 @@ class PetitionPublicRESTService(rest.RESTService):
         return self._event('support')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/close')
+                     route_suffix='/{contentId}/event/close',
+                    )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_close(self, **kwargs):
         return self._event('close')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/approved')
+                     route_suffix='/{contentId}/event/approved',
+                    )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_approved(self, **kwargs):
         return self._event('approved')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/letterSent')
+                     route_suffix='/{contentId}/event/letterSent',
+                    )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_letterSent(self, **kwargs):
         return self._event('letterSent')
 
     @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/setFeedback')
+                     route_suffix='/{contentId}/event/setFeedback',
+                    )
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition,
+                   )
     @swagger_reduce_response
     def event_setFeedback(self, **kwargs):
         token = self.request.swagger_data['data']['data']['token']
@@ -96,12 +120,16 @@ class PetitionPublicRESTService(rest.RESTService):
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/check')
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition)
     @swagger_reduce_response
     def event_check(self, **kwargs):
         return self._event('check')
 
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/tick')
+    @rpcmethod_view(http_cache=0,
+                    permission=acl.Permissions.AdminPetition)
     @swagger_reduce_response
     def event_tick(self, **kwargs):
         return self._event('tick')
@@ -109,7 +137,7 @@ class PetitionPublicRESTService(rest.RESTService):
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/force_state')
     @rpcmethod_view(http_cache=0,
-                    permission=acl.Permissions.AdminFull)
+                    permission=acl.Permissions.AdminPetition)
     @swagger_reduce_response
     def event_force_state(self, **kwargs):
         return self._event('force_state')

@@ -5,6 +5,11 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - access permissions for petition events:
+   all events need admin permissions except `publish` and `support`
+ - added general petition extender to remove private data from the owner
+   relation.
+
 2016/11/07 0.3.1
 ================
 
