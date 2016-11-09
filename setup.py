@@ -70,7 +70,8 @@ requires = [
     'rfc3987',
     'webcolors',
     'strict-rfc3339',
-    'python-magic'
+    'python-magic',
+    'mandrill',
 ]
 
 setup(

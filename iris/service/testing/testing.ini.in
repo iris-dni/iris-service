@@ -48,6 +48,8 @@ es.hosts = localhost:19342
 
 og.noworker = don't start the og worker in test
 
+mandrill.key = mock
+
 ###
 # wsgi server configuration
 ###
