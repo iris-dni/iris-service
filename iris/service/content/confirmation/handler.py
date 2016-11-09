@@ -24,6 +24,14 @@ class Handler(rest.DocumentRESTMapperMixin):
         confirmation.store(refresh=True)
         return self.to_api(confirmation)
 
+    def needs_confirmation(self, data):
+        """Check if a confirmation is needed for the data
+
+        This is used in the create_for_handler method to give handlers the
+        chance to not create a confirmation.
+        """
+        return True
+
     def _create(self, confirmation):
         pass
 
@@ -36,7 +44,9 @@ class Handler(rest.DocumentRESTMapperMixin):
             'confirmations.' + handler_name,
             request,
         )
-        return handler.create({"data": data})
+        if handler.needs_confirmation(data):
+            return handler.create({"data": data})
+        return None
 
     @classmethod
     def confirm_handler(cls, handler_name, token, request=None, **kwargs):

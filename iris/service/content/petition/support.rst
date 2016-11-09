@@ -70,9 +70,19 @@ Support the pending petition::
     ...         }
     ...     }
     ... }
+
+With a now trusted mobile an email confirmation mail is sent because the email
+is untrusted::
+
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
+    {'message': {'global_merge_vars': [{'content': u'http://frontend/confirm/supporter/email?key=...',
+    ...
+                 'to': [{'email': u'me@iris.com', 'type': 'to'}]},
+     'template_content': [],
+     'template_name': 'iris-supporter-mailconfirmation'}
+
     >>> showInfo(response)
     {u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
@@ -107,6 +117,7 @@ Support using an untrusted mobile number::
     >>> logged_in_user = ssologin(
     ...     browser,
     ...     {"email": "42-1@sso.login",
+    ...      "email_trusted": True,
     ...      "mobile": "555 1234",
     ...      "mobile_trusted": True,
     ...     })
@@ -132,7 +143,7 @@ Support using an untrusted mobile number::
 
 We must provide the verification token with the support request::
 
-    >>> supporter['data']['mobile_token'] = "14Y6t"
+    >>> supporter['data']['mobile_token'] = "1sR4E"
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)

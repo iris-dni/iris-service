@@ -144,6 +144,16 @@ class PetitionStateMachine(object):
         if untrusted:
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
+        if not owner_rel.get('email_trusted'):
+            # send a confirmation email
+            data = {
+                "data": {
+                    "petition": self.petition.id,
+                }
+            }
+            Handler.create_for_handler('petition_confirm_email',
+                                       data,
+                                       self.request)
 
     def support_petition_on_publish(self, **kwargs):
         """Petition owner supports when publishing
@@ -220,9 +230,25 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
         # support the petition
-        self.petition.addSupporter(request=self.request,
-                                   user_id=session_user,
-                                   data=user_data)
+        supporter = self.petition.addSupporter(
+            request=self.request,
+            user_id=session_user,
+            data=user_data)
+        email = user_data['email']
+        if (not user
+            or user.email != email
+            or not user.email_trusted
+           ):
+            # send a confirmation email
+            data = {
+                "data": {
+                    "petition": self.petition.id,
+                    "supporter": supporter.id,
+                }
+            }
+            Handler.create_for_handler('supporter_confirm_email',
+                                       data,
+                                       self.request)
 
     def set_response_token(self, **kwargs):
         """Sets a new response token if no token is set

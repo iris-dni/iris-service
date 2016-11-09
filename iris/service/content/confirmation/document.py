@@ -40,6 +40,13 @@ class Confirmation(Document):
         """
     )
 
+    context_id = Property(
+        doc="""
+        A handler specific id which can be used by the specific handler for
+        queries.
+        """
+    )
+
     data = Property(
         default=lambda: dict(),
         doc="""

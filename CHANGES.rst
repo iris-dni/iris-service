@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - send email confirmation mails when publishing and supporting petitions
  - added mandril send method with logging
  - access permissions for petition events:
    all events need admin permissions except `publish` and `support`
