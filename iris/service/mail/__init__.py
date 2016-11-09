@@ -38,6 +38,7 @@ def send(name, to, data):
         },
     }
     log.info(json.dumps(params), sort_keys=True)
+    result = None
     try:
         result = CLIENT.messages.send_template(**params)
         for status in result:
@@ -48,12 +49,18 @@ def send(name, to, data):
 
 
 def flatten_vars(data):
-    return [
-        {
-            'name': k,
-            'content': v
-        } for k, v in flatten_dict(data).items()
-    ]
+    """Flatten data and provide it as a var list
+
+    The result list is sorted maily for debuging and tests.
+    """
+    return sorted([
+            {
+                'name': k,
+                'content': v
+            } for k, v in flatten_dict(data).items()
+        ],
+        key=lambda d: d['name'],
+    )
 
 
 def flatten_dict(data, leading=''):

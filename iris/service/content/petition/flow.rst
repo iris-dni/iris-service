@@ -182,7 +182,8 @@ A confirmation for the mobile number verification was created::
     True
     >>> token = confirmation.id
 
-Now we can publish with the confirmation token in the body::
+Now we can publish with the confirmation token in the body (this time there is
+an email confirmation sent)::
 
     >>> publish_confirm_body = {
     ...     "data": {
@@ -190,6 +191,11 @@ Now we can publish with the confirmation token in the body::
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_confirm_body)
+    {'message': {'global_merge_vars': [{'content': u'http://frontend/confirm/petition/email?key=...',
+    ...
+                 'to': [{'email': u'email@iris.com', 'type': 'to'}]},
+     'template_content': [],
+     'template_name': 'iris-petition-mailconfirmation'}
     >>> print_json(response)
     {
       "data": {

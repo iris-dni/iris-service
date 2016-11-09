@@ -3,6 +3,9 @@ from . import confirmation  # noqa
 from .document import Petition  # noqa
 
 
+SETTINGS = {}
+
+
 def includeme(config):
     from iris.service.rest import auth
     from .acl import PublicPetitionServiceAuthFactory
@@ -34,3 +37,10 @@ def includeme(config):
                                petitions_cron,
                                Elector('statemachine.petitions.cron')
                               )
+    global SETTINGS
+    mail = SETTINGS['frontend'] = {}
+    mail['domain'] = settings.get('frontend.domain')
+    mail['petition-email-confirmpath'] = settings.get(
+                                            'frontend.petition.confirmpath')
+    mail['supporter-email-confirmpath'] = settings.get(
+                                            'frontend.supporter.confirmpath')

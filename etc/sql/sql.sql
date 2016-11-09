@@ -273,6 +273,7 @@ CREATE TABLE confirmations (
         expires TIMESTAMP
     ),
     handler STRING,
+    context_id STRING,
     state STRING,
     data OBJECT(IGNORED),
     debug OBJECT(IGNORED)

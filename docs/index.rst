@@ -13,6 +13,7 @@ IRIS Services
    ./petitioner-flows
    ./files
    ./imageproxy
+   ./mandrill
 
 General API Information
 -----------------------

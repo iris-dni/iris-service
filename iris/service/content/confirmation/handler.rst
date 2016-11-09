@@ -22,6 +22,11 @@ handler and provide an appropriate interface for the API::
     ...     HANDLER_NAME = 'test'
     ...     NAME = 'confirmations.' + HANDLER_NAME
     ...
+    ...     NEEDS_CONFIRMATION = True
+    ...
+    ...     def needs_confirmation(self, data):
+    ...         return self.NEEDS_CONFIRMATION
+    ...
     ...     def _create(self, confirmation):
     ...         """Send an SMS with the confirmation id
     ...         """
@@ -55,6 +60,7 @@ Now this hander can be used to create a confirmation::
     >>> result = handler.create(data)
     >>> print_json(result)
     {
+      "context_id": null,
       "data": {
         "any": "data"
       },
@@ -77,6 +83,7 @@ The handler can be used to confirm::
     TestHandler confirmed
     >>> print_json(result)
     {
+      "context_id": null,
       "data": {
         "any": "data"
       },
@@ -112,6 +119,7 @@ Create a confirmation without the service request::
     >>> result = Handler.create_for_handler('test', data, request)
     >>> print_json(result)
     {
+      "context_id": null,
       "data": {
         "data": {
           "any": "data"
@@ -126,6 +134,12 @@ Create a confirmation without the service request::
       "id": "...",
       "state": "active"
     }
+
+A handler can prevent the creation of a confirmation::
+
+    >>> TestHandler.NEEDS_CONFIRMATION = False
+    >>> Handler.create_for_handler('test', data, request) is None
+    True
 
 Test cleanup::
 
