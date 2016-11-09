@@ -56,6 +56,8 @@ temp.dir = /tmp/iris-service
 # image proxy not available on localhost
 imageproxy.url = http://imageproxy
 
+mandrill.key = mock
+
 es.hosts = localhost:${ports:crate}
 
 ###
