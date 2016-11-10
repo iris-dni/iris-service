@@ -32,6 +32,7 @@ iris.apikey.nwch = b428db796829443ed2062702deb02b6c
 
 iris.city.treshold = 100
 iris.approval.days = 30
+iris.letter.wait.days = 30
 
 frontend.domain = http://frontend
 frontend.petition.confirmpath = /confirm/petition/email

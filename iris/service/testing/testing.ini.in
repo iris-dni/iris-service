@@ -29,6 +29,7 @@ sso.apikey.local = local
 
 iris.apikey.local = local
 iris.approval.days = 1
+iris.letter.wait.days = 1
 
 static.docs = iris.service.testing:docs
               docs

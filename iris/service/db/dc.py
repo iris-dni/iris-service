@@ -9,7 +9,7 @@ def iso_now():
 
 def iso_now_offset(offset=None):
     def do():
-        return time_now_offset().isoformat()
+        return time_now_offset(offset).isoformat()
     return do
 
 

@@ -94,6 +94,10 @@ states:
             on_enter:
                 - listable
                 - set_response_token
+                - set_letter_expire
+                - enable_tick
+            on_exit:
+                - disable_tick
             transitions:
                 - trigger: setFeedback
                   conditions:
@@ -101,6 +105,20 @@ states:
                   after:
                     - set_petition_feedback
                   dest: processing.letterResponseArrived
+                - trigger: tick
+                  dest: processing.noLetterResponse
+                  conditions:
+                      - if_no_letter_timeout
+          - name: noLetterResponse
+            transitions:
+                - trigger: setFeedback
+                  conditions:
+                      - if_feedback_has_valid_token
+                  after:
+                    - set_petition_feedback
+                  dest: processing.letterResponseArrived
+                - trigger: close
+                  dest: closedWithoutLetterResponse
           - name: letterResponseArrived
             on_enter:
                 - listable
@@ -111,6 +129,7 @@ states:
 
     - name: loser
     - name: closed
+    - name: closedWithoutLetterResponse
     - name: deleted
       on_enter:
         - not_listable

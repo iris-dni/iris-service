@@ -2,6 +2,7 @@ import copy
 import yaml
 import os
 from datetime import timedelta
+import dateutil.parser
 
 import transitions
 from transitions.extensions import MachineFactory
@@ -23,6 +24,7 @@ NestedState.separator = '.'
 
 
 APPROVAL_DAYS = 30
+LETTER_WAIT_DAYS = 30
 
 
 class ConditionError(Exception):
@@ -286,6 +288,7 @@ class PetitionStateMachine(object):
         Sets dc.effective to the current time and dc.expires to current time +
         APPROVAL_DAYS.
         """
+        global APPROVAL_DAYS
         dc.dc_update(self.petition,
                      **{dc.DC_EFFECTIVE: dc.time_now(),
                         dc.DC_EXPIRES: dc.time_now_offset(
@@ -294,6 +297,12 @@ class PetitionStateMachine(object):
                        }
                     )
 
+    def set_letter_expire(self, **kwargs):
+        global LETTER_WAIT_DAYS
+        self.petition.state.letter_wait_expire = dc.iso_now_offset(
+            timedelta(days=LETTER_WAIT_DAYS)
+        )()
+
     def if_support_timeout(self, **kwargs):
         """Check if support time is over
 
@@ -301,6 +310,12 @@ class PetitionStateMachine(object):
         """
         times = dc.dc_time(self.petition)
         expire = times.get(dc.DC_EXPIRES, None)
+        return (not expire
+                or expire <= dc.time_now()
+               )
+
+    def if_no_letter_timeout(self, **kwargs):
+        expire = dateutil.parser.parse(self.petition.state.letter_wait_expire)
         return (not expire
                 or expire <= dc.time_now()
                )
@@ -391,9 +406,10 @@ def fromYAML(raw=False):
 
 
 def includeme(config):
-    global APPROVAL_DAYS
+    global APPROVAL_DAYS, LETTER_WAIT_DAYS
     settings = config.get_settings()
     APPROVAL_DAYS = int(settings['iris.approval.days'])
+    LETTER_WAIT_DAYS = int(settings['iris.letter.wait.days'])
     config.add_view(
         condition_error_request_handler,
         renderer='json',

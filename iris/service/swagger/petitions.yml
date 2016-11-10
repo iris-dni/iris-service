@@ -13,6 +13,12 @@ definitions:
                     parent:
                         type: string
                         readOnly: true
+                    letter_wait_expire:
+                        type: string
+                        x-nullable: true
+                        format: dateTime
+                        description: ISO8601
+                        readOnly: true
     PrivateState:
         type: object
         x-nullable: true
@@ -32,6 +38,12 @@ definitions:
                         readOnly: true
                     tick:
                         type: boolean
+                        readOnly: true
+                    letter_wait_expire:
+                        type: string
+                        x-nullable: true
+                        format: dateTime
+                        description: ISO8601
                         readOnly: true
 
     ReadOnly:
@@ -57,12 +69,10 @@ definitions:
                         type: string
                         x-nullable: true
                         format: dateTime
-                        description: visible after this time (ISO8601)
                     expires:
                         type: string
                         x-nullable: true
                         format: dateTime
-                        description: visible until this time (ISO8601)
 
     Properties:
         type: object

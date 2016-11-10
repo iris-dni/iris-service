@@ -47,7 +47,7 @@ Create a new petition::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
     >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
     >>> showTick(response)
@@ -62,7 +62,7 @@ Publish the petition::
     >>> publish_body = {"data": {}}
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
     >>> showTick(response)
@@ -88,7 +88,7 @@ Create a new petition::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
     >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -100,7 +100,7 @@ Publish the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
 
@@ -114,7 +114,7 @@ Reject the petition::
     ...     body
     ... )
     >>> showState(response)
-    {u'name': u'rejected', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'rejected', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -122,7 +122,7 @@ Publish the petition again::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
 
@@ -152,7 +152,7 @@ Publish the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
     >>> showTick(response)
@@ -162,7 +162,7 @@ Approve the petition::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
 
 The petition needs a city::
 
@@ -180,7 +180,7 @@ The petition needs a city::
     >>> _ = browser.post_json('/v1/petitions/%s' % id, petition)
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -205,7 +205,7 @@ Create a new petition::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
     >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -224,7 +224,7 @@ Publish the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
 
@@ -232,7 +232,7 @@ Approve the petition::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -243,7 +243,7 @@ reached::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/check' % id)
     >>> showState(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -255,7 +255,7 @@ reached::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/check' % id)
     >>> showState(response)
-    {u'name': u'winner', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -266,7 +266,7 @@ will switch after the timeout::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
-    {u'name': u'winner', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -278,7 +278,7 @@ will switch after the timeout::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
-    {u'name': u'sendLetterRequested', u'parent': u'processing'}
+    {u'letter_wait_expire': None, u'name': u'sendLetterRequested', u'parent': u'processing'}
     >>> showListable(response)
     True
     >>> showTick(response)
@@ -288,7 +288,7 @@ Go through the processing steps::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
     >>> showState(response)
-    {u'name': u'waitForLetterResponse', u'parent': u'processing'}
+    {u'letter_wait_expire': u'...', u'name': u'waitForLetterResponse', u'parent': u'processing'}
     >>> showListable(response)
     True
 
@@ -309,13 +309,13 @@ Go through the processing steps::
     ...     body
     ... )
     >>> showState(response)
-    {u'name': u'letterResponseArrived', u'parent': u'processing'}
+    {u'letter_wait_expire': u'...', u'name': u'letterResponseArrived', u'parent': u'processing'}
     >>> showListable(response)
     True
 
     >>> response = admin.post_json('/v1/petitions/%s/event/close' % id)
     >>> showState(response)
-    {u'name': u'closed', u'parent': u''}
+    {u'letter_wait_expire': u'...', u'name': u'closed', u'parent': u''}
     >>> showListable(response)
     True
 
@@ -338,7 +338,7 @@ Create a new petition::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
     >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -357,7 +357,7 @@ Publish the petition::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showState(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     >>> showListable(response)
     False
 
@@ -365,7 +365,7 @@ Approve the petition::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
 
@@ -374,7 +374,7 @@ supporter limit is reached::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
 
@@ -384,9 +384,73 @@ supporter limit is reached::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
-    {u'name': u'loser', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'loser', u'parent': u''}
     >>> showListable(response)
     True
+
+
+No Letter Response
+==================
+
+Manage the timeout when waiting for a letter response::
+
+    >>> petition = {
+    ...     "data": {
+    ...         "title": "No Letter Respose",
+    ...         "city": {"id": city.id},
+    ...         "owner": {
+    ...             "email": "email@iris.com",
+    ...             "mobile": "555 1234"
+    ...         }
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/petitions', petition)
+    >>> id = response.json['data']['id']
+
+    >>> body = {
+    ...     "to_state": "processing.waitForLetterResponse"
+    ... }
+    >>> response = admin.post_json(
+    ...     '/v1/petitions/%s/event/force_state' % id,
+    ...     body
+    ... )
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'waitForLetterResponse', u'parent': u'processing'}
+
+    >>> showTick(response)
+    True
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'waitForLetterResponse', u'parent': u'processing'}
+
+    >>> petition = Petition.get(id)
+    >>> petition.state.letter_wait_expire = dc.iso_now()
+    >>> _ = petition.store(refresh=True)
+
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'noLetterResponse', u'parent': u'processing'}
+    >>> showTick(response)
+    False
+
+    >>> petition = Petition.get(id)
+    >>> token = petition.response_token
+
+    >>> body = {
+    ...     "data": {
+    ...         "token": token,
+    ...         "answer": {
+    ...             "text": "machen wir gleich",
+    ...             "name": "I wrote it"
+    ...         }
+    ...     }
+    ... }
+    >>> response = admin.post_json(
+    ...     '/v1/petitions/%s/event/setFeedback' % id,
+    ...     body
+    ... )
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'letterResponseArrived', u'parent': u'processing'}
 
 
 Draft can be deleted
@@ -402,7 +466,7 @@ Create a new petition::
     >>> response = browser.post_json('/v1/petitions', petition)
     >>> id = response.json['data']['id']
     >>> showState(response)
-    {u'name': u'draft', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'draft', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -410,7 +474,7 @@ Delete the petition::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/delete' % id)
     >>> showState(response)
-    {u'name': u'deleted', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'deleted', u'parent': u''}
     >>> showListable(response)
     False
 
@@ -556,6 +620,7 @@ The user must have the 'admin' role::
         "id": "...",
         ...
         "state": {
+          "letter_wait_expire": null,
           "name": "closed",
           "parent": ""
         },
@@ -564,4 +629,4 @@ The user must have the 'admin' role::
       "status": "ok"
     }
     >>> showState(response)
-    {u'name': u'closed', u'parent': u''}
+    {u'letter_wait_expire': None, u'name': u'closed', u'parent': u''}

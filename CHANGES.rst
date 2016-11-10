@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - extended petition statemachine with noLetterResponse flow
+   DEPLOY:
+     ALTER TABLE petitions ADD COLUMN state['letter_wait_expire'] TIMESTAMP;
  - send email confirmation mails when publishing and supporting petitions
  - added mandril send method with logging
  - access permissions for petition events:

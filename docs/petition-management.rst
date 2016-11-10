@@ -71,11 +71,19 @@ For information about the management of the petition state see
         sendLetterRequested : editor needs to send a letter
         sendLetterRequested --> waitForLetterResponse : [letterSent]
         waitForLetterResponse : enter: create response token
-        waitForLetterResponse : exit: delete response token
+        waitForLetterResponse : enter: set wait expire: state.letter_wait_expire
         waitForLetterResponse --> letterResponseArrived : [setFeedback]
+        waitForLetterResponse --> noLetterResponse : timeout
+        noLetterResponse --> letterResponseArrived : [setFeedback]
+        noLetterResponse --> closedWithoutLetterResponse : [close]
         letterResponseArrived --> closed : [close]
+        letterResponseArrived : enter: delete response token
     }
 
+    closedWithoutLetterResponse : enter: delete response token
+    closedWithoutLetterResponse -> deleted : [delete]
+    state closedWithoutLetterResponse {
+    }
     state closed {
     }
     @enduml
