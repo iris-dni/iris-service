@@ -191,7 +191,7 @@ an email confirmation sent)::
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_confirm_body)
-    {'message': {'global_merge_vars': [{'content': u'http://frontend/confirm/petition/email?key=...',
+    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/petition/email?key=...'},
     ...
                  'to': [{'email': u'email@iris.com', 'type': 'to'}]},
      'template_content': [],

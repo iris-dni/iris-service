@@ -57,26 +57,10 @@ def flatten_vars(data):
             {
                 'name': k,
                 'content': v
-            } for k, v in flatten_dict(data).items()
+            } for k, v in data.items()
         ],
         key=lambda d: d['name'],
     )
-
-
-def flatten_dict(data, leading=''):
-    """Flatten out nested dicts to build the variable names for mandrill
-    """
-    result = {}
-    for k, v in data.items():
-        if leading:
-            name = leading + '_' + k
-        else:
-            name = k
-        if isinstance(v, dict):
-            result.update(flatten_dict(v, name))
-        else:
-            result[name] = v
-    return result
 
 
 def includeme(config):

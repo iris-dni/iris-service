@@ -15,9 +15,9 @@ template id: iris-petition-mailconfirmation
 
 Variables provided:
 
+  - confirm.url - URL which must be used to confirm the email
   - petition
   - user
-  - confirm_url - URL which must be used to confirm the email
 
 
 Supporter Email Confirmation Mail
@@ -27,9 +27,9 @@ template id: iris-supporter-mailconfirmation
 
 Variables provided:
 
+  - confirm.url - URL which must be used to confirm the email
   - petition
   - user
-  - confirm_url - URL which must be used to confirm the email
 
 
 Mail Data
@@ -40,41 +40,41 @@ Petition
 
 These variables are provided for petitions::
 
-    petition_city_answer_name
-    petition_city_answer_text
-    etition_city_id
-    petition_city_name
-    petition_city_provider
-    petition_city_state
-    petition_city_tags
-    petition_city_treshold
-    petition_city_zips
-    petition_dc_created
-    petition_dc_effective
-    petition_dc_expires
-    petition_dc_modified
-    petition_description
-    petition_id
-    petition_owner_email
-    petition_owner_email_trusted
-    petition_owner_firstname
-    petition_owner_lastname
-    petition_owner_mobile
-    petition_owner_mobile_trusted
-    petition_owner_street
-    petition_owner_town
-    petition_owner_zip
-    petition_state_listable
-    petition_state_name
-    petition_state_parent
-    petition_state_tick
-    petition_suggested_solution
-    petition_supporters_amount
-    petition_supporters_remaining
-    petition_supporters_required
-    petition_tags
-    petition_title
-    petition_type
+    petition.city.answer_name
+    petition.city.answer_text
+    petition.city.id
+    petition.city.name
+    petition.city.provider
+    petition.city.state
+    petition.city.tags
+    petition.city.treshold
+    petition.city.zips
+    petition.dc.created
+    petition.dc.effective
+    petition.dc.expires
+    petition.dc.modified
+    petition.description
+    petition.id
+    petition.owner.email
+    petition.owner.email_trusted
+    petition.owner.firstname
+    petition.owner.lastname
+    petition.owner.mobile
+    petition.owner.mobile_trusted
+    petition.owner.street
+    petition.owner.town
+    petition.owner.zip
+    petition.state.listable
+    petition.state.name
+    petition.state.parent
+    petition.state.tick
+    petition.suggested_solution
+    petition.supporters.amount
+    petition.supporters.remaining
+    petition.supporters.required
+    petition.tags
+    petition.title
+    petition.type
 
 
 User
@@ -82,10 +82,29 @@ User
 
 These variables are provided for the user which receives the mail::
 
-    user_email
-    user_mobile
-    user_firstname
-    user_lastname
-    user_city
-    user_zip
-    user_town
+    user.email
+    user.mobile
+    user.firstname
+    user.lastname
+    user.city
+    user.zip
+    user.town
+
+
+Frontend Requirements
+=====================
+
+Confirmation URL
+----------------
+
+For the email confirmation an endpoint is usend in the frontend to handle the
+confirmation.
+
+Fronten URLs::
+
+    confirm petition email: /confirm/email/petition?key=<confirmation-key>
+    confirm support email: /confirm/email/support?key=<confirmation-key>
+
+With the provided key an api call is needed to confirm the email::
+
+    /v1/confirmations/<confirmation-key>/confirm

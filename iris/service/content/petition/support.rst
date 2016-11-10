@@ -77,7 +77,7 @@ is untrusted::
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
-    {'message': {'global_merge_vars': [{'content': u'http://frontend/confirm/supporter/email?key=...',
+    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/supporter/email?key=...'},
     ...
                  'to': [{'email': u'me@iris.com', 'type': 'to'}]},
      'template_content': [],
