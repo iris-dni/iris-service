@@ -34,10 +34,13 @@ class Petition(Document):
     )
 
     state = ObjectProperty(
-        default=lambda: StateContainer(name='draft',
-                                       parent='',
-                                       listable=False,
-                                       tick=False),
+        default=lambda: StateContainer(
+            name='draft',
+            parent='',
+            listable=False,
+            tick=False,
+            letter_wait_expire=None
+        ),
         doc="""
           The current state information of the petition.
           The state is controlled via a state machine.

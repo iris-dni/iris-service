@@ -52,7 +52,7 @@ petition::
     >>> publish_body = {"data": {}}
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
     >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 1, u'required': 6}
 
 Support the pending petition::
@@ -84,7 +84,7 @@ is untrusted::
      'template_name': 'iris-supporter-mailconfirmation'}
 
     >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
@@ -105,7 +105,7 @@ The same user supports again::
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
     >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
@@ -138,7 +138,7 @@ Support using an untrusted mobile number::
     >>> response.json['reasons']
     [u'mobile_untrusted']
     >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
 
 We must provide the verification token with the support request::
@@ -175,7 +175,7 @@ The same mobile number again::
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
     >>> showInfo(response)
-    {u'name': u'pending', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 3, u'required': 6}
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
@@ -187,7 +187,7 @@ Approve the petition::
 
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showInfo(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     {u'amount': 3, u'required': 6}
 
     >>> logged_in_user = ssologin(browser,
@@ -210,7 +210,7 @@ Approve the petition::
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
     >>> showInfo(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     {u'amount': 4, u'required': 6}
 
 Support until the petition is a winner::
@@ -238,13 +238,13 @@ Support until the petition is a winner::
     ...         '/v1/petitions/%s/event/support' % id,
     ...         supporter)
     ...     showInfo(response)
-    {u'name': u'active', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     {u'amount': 5, u'required': 6}
-    {u'name': u'winner', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     {u'amount': 6, u'required': 6}
-    {u'name': u'winner', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     {u'amount': 7, u'required': 6}
-    {u'name': u'winner', u'parent': u'supportable'}
+    {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     {u'amount': 8, u'required': 6}
 
 Missing mobile number::

@@ -37,6 +37,7 @@ Create a new petition as an unauthenticated user::
         "id": ...,
         ...
         "state": {
+          "letter_wait_expire": null,
           "name": "draft",
           "parent": ""
         },
@@ -213,6 +214,7 @@ Get a petition back using the petition id::
         "id": ...,
         ...
         "state": {
+          "letter_wait_expire": null,
           "name": "draft",
           "parent": ""
         },
@@ -368,6 +370,7 @@ Create a new petition::
         "id": ...,
         ...
         "state": {
+          "letter_wait_expire": null,
           "listable": false,
           "name": "draft",
           "parent": "",
@@ -661,6 +664,7 @@ Search results can be filtered by state::
         {
           ...
           "state": {
+            "letter_wait_expire": null,
             "listable": false,
             "name": "draft",
             "parent": "",

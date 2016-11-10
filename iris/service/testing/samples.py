@@ -87,6 +87,7 @@ def petitions(amount, seed='0', timerange=None):
                 parent=state_parent,
                 listable=state_name != 'draft',
                 tick=state_parent == 'supportable' and state_name == 'active',
+                letter_wait_expire=None,
             ),
             tags=[random.choice(['pet', 'shop', 'boys'])],
             title=faker.text(50),

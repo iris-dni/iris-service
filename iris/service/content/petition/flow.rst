@@ -52,6 +52,7 @@ The state is draft::
 
     >>> print_json(response.json['data']['state'])
     {
+      "letter_wait_expire": null,
       "name": "draft",
       "parent": ""
     }
@@ -363,7 +364,13 @@ The token is set::
 
 Now someone created the letter::
 
-    >>> _ = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
+    >>> response = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
+    >>> print_json(response.json['data']['state'])
+    {
+      "letter_wait_expire": "...",
+      "name": "waitForLetterResponse",
+      "parent": "processing"
+    }
 
     >>> petition = Petition.get(id)
     >>> petition.state
@@ -421,6 +428,7 @@ With a valid token the feedback can be set::
     ... )
     >>> print_json(response.json['data']['state'])
     {
+      "letter_wait_expire": "...",
       "name": "letterResponseArrived",
       "parent": "processing"
     }

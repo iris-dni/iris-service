@@ -37,7 +37,8 @@ CREATE TABLE petitions (
         name STRING,
         parent STRING,
         listable BOOLEAN,
-        tick BOOLEAN
+        tick BOOLEAN,
+        letter_wait_expire TIMESTAMP
     ),
     tags ARRAY(STRING),
     title STRING INDEX OFF,
