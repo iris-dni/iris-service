@@ -37,7 +37,7 @@ def send(name, to, data):
             ]
         },
     }
-    log.info(json.dumps(params), sort_keys=True)
+    log.info(json.dumps(params, sort_keys=True))
     result = None
     try:
         result = CLIENT.messages.send_template(**params)
