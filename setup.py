@@ -56,6 +56,7 @@ requires = [
     'transitions',
     'python-dateutil',
     'short_url',
+    'elasticsearch',
     'crate',
     'crash',
     'lovely.pyrest',
