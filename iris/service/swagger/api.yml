@@ -107,8 +107,6 @@ paths:
   /admin/cities/{contentId}:
     $ref: 'city_admin_path.yml#/cities_contentId'
 
-  /confirmations:
-    $ref: 'confirmation_public_path.yml#/confirmations'
   /confirmations/{token}/confirm:
     $ref: 'confirmation_public_path.yml#/confirmations_token_confirm'
 

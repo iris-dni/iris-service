@@ -29,36 +29,15 @@ The public confirmation API needs an API-Key provided in the header::
     ... }
 
 
-Create Confirmation
-===================
-
-A new confirmation can be created to get a confirmation token. Additional
-`user_data` can be provided which will be provided when confirming the created
-confirmation::
-
-    >>> body = {
-    ...     "data": {
-    ...         "type": "test",
-    ...         "data": {
-    ...             "whatever": "you",
-    ...             "like": True,
-    ...         }
+    >>> confirmation = creators.confirmation(
+    ...     handler="test",
+    ...     response={
+    ...         "whatever": "you",
+    ...         "like": True,
     ...     }
-    ... }
-    >>> response = browser.post_json('/v1/confirmations',
-    ...                              body,
-    ...                              headers=headers)
-    >>> print_json(response)
-    {
-      "data": {
-        "data": {
-          "like": true,
-          "whatever": "you"
-        },
-        "id": "..."
-      }
-    }
-    >>> token = response.json['data']['id']
+    ... )
+
+    >>> token = confirmation.id
 
 
 Confirm Confirmation
@@ -71,10 +50,8 @@ Confirmations are created to confirm them later::
     >>> print_json(response)
     {
       "data": {
-        "data": {
-          "like": true,
-          "whatever": "you"
-        }
+        "like": true,
+        "whatever": "you"
       }
     }
 
@@ -99,20 +76,6 @@ OPTIONS
 The options endpoints are callable::
 
     >>> response = browser.options('/v1/confirmations/%s/confirm' % token)
-    >>> response.status
-    '200 OK'
-    >>> print_json(response)
-    {}
-    >>> print_json({n: v for n,v in response.headers.items() if n.startswith('Access')})
-    {
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
-      "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
-      "Access-Control-Allow-Origin": "http://localhost",
-      "Access-Control-Max-Age": "86400"
-    }
-
-    >>> response = browser.options('/v1/confirmations')
     >>> response.status
     '200 OK'
     >>> print_json(response)

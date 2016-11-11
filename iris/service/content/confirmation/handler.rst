@@ -33,7 +33,10 @@ handler and provide an appropriate interface for the API::
     ...         dc_update(
     ...             confirmation,
     ...             expires=iso_now_offset(datetime.timedelta(seconds=5)),
-    ...         )
+    ...         ) 
+    ...         confirmation.response = {
+    ...             "from": "test"
+    ...         }
     ...
     ...     def _confirm(self, confirmation):
     ...         print 'TestHandler confirmed'
@@ -71,6 +74,9 @@ Now this hander can be used to create a confirmation::
       "debug": {},
       "handler": "test",
       "id": "...",
+      "response": {
+        "from": "test"
+      },
       "state": "active"
     }
     >>> id = result['id']
@@ -83,18 +89,7 @@ The handler can be used to confirm::
     TestHandler confirmed
     >>> print_json(result)
     {
-      "context_id": null,
-      "data": {
-        "any": "data"
-      },
-      "dc": {
-        "created": "...",
-        "expires": "..."
-      },
-      "debug": {},
-      "handler": "test",
-      "id": "...",
-      "state": "used"
+      "from": "test"
     }
 
 Confirm an already confirmed confirmation::
@@ -132,6 +127,9 @@ Create a confirmation without the service request::
       "debug": {},
       "handler": "test",
       "id": "...",
+      "response": {
+        "from": "test"
+      },
       "state": "active"
     }
 

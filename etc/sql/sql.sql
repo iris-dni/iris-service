@@ -277,6 +277,7 @@ CREATE TABLE confirmations (
     context_id STRING,
     state STRING,
     data OBJECT(IGNORED),
+    response OBJECT(IGNORED),
     debug OBJECT(IGNORED)
 )
 CLUSTERED INTO {{ Confirmations.shards }} SHARDS

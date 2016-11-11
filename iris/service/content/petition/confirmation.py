@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import time
 import datetime
+import random
 
 from iris.service import rest
 
@@ -12,7 +14,47 @@ from .document import Petition, Supporter
 from .mail import send_petition_mail
 
 
-class PetitionSMSHandler(Handler, rest.RESTMapper):
+SMS_TEXT = u'Dein code für petitio.ch ist\n %s'
+
+
+class SMSBaseHandler(Handler):
+
+    ALLOW_API_CONFIRM = False
+
+    def build_token(self, confirmation, petition=None):
+        if petition is None:
+            petition = self._petition(confirmation)
+        while True:
+            token = str(random.randint(10000, 99999))
+            confirmation.data['token'] = token
+            context_id = self.build_context_id(petition, token)
+            if not Confirmation.has_active_context_id(context_id):
+                break
+        confirmation.context_id = context_id
+
+    def _petition(self, confirmation):
+        return Petition.get(confirmation.data['petition'])
+
+    @classmethod
+    def handle_confirmation(cls, request, petition, token):
+        confirmation = Confirmation.get_active_context_id(
+            cls.build_context_id(petition, token)
+        )
+        if confirmation is not None:
+            return Handler.confirm_handler(
+                confirmation.handler,
+                confirmation.id,
+                request,
+                petition=petition
+            )
+        raise ValueError('context_id not found or expired')
+
+    @classmethod
+    def build_context_id(cls, petition, token):
+        return petition.id + '-' + token
+
+
+class PetitionSMSHandler(SMSBaseHandler, rest.RESTMapper):
     """SMS confirmation handler for petitions
 
     """
@@ -32,14 +74,14 @@ class PetitionSMSHandler(Handler, rest.RESTMapper):
             confirmation,
             expires=iso_now_offset(datetime.timedelta(minutes=5)),
         )
-        subject = 'Petition'
-        text = 'Your verification code is "%s"' % confirmation.id
+        self.build_token(confirmation, petition)
+        text = SMS_TEXT % confirmation.data['token']
         confirmation.debug['sms'] = {
             'phone_number': mobile,
-            'subject': subject,
             'text': text,
-            'response': sms.sendSMS(mobile, subject, text)
+            'response': sms.sendSMS(mobile, text)
         }
+        confirmation.response['petition'] = petition.id
 
     def _confirm(self, confirmation, petition=None):
         """Confirms the mobile number on the petition
@@ -55,19 +97,14 @@ class PetitionSMSHandler(Handler, rest.RESTMapper):
         petition.owner = {"mobile_trusted": True}
         petition.store(refresh=True)
 
-    def _petition(self, confirmation):
-        return Petition.get(confirmation.data['petition'])
 
-
-class SupportSMSHandler(Handler, rest.RESTMapper):
+class SupportSMSHandler(SMSBaseHandler, rest.RESTMapper):
     """SMS confirmation handler for supports
 
     """
 
     HANDLER_NAME = 'support_sms'
     NAME = 'confirmations.' + HANDLER_NAME
-
-    ALLOW_API_CONFIRM = False
 
     def _create(self, confirmation):
         """Send an SMS with the confirmation id
@@ -77,16 +114,16 @@ class SupportSMSHandler(Handler, rest.RESTMapper):
             expires=iso_now_offset(datetime.timedelta(minutes=5)),
         )
         mobile = confirmation.data['user']['mobile']
-        subject = 'Support'
-        text = 'Your verification code is "%s"' % confirmation.id
+        self.build_token(confirmation)
+        text = SMS_TEXT % confirmation.data['token']
         confirmation.debug['sms'] = {
             'phone_number': mobile,
-            'subject': subject,
             'text': text,
-            'response': sms.sendSMS(mobile, subject, text)
+            'response': sms.sendSMS(mobile, text)
         }
+        confirmation.response['petition'] = self._petition(confirmation).id
 
-    def _confirm(self, confirmation):
+    def _confirm(self, confirmation, **kwargs):
         """Nothing to do here
 
         The confirmation is handled in the "support" endpoint which provides
@@ -151,6 +188,7 @@ class PetitionEMailConfirmHandler(Handler, rest.RESTMapper):
             [petition.owner.relation_dict],
             mail_data
         )
+        confirmation.response['petition'] = petition.id
         confirmation.context_id = self.TEMPLATE + petition.id
 
     def _confirm(self, confirmation, petition=None):
@@ -210,6 +248,7 @@ class SupportEMailConfirmHandler(Handler, rest.RESTMapper):
             [supporter.user.relation_dict],
             mail_data
         )
+        confirmation.response['petition'] = petition.id
 
     def _confirm(self, confirmation, petition=None):
         """Confirms the mobile number on the petition

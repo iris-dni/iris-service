@@ -6,14 +6,17 @@ AWS_CLIENT_CONFIG = {}
 AWS_PUBLISH_CONFIG = {}
 TESTING = False
 
+TEST_STACK = []
 
-def sendSMS(to, subject, message):
+
+def sendSMS(to, message):
     global AWS_CLIENT_CONFIG, AWS_PUBLISH_CONFIG
     if TESTING or to.startswith('555'):
         if to == '555 333':
             # simulate a value error for testing
             raise ValueError("Can't send SMS")
-        print 'sendSMS(%r, %r, %r)' % (to, subject, message)
+        TEST_STACK.append([to, message])
+        print 'sendSMS(%r, %r)' % (to, message)
         return {}
     client = boto3.client(
         'sns',
@@ -23,7 +26,6 @@ def sendSMS(to, subject, message):
         return client.publish(
             PhoneNumber=to,
             Message=message,
-            Subject=subject,
             **AWS_PUBLISH_CONFIG
         )
     except ClientError:

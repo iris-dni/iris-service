@@ -9,8 +9,8 @@ Petition Mobile Confirmation
 ============================
 
 
-Create Confirmation
--------------------
+Create a Mobile Confirmation
+----------------------------
 
 The handler `petition_sms` must be used to create an sms confirmation for a
 petition.
@@ -27,6 +27,9 @@ the petition id::
     >>> data = {
     ...     "data": {
     ...         "petition": petition.id
+    ...     },
+    ...     "info": {
+    ...         "petition": petition.id
     ...     }
     ... }
 
@@ -34,13 +37,14 @@ Create the confirmation::
 
     >>> from iris.service.content.confirmation.handler import Handler
     >>> response = Handler.create_for_handler('petition_sms', data, request)
-    sendSMS(u'555 1234', 'Petition', u'Your verification code is "..."')
+    sendSMS(u'555 1234', u'...')
     >>> print_json(response)
     {
-      "context_id": null,
+      "context_id": "...-...",
       "data": {
         "mobile": "555 1234",
-        "petition": "..."
+        "petition": "...",
+        "token": "..."
       },
       "dc": {
         "created": "...",
@@ -50,12 +54,14 @@ Create the confirmation::
         "sms": {
           "phone_number": "555 1234",
           "response": {},
-          "subject": "Petition",
-          "text": "Your verification code is \"...\""
+          "text": "Dein code für petitio.ch ist\n ..."
         }
       },
       "handler": "petition_sms",
       "id": "...",
+      "response": {
+        "petition": "..."
+      },
       "state": "active"
     }
     >>> response["data"]["petition"] == petition.id
@@ -78,10 +84,7 @@ The confirmation API can be used with the id of the confirmation object::
     >>> print_json(response)
     {
       "data": {
-        "data": {
-          "mobile": "555 1234",
-          "petition": "1n3gf"
-        }
+        "petition": "..."
       }
     }
 
@@ -247,6 +250,9 @@ Create the confirmation::
       },
       "handler": "petition_confirm_email",
       "id": "...",
+      "response": {
+        "petition": "..."
+      },
       "state": "active"
     }
     >>> response["data"]["petition"] == petition.id
@@ -285,11 +291,7 @@ The confirmation API can be used with the id of the confirmation object::
     >>> print_json(response)
     {
       "data": {
-        "data": {
-          "email": "humpty@bumpty.ch",
-          "petition": "1fjnH",
-          "template": "iris-emailconfirmation"
-        }
+        "petition": "..."
       }
     }
 
@@ -335,12 +337,12 @@ The mobile number must be provided in the owner relation of the petition::
 
 
 
-Support Confirmation
-====================
+Support Mobile Confirmation
+===========================
 
 
-Create a Mobile Confirmation
-----------------------------
+Create Confirmation
+-------------------
 
 The handler `support_sms` must be used to create an sms confirmation for a
 petition support.
@@ -361,12 +363,13 @@ the mobile number::
 Create the confirmation::
 
     >>> response = Handler.create_for_handler('support_sms', data, request)
-    sendSMS('555 1234', 'Support', u'Your verification code is "..."')
+    sendSMS('555 1234', u'...')
     >>> print_json(response)
     {
-      "context_id": null,
+      "context_id": "...-...",
       "data": {
         "petition": "...",
+        "token": "...",
         "user": {
           "mobile": "555 1234"
         },
@@ -380,12 +383,14 @@ Create the confirmation::
         "sms": {
           "phone_number": "555 1234",
           "response": {},
-          "subject": "Support",
-          "text": "Your verification code is \"...\""
+          "text": "..."
         }
       },
       "handler": "support_sms",
       "id": "...",
+      "response": {
+        "petition": "..."
+      },
       "state": "active"
     }
 
@@ -400,29 +405,7 @@ Directly use the handler to confirm::
     >>> response = Handler.confirm_handler('support_sms', token, request)
     >>> print_json(response)
     {
-      "context_id": null,
-      "data": {
-        "petition": "...",
-        "user": {
-          "mobile": "555 1234"
-        },
-        "user_id": null
-      },
-      "dc": {
-        "created": "...",
-        "expires": "..."
-      },
-      "debug": {
-        "sms": {
-          "phone_number": "555 1234",
-          "response": {},
-          "subject": "Support",
-          "text": "Your verification code is \"...\""
-        }
-      },
-      "handler": "support_sms",
-      "id": "...",
-      "state": "used"
+      "petition": "1sR4E"
     }
 
 Multiple uses are not allowed::
@@ -430,3 +413,49 @@ Multiple uses are not allowed::
     >>> response = Handler.confirm_handler('support_sms', token, request)
     Traceback (most recent call last):
     ValueError: Already used
+
+
+Support Email Confirmation
+==========================
+
+    >>> user = creators.user(email="supporter@home.com")
+    >>> supporter = petition.addSupporter(request, user.id, {'email': 'holla@123.com'})
+    >>> _ = supporter.store(refresh=True)
+    >>> data = {
+    ...     "data": {
+    ...         "petition": petition.id,
+    ...         "supporter": supporter.id,
+    ...     }
+    ... }
+    >>> response = Handler.create_for_handler(
+    ...     'supporter_confirm_email',
+    ...     data,
+    ...     request)
+    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/supporter/email?key=...'},
+    ...
+                 'to': [{'email': u'holla@123.com', 'type': 'to'}]},
+     'template_content': [],
+     'template_name': 'iris-supporter-mailconfirmation'}
+
+    >>> print_json(response)
+    {
+      "context_id": null,
+      "data": {
+        "email": "holla@123.com",
+        "petition": "...",
+        "supporter": "...-u:..."
+      },
+      "dc": {
+        "created": "...",
+        "expires": "..."
+      },
+      "debug": {
+        "mail": {}
+      },
+      "handler": "supporter_confirm_email",
+      "id": "...",
+      "response": {
+        "petition": "..."
+      },
+      "state": "active"
+    }
