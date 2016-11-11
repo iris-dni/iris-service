@@ -22,7 +22,7 @@ class Handler(rest.DocumentRESTMapperMixin):
         self._confirm(confirmation, **kwargs)
         confirmation.state = 'used'
         confirmation.store(refresh=True)
-        return self.to_api(confirmation)
+        return confirmation.response
 
     def needs_confirmation(self, data):
         """Check if a confirmation is needed for the data
@@ -35,7 +35,7 @@ class Handler(rest.DocumentRESTMapperMixin):
     def _create(self, confirmation):
         pass
 
-    def _confirm(self, confirmation):
+    def _confirm(self, confirmation, **kwargs):
         pass
 
     @classmethod

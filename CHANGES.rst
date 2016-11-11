@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - changed SMS wording
+ - provide only numerical mobile tokens
+   DEPLOY:
+     ALTER TABLE confirmations ADD COLUMN response OBJECT(IGNORED);
  - extended petition statemachine with noLetterResponse flow
    DEPLOY:
      ALTER TABLE petitions ADD COLUMN state['letter_wait_expire'] TIMESTAMP;

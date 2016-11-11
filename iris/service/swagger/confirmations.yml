@@ -1,38 +1,4 @@
 definitions:
-  ConfirmationRead:
-    type: object
-    readOnly: true
-    properties:
-      id:
-        type: string
-        readOnly: true
-      data:
-        type: object
-        readOnly: true
-
-  ConfirmationCreatePOSTBody:
-    type: object
-    required:
-      - data
-    properties:
-      data:
-        type: object
-        required:
-          - type
-        properties:
-          type:
-            type: string
-          data:
-            type: object
-
-  ConfirmationCreateResponseBody:
-    type: object
-    required:
-      - data
-    properties:
-      data:
-        $ref: '#/definitions/ConfirmationRead'
-
   ConfirmationResponseBody:
     type: object
     required:
@@ -40,6 +6,3 @@ definitions:
     properties:
       data:
           type: object
-          properties:
-              data:
-                type: object

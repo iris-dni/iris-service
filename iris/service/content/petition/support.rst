@@ -132,7 +132,7 @@ Support using an untrusted mobile number::
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
-    sendSMS(u'555 4242', 'Support', u'Your verification code is "..."')
+    sendSMS(u'555 4242', u'...')
     >>> response.json['status']
     u'error'
     >>> response.json['reasons']
@@ -143,7 +143,9 @@ Support using an untrusted mobile number::
 
 We must provide the verification token with the support request::
 
-    >>> supporter['data']['mobile_token'] = "1sR4E"
+    >>> from iris.service.sms import sms
+    >>> token = sms.TEST_STACK[-1][1][-5:]
+    >>> supporter['data']['mobile_token'] = token
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)

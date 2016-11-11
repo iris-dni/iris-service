@@ -124,12 +124,12 @@ class PetitionStateMachine(object):
         if not owner_rel.get('mobile_trusted'):
             token = kwargs['data'].get('mobile_token')
             if token:
+                from .confirmation import SMSBaseHandler
                 try:
-                    Handler.confirm_handler(
-                        'petition_sms',
-                        token,
+                    SMSBaseHandler.handle_confirmation(
                         self.request,
-                        petition=self.petition
+                        self.petition,
+                        token,
                     )
                 except ValueError:
                     untrusted.append("mobile_verification_failed")
@@ -198,18 +198,18 @@ class PetitionStateMachine(object):
             if token:
                 # check if the token matches the mobile number
                 msg = None
+                from .confirmation import SMSBaseHandler
                 try:
-                    msg = Handler.confirm_handler(
-                        'support_sms',
+                    msg = SMSBaseHandler.handle_confirmation(
+                        self.request,
+                        self.petition,
                         token,
-                        self.request
                     )
                 except ValueError:
                     # a ValueError means that confirmation failed
                     pass
                 if (msg
-                    and msg['data']['user']['mobile'] == mobile
-                    and msg['data']['petition'] == self.petition.id
+                    and data['user']['mobile'] == mobile
                    ):
                     user_data['mobile_trusted'] = True
                 else:

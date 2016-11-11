@@ -147,7 +147,7 @@ Petitions which are draft or rejected can be published::
     ... }
     >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
-    sendSMS(u'555 1234', 'Petition', u'Your verification code is "..."')
+    sendSMS(u'555 1234', u'...')
     >>> response.status
     '200 OK'
     >>> print_json(response)
@@ -181,7 +181,7 @@ A confirmation for the mobile number verification was created::
     >>> confirmation = Confirmation.search({"query": {"match_all": {}}})['hits']['hits'][0]
     >>> confirmation.data['petition'] == id
     True
-    >>> token = confirmation.id
+    >>> token = confirmation.data['token']
 
 Now we can publish with the confirmation token in the body (this time there is
 an email confirmation sent)::
