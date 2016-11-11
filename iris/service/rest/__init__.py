@@ -1,4 +1,9 @@
-from .service import RESTService, RESTMapper, BaseRESTService  # noqa
+from .service import (  # noqa
+    RESTService,
+    RESTMapper,
+    BaseRESTService,
+    blank_request,
+)
 from .document import (  # noqa
     DocumentRESTMapperMixin,
     SearchableDocumentRESTMapperMixin,

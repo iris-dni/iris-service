@@ -5,6 +5,12 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - send mail when petition closed without letter response
+ - send mail when petition support is finished
+ - send mail when petition is closed
+ - send mail when petition letter was sent
+ - send mail when petition is winner
+ - send mail when petition is approved
  - send mail on petition rejected
  - changed SMS wording
  - provide only numerical mobile tokens

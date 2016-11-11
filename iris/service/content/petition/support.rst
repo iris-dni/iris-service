@@ -5,6 +5,7 @@ Petition Support
 
 ::
 
+    >>> from iris.service import mail
     >>> from iris.service.content.petition import Petition
     >>> from iris.service.content.petition.document import Supporter
     >>> def showInfo(response):
@@ -88,7 +89,6 @@ is untrusted::
 
 The mail::
 
-    >>> from iris.service import mail
     >>> print_json(mail.TESTING_MAIL_STACK[-1])
     {
       "message": {
@@ -187,7 +187,7 @@ We must provide the verification token with the support request::
     {
       "class": "User",
       "email": "42-1@sso.login",
-      "email_trusted": false,
+      "email_trusted": true,
       "firstname": "",
       "id": "...",
       "lastname": "",

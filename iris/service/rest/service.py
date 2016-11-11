@@ -1,7 +1,9 @@
 import logging
 import copy
+from functools import partial
 
 from pyramid import security
+from pyramid.request import Request
 
 from lovely.pyrest.rest import rpcmethod_route, rpcmethod_view
 
@@ -252,6 +254,15 @@ def to_api(request, doc, resolve=None, extend=None):
     result = APITransformer(doc, resolve=resolve).to_api()
     extender.extend(result)
     return result
+
+
+def blank_request():
+    """Try to create a working request instance
+    """
+    request = Request.blank('/')
+    request.to_api = partial(to_api, request)
+    request.context = None
+    return request
 
 
 TESTING_STATE = []

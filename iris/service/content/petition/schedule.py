@@ -1,6 +1,7 @@
 import logging
 from elasticsearch import helpers
 
+from iris.service.rest import blank_request
 from iris.service.elector import Elector
 
 from .document import Petition
@@ -33,5 +34,6 @@ class TickWorker(object):
                                   ):
             petition = Petition.from_raw_es_data(result)
             logging.info('Sending tick to petition "%s"' % petition.id)
-            if petition.sm(None).tick():
+            request = blank_request()
+            if petition.sm(request).tick():
                 petition.store()

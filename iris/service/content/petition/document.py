@@ -2,6 +2,8 @@ import copy
 import jsonpickle
 import transitions
 
+from elasticsearch import helpers
+
 from lovely.esdb.document import Document
 from lovely.esdb.properties import (
     Property,
@@ -296,6 +298,23 @@ class Petition(Document):
                 self.supporters['amount'] -= 1
             self.store(refresh=True)
             supporter.delete(refresh=True)
+
+    def get_supporters(self):
+        scan = helpers.scan(
+            self.ES,
+            query={
+                'query': {
+                    'term': {
+                        'relations.petition': self.id
+                    }
+                }
+            },
+            index=Supporter.INDEX,
+            doc_type=Supporter.DOC_TYPE,
+            scroll='1m',
+        )
+        for supporter in scan:
+            yield Supporter.from_raw_es_data(supporter)
 
     def sm(self, request):
         return PetitionStateMachine(self, request)

@@ -66,6 +66,10 @@ def flatten_vars(data):
 TESTING_MAIL_STACK = []
 
 
+def reset_mail_stack():
+    TESTING_MAIL_STACK[:] = []
+
+
 def includeme(config):
     global CLIENT
     settings = config.get_settings()

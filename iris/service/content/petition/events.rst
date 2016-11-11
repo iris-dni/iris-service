@@ -6,6 +6,7 @@ The petition event endpoints control the petition state machine.
 
 ::
 
+    >>> from iris.service import mail
     >>> import time
     >>> from iris.service.content.petition import Petition
     >>> from iris.service.db import dc
@@ -20,6 +21,29 @@ petition is allowed to be seen in the public list endpoints::
 
     >>> def showTick(response):
     ...     return Petition.get(response.json['data']['id']).state.tick
+
+    >>> def support_petition(petition, count):
+    ...     for i in range(count):
+    ...         user = ssologin(
+    ...             browser,
+    ...             {
+    ...                 'email': "petition-supporter-%s@iris.com" % i,
+    ...                 'email_trusted': True,
+    ...                 'mobile': "555123%s" % i,
+    ...                 'mobile_trusted': True,
+    ...             }
+    ...         )
+    ...         supporter = {
+    ...             "data": {
+    ...                 "user": {
+    ...                     "email": user.email,
+    ...                     "mobile": user.mobile,
+    ...                 }
+    ...             }
+    ...         }
+    ...         response = browser.post_json(
+    ...             '/v1/petitions/%s/event/support' % id,
+    ...             supporter)
 
 A browser which is logged in as an administrator::
 
@@ -39,7 +63,7 @@ Create a new petition::
     ...     "data": {
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -80,7 +104,7 @@ Create a new petition::
     ...     "data": {
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -146,7 +170,7 @@ Create a new petition::
     ...     "data": {
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -170,9 +194,15 @@ Publish the petition::
 
 Approve the petition::
 
+    >>> mail.reset_mail_stack()
     >>> response = admin.post_json('/v1/petitions/%s/event/approved' % id)
     >>> showState(response)
     {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
+
+No mail was sent::
+
+    >>> not mail.TESTING_MAIL_STACK
+    True
 
 The petition needs a city::
 
@@ -196,6 +226,25 @@ The petition needs a city::
     >>> showTick(response)
     True
 
+A mail was sent::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+    ...
+        "to": [
+          {
+            "email": "petition-owner@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-approved"
+    }
+
 
 Petition is a Winner
 ====================
@@ -207,7 +256,7 @@ Create a new petition::
     ...         "title": "Create And Publish Petition",
     ...         "city": {"id": city.id},
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -259,11 +308,13 @@ reached::
     >>> showTick(response)
     True
 
-    >>> petition = Petition.get(id)
-    >>> petition.supporters['amount'] = 11
-    >>> _ = petition.store(refresh=True)
+Support the petition::
 
-    >>> response = admin.post_json('/v1/petitions/%s/event/check' % id)
+    >>> support_petition(petition, 9)
+
+Now the petition is in state winner::
+
+    >>> response = admin.get('/v1/petitions/%s' % id)
     >>> showState(response)
     {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
     >>> showListable(response)
@@ -271,9 +322,29 @@ reached::
     >>> showTick(response)
     True
 
+A mail was sent to the owner of the petition::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+    ...
+        "to": [
+          {
+            "email": "petition-owner@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-winner"
+    }
+
 The winner state waits until the support time is reached. The 'tick' event
 will switch after the timeout::
 
+    >>> mail.reset_mail_stack()
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'letter_wait_expire': None, u'name': u'winner', u'parent': u'supportable'}
@@ -294,13 +365,59 @@ will switch after the timeout::
     >>> showTick(response)
     False
 
+A mail for the owner::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-2])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-processing-notification-for-owner"
+    }
+
+A mail for supporters::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-processing-notification-for-supporters"
+    }
+
 Go through the processing steps::
 
+    >>> mail.reset_mail_stack()
     >>> response = admin.post_json('/v1/petitions/%s/event/letterSent' % id)
     >>> showState(response)
     {u'letter_wait_expire': u'...', u'name': u'waitForLetterResponse', u'parent': u'processing'}
     >>> showListable(response)
     True
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+    ...
+        "to": [
+          {
+            "email": "petition-owner@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-letter-sent"
+    }
 
     >>> petition = Petition.get(id)
     >>> token = petition.response_token
@@ -329,6 +446,101 @@ Go through the processing steps::
     >>> showListable(response)
     True
 
+A mail was sent to the petiton owner::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+    ...
+        "to": [
+          {
+            "email": "petition-owner@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-closed"
+    }
+
+A mail was sent to the supporters of the petition::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-2])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "city": {
+    ...
+        "merge_vars": [
+          {
+            "rcpt": "petition-supporter-0@iris.com",
+            "vars": [
+              {
+                "content": {
+                  "class": "User",
+                  "email": "petition-supporter-0@iris.com",
+                  "email_trusted": true,
+                  "firstname": "",
+                  "id": "...",
+                  "lastname": "",
+                  "mobile": "5551230",
+                  "mobile_trusted": true,
+                  "street": "",
+                  "town": "",
+                  "zip": ""
+                },
+                "name": "user"
+              }
+            ]
+          },
+    ...
+        "to": [
+          {
+            "email": "petition-supporter-0@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-1@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-2@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-3@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-4@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-5@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-6@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-7@iris.com",
+            "type": "to"
+          },
+          {
+            "email": "petition-supporter-8@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-closed-notification-for-supporters"
+    }
+
 
 Petition is a Loser
 ===================
@@ -340,7 +552,7 @@ Create a new petition::
     ...         "title": "Create And Publish Petition",
     ...         "city": {"id": city.id},
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -379,9 +591,14 @@ Approve the petition::
     >>> showListable(response)
     True
 
+Support the petition so we have some mails to send::
+
+    >>> support_petition(petition, 3)
+
 Now the petition is a loser when the support timeout occurs before the
 supporter limit is reached::
 
+    >>> mail.reset_mail_stack()
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
@@ -398,6 +615,34 @@ supporter limit is reached::
     >>> showListable(response)
     True
 
+A mail for the owner::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-2])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-loser-notification-for-owner"
+    }
+
+A mail for supporters::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-loser-notification-for-supporters"
+    }
+
 
 No Letter Response
 ==================
@@ -409,7 +654,7 @@ Manage the timeout when waiting for a letter response::
     ...         "title": "No Letter Respose",
     ...         "city": {"id": city.id},
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -461,6 +706,42 @@ Manage the timeout when waiting for a letter response::
     ... )
     >>> showState(response)
     {u'letter_wait_expire': u'...', u'name': u'letterResponseArrived', u'parent': u'processing'}
+
+Close without letter response::
+
+    >>> body = {
+    ...     "to_state": "processing.waitForLetterResponse"
+    ... }
+    >>> response = admin.post_json(
+    ...     '/v1/petitions/%s/event/force_state' % id,
+    ...     body
+    ... )
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'waitForLetterResponse', u'parent': u'processing'}
+    >>> petition = Petition.get(id)
+    >>> petition.state.letter_wait_expire = dc.iso_now()
+    >>> petition.owner = {'email_trusted': True}
+    >>> _ = petition.store(refresh=True)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'noLetterResponse', u'parent': u'processing'}
+
+    >>> mail.reset_mail_stack()
+    >>> response = admin.post_json('/v1/petitions/%s/event/close' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': u'...', u'name': u'closedWithoutLetterResponse', u'parent': u''}
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "city": {
+    ...
+      "template_content": [],
+      "template_name": "iris-petition-closed-without-response"
+    }
 
 
 Draft can be deleted
@@ -528,7 +809,7 @@ Event response can also reolve::
     ...         "title": "Resolve Petition",
     ...         "city": {"id": city.id},
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }
@@ -572,7 +853,7 @@ Event response data can also be extended::
     ...     "data": {
     ...         "title": "Extend Petition",
     ...         "owner": {
-    ...             "email": "email@iris.com",
+    ...             "email": "petition-owner@iris.com",
     ...             "mobile": "555 1234"
     ...         }
     ...     }

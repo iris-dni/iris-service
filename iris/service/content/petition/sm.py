@@ -26,7 +26,7 @@ NestedState.separator = '.'
 
 
 APPROVAL_DAYS = 30
-LETTER_WAIT_DAYS = 30
+LETTER_WAIT_DAYS = 40
 
 
 class ConditionError(Exception):
@@ -192,10 +192,13 @@ class PetitionStateMachine(object):
             user = None
         untrusted = []
         mobile = user_data['mobile']
-        if (not user
-            or user.mobile != mobile
-            or not user.mobile_trusted
-           ):
+        mobile_trusted = (user
+                          and user.mobile == mobile
+                          and user.mobile_trusted)
+        if not mobile_trusted:
+            # Here we have an untrusted mobile number because the logged in
+            # user has a different mobile than the provided one or the users
+            # mobile is also not trusted.
             token = data.get('mobile_token')
             if token:
                 # check if the token matches the mobile number
@@ -213,7 +216,9 @@ class PetitionStateMachine(object):
                 if (msg
                     and data['user']['mobile'] == mobile
                    ):
-                    user_data['mobile_trusted'] = True
+                    # We trust the mobile because the virification token is
+                    # correct.
+                    mobile_trusted = True
                 else:
                     untrusted.append('mobile_verification_failed')
             else:
@@ -233,16 +238,18 @@ class PetitionStateMachine(object):
         if untrusted:
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
+        user_data['mobile_trusted'] = mobile_trusted
+        email = user_data['email']
+        email_trusted = (user
+                         and user.email == email
+                         and user.email_trusted)
+        user_data['email_trusted'] = email_trusted
         # support the petition
         supporter = self.petition.addSupporter(
             request=self.request,
             user_id=session_user,
             data=user_data)
-        email = user_data['email']
-        if (not user
-            or user.email != email
-            or not user.email_trusted
-           ):
+        if not email_trusted:
             # send a confirmation email
             data = {
                 "data": {
@@ -325,18 +332,55 @@ class PetitionStateMachine(object):
     def send_rejected_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-rejected')
 
+    def send_approval_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-approved')
+
     def send_winner_mail_to_owner(self, **kwargs):
-        pass
+        self._send_mail_to_petition_owner('iris-petition-winner')
 
-    def send_approval_request_to_editor(self, **kwargs):
-        pass
+    def send_lettersent_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-letter-sent')
 
-    def send_approval_notifications(self, **kwargs):
-        pass
+    def send_closed_without_response_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-closed-without-response')
+
+    def send_loser_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-loser-notification-for-owner')
+
+    def send_loser_mail_to_supporters(self, **kwargs):
+        self._send_mail_to_petition_supporters(
+            'iris-petition-loser-notification-for-supporters')
+
+    def send_support_won_mail_to_owner(self, **kwargs):
+        self.set_response_token()
+        self._send_mail_to_petition_owner(
+            'iris-petition-processing-notification-for-owner')
+
+    def send_support_won_mail_to_supporters(self, **kwargs):
+        self.set_response_token()
+        self._send_mail_to_petition_supporters(
+            'iris-petition-processing-notification-for-supporters')
+
+    def send_closed_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-closed')
+
+    def send_closed_mail_to_supporters(self, **kwargs):
+        self._send_mail_to_petition_supporters(
+            'iris-petition-closed-notification-for-supporters')
 
     def _send_mail_to_petition_owner(self, template):
         return self._send_mail(template,
                                [self.petition.owner.relation_dict])
+
+    def _send_mail_to_petition_supporters(self, template):
+        owner_id = self.petition.owner.id
+        to = [s.user.relation_dict
+              for s in self.petition.get_supporters()
+              if s.user.id != owner_id
+             ]
+        return self._send_mail(template, to)
 
     def _send_mail(self, template, to):
         """Send a petition mail
