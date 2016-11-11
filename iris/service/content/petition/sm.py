@@ -17,6 +17,8 @@ from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 from iris.service.content.user import SessionUser
 
+from .mail import send_petition_mail
+
 
 # create a state machine implementation from extensions
 Machine = MachineFactory.get_predefined(nested=True)
@@ -270,18 +272,6 @@ class PetitionStateMachine(object):
     def set_petition_feedback(self, data, **kwargs):
         self.petition.city_answer = data['answer']
 
-    def send_rejected_mail_to_owner(self, **kwargs):
-        pass
-
-    def send_winner_mail_to_owner(self, **kwargs):
-        pass
-
-    def send_approval_request_to_editor(self, **kwargs):
-        pass
-
-    def send_approval_notifications(self, **kwargs):
-        pass
-
     def start_support(self, **kwargs):
         """Called when switching into a support state
 
@@ -331,6 +321,38 @@ class PetitionStateMachine(object):
 
     def if_city_assigned(self, **kwargs):
         return self.petition.city() is not None
+
+    def send_rejected_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-rejected')
+
+    def send_winner_mail_to_owner(self, **kwargs):
+        pass
+
+    def send_approval_request_to_editor(self, **kwargs):
+        pass
+
+    def send_approval_notifications(self, **kwargs):
+        pass
+
+    def _send_mail_to_petition_owner(self, template):
+        return self._send_mail(template,
+                               [self.petition.owner.relation_dict])
+
+    def _send_mail(self, template, to):
+        """Send a petition mail
+
+        `to` is checked if the email provided is trusted. Untrusted entries
+        are removed.
+        """
+        rcpt = [r for r in to if r.get('email_trusted', False)]
+        if not rcpt:
+            return None
+        return send_petition_mail(
+            self.request,
+            template,
+            self.petition,
+            rcpt,
+        )
 
 
 HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']

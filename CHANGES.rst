@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - send mail on petition rejected
  - changed SMS wording
  - provide only numerical mobile tokens
    DEPLOY:

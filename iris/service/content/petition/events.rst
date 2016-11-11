@@ -118,6 +118,16 @@ Reject the petition::
     >>> showListable(response)
     False
 
+A mail is triggered::
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+    ...
+      "template_name": "iris-petition-rejected"
+    }
+
 Publish the petition again::
 
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)

@@ -26,15 +26,42 @@ Now send the mail (note: the test uses a mock sender)::
     >>> from iris.service.mail import send
 
     >>> result = send('iris-mailconfirmation', to, data)
-    {'message': {'global_merge_vars': [{'content': {'url': 'http://www.petitio.ch'},
-                                        'name': 'confirm'}],
-                 'merge_vars': [{'rcpt': 'voter@iris.com',
-                                 'vars': [{'content': {'email': 'voter@iris.com',
-                                                       'firstname': u'Top',
-                                                       'lastname': u'Voter'},
-                                           'name': 'user'}]}],
-                 'to': [{'email': 'voter@iris.com',
-                         'name': u'Top Voter',
-                         'type': 'to'}]},
-     'template_content': [],
-     'template_name': 'iris-mailconfirmation'}
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "url": "http://www.petitio.ch"
+            },
+            "name": "confirm"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "voter@iris.com",
+            "vars": [
+              {
+                "content": {
+                  "email": "voter@iris.com",
+                  "firstname": "Top",
+                  "lastname": "Voter"
+                },
+                "name": "user"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "email": "voter@iris.com",
+            "name": "Top Voter",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-mailconfirmation"
+    }

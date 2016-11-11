@@ -63,6 +63,9 @@ def flatten_vars(data):
     )
 
 
+TESTING_MAIL_STACK = []
+
+
 def includeme(config):
     global CLIENT
     settings = config.get_settings()
@@ -70,8 +73,7 @@ def includeme(config):
     if key == 'mock':
         class mandrill_mock_messages(object):
             def send_template(*args, **kwargs):
-                from pprint import pprint
-                pprint(kwargs)
+                TESTING_MAIL_STACK.append(kwargs)
                 return {}
 
         class mandrill_mock_client(object):

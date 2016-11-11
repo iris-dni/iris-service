@@ -77,11 +77,6 @@ is untrusted::
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
-    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/supporter/email?key=...'},
-    ...
-                 'to': [{'email': u'me@iris.com', 'type': 'to'}]},
-     'template_content': [],
-     'template_name': 'iris-supporter-mailconfirmation'}
 
     >>> showInfo(response)
     {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
@@ -90,6 +85,44 @@ is untrusted::
     >>> Supporter.get_by(Supporter.petition, id, size=10)
     [<Supporter [id=u'...-t:555 4321']>,
      <Supporter [id=u'...-u:...']>]
+
+The mail::
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "url": "http://frontend/confirm/supporter/email?key=..."
+            },
+            "name": "confirm"
+          },
+    ...
+            "name": "petition"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "me@iris.com",
+            "vars": [
+    ...
+                "name": "user"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "email": "me@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-supporter-mailconfirmation"
+    }
 
 The same user supports again::
 

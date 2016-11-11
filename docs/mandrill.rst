@@ -8,28 +8,23 @@ Mandrill Mail
 Mails sent from IRIS are sent via `mandrill <https://www.mandrill.com>`_
 
 
-Petition Email Confirmation Mail
---------------------------------
+Mails
+=====
 
-template id: iris-petition-mailconfirmation
-
-Variables provided:
-
-  - confirm.url - URL which must be used to confirm the email
-  - petition
-  - user
-
-
-Supporter Email Confirmation Mail
----------------------------------
-
-template id: iris-supporter-mailconfirmation
-
-Variables provided:
-
-  - confirm.url - URL which must be used to confirm the email
-  - petition
-  - user
++------------------------------+----------------+---------------------------------+---------------+
+|                              | Send To        | Template                        | Variables     |
++==============================+================+=================================+===============+
+| Petition Email Confirmation  | petition owner | iris-petition-mailconfirmation  | - confirm.url |
+|                              |                |                                 | - petition    |
+|                              |                |                                 | - user        |
++------------------------------+----------------+---------------------------------+---------------+
+| Supporter Email Confirmation | petition owner | iris-supporter-mailconfirmation | - confirm.url |
+|                              |                |                                 | - petition    |
+|                              |                |                                 | - user        |
++------------------------------+----------------+---------------------------------+---------------+
+| Petition Rejected            | petition owner | iris-petition-rejected          | - petiton     |
+|                              |                |                                 | - user        |
++------------------------------+----------------+---------------------------------+---------------+
 
 
 Mail Data
