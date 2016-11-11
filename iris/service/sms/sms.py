@@ -26,6 +26,13 @@ def sendSMS(to, message):
         return client.publish(
             PhoneNumber=to,
             Message=message,
+            MessageAttributes={
+                'AWS.SNS.SMS.SenderID': {
+                    'DataType': 'String',
+                    'StringValue': 'petitio',
+
+                }
+            },
             **AWS_PUBLISH_CONFIG
         )
     except ClientError:
