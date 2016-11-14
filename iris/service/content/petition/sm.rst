@@ -65,7 +65,7 @@ The petition must be in a publishable state::
 A new instance of the petition state machine initializes with the current
 state of the petition::
 
-    >>> sm = PetitionStateMachine(petition, None)
+    >>> sm = PetitionStateMachine(petition, request)
     >>> sm.state
     'supportable.pending'
     >>> petition.state

@@ -8,28 +8,56 @@ Mandrill Mail
 Mails sent from IRIS are sent via `mandrill <https://www.mandrill.com>`_
 
 
-Petition Email Confirmation Mail
---------------------------------
+Mails
+=====
 
-template id: iris-petition-mailconfirmation
-
-Variables provided:
-
-  - confirm.url - URL which must be used to confirm the email
-  - petition
-  - user
-
-
-Supporter Email Confirmation Mail
----------------------------------
-
-template id: iris-supporter-mailconfirmation
-
-Variables provided:
-
-  - confirm.url - URL which must be used to confirm the email
-  - petition
-  - user
++------------------------------+---------------------+------------------------------------------------------+---------------+
+|                              | Send To             | Template                                             | Variables     |
++==============================+=====================+======================================================+===============+
+| Petition Email Confirmation  | petition owner      | iris-petition-mailconfirmation                       | - confirm.url |
+|                              |                     |                                                      | - petition    |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Supporter Email Confirmation | petition owner      | iris-supporter-mailconfirmation                      | - confirm.url |
+|                              |                     |                                                      | - petition    |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Rejected            | petition owner      | iris-petition-rejected                               | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Approved            | petition owner      | iris-petition-approved                               | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Winner              | petition owner      | iris-petition-winner                                 | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Closed              | petition owner      | iris-petition-closed                                 | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Closed              | petition supporters | iris-petition-closed-notification-for-supporters     | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Half Time           | petition owner      | iris-petition-supportable-half-time                  | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Final Spurt         | petition owner      | iris-petition-supportable-final-spurt                | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Won                 | petition owner      | iris-petition-processing-notification-for-owner      | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Won                 | petition supporters | iris-petition-processing-notification-for-supporters | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Loser               | petition owner      | iris-petition-loser-notification-for-owner           | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Loser               | petition supporters | iris-petition-loser-notification-for-supporters      | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition No Letter Response  | petition owner      | iris-petition-closed-without-response                | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
 
 
 Mail Data
@@ -64,17 +92,20 @@ These variables are provided for petitions::
     petition.owner.street
     petition.owner.town
     petition.owner.zip
+    petition.response_token
     petition.state.listable
     petition.state.name
     petition.state.parent
     petition.state.tick
     petition.suggested_solution
     petition.supporters.amount
-    petition.supporters.remaining
+    petition.supporters.remaining (*)
     petition.supporters.required
     petition.tags
     petition.title
     petition.type
+
+    (*): calculated
 
 
 User

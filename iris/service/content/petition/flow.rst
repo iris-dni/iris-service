@@ -192,17 +192,50 @@ an email confirmation sent)::
     ...     }
     ... }
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_confirm_body)
-    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/petition/email?key=...'},
-    ...
-                 'to': [{'email': u'email@iris.com', 'type': 'to'}]},
-     'template_content': [],
-     'template_name': 'iris-petition-mailconfirmation'}
     >>> print_json(response)
     {
       "data": {
         ...
       },
       "status": "ok"
+    }
+
+The mail::
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "url": "http://frontend/confirm/petition/email?key=..."
+            },
+            "name": "confirm"
+          },
+    ...
+            "name": "petition"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "email@iris.com",
+            "vars": [
+    ...
+                "name": "user"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "email": "email@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-mailconfirmation"
     }
 
 There is already a supporter::

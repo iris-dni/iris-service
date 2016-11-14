@@ -33,12 +33,13 @@ states:
             on_enter:
                 - start_support
                 - not_listable
-                - send_approval_request_to_editor
             transitions:
                 - trigger: approved
                   dest: supportable.active
                   conditions:
                     - if_city_assigned
+                  after:
+                    - send_approval_mail_to_owner
                 - trigger: reject
                   dest: rejected
                 - trigger: support
@@ -60,6 +61,18 @@ states:
                   dest: loser
                   conditions:
                       - if_support_timeout
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_half_time_mail
+                  after:
+                    - send_half_time_mail_to_owner
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_before_loser_mail
+                  after:
+                    - send_before_loser_mail_to_owner
                 - trigger: support
                   after:
                     - support_petition
@@ -75,7 +88,7 @@ states:
                 - trigger: tick
                   dest: processing.sendLetterRequested
                   conditions:
-                      - if_support_timeout
+                    - if_support_timeout
                 - trigger: support
                   after:
                     - support_petition
@@ -87,9 +100,13 @@ states:
             on_enter:
                 - listable
                 - set_response_token
+                - send_support_won_mail_to_owner
+                - send_support_won_mail_to_supporters
             transitions:
                 - trigger: letterSent
                   dest: processing.waitForLetterResponse
+                  after:
+                    - send_lettersent_mail_to_owner
           - name: waitForLetterResponse
             on_enter:
                 - listable
@@ -128,8 +145,16 @@ states:
                   dest: closed
 
     - name: loser
+      on_enter:
+        - send_loser_mail_to_owner
+        - send_loser_mail_to_supporters
     - name: closed
+      on_enter:
+        - send_closed_mail_to_supporters
+        - send_closed_mail_to_owner
     - name: closedWithoutLetterResponse
+      on_enter:
+        - send_closed_without_response_mail_to_owner
     - name: deleted
       on_enter:
         - not_listable

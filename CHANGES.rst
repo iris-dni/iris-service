@@ -5,6 +5,19 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - mail extensions
+   DEPLOY:
+     ALTER TABLE petitions ADD COLUMN state['half_time_mail_time'] TIMESTAMP;
+     ALTER TABLE petitions ADD COLUMN state['before_loser_mail_time'] TIMESTAMP;
+ - send mail when petition support is short before being a loser
+ - send mail when petition support is half over
+ - send mail when petition closed without letter response
+ - send mail when petition support is finished
+ - send mail when petition is closed
+ - send mail when petition letter was sent
+ - send mail when petition is winner
+ - send mail when petition is approved
+ - send mail on petition rejected
  - changed SMS wording
  - provide only numerical mobile tokens
    DEPLOY:

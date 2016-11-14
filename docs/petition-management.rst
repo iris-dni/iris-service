@@ -53,10 +53,10 @@ For information about the management of the petition state see
 
     state supportable {
       [*] --> pending
-      pending : send approval mail to editor
       note right of pending : supporting is active but petition\nis not in query results
       pending --> active : [approved]
       active : petition is visible to all people in all queries
+      active : send approval mail to owner
       active --> loser : timeout
       active -right-> winner : supporter\nlimit reached
       
@@ -70,6 +70,7 @@ For information about the management of the petition state see
         [*] --> sendLetterRequested
         sendLetterRequested : editor needs to send a letter
         sendLetterRequested --> waitForLetterResponse : [letterSent]
+        waitForLetterResponse : send mail to owner
         waitForLetterResponse : enter: create response token
         waitForLetterResponse : enter: set wait expire: state.letter_wait_expire
         waitForLetterResponse --> letterResponseArrived : [setFeedback]

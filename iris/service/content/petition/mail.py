@@ -28,7 +28,6 @@ def prepare_petition(request, petition):
                  'state.object_json_pickle__',
                  'owner.class',
                  'owner.id',
-                 'response_token',
              ]
             )
     prepare_support(data)

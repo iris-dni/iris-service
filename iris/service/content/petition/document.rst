@@ -389,6 +389,11 @@ Remove the already removed supporter again::
       "required": 4
     }
 
+List all supporters of a petition::
+
+    >>> list(petition.get_supporters())
+    [<Supporter [id=u'...-t:0555 42']>, <Supporter [id=u'...-u:...']>]
+
 
 Check if supporting
 -------------------

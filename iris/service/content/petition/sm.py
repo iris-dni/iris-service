@@ -17,6 +17,8 @@ from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
 from iris.service.content.user import SessionUser
 
+from .mail import send_petition_mail
+
 
 # create a state machine implementation from extensions
 Machine = MachineFactory.get_predefined(nested=True)
@@ -24,7 +26,8 @@ NestedState.separator = '.'
 
 
 APPROVAL_DAYS = 30
-LETTER_WAIT_DAYS = 30
+BEFORE_LOSER_DAYS = 2
+LETTER_WAIT_DAYS = 40
 
 
 class ConditionError(Exception):
@@ -190,10 +193,13 @@ class PetitionStateMachine(object):
             user = None
         untrusted = []
         mobile = user_data['mobile']
-        if (not user
-            or user.mobile != mobile
-            or not user.mobile_trusted
-           ):
+        mobile_trusted = (user
+                          and user.mobile == mobile
+                          and user.mobile_trusted)
+        if not mobile_trusted:
+            # Here we have an untrusted mobile number because the logged in
+            # user has a different mobile than the provided one or the users
+            # mobile is also not trusted.
             token = data.get('mobile_token')
             if token:
                 # check if the token matches the mobile number
@@ -211,7 +217,9 @@ class PetitionStateMachine(object):
                 if (msg
                     and data['user']['mobile'] == mobile
                    ):
-                    user_data['mobile_trusted'] = True
+                    # We trust the mobile because the virification token is
+                    # correct.
+                    mobile_trusted = True
                 else:
                     untrusted.append('mobile_verification_failed')
             else:
@@ -231,16 +239,18 @@ class PetitionStateMachine(object):
         if untrusted:
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
+        user_data['mobile_trusted'] = mobile_trusted
+        email = user_data['email']
+        email_trusted = (user
+                         and user.email == email
+                         and user.email_trusted)
+        user_data['email_trusted'] = email_trusted
         # support the petition
         supporter = self.petition.addSupporter(
             request=self.request,
             user_id=session_user,
             data=user_data)
-        email = user_data['email']
-        if (not user
-            or user.email != email
-            or not user.email_trusted
-           ):
+        if not email_trusted:
             # send a confirmation email
             data = {
                 "data": {
@@ -270,18 +280,6 @@ class PetitionStateMachine(object):
     def set_petition_feedback(self, data, **kwargs):
         self.petition.city_answer = data['answer']
 
-    def send_rejected_mail_to_owner(self, **kwargs):
-        pass
-
-    def send_winner_mail_to_owner(self, **kwargs):
-        pass
-
-    def send_approval_request_to_editor(self, **kwargs):
-        pass
-
-    def send_approval_notifications(self, **kwargs):
-        pass
-
     def start_support(self, **kwargs):
         """Called when switching into a support state
 
@@ -296,6 +294,12 @@ class PetitionStateMachine(object):
                         ),
                        }
                     )
+        self.petition.state.half_time_mail_time = dc.iso_now_offset(
+            timedelta(days=APPROVAL_DAYS / 2)
+        )()
+        self.petition.state.before_loser_mail_time = dc.iso_now_offset(
+            timedelta(days=APPROVAL_DAYS - BEFORE_LOSER_DAYS)
+        )()
 
     def set_letter_expire(self, **kwargs):
         global LETTER_WAIT_DAYS
@@ -331,6 +335,109 @@ class PetitionStateMachine(object):
 
     def if_city_assigned(self, **kwargs):
         return self.petition.city() is not None
+
+    def if_send_half_time_mail(self, **kwargs):
+        t = self.petition.state.half_time_mail_time
+        if t is None:
+            return False
+        half_time = dateutil.parser.parse(t)
+        result = (half_time
+                  and half_time <= dc.time_now()
+                 )
+        if result:
+            # Set to None to prevent from sending multiple time
+            self.petition.state.half_time_mail_time = None
+        return result
+
+    def if_send_before_loser_mail(self, **kwargs):
+        t = self.petition.state.before_loser_mail_time
+        if t is None:
+            return False
+        before_time = dateutil.parser.parse(t)
+        result = (before_time
+                  and before_time <= dc.time_now()
+                 )
+        if result:
+            # Set to None to prevent from sending multiple time
+            self.petition.state.before_loser_mail_time = None
+        return result
+
+    def send_rejected_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-rejected')
+
+    def send_approval_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-approved')
+
+    def send_half_time_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-supportable-half-time')
+
+    def send_before_loser_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-supportable-final-spurt')
+
+    def send_winner_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-winner')
+
+    def send_lettersent_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-letter-sent')
+
+    def send_closed_without_response_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-closed-without-response')
+
+    def send_loser_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-loser-notification-for-owner')
+
+    def send_loser_mail_to_supporters(self, **kwargs):
+        self._send_mail_to_petition_supporters(
+            'iris-petition-loser-notification-for-supporters')
+
+    def send_support_won_mail_to_owner(self, **kwargs):
+        self.set_response_token()
+        self._send_mail_to_petition_owner(
+            'iris-petition-processing-notification-for-owner')
+
+    def send_support_won_mail_to_supporters(self, **kwargs):
+        self.set_response_token()
+        self._send_mail_to_petition_supporters(
+            'iris-petition-processing-notification-for-supporters')
+
+    def send_closed_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-closed')
+
+    def send_closed_mail_to_supporters(self, **kwargs):
+        self._send_mail_to_petition_supporters(
+            'iris-petition-closed-notification-for-supporters')
+
+    def _send_mail_to_petition_owner(self, template):
+        return self._send_mail(template,
+                               [self.petition.owner.relation_dict])
+
+    def _send_mail_to_petition_supporters(self, template):
+        owner_id = self.petition.owner.id
+        to = [s.user.relation_dict
+              for s in self.petition.get_supporters()
+              if s.user.id != owner_id
+             ]
+        return self._send_mail(template, to)
+
+    def _send_mail(self, template, to):
+        """Send a petition mail
+
+        `to` is checked if the email provided is trusted. Untrusted entries
+        are removed.
+        """
+        rcpt = [r for r in to if r.get('email_trusted', False)]
+        if not rcpt:
+            return None
+        return send_petition_mail(
+            self.request,
+            template,
+            self.petition,
+            rcpt,
+        )
 
 
 HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']
@@ -406,9 +513,10 @@ def fromYAML(raw=False):
 
 
 def includeme(config):
-    global APPROVAL_DAYS, LETTER_WAIT_DAYS
+    global APPROVAL_DAYS, BEFORE_LOSER_DAYS, LETTER_WAIT_DAYS
     settings = config.get_settings()
     APPROVAL_DAYS = int(settings['iris.approval.days'])
+    BEFORE_LOSER_DAYS = int(settings.get('iris.beforeloser.days', '2'))
     LETTER_WAIT_DAYS = int(settings['iris.letter.wait.days'])
     config.add_view(
         condition_error_request_handler,

@@ -170,68 +170,43 @@ Create the confirmation::
 
     >>> from iris.service.content.confirmation.handler import Handler
     >>> response = Handler.create_for_handler('petition_confirm_email', data, request)
-    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/petition/email?key=...'},
-                                        'name': 'confirm'},
-                                       {'content': {'city': {u'contact': {},
-                                                             'id': u'test:100042',
-                                                             u'name': u'aarau',
-                                                             u'portal': {},
-                                                             u'provider': u'test',
-                                                             u'state': u'active',
-                                                             u'tags': [],
-                                                             u'treshold': -1,
-                                                             u'zips': []},
-                                                    u'city_answer': {u'name': u'',
-                                                                     u'text': u''},
-                                                    u'dc': {u'created': u'...',
-                                                            u'effective': None,
-                                                            u'expires': None,
-                                                            u'modified': u'...'},
-                                                    u'description': u'',
-                                                    u'id': u'...',
-                                                    'images': [],
-                                                    'links': [],
-                                                    'mentions': [],
-                                                    'owner': {u'email': u'humpty@bumpty.ch',
-                                                              u'email_trusted': False,
-                                                              u'firstname': u'Humpty',
-                                                              u'lastname': u'Bumpty',
-                                                              u'mobile': u'',
-                                                              u'mobile_trusted': False,
-                                                              u'street': u'',
-                                                              u'town': u'',
-                                                              u'zip': u''},
-                                                    u'state': {u'letter_wait_expire': None,
-                                                               u'listable': False,
-                                                               u'name': u'draft',
-                                                               u'parent': u'',
-                                                               u'tick': False},
-                                                    u'suggested_solution': u'',
-                                                    u'supporters': {u'amount': 0,
-                                                                    'remaining': 0,
-                                                                    u'required': 0},
-                                                    u'tags': [],
-                                                    u'title': u'',
-                                                    u'type': u''},
-                                        'name': 'petition'}],
-                 'merge_vars': [{'rcpt': u'humpty@bumpty.ch',
-                                 'vars': [{'content': {'class': 'User',
-                                                       u'email': u'humpty@bumpty.ch',
-                                                       u'email_trusted': False,
-                                                       u'firstname': u'Humpty',
-                                                       u'id': None,
-                                                       u'lastname': u'Bumpty',
-                                                       u'mobile': u'',
-                                                       u'mobile_trusted': False,
-                                                       u'street': u'',
-                                                       u'town': u'',
-                                                       u'zip': u''},
-                                           'name': 'user'}]}],
-                 'to': [{'email': u'humpty@bumpty.ch',
-                         'name': u'Humpty Bumpty',
-                         'type': 'to'}]},
-     'template_content': [],
-     'template_name': 'iris-petition-mailconfirmation'}
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "url": "http://frontend/confirm/petition/email?key=..."
+            },
+            "name": "confirm"
+          },
+    ...
+            "name": "petition"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "humpty@bumpty.ch",
+            "vars": [
+    ...
+                "name": "user"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "email": "humpty@bumpty.ch",
+            "name": "Humpty Bumpty",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-mailconfirmation"
+    }
 
     >>> print_json(response)
     {
@@ -431,12 +406,6 @@ Support Email Confirmation
     ...     'supporter_confirm_email',
     ...     data,
     ...     request)
-    {'message': {'global_merge_vars': [{'content': {'url': u'http://frontend/confirm/supporter/email?key=...'},
-    ...
-                 'to': [{'email': u'holla@123.com', 'type': 'to'}]},
-     'template_content': [],
-     'template_name': 'iris-supporter-mailconfirmation'}
-
     >>> print_json(response)
     {
       "context_id": null,
@@ -458,4 +427,40 @@ Support Email Confirmation
         "petition": "..."
       },
       "state": "active"
+    }
+
+    >>> from iris.service import mail
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "url": "http://frontend/confirm/supporter/email?key=..."
+            },
+            "name": "confirm"
+          },
+    ...
+            "name": "petition"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "holla@123.com",
+            "vars": [
+    ...
+                "name": "user"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "email": "holla@123.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-supporter-mailconfirmation"
     }
