@@ -122,6 +122,8 @@ There is a mail::
               },
               "response_token": null,
               "state": {
+                "before_loser_mail_time": "...",
+                "half_time_mail_time": "...",
                 "letter_wait_expire": null,
                 "listable": true,
                 "name": "loser",

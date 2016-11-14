@@ -61,6 +61,18 @@ states:
                   dest: loser
                   conditions:
                       - if_support_timeout
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_half_time_mail
+                  after:
+                    - send_half_time_mail_to_owner
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_before_loser_mail
+                  after:
+                    - send_before_loser_mail_to_owner
                 - trigger: support
                   after:
                     - support_petition

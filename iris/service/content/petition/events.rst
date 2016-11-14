@@ -8,10 +8,24 @@ The petition event endpoints control the petition state machine.
 
     >>> from iris.service import mail
     >>> import time
+    >>> import dateutil
     >>> from iris.service.content.petition import Petition
     >>> from iris.service.db import dc
     >>> def showState(response):
     ...     return response.json['data']['state']
+
+    >>> def getSupportTimers(response):
+    ...     petition = Petition.get(response.json['data']['id'])
+    ...     dc = petition.dc
+    ...     state = petition.state
+    ...     def to_py_datetime(v):
+    ...         return v and dateutil.parser.parse(v)
+    ...     return {
+    ...         'effective': dc['effective'],
+    ...         'expires': dc['expires'],
+    ...         'half_time_mail_time': state.half_time_mail_time,
+    ...         'before_loser_mail_time': state.before_loser_mail_time
+    ...     }
 
 Shows the listable flag of the petition state. This flag indicates that the
 petition is allowed to be seen in the public list endpoints::
@@ -191,6 +205,13 @@ Publish the petition::
     False
     >>> showTick(response)
     False
+    >>> print_json(getSupportTimers(response))
+    {
+      "before_loser_mail_time": "...",
+      "effective": "...",
+      "expires": "...",
+      "half_time_mail_time": "..."
+    }
 
 Approve the petition::
 
@@ -308,7 +329,7 @@ reached::
     >>> showTick(response)
     True
 
-Support the petition::
+Support the petition with enough supporters to be a winner::
 
     >>> support_petition(petition, 9)
 
@@ -595,15 +616,79 @@ Support the petition so we have some mails to send::
 
     >>> support_petition(petition, 3)
 
+
 Now the petition is a loser when the support timeout occurs before the
 supporter limit is reached::
 
-    >>> mail.reset_mail_stack()
     >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
     >>> showState(response)
     {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
     >>> showListable(response)
     True
+
+After half time is over a mail are sent to the owner::
+
+    >>> mail.reset_mail_stack()
+    >>> petition = Petition.get(id)
+    >>> petition.state.half_time_mail_time = dc.iso_now()
+    >>> _ = petition.store(refresh=True)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
+
+    >>> print_json(getSupportTimers(response))
+    {
+      "before_loser_mail_time": "...",
+      "effective": "...",
+      "expires": "...",
+      "half_time_mail_time": null
+    }
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "city": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-supportable-half-time"
+    }
+
+Before getting loser a mail is sent to the owner::
+
+    >>> mail.reset_mail_stack()
+    >>> petition = Petition.get(id)
+    >>> petition.state.before_loser_mail_time = dc.iso_now()
+    >>> _ = petition.store(refresh=True)
+    >>> response = admin.post_json('/v1/petitions/%s/event/tick' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
+
+    >>> print_json(getSupportTimers(response))
+    {
+      "before_loser_mail_time": null,
+      "effective": "...",
+      "expires": "...",
+      "half_time_mail_time": null
+    }
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          {
+            "content": {
+              "city": {
+    ...
+      },
+      "template_content": [],
+      "template_name": "iris-petition-supportable-final-spurt"
+    }
+
+Let the petition support time expire::
 
     >>> petition = Petition.get(id)
     >>> _ = dc.dc_update(petition, **{dc.DC_EXPIRES: dc.time_now()})

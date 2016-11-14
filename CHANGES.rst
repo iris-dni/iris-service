@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - send mail when petition support is short before being a loser
+ - send mail when petition support is half over
  - send mail when petition closed without letter response
  - send mail when petition support is finished
  - send mail when petition is closed

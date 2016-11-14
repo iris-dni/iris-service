@@ -37,6 +37,12 @@ Mails
 | Petition Closed              | petition supporters | iris-petition-closed-notification-for-supporters     | - petiton     |
 |                              |                     |                                                      | - user        |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Half Time           | petition owner      | iris-petition-supportable-half-time                  | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Final Spurt         | petition owner      | iris-petition-supportable-final-spurt                | - petiton     |
+|                              |                     |                                                      | - user        |
++------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Won                 | petition owner      | iris-petition-processing-notification-for-owner      | - petiton     |
 |                              |                     |                                                      | - user        |
 +------------------------------+---------------------+------------------------------------------------------+---------------+

@@ -26,6 +26,7 @@ NestedState.separator = '.'
 
 
 APPROVAL_DAYS = 30
+BEFORE_LOSER_DAYS = 2
 LETTER_WAIT_DAYS = 40
 
 
@@ -293,6 +294,12 @@ class PetitionStateMachine(object):
                         ),
                        }
                     )
+        self.petition.state.half_time_mail_time = dc.iso_now_offset(
+            timedelta(days=APPROVAL_DAYS / 2)
+        )()
+        self.petition.state.before_loser_mail_time = dc.iso_now_offset(
+            timedelta(days=APPROVAL_DAYS - BEFORE_LOSER_DAYS)
+        )()
 
     def set_letter_expire(self, **kwargs):
         global LETTER_WAIT_DAYS
@@ -329,11 +336,45 @@ class PetitionStateMachine(object):
     def if_city_assigned(self, **kwargs):
         return self.petition.city() is not None
 
+    def if_send_half_time_mail(self, **kwargs):
+        t = self.petition.state.half_time_mail_time
+        if t is None:
+            return False
+        half_time = dateutil.parser.parse(t)
+        result = (half_time
+                  and half_time <= dc.time_now()
+                 )
+        if result:
+            # Set to None to prevent from sending multiple time
+            self.petition.state.half_time_mail_time = None
+        return result
+
+    def if_send_before_loser_mail(self, **kwargs):
+        t = self.petition.state.before_loser_mail_time
+        if t is None:
+            return False
+        before_time = dateutil.parser.parse(t)
+        result = (before_time
+                  and before_time <= dc.time_now()
+                 )
+        if result:
+            # Set to None to prevent from sending multiple time
+            self.petition.state.before_loser_mail_time = None
+        return result
+
     def send_rejected_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-rejected')
 
     def send_approval_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-approved')
+
+    def send_half_time_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-supportable-half-time')
+
+    def send_before_loser_mail_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner(
+            'iris-petition-supportable-final-spurt')
 
     def send_winner_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-winner')
@@ -472,9 +513,10 @@ def fromYAML(raw=False):
 
 
 def includeme(config):
-    global APPROVAL_DAYS, LETTER_WAIT_DAYS
+    global APPROVAL_DAYS, BEFORE_LOSER_DAYS, LETTER_WAIT_DAYS
     settings = config.get_settings()
     APPROVAL_DAYS = int(settings['iris.approval.days'])
+    BEFORE_LOSER_DAYS = int(settings.get('iris.beforeloser.days', '2'))
     LETTER_WAIT_DAYS = int(settings['iris.letter.wait.days'])
     config.add_view(
         condition_error_request_handler,

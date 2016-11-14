@@ -41,7 +41,9 @@ class Petition(Document):
             parent='',
             listable=False,
             tick=False,
-            letter_wait_expire=None
+            letter_wait_expire=None,
+            half_time_mail_time=None,
+            before_loser_mail_time=None,
         ),
         doc="""
           The current state information of the petition.
