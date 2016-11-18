@@ -6,6 +6,7 @@ Petition Support
 ::
 
     >>> from iris.service import mail
+    >>> from iris.service.sms import sms
     >>> from iris.service.content.petition import Petition
     >>> from iris.service.content.petition.document import Supporter
     >>> def showInfo(response):
@@ -60,6 +61,7 @@ Support the pending petition::
 
     >>> _ = ssologin(browser,
     ...     {"email": "42@sso.login",
+    ...      "email_trusted": False,
     ...      "mobile": "555 1234",
     ...      "mobile_trusted": True,
     ...     })
@@ -95,7 +97,7 @@ The mail::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/supporter/email?key=..."
+              "url": "http://frontend/confirm/email/supporter?key=..."
             },
             "name": "confirm"
           },
@@ -151,8 +153,8 @@ Support using an untrusted mobile number::
     ...     browser,
     ...     {"email": "42-1@sso.login",
     ...      "email_trusted": True,
-    ...      "mobile": "555 1234",
-    ...      "mobile_trusted": True,
+    ...      "mobile": "555 4242",
+    ...      "mobile_trusted": False,
     ...     })
     >>> supporter = {
     ...     "data": {
@@ -176,12 +178,14 @@ Support using an untrusted mobile number::
 
 We must provide the verification token with the support request::
 
-    >>> from iris.service.sms import sms
     >>> token = sms.TEST_STACK[-1][1][-5:]
     >>> supporter['data']['mobile_token'] = token
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
+
+Now the mobile on the relation is trusted::
+
     >>> obj = Supporter.get('%s-u:%s' % (response.json['data']['id'], logged_in_user.id))
     >>> print_json(obj.user.relation_dict)
     {
@@ -197,6 +201,13 @@ We must provide the verification token with the support request::
       "town": "",
       "zip": ""
     }
+
+Also the mobile of the user is trusted because it is the same number as on the
+relation::
+
+    >>> from iris.service.content.user import User
+    >>> User.get(logged_in_user.id).mobile_trusted
+    True
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
     [<Supporter [id=u'...-t:555 4321']>,

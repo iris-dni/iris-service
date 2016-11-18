@@ -47,8 +47,8 @@ temp.dir = /tmp/iris-testing
 imageproxy.url = http://imageproxy
 
 frontend.domain = http://frontend
-frontend.petition.confirmpath = /confirm/petition/email
-frontend.supporter.confirmpath = /confirm/supporter/email
+frontend.petition.confirmpath = /confirm/email/petition
+frontend.supporter.confirmpath = /confirm/email/supporter
 
 es.hosts = localhost:19342
 

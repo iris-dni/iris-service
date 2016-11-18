@@ -17,8 +17,17 @@ petition.
 
 First a petition is needed::
 
+    >>> owner = creators.user(
+    ...     email="petition-owner@iris.com",
+    ...     email_trusted=False,
+    ...     mobile="555 1234",
+    ...     mobile_trusted=False,
+    ... )
     >>> petition = creators.petition(
-    ...     owner={"mobile": "555 1234"}
+    ...     owner={
+    ...         "id": owner.id,
+    ...         "mobile": "555 1234",
+    ...     }
     ... )
 
 The data needed to be stored in the confirmation data property must contain
@@ -54,7 +63,7 @@ Create the confirmation::
         "sms": {
           "phone_number": "555 1234",
           "response": {},
-          "text": "Dein code für petitio.ch ist\n ..."
+          "text": "Dein Code für petitio.ch ist\n ..."
         }
       },
       "handler": "petition_sms",
@@ -88,7 +97,7 @@ The confirmation API can be used with the id of the confirmation object::
       }
     }
 
-Now the trusted flag in the petition is set to true::
+Now the trusted flag of the owner relation in the petition is set to true::
 
     >>> petition = petition.get(petition.id)
     >>> print_json(petition.owner.relation_dict)
@@ -98,6 +107,12 @@ Now the trusted flag in the petition is set to true::
       "mobile_trusted": true,
       ...
     }
+
+Also the user mobile_trused is set::
+
+    >>> from iris.service.content.user import User
+    >>> User.get(owner.id).mobile_trusted
+    True
 
 Multiple confirmations are not allowed::
 
@@ -178,7 +193,7 @@ Create the confirmation::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/petition/email?key=..."
+              "url": "http://frontend/confirm/email/petition?key=..."
             },
             "name": "confirm"
           },
@@ -241,8 +256,8 @@ No confirmation is created as long there is an open confirmation::
     True
 
 
-Confirm Mobile
---------------
+Confirm
+-------
 
 Before the confirmation we have an untrusted email::
 
@@ -293,23 +308,6 @@ Multiple confirmations are not allowed::
         "description": "Bad request: Already used"
       }
     }
-
-
-Special Cases for Mobile
-------------------------
-
-The mobile number must be provided in the owner relation of the petition::
-
-    >>> petition = creators.petition()
-    >>> data = {
-    ...     "data": {
-    ...         "petition": petition.id
-    ...     }
-    ... }
-    >>> response = Handler.create_for_handler('petition_sms', data)
-    Traceback (most recent call last):
-    ValueError: Missing mobile number
-
 
 
 Support Mobile Confirmation
@@ -380,7 +378,7 @@ Directly use the handler to confirm::
     >>> response = Handler.confirm_handler('support_sms', token, request)
     >>> print_json(response)
     {
-      "petition": "1sR4E"
+      "petition": "..."
     }
 
 Multiple uses are not allowed::
@@ -436,7 +434,7 @@ Support Email Confirmation
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/supporter/email?key=..."
+              "url": "http://frontend/confirm/email/supporter?key=..."
             },
             "name": "confirm"
           },

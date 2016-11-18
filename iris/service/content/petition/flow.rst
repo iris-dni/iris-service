@@ -209,7 +209,7 @@ The mail::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/petition/email?key=..."
+              "url": "http://frontend/confirm/email/petition?key=..."
             },
             "name": "confirm"
           },

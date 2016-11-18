@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - update user trusted flags on petition and supporter
+
 2016/11/18 0.4.0
 ================
 
