@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/11/18 0.4.0
+================
+
  - mail extensions
    DEPLOY:
      ALTER TABLE petitions ADD COLUMN state['half_time_mail_time'] TIMESTAMP;
