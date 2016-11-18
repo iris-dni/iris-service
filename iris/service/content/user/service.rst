@@ -38,6 +38,7 @@ Lists all users::
           "roles": [
             "admin"
           ],
+          "salutation": "",
           "sso": [
             {
               "provider": "local"
@@ -298,6 +299,7 @@ Fulltext search::
           "mobile": "",
           "mobile_trusted": false,
           "roles": [],
+          "salutation": "",
           "sso": [],
           "state": "active",
           "street": "",
@@ -325,6 +327,7 @@ Fulltext search::
           "mobile": "",
           "mobile_trusted": false,
           "roles": [],
+          "salutation": "",
           "sso": [],
           "state": "active",
           "street": "",

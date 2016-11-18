@@ -43,6 +43,7 @@ class User(Document):
         default=False
     )
 
+    salutation = Property(default='')
     firstname = Property(default='')
     lastname = Property(default='')
     street = Property(default='')

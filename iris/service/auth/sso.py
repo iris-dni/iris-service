@@ -114,6 +114,9 @@ SSO_USER_SCHEMA = {
         'mobile_trusted': {
             'type': 'boolean',
         },
+        'salutation': {
+            'type': 'string',
+        },
         'firstname': {
             'type': 'string',
         },

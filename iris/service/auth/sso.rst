@@ -109,6 +109,7 @@ With valid data::
     ...         'email_trusted': True,
     ...         'mobile': '555 123',
     ...         'mobile_trusted': False,
+    ...         'salutation': 'salutation',
     ...         'firstname': 'first',
     ...         'lastname': 'last',
     ...         'street': 'street 42',
@@ -126,6 +127,8 @@ With valid data::
     '555 123'
     >>> u2.mobile_trusted
     False
+    >>> u2.salutation
+    'salutation'
     >>> u2.firstname, u2.lastname
     ('first', 'last')
     >>> u2.street, u2.zip, u2.town

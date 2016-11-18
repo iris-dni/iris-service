@@ -55,6 +55,8 @@ definitions:
             mobile_trusted:
                 type: boolean
                 default: false
+            salutation:
+                type: string
             firstname:
                 type: string
             lastname:
@@ -78,6 +80,8 @@ definitions:
             - type: object
               x-nullable: true
               properties:
+                salutation:
+                    type: string
                 firstname:
                     type: string
                 lastname:
@@ -193,6 +197,8 @@ definitions:
         mobile_trusted:
           type: boolean
           readOnly: true
+        salutation:
+          type: string
         firstname:
           type: string
         lastname:

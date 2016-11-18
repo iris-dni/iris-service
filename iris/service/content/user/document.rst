@@ -138,6 +138,7 @@ Update or Create Users
 
     >>> data = {
     ...     'email': 'email@mail.com',
+    ...     'salutation': 'salutation',
     ...     'firstname': 'firstname',
     ...     'lastname': 'lastname',
     ...     'roles': ['roles'],
@@ -149,6 +150,8 @@ Update or Create Users
     >>> user = User.update_or_create_by_email(**data)
     >>> user.email
     'email@mail.com'
+    >>> user.salutation
+    'salutation'
     >>> user.firstname
     'firstname'
     >>> user.lastname
