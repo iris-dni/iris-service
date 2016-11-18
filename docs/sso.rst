@@ -86,6 +86,9 @@ The data is validated with this json-schema::
           },
           "type": "array"
         },
+        "salutation": {
+          "type": "string"
+        },
         "street": {
           "type": "string"
         },

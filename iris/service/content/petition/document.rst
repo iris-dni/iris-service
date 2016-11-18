@@ -122,7 +122,7 @@ The petition owner is a relation to a User document::
 
     >>> petition.owner = user
     >>> petition.owner
-    <RelationResolver User[{'town': '', 'zip': '', 'firstname': '', 'mobile_trusted': False, 'lastname': '', 'id': u'1Zbfk', 'mobile': '', 'street': '', 'email_trusted': False, 'email': ''}]>
+    <RelationResolver User[{'town': '', 'zip': '', 'firstname': '', 'mobile_trusted': False, 'lastname': '', 'id': u'1Zbfk', 'mobile': '', 'street': '', 'salutation': '', 'email_trusted': False, 'email': ''}]>
     >>> petition.owner()
     <User [id=u'1Zbfk', u'42@email.com']>
     >>> print_json(petition._relations)
@@ -138,6 +138,7 @@ The petition owner is a relation to a User document::
         "lastname": "",
         "mobile": "",
         "mobile_trusted": false,
+        "salutation": "",
         "street": "",
         "town": "",
         "zip": ""
@@ -157,6 +158,7 @@ The owner relation stores additional data::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "21 jump street",
       "town": "",
       "zip": ""
@@ -308,6 +310,7 @@ Support using a mobile number::
       "lastname": "last",
       "mobile": "0555 42",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""
@@ -344,6 +347,7 @@ Support using an existing user::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""

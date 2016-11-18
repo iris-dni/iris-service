@@ -245,6 +245,7 @@ The session owner is assigned to the petition document::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""

@@ -64,6 +64,7 @@ CREATE TABLE petitions (
         -- time
         owner OBJECT(STRICT) AS (
             id STRING,
+            salutation STRING,
             firstname STRING,
             lastname STRING,
             street STRING,
@@ -131,6 +132,7 @@ CREATE TABLE supporters (
         -- the user relation
         user OBJECT(STRICT) AS (
             id STRING,
+            salutation STRING,
             firstname STRING,
             lastname STRING,
             street STRING,
@@ -240,6 +242,7 @@ CREATE TABLE users (
     mobile STRING,
     mobile_trusted BOOLEAN,
 
+    salutation STRING,
     firstname STRING,
     lastname STRING,
     street STRING,

@@ -5,6 +5,11 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added salutation to user document and user relations
+   DEPLOY:
+     ALTER TABLE users ADD COLUMN salutation STRING;
+     ALTER TABLE petitions ADD COLUMN relations['owner']['salutation'] STRING;
+     ALTER TABLE supporters ADD COLUMN relations['user']['salutation'] STRING;
  - correctly update user trusted flags on sso update
  - update user trusted flags on petition and supporter
 

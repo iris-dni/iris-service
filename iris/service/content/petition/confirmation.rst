@@ -108,7 +108,7 @@ Now the trusted flag of the owner relation in the petition is set to true::
       ...
     }
 
-Also the user mobile_trused is set::
+Also the user mobile_trusted is set::
 
     >>> from iris.service.content.user import User
     >>> User.get(owner.id).mobile_trusted
@@ -156,6 +156,12 @@ confirmation for a petition.
 
 First a petition is needed::
 
+    >>> owner = creators.user(
+    ...     email="humpty@bumpty.ch",
+    ...     email_trusted=False,
+    ...     mobile="555 1234",
+    ...     mobile_trusted=False,
+    ... )
     >>> city = creators.city(
     ...     id="100042",
     ...     provider="test",
@@ -164,9 +170,11 @@ First a petition is needed::
     ... )
     >>> petition = creators.petition(
     ...     owner={
+    ...         "id": owner.id,
     ...         "email": "humpty@bumpty.ch",
     ...         "firstname": "Humpty",
     ...         "lastname": "Bumpty",
+    ...         "salutation": "salutation",
     ...     },
     ...     city=city
     ... )
@@ -296,6 +304,15 @@ Now the trusted flag in the petition is set to true::
       ...
     }
 
+The user email_trusted and salutation is set::
+
+    >>> from iris.service.content.user import User
+    >>> u = User.get(owner.id)
+    >>> u.email_trusted
+    True
+    >>> u.salutation
+    u'salutation'
+
 Multiple confirmations are not allowed::
 
     >>> response = browser.get('/v1/confirmations/%s/confirm' % token,
@@ -327,7 +344,8 @@ the mobile number::
     ...     "data": {
     ...         "user_id": None,
     ...         "user": {
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234",
+    ...             "salutation": "mobile",
     ...         },
     ...         "petition": petition.id
     ...     }
@@ -344,7 +362,8 @@ Create the confirmation::
         "petition": "...",
         "token": "...",
         "user": {
-          "mobile": "555 1234"
+          "mobile": "555 1234",
+          "salutation": "mobile"
         },
         "user_id": null
       },

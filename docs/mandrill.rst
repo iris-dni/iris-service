@@ -89,6 +89,7 @@ These variables are provided for petitions::
     petition.owner.lastname
     petition.owner.mobile
     petition.owner.mobile_trusted
+    petition.owner.salutation
     petition.owner.street
     petition.owner.town
     petition.owner.zip
@@ -115,6 +116,7 @@ These variables are provided for the user which receives the mail::
 
     user.email
     user.mobile
+    user.salutation
     user.firstname
     user.lastname
     user.city

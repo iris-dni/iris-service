@@ -236,6 +236,7 @@ sso with apikey::
         "mobile": "",
         "mobile_trusted": false,
         "roles": [],
+        "salutation": "",
         "sso": [
           {
             "provider": "test_public_api_key"
@@ -281,6 +282,7 @@ in the ssologin endpoint::
         "mobile": "",
         "mobile_trusted": false,
         "roles": [],
+        "salutation": "",
         "sso": [
           {
             "provider": "test_public_api_key"

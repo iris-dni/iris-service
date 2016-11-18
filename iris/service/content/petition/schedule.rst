@@ -116,6 +116,7 @@ There is a mail::
                 "lastname": "",
                 "mobile": "555 1234",
                 "mobile_trusted": true,
+                "salutation": "",
                 "street": "",
                 "town": "",
                 "zip": ""
@@ -157,6 +158,7 @@ There is a mail::
                   "lastname": "",
                   "mobile": "555 1234",
                   "mobile_trusted": true,
+                  "salutation": "",
                   "street": "",
                   "town": "",
                   "zip": ""

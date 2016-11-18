@@ -36,14 +36,26 @@ class SMSBaseHandler(Handler):
         return Petition.get(confirmation.data['petition'])
 
     @classmethod
-    def trust_user_mobile(cls, user, mobile):
+    def trust_user_mobile(cls, user_rel):
         """Manage the users mobile_trusted flag
 
         If there is a user and the users mobil is the same as the provided
         mobile then the mobile_trusted flag of the user is set to true.
         """
-        if user and not user.mobile_trusted and user.mobile == mobile:
+        user = user_rel()
+        if user is None:
+            return
+        store = False
+        user_rel_data = user_rel.relation_dict
+        mobile = user_rel_data.get('mobile')
+        if not user.mobile_trusted and user.mobile == mobile:
             user.mobile_trusted = True
+            store = True
+        salutation = user_rel_data.get('salutation')
+        if salutation and not user.salutation:
+            user.salutation = salutation
+            store = True
+        if store:
             user.store(refresh=True)
 
     @classmethod
@@ -111,7 +123,7 @@ class PetitionSMSHandler(SMSBaseHandler, rest.RESTMapper):
             raise ValueError('Mobile number not matching')
         petition.owner = {"mobile_trusted": True}
         petition.store(refresh=True)
-        self.trust_user_mobile(petition.owner(), mobile)
+        self.trust_user_mobile(petition.owner)
 
 
 class SupportSMSHandler(SMSBaseHandler, rest.RESTMapper):
@@ -151,14 +163,26 @@ class SupportSMSHandler(SMSBaseHandler, rest.RESTMapper):
 class EMailBaseHandler(Handler):
 
     @classmethod
-    def trust_user_email(cls, user, email):
+    def trust_user_email(cls, user_rel):
         """Manage the users email_trusted flag
 
         If there is a user and the users email is the same as the provided
         email then the email flag of the user is set to true.
         """
-        if user and not user.email_trusted and user.email == email:
+        user = user_rel()
+        if user is None:
+            return
+        store = False
+        user_rel_data = user_rel.relation_dict
+        email = user_rel_data.get('email')
+        if not user.email_trusted and user.email == email:
             user.email_trusted = True
+            store = True
+        salutation = user_rel_data.get('salutation')
+        if salutation and not user.salutation:
+            user.salutation = salutation
+            store = True
+        if store:
             user.store(refresh=True)
 
 
@@ -229,12 +253,13 @@ class PetitionEMailConfirmHandler(EMailBaseHandler, rest.RESTMapper):
         """
         if petition is None:
             petition = self._petition(confirmation)
-        email = petition.owner.relation_dict['email']
+        owner_rel_dict = petition.owner.relation_dict
+        email = owner_rel_dict['email']
         if email != confirmation.data['email']:
             raise ValueError('EMail not matching')
         petition.owner = {"email_trusted": True}
         petition.store(refresh=True)
-        self.trust_user_email(petition.owner(), email)
+        self.trust_user_email(petition.owner)
 
     def _petition(self, confirmation):
         return Petition.get(confirmation.data['petition'])
@@ -293,7 +318,7 @@ class SupportEMailConfirmHandler(EMailBaseHandler, rest.RESTMapper):
             raise ValueError('EMail not matching')
         supporter.user = {"email_trusted": True}
         supporter.store(refresh=True)
-        self.trust_user_email(supporter.user(), email)
+        self.trust_user_email(supporter.user)
 
     def _petition(self, confirmation):
         return Petition.get(confirmation.data['petition'])

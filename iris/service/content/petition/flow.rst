@@ -43,6 +43,7 @@ The owner is a session owner::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""
@@ -84,6 +85,7 @@ With an authenticated session the real user is assigned to the petition::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""
@@ -124,6 +126,7 @@ Petitions which are draft or rejected can be published::
           "lastname": "",
           "mobile": "",
           "mobile_trusted": false,
+          "salutation": "",
           "street": "",
           "town": "",
           "zip": ""
@@ -163,6 +166,7 @@ Petitions which are draft or rejected can be published::
           "lastname": "",
           "mobile": "555 1234",
           "mobile_trusted": false,
+          "salutation": "",
           "street": "",
           "town": "",
           "zip": ""

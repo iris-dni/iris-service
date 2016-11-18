@@ -250,6 +250,7 @@ Users can be resolved with the `resolve=owner` parameter::
             "mobile": "",
             "mobile_trusted": false,
             "roles": [],
+            "salutation": "",
             "sso": [
               {
                 "provider": "local"

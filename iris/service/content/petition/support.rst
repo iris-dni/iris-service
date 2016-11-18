@@ -70,6 +70,13 @@ Support the pending petition::
     ...         "user": {
     ...             "email": "me@iris.com",
     ...             "mobile": "555 1234",
+    ...             "salutation": "salutation",
+    ...             "firstname": "firstname",
+    ...             "lastname": "lastname",
+    ...             "street": "street",
+    ...             "zip": "zip",
+    ...             "town": "town",
+    ...             
     ...         }
     ...     }
     ... }
@@ -85,9 +92,28 @@ is untrusted::
     {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
     {u'amount': 2, u'required': 6}
 
-    >>> Supporter.get_by(Supporter.petition, id, size=10)
+    >>> supporters = Supporter.get_by(Supporter.petition, id, size=10)
+    >>> supporters
     [<Supporter [id=u'...-t:555 4321']>,
      <Supporter [id=u'...-u:...']>]
+
+All properties of the user relation are set::
+
+    >>> print_json(supporters[-1].user.relation_dict)
+    {
+      "class": "User",
+      "email": "me@iris.com",
+      "email_trusted": false,
+      "firstname": "firstname",
+      "id": "1QjR3",
+      "lastname": "lastname",
+      "mobile": "555 1234",
+      "mobile_trusted": true,
+      "salutation": "salutation",
+      "street": "street",
+      "town": "town",
+      "zip": "zip"
+    }
 
 The mail::
 
@@ -109,7 +135,21 @@ The mail::
           {
             "rcpt": "me@iris.com",
             "vars": [
-    ...
+              {
+                "content": {
+                  "class": "User",
+                  "email": "me@iris.com",
+                  "email_trusted": false,
+                  "firstname": "firstname",
+                  "id": "...",
+                  "lastname": "lastname",
+                  "mobile": "555 1234",
+                  "mobile_trusted": true,
+                  "salutation": "salutation",
+                  "street": "street",
+                  "town": "town",
+                  "zip": "zip"
+                },
                 "name": "user"
               }
             ]
@@ -118,6 +158,7 @@ The mail::
         "to": [
           {
             "email": "me@iris.com",
+            "name": "firstname lastname",
             "type": "to"
           }
         ]
@@ -197,6 +238,7 @@ Now the mobile on the relation is trusted::
       "lastname": "",
       "mobile": "555 4242",
       "mobile_trusted": true,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""

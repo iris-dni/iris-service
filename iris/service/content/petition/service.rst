@@ -57,6 +57,7 @@ The owner is a session user because the browser was not logged in::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "",
       "town": "",
       "zip": ""
@@ -108,6 +109,7 @@ Update a petition::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "21 jump street",
       "town": "",
       "zip": ""
@@ -169,6 +171,7 @@ and updating the petition::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "21 jump street",
       "town": "",
       "zip": ""
@@ -251,6 +254,7 @@ same as the petition owner::
         "firstname": "writer1",
         "id": "...",
         "lastname": "",
+        "salutation": "",
         "state": "active"
       },
       "email": "",
@@ -260,6 +264,7 @@ same as the petition owner::
       "lastname": "",
       "mobile": "",
       "mobile_trusted": false,
+      "salutation": "",
       "street": "21 jump street",
       "town": "",
       "zip": ""
@@ -428,6 +433,7 @@ POST on the petition with the data which need to be changed::
           "lastname": "",
           "mobile": "",
           "mobile_trusted": false,
+          "salutation": "",
           "street": "21 jump street",
           "town": "",
           "zip": ""
@@ -738,6 +744,7 @@ Relations can be resolved::
               "id": "...",
               ...
               "roles": [],
+              "salutation": "",
               "sso": [
                 {
                   "provider": "azMedien",
@@ -756,6 +763,7 @@ Relations can be resolved::
             "lastname": "",
             "mobile": "",
             "mobile_trusted": false,
+            "salutation": "",
             "street": "",
             "town": "",
             "zip": ""
@@ -783,6 +791,7 @@ Unresolved::
             "lastname": "",
             "mobile": "",
             "mobile_trusted": false,
+            "salutation": "",
             "street": "",
             "town": "",
             "zip": ""
@@ -1113,6 +1122,7 @@ The admin can request supporters::
             "lastname": "...",
             "mobile": "...",
             "mobile_trusted": false,
+            "salutation": "",
             "street": "",
             "town": "",
             "zip": ""
@@ -1150,6 +1160,7 @@ The admin can request supporters::
             "lastname": "...",
             "mobile": "...",
             "mobile_trusted": false,
+            "salutation": "",
             "street": "",
             "town": "",
             "zip": ""

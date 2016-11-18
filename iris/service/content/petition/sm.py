@@ -251,7 +251,7 @@ class PetitionStateMachine(object):
             user_id=session_user,
             data=user_data)
         from .confirmation import SMSBaseHandler
-        SMSBaseHandler.trust_user_mobile(supporter.user(), mobile)
+        SMSBaseHandler.trust_user_mobile(supporter.user)
         if not email_trusted:
             # send a confirmation email
             data = {

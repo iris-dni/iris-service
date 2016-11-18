@@ -510,6 +510,7 @@ A mail was sent to the supporters of the petition::
                   "lastname": "",
                   "mobile": "5551230",
                   "mobile_trusted": true,
+                  "salutation": "",
                   "street": "",
                   "town": "",
                   "zip": ""
