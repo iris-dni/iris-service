@@ -134,7 +134,7 @@ confirmation.
 Fronten URLs::
 
     confirm petition email: /confirm/email/petition?key=<confirmation-key>
-    confirm support email: /confirm/email/support?key=<confirmation-key>
+    confirm support email: /confirm/email/supporter?key=<confirmation-key>
 
 With the provided key an api call is needed to confirm the email::
 
