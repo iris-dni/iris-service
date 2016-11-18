@@ -93,7 +93,7 @@ def get_or_create_sso_user(ssodata):
     }
     for name in SSO_USER_SCHEMA['properties'].keys():
         value = data.get(name)
-        if value:
+        if value is not None:
             user_properties[name] = value
     return User.update_or_create_by_email(**user_properties)
 

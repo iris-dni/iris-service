@@ -85,6 +85,23 @@ class User(Document):
         user = cls.get_by(cls.email, email)
         if user:
             user = user[0]
+            if kwargs.get('email_trusted') is False:
+                # don't allow to overwrite the email_trusted flag with false
+                del kwargs['email_trusted']
+            mobile = kwargs.get('mobile')
+            mobile_trusted = kwargs.get('mobile_trusted')
+            if (mobile is None
+                and mobile_trusted is False
+               ):
+                # don't reset mobile_trusted if no new mobile is provided
+                del kwargs['mobile_trusted']
+            if (mobile is not None
+                and mobile == user.mobile
+                and mobile_trusted is False
+               ):
+                # don't reset mobile_trusted if there is no mobile number
+                # change
+                del kwargs['mobile_trusted']
             for k, v in kwargs.iteritems():
                 setattr(user, k, v)
         else:

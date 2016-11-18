@@ -189,3 +189,87 @@ Update or Create Users
         "trusted": false
       }
     ]
+
+
+Trusted flag updates
+====================
+
+email_trusted
+-------------
+
+An update can set the flag but not reset::
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'email_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.email_trusted
+    False
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'email_trusted': True
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.email_trusted
+    True
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'email_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.email_trusted
+    True
+
+
+mobile_trusted
+--------------
+
+An update can set the flag but not reset::
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'mobile': '555 1234',
+    ...     'mobile_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.mobile_trusted
+    False
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'mobile_trusted': True
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.mobile_trusted
+    True
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'mobile_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.mobile_trusted
+    True
+
+An update can reset the flag if the mobile number is changed::
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'mobile': '555 1234',
+    ...     'mobile_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.mobile_trusted
+    True
+
+    >>> data = {
+    ...     'email': 'u1@mail.com',
+    ...     'mobile': '555 4242',
+    ...     'mobile_trusted': False
+    ... }
+    >>> user = User.update_or_create_by_email(**data)
+    >>> user.mobile_trusted
+    False

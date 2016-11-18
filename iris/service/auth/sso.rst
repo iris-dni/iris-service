@@ -158,14 +158,102 @@ Update an existing user::
     >>> u2 = get_or_create_sso_user({
     ...     'data': {
     ...         'email': 'my_2@mail.com',
+    ...         'email_trusted': False,
     ...         'firstname': 'second',
-    ...         'trusted': False,
     ...     },
     ...     'apikey': '42'
     ... })
     >>> u2.firstname, u2.lastname
     ('second', u'last')
+    >>> u2.email_trusted
+    True
     >>> u2.sso
     [{u'provider': u'42'}]
     >>> u2.roles
     [u'admin', u'editor']
+
+trusted flags can be updated to True::
+
+    >>> user = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'untrusted_1@mail.com',
+    ...         'email_trusted': False,
+    ...         'mobile': '555 123',
+    ...         'mobile_trusted': False,
+    ...         'firstname': 'first',
+    ...         'lastname': 'last',
+    ...         'street': 'street 42',
+    ...         'zip': '42',
+    ...         'town': 'town 42',
+    ...         'roles': ['admin', 'editor'],
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> user.email_trusted
+    False
+    >>> user.mobile_trusted
+    False
+    >>> user = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'untrusted_1@mail.com',
+    ...         'email_trusted': True,
+    ...         'mobile_trusted': True,
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> user.email_trusted
+    True
+    >>> user.mobile_trusted
+    True
+
+trusted flags can not be reset::
+
+    >>> user = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'u_2@mail.com',
+    ...         'email_trusted': True,
+    ...         'mobile': '555 123',
+    ...         'mobile_trusted': True,
+    ...         'firstname': 'first',
+    ...         'lastname': 'last',
+    ...         'street': 'street 42',
+    ...         'zip': '42',
+    ...         'town': 'town 42',
+    ...         'roles': ['admin', 'editor'],
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> user.email_trusted
+    True
+    >>> user.mobile_trusted
+    True
+    >>> user = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'u_2@mail.com',
+    ...         'email_trusted': False,
+    ...         'mobile_trusted': False,
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> user.email_trusted
+    True
+    >>> user.mobile_trusted
+    True
+
+Mobile trusted can be reset if the mobile number is changed::
+
+    >>> user = get_or_create_sso_user({
+    ...     'data': {
+    ...         'email': 'u_2@mail.com',
+    ...         'email_trusted': False,
+    ...         'mobile': '555 4242',
+    ...         'mobile_trusted': False,
+    ...     },
+    ...     'apikey': '42'
+    ... })
+    >>> user.email_trusted
+    True
+    >>> user.mobile
+    '555 4242'
+    >>> user.mobile_trusted
+    False
