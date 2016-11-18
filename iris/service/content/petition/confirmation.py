@@ -14,7 +14,7 @@ from .document import Petition, Supporter
 from .mail import send_petition_mail
 
 
-SMS_TEXT = u'Dein code für petitio.ch ist\n %s'
+SMS_TEXT = u'Dein Code für petitio.ch ist\n %s'
 
 
 class SMSBaseHandler(Handler):
