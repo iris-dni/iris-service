@@ -60,7 +60,7 @@ Create a new WebLocation::
       "description": "This is the place to grouch",
       "image": {
         "height": 1,
-        "url": "http://cdn.test.me/about_iris.jpg",
+        "url": "https://proxy/https_proxy?url=http%3A//cdn.test.me/about_iris.jpg",
         "width": 1
       },
       "site_name": "IRIS grouching page",

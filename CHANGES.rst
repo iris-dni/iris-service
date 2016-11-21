@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - provide og image urls using our https proxy if url is not https
+   DEPLOY: (after deployment)
+     UPDATE weblocations SET og = NULL;
  - added salutation to user document and user relations
    DEPLOY:
      ALTER TABLE users ADD COLUMN salutation STRING;

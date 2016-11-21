@@ -1,4 +1,5 @@
 import unittest
+import random
 
 from .testing.suite import (
     create_suite,
@@ -9,6 +10,7 @@ from .testing.suite import (
 
 
 def test_suite():
+    random.seed('testing')
     s = unittest.TestSuite((
         create_suite('db/dc.rst'),
         create_suite('cron/README.rst'),

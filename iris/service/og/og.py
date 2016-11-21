@@ -1,11 +1,14 @@
 import re
 import requests
+import urllib
 from StringIO import StringIO
 from urlparse import urlparse, urlunparse, urljoin
 from tldextract import extract
 from bs4 import BeautifulSoup
 from PIL import Image
 
+
+HTTPS_PROXY_URL = None
 
 OG_PAGE_CHECK_TIMEOUT = 5
 OG_IMAGE_CHECK_TIMEOUT = 5
@@ -121,7 +124,7 @@ class OGDataRequester(dict):
                     im = Image.open(StringIO(resp.content))
                     if (im.size):
                         return {
-                            'url': url,
+                            'url': self._https_proxy_url(url),
                             'width': im.size[0],
                             'height': im.size[1]
                         }
@@ -210,3 +213,14 @@ class OGDataRequester(dict):
             value = tag.get('content')
             if value:
                 self['description'] = value
+
+    def _https_proxy_url(self, url):
+        if not url.startswith('http:'):
+            return url
+        return HTTPS_PROXY_URL + urllib.quote(url)
+
+
+def includeme(config):
+    global HTTPS_PROXY_URL
+    settings = config.get_settings()
+    HTTPS_PROXY_URL = settings['og.https_proxy_url']

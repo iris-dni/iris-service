@@ -100,6 +100,7 @@ def app_factory(global_config, **settings):
     config.include('iris.service.mail')
     config.include('iris.service.og',
                    route_prefix=API_V1_BASE_URL)
+    config.include('iris.service.og.og')
     config.include('iris.service.content.file',
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.content.file.document')

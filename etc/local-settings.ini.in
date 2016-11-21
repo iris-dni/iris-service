@@ -54,6 +54,8 @@ cors.Allow-Headers = Origin, Content-Type, Accept, Authorization
 cors.Allow-Credentials = true
 cors.Max-Age = 86400
 
+og.https_proxy_url = 
+
 aws.testing = true
 
 temp.dir = /tmp/iris-service
