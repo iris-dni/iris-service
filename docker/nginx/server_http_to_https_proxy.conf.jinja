@@ -1,5 +1,12 @@
 # proxy for http to https
 
 location ~ '^/https_proxy$' {
-    proxy_pass $arg_url;
+    if ($request_method = 'GET') {
+        # proxy_pass $arg_url;
+        proxy_pass http://www.lovelysystems.com;
+        break;
+    }
+    if ($request_method != 'GET') {
+        return 405;
+    }
 }
