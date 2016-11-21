@@ -2,8 +2,7 @@
 
 location ~ '^/https_proxy$' {
     if ($request_method = 'GET') {
-        # proxy_pass $arg_url;
-        proxy_pass http://www.lovelysystems.com;
+        proxy_pass $arg_url;
         break;
     }
     if ($request_method != 'GET') {
