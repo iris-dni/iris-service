@@ -215,7 +215,7 @@ class OGDataRequester(dict):
                 self['description'] = value
 
     def _https_proxy_url(self, url):
-        if not url.startswith('http:'):
+        if not HTTPS_PROXY_URL or not url.startswith('http:'):
             return url
         return HTTPS_PROXY_URL + '?' + urllib.urlencode({'url': url})
 
@@ -223,4 +223,4 @@ class OGDataRequester(dict):
 def includeme(config):
     global HTTPS_PROXY_URL
     settings = config.get_settings()
-    HTTPS_PROXY_URL = settings['og.https_proxy_url']
+    HTTPS_PROXY_URL = settings.get('og.https_proxy_url', '')
