@@ -61,7 +61,9 @@ aws.{{ key }} = {{ value }}
 
 imageproxy.url = {{ context['imageproxy']['url'] }}
 
-og.https_proxy_url = https://{{ context['access']['url'] }}/https_proxy
+# Disabled for now until our docker cluster is using openresty instead of plain
+# nginx
+# og.https_proxy_url = https://{{ context['access']['url'] }}/https_proxy
 
 mandrill.key = {{ context['mandrill']['key'] }}
 
