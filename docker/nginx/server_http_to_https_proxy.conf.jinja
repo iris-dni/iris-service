@@ -3,7 +3,7 @@
 location ~ '^/https_proxy$' {
     if ($request_method = 'GET') {
         # set_unescape_uri $url $arg_url;
-        proxy_pass $url;
+        proxy_pass $arg_url;
         break;
     }
     if ($request_method != 'GET') {
