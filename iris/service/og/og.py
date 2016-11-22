@@ -217,7 +217,7 @@ class OGDataRequester(dict):
     def _https_proxy_url(self, url):
         if not url.startswith('http:'):
             return url
-        return HTTPS_PROXY_URL + urllib.quote(url)
+        return HTTPS_PROXY_URL + '?' + urllib.urlencode({'url': url})
 
 
 def includeme(config):

@@ -162,7 +162,7 @@ If the URL provides a damaged page with broken html, the code does not fail::
         "description": "Believe it or not, Rönaldo is back in town",
         "image": {
           "height": 1,
-          "url": "https://proxy/https_proxy?url=http%3A//cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": 1
         },
         "site_name": "Fresh Football News",
@@ -247,7 +247,7 @@ All meta tags with properties starting with "og:" are provided::
       "data": {
         "image": {
           "height": 1,
-          "url": "https://proxy/https_proxy?url=http%3A//cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": 1
         },
         "news": "news",
@@ -297,7 +297,7 @@ The returned url always contains a valid scheme::
       "data": {
         "image": {
           "height": 1,
-          "url": "https://proxy/https_proxy?url=http%3A//cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": 1
         },
         "url": "http://iristest.com/cool-article"
@@ -458,7 +458,7 @@ If the image url is relative, an absolute url with the url tag is built::
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
-    https://proxy/https_proxy?url=http%3A//test.me/ronaldo-is-back.jpg
+    https://proxy/https_proxy?url=http%3A%2F%2Ftest.me%2Fronaldo-is-back.jpg
     >>> _ = WebLocation.get(locId).delete()
 
 The relative URL is on root::
@@ -474,7 +474,7 @@ The relative URL is on root::
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
-    https://proxy/https_proxy?url=http%3A//test.me/ronaldo-is-back.jpg
+    https://proxy/https_proxy?url=http%3A%2F%2Ftest.me%2Fronaldo-is-back.jpg
     >>> _ = WebLocation.get(locId).delete()
 
 The image url is a relative url with a path::
@@ -490,7 +490,7 @@ The image url is a relative url with a path::
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
-    https://proxy/https_proxy?url=http%3A//test.me/test/ronaldo-is-back.jpg
+    https://proxy/https_proxy?url=http%3A%2F%2Ftest.me%2Ftest%2Fronaldo-is-back.jpg
     >>> _ = WebLocation.get(locId).delete()
 
 Must also work if the url is not finished by slash::
@@ -506,7 +506,7 @@ Must also work if the url is not finished by slash::
     >>> with HTTMock(test_res, favicon, img_res):
     ...     res = browser.post_json('/v1/og/check', {"url": test_url})
     >>> print res.json['data']['image']['url']
-    https://proxy/https_proxy?url=http%3A//test.me/test/ronaldo-is-back.jpg
+    https://proxy/https_proxy?url=http%3A%2F%2Ftest.me%2Ftest%2Fronaldo-is-back.jpg
     >>> _ = WebLocation.get(locId).delete()
 
 If the returned image url results in a status_code different than 200 no

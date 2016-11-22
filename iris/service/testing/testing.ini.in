@@ -53,7 +53,7 @@ frontend.supporter.confirmpath = /confirm/email/supporter
 es.hosts = localhost:19342
 
 og.noworker = don't start the og worker in test
-og.https_proxy_url = https://proxy/https_proxy?url=
+og.https_proxy_url = https://proxy/https_proxy
 
 mandrill.key = mock
 
