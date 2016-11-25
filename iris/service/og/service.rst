@@ -53,7 +53,7 @@ provided by the given url::
         "description": "Believe it or not, Rönaldo is back in town",
         "image": {
           "height": "43",
-          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": "42"
         },
         "site_name": "Fresh Football News",
@@ -73,7 +73,7 @@ The location is also stored as a new WebLocation::
       "description": "Believe it or not, Rönaldo is back in town",
       "image": {
         "height": "43",
-        "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+        "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
         "width": "42"
       },
       "site_name": "Fresh Football News",
@@ -92,7 +92,7 @@ location::
         "description": "Believe it or not, Rönaldo is back in town",
         "image": {
           "height": "43",
-          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": "42"
         },
         "site_name": "Fresh Football News",
@@ -129,7 +129,7 @@ After deleting the stored location::
         "description": "Believe it or not, Rönaldo is back in town",
         "image": {
           "height": "43",
-          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": "42"
         },
         "site_name": "Fresh Football News",
@@ -180,7 +180,7 @@ If tags do not exist, they are omitted in the output::
     >>> test_body = '''
     ... <head>
     ... <meta property="og:url" content="http://test.me/cool-article-special"/>
-    ... <meta property="og:image" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
+    ... <meta property="og:image:url" content="http://cdn.test.me/ronaldo-is-back.jpg"/>
     ... <meta property="og:image:width" content="42"/>
     ... <meta property="og:image:height" content="43"/>
     ... <body You love Football, so do we</body>
@@ -194,7 +194,7 @@ If tags do not exist, they are omitted in the output::
       "data": {
         "image": {
           "height": "43",
-          "url": "http://cdn.test.me/ronaldo-is-back.jpg",
+          "url": "https://proxy/https_proxy?url=http%3A%2F%2Fcdn.test.me%2Fronaldo-is-back.jpg",
           "width": "42"
         },
         "url": "http://test.me/cool-article-special"

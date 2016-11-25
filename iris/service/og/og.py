@@ -67,6 +67,7 @@ class OGDataRequester(dict):
                     data['height'] = image_data['height']
                 else:
                     del self['image']
+            img['url'] = self._https_proxy_url(img['url'])
 
     def __setattr__(self, name, val):
         self[name] = val
@@ -124,7 +125,7 @@ class OGDataRequester(dict):
                     im = Image.open(StringIO(resp.content))
                     if (im.size):
                         return {
-                            'url': self._https_proxy_url(url),
+                            'url': url,
                             'width': im.size[0],
                             'height': im.size[1]
                         }
@@ -169,7 +170,9 @@ class OGDataRequester(dict):
             else:
                 target = self.get(name, {})
                 if not isinstance(target, dict):
-                    target = {'url': target}
+                    target = {
+                        'url': target
+                    }
                 elif name in self:
                     target = self[name]
                     if not isinstance(target, dict):
