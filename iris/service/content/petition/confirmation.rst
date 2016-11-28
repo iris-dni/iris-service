@@ -207,6 +207,12 @@ Create the confirmation::
           },
     ...
             "name": "petition"
+          },
+          {
+            "content": {
+              "url": "http://frontend"
+            },
+            "name": "portal"
           }
         ],
         "merge_vars": [
@@ -459,6 +465,12 @@ Support Email Confirmation
           },
     ...
             "name": "petition"
+          },
+          {
+            "content": {
+              "url": "http://frontend"
+            },
+            "name": "portal"
           }
         ],
         "merge_vars": [

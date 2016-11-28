@@ -37,6 +37,12 @@ Now send the mail (note: the test uses a mock sender)::
               "url": "http://www.petitio.ch"
             },
             "name": "confirm"
+          },
+          {
+            "content": {
+              "url": "http://frontend"
+            },
+            "name": "portal"
           }
         ],
         "merge_vars": [

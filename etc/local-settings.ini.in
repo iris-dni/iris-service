@@ -38,6 +38,13 @@ frontend.domain = http://frontend
 frontend.petition.confirmpath = /confirm/petition/email
 frontend.supporter.confirmpath = /confirm/supporter/email
 
+# URLs used for petitions in mails
+frontend.petition.urls.url = http://frontend/petitons/{id}
+frontend.petition.urls.edit = http://frontend/petitons/{id}/edit
+frontend.petition.urls.city = http://frontend/petitions/{city_url_id}
+frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
+frontend.petition.urls.appendix = http://frontend/petitons/{id}/appendix
+
 statemachine.petitions.cron = */5 * * * *
 
 static.docs = iris.service:docs

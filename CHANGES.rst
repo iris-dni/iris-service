@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added variables to mail:
+    - domain data
+    - petition urls
  - provide og image urls using our https proxy if url is not https
    DEPLOY: (after deployment)
      UPDATE weblocations SET og = NULL;

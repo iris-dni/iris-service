@@ -44,3 +44,8 @@ def includeme(config):
                                             'frontend.petition.confirmpath')
     mail['supporter-email-confirmpath'] = settings.get(
                                             'frontend.supporter.confirmpath')
+    petition = SETTINGS['petition'] = {}
+    petition['urls'] = {}
+    for name, value in settings.iteritems():
+        if name.startswith('frontend.petition.urls.'):
+            petition['urls'][name[23:]] = value

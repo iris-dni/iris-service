@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from iris.service import mail
 
 
@@ -32,10 +33,13 @@ def prepare_petition(request, petition):
             )
     prepare_support(data)
     prepare_city(data)
+    data['urls'] = prepare_urls(petition)
     return data
 
 
 def prepare_city(data):
+    """Remove some properties and flatten out city data
+    """
     city = data['city']
     save_del(city, 'class')
     data = city['data']
@@ -46,8 +50,46 @@ def prepare_city(data):
 
 
 def prepare_support(data):
+    """Add calculated fields to the supporters object
+    """
     support = data['supporters']
     support['remaining'] = max(0, support['required'] - support['amount'])
+
+
+def prepare_urls(petition):
+    from iris.service.content.petition import SETTINGS
+    replacements = {
+        "id": petition.id
+    }
+    city = petition.city()
+    if city is not None:
+        replacements['city_url_id'] = (normalize_name_for_url(city.name)
+                                       + '-'
+                                       + city.id)
+    result = {}
+    urls = SETTINGS['petition']['urls']
+    for k, v in urls.iteritems():
+        try:
+            result[k] = v.format(**replacements)
+        except KeyError:
+            # A KeyError happens if a URL needs a replacement which is not
+            # provided. This handler makes sure all URLs except the ones with
+            # exceptions are provided.
+            pass
+    return result
+
+
+def normalize_name_for_url(name):
+    name = (name or '').lower()
+    for old, new in ((u'ä', u'ae'),
+                     (u'ö', u'oe'),
+                     (u'ü', u'ue'),
+                     (u'ß', u'sz'),
+                     (u' ', u'_'),
+                     (u'-', u'_'),
+                    ):
+        name = name.replace(old, new)
+    return name
 
 
 def save_del(data, name):

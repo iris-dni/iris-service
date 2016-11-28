@@ -129,6 +129,12 @@ The mail::
           },
     ...
             "name": "petition"
+          },
+          {
+            "content": {
+              "url": "http://frontend"
+            },
+            "name": "portal"
           }
         ],
         "merge_vars": [
