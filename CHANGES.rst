@@ -5,6 +5,7 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - do not provide 'publish' transitions for the statemachine
  - added variables to mail:
     - domain data
     - petition urls

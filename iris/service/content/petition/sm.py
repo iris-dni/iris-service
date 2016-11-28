@@ -442,7 +442,7 @@ class PetitionStateMachine(object):
         )
 
 
-HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support']
+HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support', 'publish']
 
 
 def fromYAML(raw=False):
@@ -451,6 +451,8 @@ def fromYAML(raw=False):
     raw=false: result is modified so that it can be used with the transitions
                package
     raw=true: result is provided as is to be used in the API
+
+    HIDDEN_TRIGGERS are removed when raw == true
     """
     data = {}
     filename = os.path.join(os.path.dirname(__file__), 'states.yaml')
@@ -459,7 +461,7 @@ def fromYAML(raw=False):
 
     transitions = data.setdefault('transitions', [])
     if raw:
-        # The raw version provides a states with all transitions assigned.
+        # The raw version provides the states with all transitions assigned.
         def insert(transition, states, baseName=None):
             # insert a transitions into the states
             source = transition.get('source')
