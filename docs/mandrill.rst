@@ -119,6 +119,7 @@ These variables are provided for petitions::
         edit: URL to edit the petition
         city: URL to the city petition page (only available if the petition
               has a city assigned)
+        letter: URL to the letter cover
 
     (*): calculated
 
