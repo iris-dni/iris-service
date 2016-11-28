@@ -45,7 +45,7 @@ frontend.supporter.confirmpath = {{ context['frontend']['supporter-mail-confirmp
 frontend.petition.urls.url = {{ context['frontend']['domain'] }}/petitons/{id}
 frontend.petition.urls.edit = {{ context['frontend']['domain'] }}/petitons/{id}/edit
 frontend.petition.urls.city = {{ context['frontend']['domain'] }}/petitions/{city_url_id}
-# frontend.petition.urls.brief = {{ context['frontend']['domain'] }}/petitons/{id}/brief
+frontend.petition.urls.brief = https://{{ context['access']['url'] }}/#/petition/{id}/letter/cover
 # frontend.petition.urls.appendix = {{ context['frontend']['domain'] }}/petitons/{id}/appendix
 
 statemachine.petitions.cron = */5 * * * *
