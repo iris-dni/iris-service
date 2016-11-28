@@ -139,9 +139,22 @@ There is a mail::
               },
               "tags": [],
               "title": "petition 1",
-              "type": ""
+              "type": "",
+              "urls": {
+                "appendix": "http://frontend/petitons/.../appendix",
+                "brief": "http://frontend/petitons/.../brief",
+                "city": "http://frontend/petitions/hongkong-petition_events:4242",
+                "edit": "http://frontend/petitons/.../edit",
+                "url": "http://frontend/petitons/..."
+              }
             },
             "name": "petition"
+          },
+          {
+            "content": {
+              "url": "http://frontend"
+            },
+            "name": "portal"
           }
         ],
         "merge_vars": [

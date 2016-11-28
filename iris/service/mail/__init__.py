@@ -8,11 +8,28 @@ log = logging.getLogger(__name__)
 
 
 CLIENT = None
+SETTINGS = {}
 
 
 def send(name, to, data):
     """Send a mail using mandrill
+
+    `name` is the mandrill template name to use
+    `to` is a list of receipients as an object:
+        {
+          "mail": "<user email>",
+          "firstname": "<optional>",
+          "lastname": "<optional>"
+        }
+    `data` contains the vars which the template can use
+
+    The `data` is always extended with `portal` data:
+        "portal": {
+          "url": "<portal URL>"
+        }
     """
+    extend_with_portal(data)
+
     def prepare_to(user):
         result = {
             'email': user['email'],
@@ -46,6 +63,13 @@ def send(name, to, data):
     except mandrill.Error as e:
         log.error('mail send error: %s - %s', e.__class__, e)
     return result
+
+
+def extend_with_portal(data):
+    """add "portal" data to `data`
+    """
+    portal = data.setdefault("portal", {})
+    portal.update(SETTINGS['domain'])
 
 
 def flatten_vars(data):
@@ -85,3 +109,6 @@ def includeme(config):
         CLIENT = mandrill_mock_client()
     elif key:
         CLIENT = mandrill.Mandrill(key)
+    global SETTINGS
+    mail = SETTINGS['domain'] = {}
+    mail['url'] = settings.get('frontend.domain')

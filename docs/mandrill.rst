@@ -33,30 +33,39 @@ Mails
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Closed              | petition owner      | iris-petition-closed                                 | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Closed              | petition supporters | iris-petition-closed-notification-for-supporters     | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Half Time           | petition owner      | iris-petition-supportable-half-time                  | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Final Spurt         | petition owner      | iris-petition-supportable-final-spurt                | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Won                 | petition owner      | iris-petition-processing-notification-for-owner      | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Won                 | petition supporters | iris-petition-processing-notification-for-supporters | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Loser               | petition owner      | iris-petition-loser-notification-for-owner           | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition Loser               | petition supporters | iris-petition-loser-notification-for-supporters      | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 | Petition No Letter Response  | petition owner      | iris-petition-closed-without-response                | - petiton     |
 |                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
 
 
@@ -105,6 +114,11 @@ These variables are provided for petitions::
     petition.tags
     petition.title
     petition.type
+    petition.urls
+        url: URL to the petition page
+        edit: URL to edit the petition
+        city: URL to the city petition page (only available if the petition
+              has a city assigned)
 
     (*): calculated
 
@@ -122,6 +136,14 @@ These variables are provided for the user which receives the mail::
     user.city
     user.zip
     user.town
+
+
+Domain
+------
+
+These variables provide domain specific data::
+
+    domain.url: The full domain URL e.g. `https://www.petitio.ch`
 
 
 Frontend Requirements

@@ -50,6 +50,13 @@ frontend.domain = http://frontend
 frontend.petition.confirmpath = /confirm/email/petition
 frontend.supporter.confirmpath = /confirm/email/supporter
 
+# URLs used for petitions in mails
+frontend.petition.urls.url = http://frontend/petitons/{id}
+frontend.petition.urls.edit = http://frontend/petitons/{id}/edit
+frontend.petition.urls.city = http://frontend/petitions/{city_url_id}
+frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
+frontend.petition.urls.appendix = http://frontend/petitons/{id}/appendix
+
 es.hosts = localhost:19342
 
 og.noworker = don't start the og worker in test
