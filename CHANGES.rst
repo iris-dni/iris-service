@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/11/29 0.4.1
+================
+
  - do not provide 'publish' transitions for the statemachine
  - added variables to mail:
     - domain data
