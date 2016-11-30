@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - implemented /probe_status view
+
 2016/11/30 0.5.0
 ================
 

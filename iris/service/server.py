@@ -89,6 +89,7 @@ def app_factory(global_config, **settings):
 
     config.include('pyramid_swagger')
 
+    config.include('iris.service.probe_status')
     config.include('iris.service.sms.sms')
     config.include('iris.service.db')
     config.include('iris.service.cors')
@@ -124,6 +125,7 @@ def app_factory(global_config, **settings):
     config.include('iris.service.security.policy')
     config.include('iris.service.auth.sso')
 
+    config.scan('iris.service.probe_status')
     config.scan('iris.service.cors')
     config.scan('iris.service.rest')
     config.scan('iris.service.rest.service')

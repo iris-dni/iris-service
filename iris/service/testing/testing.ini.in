@@ -9,7 +9,7 @@ pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_jinja2
 
-pyramid_swagger.exclude_paths = (^/docs|^/v1/views)
+pyramid_swagger.exclude_paths = (^/docs|^/v1/views|/probe_status)
 pyramid_swagger.enable_swagger_spec_validation = True
 pyramid_swagger.enable_request_validation = True
 pyramid_swagger.enable_response_validation = True
