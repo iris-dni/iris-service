@@ -204,11 +204,11 @@ petitions_contentId_event_setFeedback:
 petitions_contentId_event_reset_support_start_time:
   post:
     tags:
-      - petition_reset_support_start_time
+      - petition_event
     summary: Reset the start time of the retition
     description: |
       The petition times are reset as if it was published now.
-    operationId: check
+    operationId: reset_support_start_time
     parameters:
       - $ref: "parameters.yml#/parameters/single_contentId"
       - $ref: "petition_parameters.yml#/parameters/resolve"
