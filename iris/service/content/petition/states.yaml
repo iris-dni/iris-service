@@ -77,6 +77,10 @@ states:
                   after:
                     - support_petition
                   dest: supportable.active
+                - trigger: reset_support_start_time
+                  dest: supportable.active
+                  after:
+                    - reset_support_start_timer
           - name: winner
             on_enter:
                 - send_winner_mail_to_owner

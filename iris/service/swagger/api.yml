@@ -72,6 +72,8 @@ paths:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_letterSent'
   /petitions/{contentId}/event/setFeedback:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_setFeedback'
+  /petitions/{contentId}/event/reset_support_start_time:
+    $ref: 'petition_public_event_path.yml#/petitions_contentId_event_reset_support_start_time'
   /petitions/{contentId}/event/check:
     $ref: 'petition_public_event_path.yml#/petitions_contentId_event_check'
   /petitions/{contentId}/event/tick:

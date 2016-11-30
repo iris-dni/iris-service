@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added reset_support_start_time event for active petitions
+
 2016/11/29 0.5.0
 ================
 

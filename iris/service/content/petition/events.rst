@@ -266,6 +266,18 @@ A mail was sent::
       "template_name": "iris-petition-approved"
     }
 
+In active state the petition start time can be reset::
+
+    >>> before = response.json
+    >>> response = admin.post_json('/v1/petitions/%s/event/reset_support_start_time' % id)
+    >>> showState(response)
+    {u'letter_wait_expire': None, u'name': u'active', u'parent': u'supportable'}
+
+    >>> response.json['data']['dc']['effective'] != before['data']['dc']['effective']
+    True
+    >>> response.json['data']['dc']['expires'] != before['data']['dc']['expires']
+    True
+
 
 Petition is a Winner
 ====================

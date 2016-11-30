@@ -303,6 +303,9 @@ class PetitionStateMachine(object):
             timedelta(days=APPROVAL_DAYS - BEFORE_LOSER_DAYS)
         )()
 
+    def reset_support_start_timer(self, **kwargs):
+        self.start_support()
+
     def set_letter_expire(self, **kwargs):
         global LETTER_WAIT_DAYS
         self.petition.state.letter_wait_expire = dc.iso_now_offset(
@@ -442,7 +445,14 @@ class PetitionStateMachine(object):
         )
 
 
-HIDDEN_TRIGGERS = ['check', 'tick', 'reset', 'support', 'publish']
+HIDDEN_TRIGGERS = [
+    'check',
+    'tick',
+    'reset',
+    'support',
+    'publish',
+    'reset_support_start_time',
+]
 
 
 def fromYAML(raw=False):
