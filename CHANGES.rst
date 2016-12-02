@@ -5,9 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - do not require email address on support endpoint
  - implemented /probe_status view
 
-2016/11/30 0.5.0
+2016/11/30 0.5.1
 ================
 
  - added reset_support_start_time event for active petitions

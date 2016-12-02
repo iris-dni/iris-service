@@ -76,7 +76,6 @@ Support the pending petition::
     ...             "street": "street",
     ...             "zip": "zip",
     ...             "town": "town",
-    ...             
     ...         }
     ...     }
     ... }
@@ -384,12 +383,19 @@ Invalid mobile number::
       }
     }
 
-Missing email::
+The email address is not required for supporters::
 
+    >>> _ = ssologin(browser,
+    ...     {"email": "92@sso.login",
+    ...      "email_trusted": False,
+    ...      "mobile": "555 1239",
+    ...      "mobile_trusted": False,
+    ...     })
+    >>> mail.TESTING_MAIL_STACK = []
     >>> supporter = {
     ...     "data": {
     ...         "user": {
-    ...             "mobile": '555 4242',
+    ...             "mobile": '555 1239',
     ...         }
     ...     }
     ... }
@@ -397,10 +403,30 @@ Missing email::
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter,
     ...     expect_errors=True)
+    sendSMS(u'555 1239', u'...')
+
+No mail is sent if no email is provided::
+
+    >>> mail.TESTING_MAIL_STACK
+    []
+    >>> token = sms.TEST_STACK[-1][1][-5:]
+
+Confirming the mobile number leads to the support, even if email is not
+provided::
+
+    >>> supporter['data']['mobile_token'] = token
+    >>> response = browser.post_json(
+    ...     '/v1/petitions/%s/event/support' % id,
+    ...     supporter)
     >>> print_json(response)
     {
-      "errors": {
-        "code": "400",
-        "description": "'email' is a required property...
-      }
+      "data": {
+        ...
+        "supporters": {
+          "amount": 9,
+          "required": 6
+        },
+        ...
+      },
+      "status": "ok"
     }
