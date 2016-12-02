@@ -22,7 +22,6 @@ definitions:
                 type: object
                 required:
                   - mobile
-                  - email
                 allOf:
                   - $ref: 'users.yml#definitions/UserRelationProperties'
                   - $ref: 'users.yml#definitions/UserRelationMobilePattern'

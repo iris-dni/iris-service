@@ -193,9 +193,9 @@ class PetitionStateMachine(object):
             user = None
         untrusted = []
         mobile = user_data['mobile']
-        mobile_trusted = (user
-                          and user.mobile == mobile
-                          and user.mobile_trusted)
+        mobile_trusted = (user and
+                          user.mobile == mobile and
+                          user.mobile_trusted)
         if not mobile_trusted:
             # Here we have an untrusted mobile number because the logged in
             # user has a different mobile than the provided one or the users
@@ -214,9 +214,7 @@ class PetitionStateMachine(object):
                 except ValueError:
                     # a ValueError means that confirmation failed
                     pass
-                if (msg
-                    and data['user']['mobile'] == mobile
-                   ):
+                if msg and data['user']['mobile'] == mobile:
                     # We trust the mobile because the virification token is
                     # correct.
                     mobile_trusted = True
@@ -240,10 +238,11 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(untrusted, data)
         user_data['mobile_trusted'] = mobile_trusted
-        email = user_data['email']
-        email_trusted = (user
-                         and user.email == email
-                         and user.email_trusted)
+        email = user_data.get('email')
+        email_trusted = (user and
+                         email and
+                         user.email == email and
+                         user.email_trusted)
         user_data['email_trusted'] = email_trusted
         # support the petition
         supporter = self.petition.addSupporter(
@@ -252,7 +251,7 @@ class PetitionStateMachine(object):
             data=user_data)
         from .confirmation import SMSBaseHandler
         SMSBaseHandler.trust_user_mobile(supporter.user)
-        if not email_trusted:
+        if email and not email_trusted:
             # send a confirmation email
             data = {
                 "data": {
@@ -319,15 +318,11 @@ class PetitionStateMachine(object):
         """
         times = dc.dc_time(self.petition)
         expire = times.get(dc.DC_EXPIRES, None)
-        return (not expire
-                or expire <= dc.time_now()
-               )
+        return not expire or expire <= dc.time_now()
 
     def if_no_letter_timeout(self, **kwargs):
         expire = dateutil.parser.parse(self.petition.state.letter_wait_expire)
-        return (not expire
-                or expire <= dc.time_now()
-               )
+        return not expire or expire <= dc.time_now()
 
     def if_supporter_limit_reached(self, **kwargs):
         """Check if the supporter treshold is reached
@@ -346,9 +341,7 @@ class PetitionStateMachine(object):
         if t is None:
             return False
         half_time = dateutil.parser.parse(t)
-        result = (half_time
-                  and half_time <= dc.time_now()
-                 )
+        result = half_time and half_time <= dc.time_now()
         if result:
             # Set to None to prevent from sending multiple time
             self.petition.state.half_time_mail_time = None
@@ -359,9 +352,7 @@ class PetitionStateMachine(object):
         if t is None:
             return False
         before_time = dateutil.parser.parse(t)
-        result = (before_time
-                  and before_time <= dc.time_now()
-                 )
+        result = before_time and before_time <= dc.time_now()
         if result:
             # Set to None to prevent from sending multiple time
             self.petition.state.before_loser_mail_time = None
