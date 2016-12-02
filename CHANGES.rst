@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/12/02 0.5.2
+================
+
  - do not require email address on support endpoint
  - implemented /probe_status view
 
