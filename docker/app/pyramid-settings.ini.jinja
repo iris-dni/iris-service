@@ -42,11 +42,11 @@ frontend.petition.confirmpath = {{ context['frontend']['petition-mail-confirmpat
 frontend.supporter.confirmpath = {{ context['frontend']['supporter-mail-confirmpath'] }}
 
 # URLs used for petitions in mails
-frontend.petition.urls.url = {{ context['frontend']['domain'] }}/petitons/{id}
-frontend.petition.urls.edit = {{ context['frontend']['domain'] }}/petitons/{id}/edit
+frontend.petition.urls.url = {{ context['frontend']['domain'] }}/petitions/{id}
+frontend.petition.urls.edit = {{ context['frontend']['domain'] }}/petitions/{id}/edit
 frontend.petition.urls.city = {{ context['frontend']['domain'] }}/petitions/{city_url_id}
 frontend.petition.urls.letter = https://{{ context['access']['url'] }}/#/petition/{id}/letter/cover
-# frontend.petition.urls.appendix = {{ context['frontend']['domain'] }}/petitons/{id}/appendix
+# frontend.petition.urls.appendix = {{ context['frontend']['domain'] }}/petitions/{id}/appendix
 
 statemachine.petitions.cron = */5 * * * *
 
