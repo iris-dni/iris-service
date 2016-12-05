@@ -20,7 +20,7 @@ First a petition is needed::
     >>> owner = creators.user(
     ...     email="petition-owner@iris.com",
     ...     email_trusted=False,
-    ...     mobile="555 1234",
+    ...     mobile="555 424242",
     ...     mobile_trusted=False,
     ... )
     >>> petition = creators.petition(
@@ -108,9 +108,11 @@ Now the trusted flag of the owner relation in the petition is set to true::
       ...
     }
 
-Also the user mobile_trusted is set::
+Also the user mobile_trusted and phone is set::
 
     >>> from iris.service.content.user import User
+    >>> User.get(owner.id).mobile
+    u'555 1234'
     >>> User.get(owner.id).mobile_trusted
     True
 

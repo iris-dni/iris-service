@@ -39,8 +39,8 @@ class SMSBaseHandler(Handler):
     def trust_user_mobile(cls, user_rel):
         """Manage the users mobile_trusted flag
 
-        If there is a user and the users mobil is the same as the provided
-        mobile then the mobile_trusted flag of the user is set to true.
+        The provided mobile number from the relation is stored on the user.
+        The mobile trusted flag is set on the user and on the relation.
         """
         user = user_rel()
         if user is None:
@@ -48,7 +48,11 @@ class SMSBaseHandler(Handler):
         store = False
         user_rel_data = user_rel.relation_dict
         mobile = user_rel_data.get('mobile')
-        if not user.mobile_trusted and user.mobile == mobile:
+        if (user.mobile != mobile
+            or not user.mobile_trusted
+           ):
+            # set the mobile number on the user
+            user.mobile = mobile
             user.mobile_trusted = True
             store = True
         salutation = user_rel_data.get('salutation')
