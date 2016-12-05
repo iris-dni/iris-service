@@ -152,9 +152,12 @@ The ssologin endpoint can use the token to login::
     >>> response = browser.get('/v1/auth/whoami')
     >>> print_json(response)
     {
-      ...
-      "email": "me@you.com",
-      ...
+      "data": {
+        ...
+        "email": "me@you.com",
+        ...
+      },
+      "status": "ok"
     }
 
 It can be used multiple times on the same user::
@@ -174,9 +177,12 @@ It can be used multiple times on the same user::
     ...
     >>> print_json(response)
     {
-      ...
-      "email": "me@you.com",
-      ...
+      "data": {
+        ...
+        "email": "me@you.com",
+        ...
+      },
+      "status": "ok"
     }
 
 The sso parameter is required::
@@ -209,6 +215,11 @@ The user can be logged out::
     >>> response = browser.post('/v1/auth/logout')
     >>> print_json(response)
     {}
+    >>> response = browser.get('/v1/auth/whoami')
+    >>> print_json(response)
+    {
+      "status": "unauthenticated"
+    }
 
 
 Whoami With SSO Data

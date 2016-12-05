@@ -6,7 +6,7 @@ Authentication Views
 Login Embed Code
 ================
 
-This is the endpoint from which an sso enabled foreign page must load the IRSI
+This is the endpoint from which an sso enabled foreign page must load the IRIS
 javascript for the login page::
 
     >>> response = browser.get('/v1/views/iris-sso-login.js')
