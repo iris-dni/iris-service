@@ -124,7 +124,7 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(missing, data)
         untrusted = []
-        if not owner_rel.get('mobile_trusted'):
+        if False and not owner_rel.get('mobile_trusted'):
             token = kwargs['data'].get('mobile_token')
             if token:
                 from .confirmation import SMSBaseHandler
@@ -196,7 +196,7 @@ class PetitionStateMachine(object):
         mobile_trusted = (user and
                           user.mobile == mobile and
                           user.mobile_trusted)
-        if not mobile_trusted:
+        if False and not mobile_trusted:
             # Here we have an untrusted mobile number because the logged in
             # user has a different mobile than the provided one or the users
             # mobile is also not trusted.
