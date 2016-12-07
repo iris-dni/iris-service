@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/12/02 0.6.0
+================
+
  - temporarily disable mobile verification
  - store the trusted mobile on the user when verifying mobile number
  - fix whoami exception in case a user is a session user
