@@ -29,6 +29,8 @@ APPROVAL_DAYS = 30
 BEFORE_LOSER_DAYS = 2
 LETTER_WAIT_DAYS = 40
 
+SMS_VERIFICATION = True
+
 
 class ConditionError(Exception):
 
@@ -115,6 +117,7 @@ class PetitionStateMachine(object):
         Here we need to check if the publishing is allowed and provide an
         exception for the view code to render an appropriate response.
         """
+        global SMS_VERIFICATION
         missing = []
         owner_rel = self.petition.owner.relation_dict
         for required in ['mobile', 'email']:
@@ -124,7 +127,7 @@ class PetitionStateMachine(object):
             data = self.request.to_api(self.petition)
             raise ConditionError(missing, data)
         untrusted = []
-        if False and not owner_rel.get('mobile_trusted'):
+        if SMS_VERIFICATION and not owner_rel.get('mobile_trusted'):
             token = kwargs['data'].get('mobile_token')
             if token:
                 from .confirmation import SMSBaseHandler
@@ -179,6 +182,7 @@ class PetitionStateMachine(object):
 
         This is called on the transition of trigger "support".
         """
+        global SMS_VERIFICATION
         data = kwargs['data']
         user_data = data['user']
         session_user = self.request.session_user
@@ -196,7 +200,7 @@ class PetitionStateMachine(object):
         mobile_trusted = (user and
                           user.mobile == mobile and
                           user.mobile_trusted)
-        if False and not mobile_trusted:
+        if SMS_VERIFICATION and not mobile_trusted:
             # Here we have an untrusted mobile number because the logged in
             # user has a different mobile than the provided one or the users
             # mobile is also not trusted.
@@ -518,11 +522,14 @@ def fromYAML(raw=False):
 
 
 def includeme(config):
-    global APPROVAL_DAYS, BEFORE_LOSER_DAYS, LETTER_WAIT_DAYS
+    global APPROVAL_DAYS, BEFORE_LOSER_DAYS, LETTER_WAIT_DAYS, SMS_VERIFICATION
     settings = config.get_settings()
     APPROVAL_DAYS = int(settings['iris.approval.days'])
     BEFORE_LOSER_DAYS = int(settings.get('iris.beforeloser.days', '2'))
     LETTER_WAIT_DAYS = int(settings['iris.letter.wait.days'])
+    SMS_VERIFICATION = settings.get('iris.sms.verification',
+                                    'true'
+                                   ).lower() == 'true'
     config.add_view(
         condition_error_request_handler,
         renderer='json',

@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - mobile verification SMS can now be configured in the pyramid settings:
+    iris.sms.verification = true
+
 2016/12/02 0.6.0
 ================
 
