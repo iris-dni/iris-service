@@ -1,16 +1,21 @@
-import boto3
-from botocore.exceptions import ClientError
+import json
+import logging
+
+import WebSmsComToolkit
 
 
-AWS_CLIENT_CONFIG = {}
-AWS_PUBLISH_CONFIG = {}
+logger = logging.getLogger(__name__)
+
+
+SMS_PROVIDER_URI = None
+SMS_CLIENT_CONFIG = {}
 TESTING = False
 
 TEST_STACK = []
 
 
 def sendSMS(to, message):
-    global AWS_CLIENT_CONFIG, AWS_PUBLISH_CONFIG
+    global SMS_CLIENT_CONFIG, SMS_PROVIDER_URI
     if TESTING or to.startswith('555'):
         if to == '555 333':
             # simulate a value error for testing
@@ -18,36 +23,32 @@ def sendSMS(to, message):
         TEST_STACK.append([to, message])
         print 'sendSMS(%r, %r)' % (to, message)
         return {}
-    client = boto3.client(
-        'sns',
-        **AWS_CLIENT_CONFIG
-    )
-    try:
-        return client.publish(
-            PhoneNumber=to,
-            Message=message,
-            MessageAttributes={
-                'AWS.SNS.SMS.SenderID': {
-                    'DataType': 'String',
-                    'StringValue': 'petitio',
 
-                }
-            },
-            **AWS_PUBLISH_CONFIG
-        )
-    except ClientError:
+    if isinstance(message, str):
+        message = unicode(message, 'utf-8')
+    to = to.replace(' ', '')
+    client = WebSmsComToolkit.Client(**SMS_CLIENT_CONFIG)
+    message = WebSmsComToolkit.TextMessage([long(to)], message)
+    try:
+        response = client.send(message, 1, False)
+    except Exception as e:
+        logger.error(e)
         raise ValueError("Can't send SMS")
+    if response.statusMessage != u'OK':
+        logger.error(json.dumps(response.rawContent))
+        raise ValueError("Can't send SMS: " + response.statusMessage)
+    logger.info(json.dumps(response.rawContent))
+    return response.rawContent
 
 
 def includeme(config):
-    global AWS_CLIENT_CONFIG, AWS_PUBLISH_CONFIG, TESTING
+    global SMS_CLIENT_CONFIG, SMS_PROVIDER_URI, TESTING
     settings = config.get_settings()
     for key, value in settings.iteritems():
-        if key.startswith('aws.sns.publish.'):
-            AWS_PUBLISH_CONFIG[key[16:]] = value
-        elif key.startswith('aws.sns.'):
-            AWS_CLIENT_CONFIG[key[8:]] = value
-    if not AWS_CLIENT_CONFIG and not AWS_PUBLISH_CONFIG:
+        if key.startswith('sms.client.'):
+            SMS_CLIENT_CONFIG[key[11:]] = value
+    SMS_PROVIDER_URI = settings.get('sms.uri')
+    if not SMS_CLIENT_CONFIG:
         TESTING = True
     else:
-        TESTING = 'aws.testing' in settings
+        TESTING = 'sms.testing' in settings

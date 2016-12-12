@@ -66,6 +66,9 @@ cors.Max-Age = 86400
 {% for key, value in context['aws'].items() %}
 aws.{{ key }} = {{ value }}
 {% endfor %}
+{% for key, value in context['sms'].items() %}
+sms.{{ key }} = {{ value }}
+{% endfor %}
 
 imageproxy.url = {{ context['imageproxy']['url'] }}
 

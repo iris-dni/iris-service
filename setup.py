@@ -37,6 +37,7 @@ def nailed_requires(requirements, pat=re.compile(r'^(.+)(\[.+\])?$')):
 requires = [
     'tldextract',
     'boto3',
+    'WebSmsComToolkit',
     'BeautifulSoup4',
     'Pillow',
     'croniter',
