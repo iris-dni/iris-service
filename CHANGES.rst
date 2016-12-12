@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/12/12 0.6.2
+================
+
  - send SMS using websms
 
 2016/12/09 0.6.1
