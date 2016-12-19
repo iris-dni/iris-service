@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Admin Petitions: Add city.data.contacts
+
 2016/12/12 0.6.2
 ================
 
