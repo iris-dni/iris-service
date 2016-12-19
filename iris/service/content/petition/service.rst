@@ -481,6 +481,10 @@ Resolve the location of a city::
     ...     provider="test",
     ...     location={"url": "https://www.aargauerzeitung.ch"},
     ...     name="aarau",
+    ...     contact={
+    ...         "salutation": "Good day my dear Sir",
+    ...         "address": "Land of the Elves"
+    ...     }
     ... )
     >>> petition = {
     ...     "data": {
@@ -505,6 +509,13 @@ Resolve the location of a city::
         "city": {
           "class": "City",
           "data": {
+            "contact": {
+              "address": "Land of the Elves",
+              "salutation": "Good day my dear Sir"
+            },
+            "dc": {
+                ...
+            },
             "id": "test:100042",
             "location": {
               "class": "WebLocation",
@@ -522,6 +533,7 @@ Resolve the location of a city::
             "name": "aarau",
             "portal": {},
             "provider": "test",
+            "state": "active",
             "tags": [],
             "treshold": -1,
             "zips": []
@@ -726,6 +738,10 @@ Relations can be resolved::
           "city": {
             "class": "City",
             "data": {
+              "contact": {},
+              "dc": {
+                ...
+              },
               "id": "test:...",
               ...
               "provider": "test",

@@ -131,24 +131,10 @@ definitions:
                         type: integer
                         readOnly: true
 
-    ReadProperties:
+    CommonReadProperties:
         type: object
         x-nullable: true
         properties:
-            city:
-                type: object
-                readOnly: true
-                properties:
-                    id:
-                        type: string
-                        readOnly: true
-                        x-nullable: true
-                    class:
-                        type: string
-                        readOnly: true
-                    data:
-                        $ref: 'cities.yml#/definitions/City'
-                        x-nullable: true
             links:
                 type: array
                 items:
@@ -191,6 +177,24 @@ definitions:
                             enum:
                                 - visible
                                 - hidden
+
+    ReadPropertiesPublic:
+        type: object
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/CommonReadProperties'
+            - properties:
+                city:
+                    $ref: 'cities.yml#/definitions/CityRelationPublic'
+
+    ReadPropertiesAdmin:
+        type: object
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/CommonReadProperties'
+            - properties:
+                city:
+                    $ref: 'cities.yml#/definitions/CityRelationAdmin'
 
     WriteProperties:
         type: object
@@ -291,7 +295,7 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PublicState'
             - $ref: '#/definitions/Properties'
-            - $ref: '#/definitions/ReadProperties'
+            - $ref: '#/definitions/ReadPropertiesPublic'
             - $ref: '#/definitions/PropertiesForPublic'
             - $ref: '#/definitions/Extender'
 
@@ -310,7 +314,7 @@ definitions:
             - $ref: '#/definitions/ReadOnly'
             - $ref: '#/definitions/PrivateState'
             - $ref: '#/definitions/Properties'
-            - $ref: '#/definitions/ReadProperties'
+            - $ref: '#/definitions/ReadPropertiesAdmin'
             - $ref: '#/definitions/PropertiesForAdmin'
             - $ref: '#/definitions/Extender'
 

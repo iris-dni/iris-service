@@ -91,7 +91,12 @@ def build_spec_mapping(spec):
         elif 'allOf' in spec:
             # combine all entries into the result
             for c in spec['allOf']:
-                result.update(build_spec_mapping(c))
+                mapping = build_spec_mapping(c)
+                if mapping is True and 'properties' in c:  # is True!
+                    for k, v in c['properties'].iteritems():
+                        result[k] = build_spec_mapping(v)
+                else:
+                    result.update(mapping)
     elif spec_type == 'array':
         if 'items' in spec:
             return [build_spec_mapping(spec['items'])]

@@ -83,9 +83,41 @@ definitions:
         $ref: '#/definitions/CityPublic'
     CityAdmin:
         type: object
+        x-nullable: true
         allOf:
             - $ref: '#/definitions/CityPublic'
             - $ref: '#/definitions/CityPrivate'
+
+    CityRelation:
+        type: object
+        readOnly: true
+        properties:
+            id:
+                type: string
+                readOnly: true
+                x-nullable: true
+            class:
+                type: string
+                readOnly: true
+    CityRelationPublic:
+        type: object
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/CityRelation'
+            - properties:
+                data:
+                    $ref: '#/definitions/City'
+                    x-nullable: true
+    CityRelationAdmin:
+        type: object
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/CityRelation'
+            - properties:
+                data:
+                    $ref: '#/definitions/CityAdmin'
+                    x-nullable: true
+
     POSTBody:
         # The city wrapped in a data property for the POST bodies
         type: object
