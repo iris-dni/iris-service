@@ -4,6 +4,7 @@ from pyramid.authentication import (
     AuthTktAuthenticationPolicy,
     AuthTktCookieHelper,
 )
+from iris.service.content.petition.security import verify_petition_token
 
 from . import acl
 
@@ -23,6 +24,14 @@ class IRISAuthTktCookieHelper(AuthTktCookieHelper):
 
     def identify(self, request):
         global API_KEYS
+        swagger_data = request.swagger_data
+        if 'token' in swagger_data and 'petition' in swagger_data:
+            if verify_petition_token(request):
+                # provide a userid which can be handled in the groupfinder
+                return {
+                    "userid": acl.Roles.ApiKeyUser
+                }
+            return None
         apikey = request.headers.get(API_KEY_HEADER_NAME)
         if apikey is not None:
             if apikey in API_KEYS:

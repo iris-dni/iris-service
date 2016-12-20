@@ -8,16 +8,18 @@ supporters:
         description: Empty Body
   get:
     tags:
-      - supporter_admin
+      - supporter_public
     summary: Search Supporters
-    operationId: search_admin
+    operationId: search_public
     parameters:
+      - name: token
+        in: query
+        type: string
+        required: true
       - name: petition
         in: query
-        type: array
-        items:
-          type: string
-        collectionFormat: csv
+        type: string
+        required: true
       - name: user
         in: query
         type: array
@@ -50,7 +52,7 @@ supporters:
       '200':
         description: Supporters found
         schema:
-          $ref: 'supporters.yml#/definitions/ListResponseBodyAdmin'
+          $ref: 'supporters.yml#/definitions/ListResponseBodyPublic'
       default:
         description: Unexpected error
         schema:
