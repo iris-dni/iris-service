@@ -103,9 +103,10 @@ class PetitionPublicRESTService(rest.RESTService):
     def event_letterSent(self, **kwargs):
         return self._event('letterSent')
 
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/reset_support_start_time',
-                    )
+    @rpcmethod_route(
+        request_method='POST',
+        route_suffix='/{contentId}/event/reset_support_start_time',
+    )
     @rpcmethod_view(http_cache=0,
                     permission=acl.Permissions.AdminPetition,
                    )
