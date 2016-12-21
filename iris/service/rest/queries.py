@@ -18,7 +18,7 @@ def termsFilter(fieldname):
         if isinstance(value, (list, tuple)):
             keys = [v.strip() for v in value if v.strip()]
         else:
-            keys = [v.lower().strip() for v in value.split(',') if v.strip()]
+            keys = [v.strip() for v in value.split(',') if v.strip()]
         if keys:
             return {"terms": {fieldname: keys}}
         raise ValueError("No keywords provided")
