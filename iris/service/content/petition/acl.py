@@ -18,5 +18,6 @@ class SupportersTokenServiceAuthFactory(BaseAuthFactory):
     """
 
     __acl__ = [
+        (security.Allow, acl.Roles.Admin, acl.Permissions.ListSupporters),
         (security.Allow, acl.Roles.ApiKeyUser, acl.Permissions.ListSupporters)
     ]

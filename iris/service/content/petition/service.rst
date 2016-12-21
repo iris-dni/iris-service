@@ -1226,24 +1226,9 @@ The public API is implemented via the REST mapper.
 Get Supporters List
 -------------------
 
-A user can request supporters. It is secured by an API token. If it is
-missing or invalid, an error is returned::
+A user can request supporters. A petition ID is required::
 
     >>> response = browser.get('/v1/supporters',
-    ...                        expect_errors=True)
-    >>> response.status
-    '400 Bad Request'
-    >>> print_json(response)
-    {
-      "errors": {
-        "code": "400",
-        "description": "token is a required parameter..."
-      }
-    }
-
-A petition ID is encoded within the API key and thus is required::
-
-    >>> response = browser.get('/v1/supporters?token=xyz',
     ...                        expect_errors=True)
     >>> response.status
     '400 Bad Request'
@@ -1258,7 +1243,8 @@ A petition ID is encoded within the API key and thus is required::
     >>> response = browser.get('/v1/admin/supporters?resolve=petition,user&sort=id')
     >>> petitionId = response.json['data'][0]['petition']['id']
 
-Broken token::
+The API is secured by a token. A petition ID is encoded within the token. If
+the token is invalid, an error is returned::
 
     >>> response = browser.get('/v1/supporters?token=xyz&petition=' + petitionId,
     ...                        expect_errors=True)
@@ -1303,6 +1289,68 @@ Correct token::
       ],
       "total": 9
     }
+
+Admin Users do not require a token::
+
+    >>> _ = ssologin(browser, {'email': 'tester@iris.com', 'roles': ['admin']})
+
+    >>> response = browser.get(
+    ...     '/v1/supporters?petition={pId}&resolve=user'.format(
+    ...         pId=petitionId,
+    ...         ))
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+        {
+          "id": "...",
+          "user": {
+            "firstname": "Madison",
+            "id": null,
+            "lastname": "Evans",
+            "mobile": "+37(4) XXX XX 41",
+            "mobile_trusted": false,
+            "salutation": "",
+            "town": "",
+            "zip": ""
+          }
+        },
+        ...
+      ],
+      "total": 9
+    }
+
+But it works with a token as well::
+
+    >>> token = generate_petition_token(Petition.get(petitionId))
+
+    >>> response = browser.get(
+    ...     '/v1/supporters?token={t}&petition={pId}&resolve=user'.format(
+    ...         t=token,
+    ...         pId=petitionId,
+    ...         ))
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+        {
+          "id": "...",
+          "user": {
+            "firstname": "Madison",
+            "id": null,
+            "lastname": "Evans",
+            "mobile": "+37(4) XXX XX 41",
+            "mobile_trusted": false,
+            "salutation": "",
+            "town": "",
+            "zip": ""
+          }
+        },
+        ...
+      ],
+      "total": 9
+    }
+
 
 Permissions
 ===========

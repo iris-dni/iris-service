@@ -24,8 +24,7 @@ class IRISAuthTktCookieHelper(AuthTktCookieHelper):
 
     def identify(self, request):
         global API_KEYS
-        swagger_data = request.swagger_data
-        if 'token' in swagger_data and 'petition' in swagger_data:
+        if 'token' in request.params and 'petition' in request.params:
             if verify_petition_token(request):
                 # provide a userid which can be handled in the groupfinder
                 return {
