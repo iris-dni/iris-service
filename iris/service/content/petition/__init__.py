@@ -8,7 +8,10 @@ SETTINGS = {}
 
 def includeme(config):
     from iris.service.rest import auth
-    from .acl import PublicPetitionServiceAuthFactory
+    from .acl import (
+        PublicPetitionServiceAuthFactory,
+        SupportersTokenServiceAuthFactory,
+    )
     config.add_route('petition_public_api',
                      'petitions',
                      static=True,
@@ -21,6 +24,11 @@ def includeme(config):
                      'admin/petitions',
                      static=True,
                      factory=auth.AdminServiceAuthFactory,
+                    )
+    config.add_route('supporter_public_api',
+                     'supporters',
+                     static=True,
+                     factory=SupportersTokenServiceAuthFactory,
                     )
     config.add_route('supporter_admin_api',
                      'admin/supporters',

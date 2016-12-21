@@ -30,6 +30,8 @@ sso.apikey.nwch = 08f9e7d03d2c83e9e8774299d114c154
 iris.apikey.local = local
 iris.apikey.nwch = b428db796829443ed2062702deb02b6c
 
+iris.secret.petition = strong-petition-secret
+
 iris.city.treshold = 100
 iris.approval.days = 30
 iris.letter.wait.days = 30
@@ -43,7 +45,7 @@ frontend.petition.urls.url = http://frontend/petitons/{id}
 frontend.petition.urls.edit = http://frontend/petitons/{id}/edit
 frontend.petition.urls.city = http://frontend/petitions/{city_url_id}
 frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
-frontend.petition.urls.appendix = http://frontend/petitons/{id}/appendix
+frontend.petition.urls.appendix = http://frontend/#/petition/{id}/letter/appendix?token={token}
 
 statemachine.petitions.cron = */5 * * * *
 

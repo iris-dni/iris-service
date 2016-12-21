@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from iris.service import mail
+from iris.service.content.petition.security import generate_petition_token
 
 
 def send_petition_mail(request,
@@ -59,7 +60,8 @@ def prepare_support(data):
 def prepare_urls(petition):
     from iris.service.content.petition import SETTINGS
     replacements = {
-        "id": petition.id
+        "id": petition.id,
+        "token": generate_petition_token(petition),
     }
     city = petition.city()
     if city is not None:

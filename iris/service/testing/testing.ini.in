@@ -33,6 +33,8 @@ iris.beforeloser.days = 2
 iris.letter.wait.days = 1
 iris.sms.verification = true
 
+iris.secret.petition = strong-petition-secret
+
 static.docs = iris.service.testing:docs
               docs
 
@@ -56,7 +58,7 @@ frontend.petition.urls.url = http://frontend/petitons/{id}
 frontend.petition.urls.edit = http://frontend/petitons/{id}/edit
 frontend.petition.urls.city = http://frontend/petitions/{city_url_id}
 frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
-frontend.petition.urls.appendix = http://frontend/petitons/{id}/appendix
+frontend.petition.urls.appendix = http://frontend/#/petition/{id}/letter/appendix?token={token}
 
 es.hosts = localhost:19342
 

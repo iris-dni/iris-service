@@ -32,6 +32,9 @@ sso.apikey.{{ key }} = {{ value }}
 {% for key, value in context['iris']['apikeys'].items() %}
 iris.apikey.{{ key }} = {{ value }}
 {% endfor %}
+{% for key, value in context['iris']['secrets'].items() %}
+iris.secret.{{ key }} = {{ value }}
+{% endfor %}
 
 iris.city.treshold = 100
 iris.approval.days = {{ context['iris']['approval_days'] }}
@@ -47,7 +50,7 @@ frontend.petition.urls.url = {{ context['frontend']['domain'] }}/petitions/{id}
 frontend.petition.urls.edit = {{ context['frontend']['domain'] }}/petitions/{id}/edit
 frontend.petition.urls.city = {{ context['frontend']['domain'] }}/petitions/{city_url_id}
 frontend.petition.urls.letter = https://{{ context['access']['url'] }}/#/petition/{id}/letter/cover
-# frontend.petition.urls.appendix = {{ context['frontend']['domain'] }}/petitions/{id}/appendix
+frontend.petition.urls.appendix = https://{{ context['access']['url'] }}/#/petition/{id}/letter/appendix?token={token}
 
 statemachine.petitions.cron = */5 * * * *
 

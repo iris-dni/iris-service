@@ -124,6 +124,8 @@ paths:
   /admin/users/{contentId}:
     $ref: 'user_admin_path.yml#/users_contentId'
 
+  /supporters:
+    $ref: 'supporter_public_path.yml#/supporters'
   /admin/supporters:
     $ref: 'supporter_admin_path.yml#/supporters'
 

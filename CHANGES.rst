@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Add public supporters EP
+   DEPLOY:
+    Add 'iris.secret.<...>' to Pyramid config
+
  - Admin Petitions: Add city.data.contacts
 
 2016/12/12 0.6.2

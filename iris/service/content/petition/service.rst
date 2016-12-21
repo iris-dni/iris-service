@@ -1217,6 +1217,93 @@ Create Petition with invalid mobile number::
     }
 
 
+Supporters Public API
+=====================
+
+The public API is implemented via the REST mapper.
+
+
+Get Supporters List
+-------------------
+
+A user can request supporters. It is secured by an API token. If it is
+missing or invalid, an error is returned::
+
+    >>> response = browser.get('/v1/supporters',
+    ...                        expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "token is a required parameter..."
+      }
+    }
+
+A petition ID is encoded within the API key and thus is required::
+
+    >>> response = browser.get('/v1/supporters?token=xyz',
+    ...                        expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "petition is a required parameter..."
+      }
+    }
+
+    >>> response = browser.get('/v1/admin/supporters?resolve=petition,user&sort=id')
+    >>> petitionId = response.json['data'][0]['petition']['id']
+
+Broken token::
+
+    >>> response = browser.get('/v1/supporters?token=xyz&petition=' + petitionId,
+    ...                        expect_errors=True)
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "403",
+        "description": "Unauthorized: SupportersPublicRESTService failed permission check"
+      }
+    }
+
+Correct token::
+
+    >>> from iris.service.content.petition.security import generate_petition_token
+    >>> from iris.service.content.petition.document import Petition
+
+    >>> token = generate_petition_token(Petition.get(petitionId))
+
+    >>> response = browser.get(
+    ...     '/v1/supporters?token={t}&petition={pId}&resolve=user'.format(
+    ...         t=token,
+    ...         pId=petitionId,
+    ...         ))
+    >>> print_json(response)
+    {
+      "data": [
+        ...
+        {
+          "id": "...",
+          "user": {
+            "firstname": "Madison",
+            "id": null,
+            "lastname": "Evans",
+            "mobile": "+37(4) XXX XX 41",
+            "mobile_trusted": false,
+            "salutation": "",
+            "town": "",
+            "zip": ""
+          }
+        },
+        ...
+      ],
+      "total": 9
+    }
+
 Permissions
 ===========
 
@@ -1257,4 +1344,28 @@ Permission check for all endpoints::
     Authenticated                           deny
     admin                                   200 OK
     apikey-user                             deny
+    session-user                            deny
+
+    >>> def token_hook(self, role, url, method, json_body):
+    ...     petition = creators.petition(title='tester')
+    ...     token = ''
+    ...     if role == 'apikey-user':
+    ...         token = generate_petition_token(petition)
+    ...     return {
+    ...         'token': token,
+    ...         'petition_id': petition.id,
+    ...     }
+    >>> hook = {
+    ...  'options': {
+    ...     'pass_request_args': True,
+    ...  },
+    ...  'hook': token_hook
+    ... }
+    >>> check_roles("GET",
+    ...             "/v1/supporters?petition=%(petition_id)s&token=%(token)s",
+    ...             hook=hook)
+    Anonymous                               deny
+    Authenticated                           deny
+    admin                                   deny
+    apikey-user                             200 OK
     session-user                            deny

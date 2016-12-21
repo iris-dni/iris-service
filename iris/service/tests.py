@@ -41,6 +41,7 @@ def test_suite():
         create_crate_suite('content/petition/trending.rst'),
         create_crate_suite('content/petition/flow.rst'),
         create_crate_suite('content/petition/events.rst'),
+        create_suite('content/petition/security.rst'),
         create_crate_suite('content/petition/support.rst'),
         create_crate_suite('content/petition/sm.rst'),
         create_crate_suite('content/petition/schedule.rst'),

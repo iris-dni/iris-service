@@ -103,9 +103,10 @@ class PetitionPublicRESTService(rest.RESTService):
     def event_letterSent(self, **kwargs):
         return self._event('letterSent')
 
-    @rpcmethod_route(request_method='POST',
-                     route_suffix='/{contentId}/event/reset_support_start_time',
-                    )
+    @rpcmethod_route(
+        request_method='POST',
+        route_suffix='/{contentId}/event/reset_support_start_time',
+    )
     @rpcmethod_view(http_cache=0,
                     permission=acl.Permissions.AdminPetition,
                    )
@@ -181,6 +182,20 @@ class PetitionPublicRESTService(rest.RESTService):
 class SupportersAdminRESTService(rest.RESTService):
 
     MAPPER_NAME = 'supporters'
+
+
+@RestService("supporter_public_api",
+             permission=acl.Permissions.ListSupporters)
+class SupportersPublicRESTService(rest.RESTService):
+
+    MAPPER_NAME = 'supporters'
+
+    def prepare_request_data(self):
+        # remove 'token' from request so it is not passed to the 'mapper'
+        super(SupportersPublicRESTService, self).prepare_request_data()
+        data = self.request.swagger_data
+        if 'token' in data:
+            del data['token']
 
 
 @RestService("petition_by_token_api")
@@ -271,3 +286,30 @@ class SupportingExtender(object):
             APIExtender.applyExtensionData(doc, self.NAME, supporting)
 
 APIExtender.register(SupportingExtender.NAME, SupportingExtender)
+
+
+class SupporterExtender(object):
+
+    NAME = 'Supporter.extend'
+
+    def __init__(self, request, docs):
+        self.request = request
+        self.docs = docs
+
+    def extend(self, docs):
+        def obfuscate_phone_number(nr):
+            if not nr:
+                return nr
+            if len(nr) > 6:
+                return nr[:6] + u' XXX XX ' + nr[-2:]
+            return 'XXX XX'
+
+        if not docs:
+            return
+        if not self.request.has_permission(acl.Permissions.AdminFull):
+            user = docs.get('user', None)
+            if user and 'mobile' in user:
+                user['mobile'] = obfuscate_phone_number(user['mobile'])
+
+
+APIExtender.register(SupporterExtender.NAME, SupporterExtender)
