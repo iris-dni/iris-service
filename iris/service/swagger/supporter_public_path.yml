@@ -10,12 +10,12 @@ supporters:
     tags:
       - supporter_public
     summary: Search Supporters
-    operationId: search_public
+    operationId: search
     parameters:
       - name: token
         in: query
         type: string
-        description: Required if not user has no admin permissions
+        description: Required if user has no admin permissions
       - name: petition
         in: query
         type: string

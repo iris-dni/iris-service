@@ -10,7 +10,7 @@ supporters:
     tags:
       - supporter_admin
     summary: Search Supporters
-    operationId: search_admin
+    operationId: search
     parameters:
       - name: petition
         in: query
