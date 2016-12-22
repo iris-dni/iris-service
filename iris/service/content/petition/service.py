@@ -10,6 +10,7 @@ from iris.service.security import acl
 from iris.service.errors import Errors
 from iris.service.rest.swagger import swagger_reduce_response
 from iris.service.rest.extender import APIExtender
+from iris.service.content.user.document import obfuscate_phone_number
 
 from .document import Petition, Supporter
 from .mapper import PETITIONS_MAPPER_NAME, PETITIONS_PUBLIC_MAPPER_NAME
@@ -297,13 +298,6 @@ class SupporterExtender(object):
         self.docs = docs
 
     def extend(self, docs):
-        def obfuscate_phone_number(nr):
-            if not nr:
-                return nr
-            if len(nr) > 6:
-                return nr[:6] + u' XXX XX ' + nr[-2:]
-            return 'XXX XX'
-
         if not docs:
             return
         if not self.request.has_permission(acl.Permissions.AdminFull):
