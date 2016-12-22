@@ -120,6 +120,7 @@ These variables are provided for petitions::
         city: URL to the city petition page (only available if the petition
               has a city assigned)
         letter: URL to the letter cover
+        appendix: URL to the letter appendix
 
     (*): calculated
 

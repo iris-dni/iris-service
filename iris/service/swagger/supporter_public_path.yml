@@ -15,7 +15,7 @@ supporters:
       - name: token
         in: query
         type: string
-        required: true
+        description: Required if not user has no admin permissions
       - name: petition
         in: query
         type: string
