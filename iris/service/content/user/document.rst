@@ -276,3 +276,40 @@ An update can reset the flag if the mobile number is changed::
     >>> user = User.update_or_create_by_email(**data)
     >>> user.mobile_trusted
     False
+
+
+Obfuscate Phone Number
+----------------------
+
+A utility function helps to obfuscate phone numbers for public use::
+
+    >>> from iris.service.content.user.document import obfuscate_phone_number
+
+    >>> obfuscate_phone_number('+41794578256')
+    '+41 79 XXX XX 56'
+
+    >>> obfuscate_phone_number('0041794578256')
+    '+41 79 XXX XX 56'
+
+Edge cases::
+
+    >>> obfuscate_phone_number('+4179')
+    'XXX XX'
+
+    >>> obfuscate_phone_number('+41794')
+    'XXX XX'
+
+    >>> obfuscate_phone_number('+417945')
+    '+41 79 XXX XX 45'
+
+    >>> obfuscate_phone_number('00417')
+    'XXX XX'
+
+    >>> obfuscate_phone_number('004179')
+    'XXX XX'
+
+    >>> obfuscate_phone_number('0041794')
+    'XXX XX'
+
+    >>> obfuscate_phone_number('00417945')
+    '+41 79 XXX XX 45'

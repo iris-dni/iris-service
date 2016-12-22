@@ -9,6 +9,24 @@ from iris.service.db.dc import dc_defaults, DC_CREATED, DC_MODIFIED
 from iris.service.db.sequence import IID_SHORTED
 
 
+def obfuscate_phone_number(nr):
+    """Obfuscate phone numbers for public use.
+
+    Returns a string formatted as '+41 <a><b> XXX XX <y><z>'
+    If there aren't enough numbers, 'XXX XX' is returned.
+    """
+    if not nr:
+        return nr
+    nr = nr.lstrip('0')
+    if nr.startswith('+'):
+        if len(nr) > 6:
+            return '+' + nr[1:3] + ' ' + nr[3:5] + ' XXX XX ' + nr[-2:]
+        return 'XXX XX'
+    if len(nr) > 5:
+        return '+' + nr[0:2] + ' ' + nr[2:4] + ' XXX XX ' + nr[-2:]
+    return 'XXX XX'
+
+
 class User(Document):
 
     INDEX = 'users'
