@@ -141,10 +141,11 @@ There is a mail::
               "title": "petition 1",
               "type": "",
               "urls": {
-                "appendix": "http://frontend/#/petition/.../letter/appendix?token=...",
+                "appendix": "http://admin/#/petition/.../letter/appendix?token=...",
                 "brief": "http://frontend/petitons/.../brief",
                 "city": "http://frontend/petitions/hongkong-petition_events:4242",
                 "edit": "http://frontend/petitons/.../edit",
+                "letter": "http://admin/#/petition/.../letter/cover",
                 "url": "http://frontend/petitons/..."
               }
             },

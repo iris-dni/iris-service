@@ -49,8 +49,8 @@ frontend.supporter.confirmpath = {{ context['frontend']['supporter-mail-confirmp
 frontend.petition.urls.url = {{ context['frontend']['domain'] }}/petitions/{id}
 frontend.petition.urls.edit = {{ context['frontend']['domain'] }}/petitions/{id}/edit
 frontend.petition.urls.city = {{ context['frontend']['domain'] }}/petitions/{city_url_id}
-frontend.petition.urls.letter = https://{{ context['access']['url'] }}/#/petition/{id}/letter/cover
-frontend.petition.urls.appendix = https://{{ context['access']['url'] }}/#/petition/{id}/letter/appendix?token={token}
+frontend.petition.urls.letter = {{ context['admin']['domain'] }}/#/petition/{id}/letter/cover
+frontend.petition.urls.appendix = {{ context['admin']['domain'] }}/#/petition/{id}/letter/appendix?token={token}
 
 statemachine.petitions.cron = */5 * * * *
 
