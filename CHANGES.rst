@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Config: fix wrong frontend.petition.urls.{letter,appendix}
+
 2016/12/23 0.7.0
 ================
 
