@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2016/12/23 0.7.0
+================
+
  - Add public supporters EP
    DEPLOY:
     Add 'iris.secret.<...>' to Pyramid config
