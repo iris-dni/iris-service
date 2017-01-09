@@ -2,6 +2,7 @@ import magic
 import uuid
 
 from PIL import Image
+import exifread
 
 from lovely.pyrest.rest import RestService, rpcmethod_route
 
@@ -71,14 +72,27 @@ class FilePublicRESTService(rest.RESTService):
             image = Image.open(f)
             size = image.size
             if size:
+                rotated = self.is_rotated(f)
                 return {
-                    "width": size[0],
-                    "height": size[1],
+                    "width": size[1 if rotated else 0],
+                    "height": size[0 if rotated else 1],
                 }
         except IOError:
             # not an image file or file corrupted
             pass
         return {}
+
+    def is_rotated(self, f):
+        """Determine if image is rotated.
+
+        The information is gathered by the EXIF tag 'Image Orientation'. This
+        tag is a short value between 1 to 8. Values from 5 to 8 indicates that
+        the image has been rotated.
+        """
+        f.seek(0)
+        tags = exifread.process_file(f)
+        orientation = tags.get('Image Orientation')
+        return orientation and orientation.values[0] > 4
 
 
 @RestService("file_admin_api",

@@ -74,6 +74,7 @@ requires = [
     'strict-rfc3339',
     'python-magic',
     'mandrill',
+    'exifread',
 ]
 
 setup(

@@ -81,7 +81,7 @@ The user id is stored for authenticated users::
     >>> f.owner.id == user.id
     True
 
-The whole file is stored (file pointer reseted to 0)::
+The whole file is stored (file pointer resetted to 0)::
 
     >>> os.path.getsize('/tmp/iris-testing/uploads/%s' % image_file_id)
     858
@@ -126,6 +126,65 @@ An unknown file leads to a 404::
     Response: 404 Not Found
     ...
     {"error": {"code": 404, "description": "Id 'unknown' for content type 'files' not found"}}
+
+
+Rotated Images
+--------------
+
+Helper function to upload file::
+
+    >>> def upload_file(name):
+    ...     img_file = open(os.path.join(here, "../../testing/blobs/%s" % name))
+    ...     img_content = img_file.read()
+    ...     response = browser.post('/v1/files',
+    ...                             collections.OrderedDict([
+    ...                                 ('data', webtest.Upload(name, img_content))
+    ...                             ]))
+    ...     return response.json['data']['id']
+
+Upload file with the dimension height=2 and width=1. The file does not have
+set the EXIF tag 'Image Orientation' so the dimension is taken as is::
+
+    >>> image_file_id = upload_file('rotated_none.jpeg')
+    >>> response = browser.get('/v1/files/%s' % image_file_id)
+    >>> response.json['data']['info']
+    {u'width': 1, u'height': 2}
+
+Upload file with the dimension height=2 and width=1. The file has set
+the EXIF tag 'Image Orientation' to 'Horizontal (normal)' so the dimension is
+not toggled::
+
+    >>> image_file_id = upload_file('rotated_0.jpeg')
+    >>> response = browser.get('/v1/files/%s' % image_file_id)
+    >>> response.json['data']['info']
+    {u'width': 1, u'height': 2}
+
+Upload file with the dimension height=2 and width=1. The file has set
+the EXIF tag 'Image Orientation' to 'Rotate 90 CW' so the dimension is
+toggled::
+
+    >>> image_file_id = upload_file('rotated_90.jpeg')
+    >>> response = browser.get('/v1/files/%s' % image_file_id)
+    >>> response.json['data']['info']
+    {u'width': 2, u'height': 1}
+
+Upload file with the dimension height=2 and width=1. The file has set
+the EXIF tag 'Image Orientation' to 'Rotate 180' so the dimension is
+not toggled::
+
+    >>> image_file_id = upload_file('rotated_180.jpeg')
+    >>> response = browser.get('/v1/files/%s' % image_file_id)
+    >>> response.json['data']['info']
+    {u'width': 1, u'height': 2}
+
+Upload file with the dimension height=2 and width=1. The file has set
+the EXIF tag 'Image Orientation' to 'Rotate 270 CW' so the dimension is
+toggled::
+
+    >>> image_file_id = upload_file('rotated_270.jpeg')
+    >>> response = browser.get('/v1/files/%s' % image_file_id)
+    >>> response.json['data']['info']
+    {u'width': 2, u'height': 1}
 
 
 OPTION requests for CORS
@@ -347,7 +406,7 @@ Filter by owner::
 
     >>> response = browser.get('/v1/admin/files?owner=%s' % user.id)
     >>> response.json['total']
-    1
+    6
     >>> response.json['data'][0]['owner']['id'] == user.id
     True
 
