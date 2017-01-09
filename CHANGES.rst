@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/01/09 0.7.2
+================
+
  - fix: toggle image orientation if exif tag has been set to
 
 2016/12/23 0.7.1
