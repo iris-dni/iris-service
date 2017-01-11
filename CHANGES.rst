@@ -5,10 +5,13 @@ Changes For IRIS Service
 unreleased
 ==========
 
-2017/01/11 0.7.2
+2017/01/11 0.7.3
 ================
 
  - fix: Do not require Permissions.AdminPetition for EP '.../event/setFeedback'
+
+2017/01/09 0.7.2
+================
 
  - fix: toggle image orientation if exif tag has been set to
 
