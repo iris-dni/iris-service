@@ -150,7 +150,7 @@ Petitions which are draft or rejected can be published::
     ... }
     >>> response = browser.post_json('/v1/petitions/%s' % id, petition)
     >>> response = browser.post_json('/v1/petitions/%s/event/publish' % id, publish_body)
-    sendSMS(u'555 1234', u'...')
+    sendSMS(u'+415551234', u'...')
     >>> response.status
     '200 OK'
     >>> print_json(response)
@@ -164,7 +164,7 @@ Petitions which are draft or rejected can be published::
           "firstname": "",
           "id": "...",
           "lastname": "",
-          "mobile": "555 1234",
+          "mobile": "+415551234",
           "mobile_trusted": false,
           "salutation": "",
           "street": "",

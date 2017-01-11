@@ -19,7 +19,7 @@ from iris.service.db.sequence import IID_SHORTED
 
 from iris.service.content.weblocation import WebLocation
 from iris.service.content.city import document as city_module
-from iris.service.content.user import SessionUser
+from iris.service.content.user import SessionUser, normalise_phone_number
 
 from .sm import PetitionStateMachine
 
@@ -153,6 +153,14 @@ class Petition(Document):
         """
     )
 
+    @owner.setter
+    def set_owner(self, value):
+        if not isinstance(value, dict):
+            return value
+        if value and value.get('mobile'):
+            value['mobile'] = normalise_phone_number(value['mobile'])
+        return value
+
     response_token = Property(
         default=None
     )
@@ -246,7 +254,8 @@ class Petition(Document):
                                     },
                                     {
                                         "term": {
-                                            "mobile": data['mobile']
+                                            "mobile": normalise_phone_number(
+                                                                data['mobile'])
                                         }
                                     },
                                 ],
@@ -270,12 +279,14 @@ class Petition(Document):
         if user_id is not None and not SessionUser.is_session_user_id(user_id):
             supporter = 'u:%s' % user_id
         else:
-            supporter = 't:%s' % data['mobile']
+            supporter = 't:%s' % normalise_phone_number(data['mobile'])
         supporterId = '%s-%s' % (self.id, supporter)
         supporter = Supporter.get(supporterId)
         if supporter is None:
             user_rel = data and copy.deepcopy(data) or {}
             user_rel['id'] = user_id
+            if user_rel.get('mobile') is not None:
+                user_rel['mobile'] = normalise_phone_number(user_rel['mobile'])
             supporter = Supporter(
                 id=supporterId,
                 petition=self.id,
@@ -374,6 +385,14 @@ class Supporter(Document):
           Not required if the user was identified with a telephone number.
         """
     )
+
+    @user.setter
+    def set_user(self, value):
+        if not isinstance(value, dict):
+            return value
+        if value and value.get('mobile'):
+            value['mobile'] = normalise_phone_number(value['mobile'])
+        return value
 
     _relations = Property(
         name="relations",

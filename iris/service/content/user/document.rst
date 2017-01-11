@@ -56,10 +56,9 @@ Get the user back from the database::
     >>> user.email_trusted
     True
     >>> user.mobile
-    u'555 123'
+    u'+41555123'
     >>> user.mobile_trusted
     False
-
 
 SSO Data
 ========
@@ -313,3 +312,53 @@ Edge cases::
 
     >>> obfuscate_phone_number('00417945')
     '+41 79 XXX XX 45'
+
+
+Normalise Phone Number
+----------------------
+
+Phone numbers are normalised::
+
+    >>> from iris.service.content.user.document import normalise_phone_number
+    >>> normalise_phone_number('0041 123456789')
+    u'+41123456789'
+
+    >>> normalise_phone_number('0041123456789')
+    u'+41123456789'
+
+    >>> normalise_phone_number('0041 1 2 345 67     89')
+    u'+41123456789'
+
+    >>> normalise_phone_number('+41 123456789')
+    u'+41123456789'
+
+    >>> normalise_phone_number('+41 123 4 5     67 89')
+    u'+41123456789'
+
+A number without a country code is transformed to a 'swiss number'::
+
+    >>> normalise_phone_number('123 4 5  67 89')
+    u'+41123456789'
+
+Different (explicit) country codes than swiss remain::
+
+    >>> normalise_phone_number('+43 123 4567 89')
+    u'+43123456789'
+
+    >>> normalise_phone_number('+49 123 4567 89')
+    u'+49123456789'
+
+Edge case numbers which cause 'phonenumbers' package to throw an exception and
+our own, primitive version takes over::
+
+    >>> normalise_phone_number(u'+08(2)9338238082')
+    u'+0829338238082'
+
+    >>> normalise_phone_number(u'+08 (2)9   3 3 82   380 82')
+    u'+0829338238082'
+
+    >>> normalise_phone_number(u'008 (2)9   3 3 82   380 82')
+    u'+829338238082'
+
+    >>> normalise_phone_number(u'+08 (2) 9   3 3 82   380 82')
+    u'+0829338238082'

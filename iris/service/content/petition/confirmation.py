@@ -8,6 +8,7 @@ from iris.service import rest
 from iris.service.db.dc import dc_update, iso_now_offset
 from iris.service.content.confirmation.handler import Handler
 from iris.service.content.confirmation import Confirmation
+from iris.service.content.user import normalise_phone_number
 from iris.service import sms
 
 from .document import Petition, Supporter
@@ -47,7 +48,7 @@ class SMSBaseHandler(Handler):
             return
         store = False
         user_rel_data = user_rel.relation_dict
-        mobile = user_rel_data.get('mobile')
+        mobile = normalise_phone_number(user_rel_data.get('mobile'))
         if (user.mobile != mobile
             or not user.mobile_trusted
            ):

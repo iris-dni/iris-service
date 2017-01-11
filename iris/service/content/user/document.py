@@ -1,4 +1,10 @@
 import random
+from phonenumbers import (
+    parse as pn_parse,
+    format_number as pn_format_number,
+    PhoneNumberFormat,
+    NumberParseException,
+)
 
 from lovely.esdb.document import Document
 from lovely.esdb.properties import Property
@@ -25,6 +31,24 @@ def obfuscate_phone_number(nr):
     if len(nr) > 5:
         return '+' + nr[0:2] + ' ' + nr[2:4] + ' XXX XX ' + nr[-2:]
     return 'XXX XX'
+
+
+def normalise_phone_number(nr):
+    if not nr:
+        return nr
+    try:
+        number = pn_parse(nr, 'CH')
+        return pn_format_number(number, PhoneNumberFormat.E164)
+    except NumberParseException:
+        # Apparently, not all numbers are valid.
+        # e.g. 'faker' (used in sample data) produces phone numbers such as
+        # u'+08(2)9338238082'. In such cases, we try our own version:
+        nr = nr.replace('(', '').replace(')', '').replace(' ', '')
+        if nr.startswith('+'):
+            return nr
+        if nr.startswith('00'):
+            return nr.replace('00', '+', 1)
+        raise ValueError("Invalid number")
 
 
 class User(Document):
@@ -56,6 +80,10 @@ class User(Document):
     mobile = Property(
         default=''
     )
+
+    @mobile.setter
+    def set_mobile(self, value):
+        return normalise_phone_number(value)
 
     mobile_trusted = Property(
         default=False
@@ -107,7 +135,7 @@ class User(Document):
             if kwargs.get('email_trusted') is False:
                 # don't allow to overwrite the email_trusted flag with false
                 del kwargs['email_trusted']
-            mobile = kwargs.get('mobile')
+            mobile = normalise_phone_number(kwargs.get('mobile'))
             mobile_trusted = kwargs.get('mobile_trusted')
             if (mobile is None
                 and mobile_trusted is False

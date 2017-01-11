@@ -297,7 +297,7 @@ Support using a mobile number::
     >>> supporter = petition.addSupporter(request=request,
     ...                                   data=data)
     >>> supporter
-    <Supporter [id=u'...-t:0555 42']>
+    <Supporter [id=u'...-t:+41055542']>
     >>> supporter.user() is None
     True
     >>> print_json(supporter.user.relation_dict)
@@ -308,7 +308,7 @@ Support using a mobile number::
       "firstname": "first",
       "id": null,
       "lastname": "last",
-      "mobile": "0555 42",
+      "mobile": "+41055542",
       "mobile_trusted": false,
       "salutation": "",
       "street": "",
@@ -396,7 +396,7 @@ Remove the already removed supporter again::
 List all supporters of a petition::
 
     >>> list(petition.get_supporters())
-    [<Supporter [id=u'...-t:0555 42']>, <Supporter [id=u'...-u:...']>]
+    [<Supporter [id=u'...-t:+41055542']>, <Supporter [id=u'...-u:...']>]
 
 
 Check if supporting

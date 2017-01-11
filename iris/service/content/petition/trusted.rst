@@ -336,11 +336,11 @@ Create a petition and prepare it for the user::
       "email": "email@iris.com",
       "email_trusted": false,
       ...
-      "mobile": "555 1234",
+      "mobile": "+415551234",
       "mobile_trusted": false,
       ...
     }
-    
+
     >>> mapper._prepare_document(petition, data, is_create=False)
     >>> print_json(petition.owner.relation_dict)
     {
@@ -348,7 +348,7 @@ Create a petition and prepare it for the user::
       "email": "email@iris.com",
       "email_trusted": false,
       ...
-      "mobile": "555 1234",
+      "mobile": "+415551234",
       "mobile_trusted": false,
       ...
     }
@@ -378,7 +378,7 @@ Provide the same data as the user already has::
       "email": "new@iris.com",
       "email_trusted": true,
       ...
-      "mobile": "555 4321",
+      "mobile": "+415554321",
       "mobile_trusted": true,
       ...
     }
@@ -400,7 +400,7 @@ Provide a different data as the user already has::
       "email": "email@iris.com",
       "email_trusted": false,
       ...
-      "mobile": "555 1234",
+      "mobile": "+415551234",
       "mobile_trusted": false,
       ...
     }

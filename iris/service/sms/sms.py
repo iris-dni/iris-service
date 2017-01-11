@@ -16,8 +16,8 @@ TEST_STACK = []
 
 def sendSMS(to, message):
     global SMS_CLIENT_CONFIG, SMS_PROVIDER_URI
-    if TESTING or to.startswith('555'):
-        if to == '555 333':
+    if TESTING or to.startswith('+41555'):
+        if to == '+41555333':
             # simulate a value error for testing
             raise ValueError("Can't send SMS")
         TEST_STACK.append([to, message])
