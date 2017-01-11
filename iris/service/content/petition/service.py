@@ -118,9 +118,7 @@ class PetitionPublicRESTService(rest.RESTService):
     @rpcmethod_route(request_method='POST',
                      route_suffix='/{contentId}/event/setFeedback',
                     )
-    @rpcmethod_view(http_cache=0,
-                    permission=acl.Permissions.AdminPetition,
-                   )
+    @rpcmethod_view(http_cache=0)
     @swagger_reduce_response
     def event_setFeedback(self, **kwargs):
         token = self.request.swagger_data['data']['data']['token']
