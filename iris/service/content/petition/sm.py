@@ -219,7 +219,7 @@ class PetitionStateMachine(object):
                     # a ValueError means that confirmation failed
                     pass
                 if msg and data['user']['mobile'] == mobile:
-                    # We trust the mobile because the virification token is
+                    # We trust the mobile because the verification token is
                     # correct.
                     mobile_trusted = True
                 else:

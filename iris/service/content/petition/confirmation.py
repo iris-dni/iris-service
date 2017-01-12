@@ -114,7 +114,7 @@ class PetitionSMSHandler(SMSBaseHandler, rest.RESTMapper):
         """Confirms the mobile number on the petition
 
         If the mobile number on the owner relation matches the mobile number
-        of this confimation the mobile_trusted flag is set to true.
+        of this confirmation the mobile_trusted flag is set to true.
 
         If the mobile on the relation is the same as the mobile of the
         references user then the users mobile_trusted flag is also set to
@@ -314,7 +314,7 @@ class SupportEMailConfirmHandler(EMailBaseHandler, rest.RESTMapper):
         """Confirms the mobile number on the petition
 
         If the mobile number on the owner relation matches the mobile number
-        of this conrimation the mobile_trusted flag is set to true.
+        of this confirmation the mobile_trusted flag is set to true.
         """
         supporter = self._supporter(confirmation)
         email = supporter.user.relation_dict['email']
