@@ -78,7 +78,7 @@ Create a new petition::
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -119,7 +119,7 @@ Create a new petition::
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -185,7 +185,7 @@ Create a new petition::
     ...         "title": "Create And Publish Petition",
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -290,7 +290,7 @@ Create a new petition::
     ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -520,7 +520,7 @@ A mail was sent to the supporters of the petition::
                   "firstname": "",
                   "id": "...",
                   "lastname": "",
-                  "mobile": "5551230",
+                  "mobile": "+415551230",
                   "mobile_trusted": true,
                   "salutation": "",
                   "street": "",
@@ -587,7 +587,7 @@ Create a new petition::
     ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -753,7 +753,7 @@ Manage the timeout when waiting for a letter response::
     ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -908,7 +908,7 @@ Event response can also reolve::
     ...         "city": {"id": city.id},
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }
@@ -952,7 +952,7 @@ Event response data can also be extended::
     ...         "title": "Extend Petition",
     ...         "owner": {
     ...             "email": "petition-owner@iris.com",
-    ...             "mobile": "555 1234"
+    ...             "mobile": "555 1234 99"
     ...         }
     ...     }
     ... }

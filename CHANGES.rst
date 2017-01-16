@@ -5,6 +5,11 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Normalise 'mobile'
+   DEPLOY:
+        Perform 'mobile phone normalise migration'
+        bin/fab migrate.auto:<env>
+
 2017/01/11 0.7.3
 ================
 

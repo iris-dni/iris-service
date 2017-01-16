@@ -8,7 +8,7 @@ from iris.service import rest
 from iris.service.rest import queries
 from iris.service.rest.extender import APIExtender
 
-from iris.service.content.user import SessionUser
+from iris.service.content.user import SessionUser, normalise_phone_number
 
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
@@ -148,7 +148,8 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # Check if the trusted flags on the relations are different
             # and reset the trusted flag is so.
             owner_rel = doc.owner.relation_dict
-            if owner_rel.get('mobile') != data_owner.get('mobile'):
+            if owner_rel.get('mobile') != normalise_phone_number(
+                                                    data_owner.get('mobile')):
                 data_owner['mobile_trusted'] = False
             if owner_rel.get('email') != data_owner.get('email'):
                 data_owner['email_trusted'] = False
@@ -164,7 +165,7 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
             # _prepare_data.
             return
         owner_rel = doc.owner.relation_dict
-        if (owner_rel['mobile'] == owner.mobile
+        if (normalise_phone_number(owner_rel['mobile']) == owner.mobile
             and owner.mobile_trusted
            ):
             # The owners mobile is trusted so we can also trust the mobile

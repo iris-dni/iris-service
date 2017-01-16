@@ -1,5 +1,5 @@
 from . import service  # noqa
-from .document import User, SessionUser  # noqa
+from .document import User, SessionUser, normalise_phone_number  # noqa
 
 
 def includeme(config):

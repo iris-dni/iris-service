@@ -15,7 +15,7 @@ from iris.service.rest import swagger
 
 from iris.service.content.confirmation.handler import Handler
 from iris.service.content.city.document import TRESHOLD_NOT_SET
-from iris.service.content.user import SessionUser
+from iris.service.content.user import SessionUser, normalise_phone_number
 
 from .mail import send_petition_mail
 
@@ -191,12 +191,12 @@ class PetitionStateMachine(object):
         if self.petition.isSupporting(request=self.request,
                                       user_id=session_user,
                                       data=user_data):
-            return
+            raise ConditionError(["User already supports this petition"])
         user = self.request.user
         if SessionUser.is_session_user(user):
             user = None
         untrusted = []
-        mobile = user_data['mobile']
+        mobile = normalise_phone_number(user_data['mobile'])
         mobile_trusted = (user and
                           user.mobile == mobile and
                           user.mobile_trusted)
@@ -218,8 +218,8 @@ class PetitionStateMachine(object):
                 except ValueError:
                     # a ValueError means that confirmation failed
                     pass
-                if msg and data['user']['mobile'] == mobile:
-                    # We trust the mobile because the virification token is
+                if msg:
+                    # We trust the mobile because the verification token is
                     # correct.
                     mobile_trusted = True
                 else:

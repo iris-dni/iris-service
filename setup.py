@@ -72,6 +72,7 @@ requires = [
     'rfc3987',
     'webcolors',
     'strict-rfc3339',
+    'phonenumbers',
     'python-magic',
     'mandrill',
     'exifread',

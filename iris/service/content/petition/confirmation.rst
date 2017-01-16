@@ -46,12 +46,12 @@ Create the confirmation::
 
     >>> from iris.service.content.confirmation.handler import Handler
     >>> response = Handler.create_for_handler('petition_sms', data, request)
-    sendSMS(u'555 1234', u'...')
+    sendSMS(u'+415551234', u'...')
     >>> print_json(response)
     {
       "context_id": "...-...",
       "data": {
-        "mobile": "555 1234",
+        "mobile": "+415551234",
         "petition": "...",
         "token": "..."
       },
@@ -61,7 +61,7 @@ Create the confirmation::
       },
       "debug": {
         "sms": {
-          "phone_number": "555 1234",
+          "phone_number": "+415551234",
           "response": {},
           "text": "Dein Code für petitio.ch ist\n ..."
         }
@@ -103,7 +103,7 @@ Now the trusted flag of the owner relation in the petition is set to true::
     >>> print_json(petition.owner.relation_dict)
     {
       ...
-      "mobile": "555 1234",
+      "mobile": "+415551234",
       "mobile_trusted": true,
       ...
     }
@@ -112,7 +112,7 @@ Also the user mobile_trusted and phone is set::
 
     >>> from iris.service.content.user import User
     >>> User.get(owner.id).mobile
-    u'555 1234'
+    u'+415551234'
     >>> User.get(owner.id).mobile_trusted
     True
 

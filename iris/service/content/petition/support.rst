@@ -93,7 +93,7 @@ is untrusted::
 
     >>> supporters = Supporter.get_by(Supporter.petition, id, size=10)
     >>> supporters
-    [<Supporter [id=u'...-t:555 4321']>,
+    [<Supporter [id=u'...-t:+415554321']>,
      <Supporter [id=u'...-u:...']>]
 
 All properties of the user relation are set::
@@ -106,7 +106,7 @@ All properties of the user relation are set::
       "firstname": "firstname",
       "id": "1QjR3",
       "lastname": "lastname",
-      "mobile": "555 1234",
+      "mobile": "+415551234",
       "mobile_trusted": true,
       "salutation": "salutation",
       "street": "street",
@@ -148,7 +148,7 @@ The mail::
                   "firstname": "firstname",
                   "id": "...",
                   "lastname": "lastname",
-                  "mobile": "555 1234",
+                  "mobile": "+415551234",
                   "mobile_trusted": true,
                   "salutation": "salutation",
                   "street": "street",
@@ -184,13 +184,19 @@ The same user supports again::
     ... }
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
-    ...     supporter)
-    >>> showInfo(response)
-    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 2, u'required': 6}
+    ...     supporter,
+    ...     expect_errors=True)
+    >>> print_json(response)
+    {
+      "data": null,
+      "reasons": [
+        "User already supports this petition"
+      ],
+      "status": "error"
+    }
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'...-t:555 4321']>,
+    [<Supporter [id=u'...-t:+415554321']>,
      <Supporter [id=u'...-u:...']>]
 
 Support using an untrusted mobile number::
@@ -229,6 +235,9 @@ We must provide the verification token with the support request::
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
     ...     supporter)
+    >>> showInfo(response)
+    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
+    {u'amount': 3, u'required': 6}
 
 Now the mobile on the relation is trusted::
 
@@ -241,7 +250,7 @@ Now the mobile on the relation is trusted::
       "firstname": "",
       "id": "...",
       "lastname": "",
-      "mobile": "555 4242",
+      "mobile": "+415554242",
       "mobile_trusted": true,
       "salutation": "",
       "street": "",
@@ -257,7 +266,7 @@ relation::
     True
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'...-t:555 4321']>,
+    [<Supporter [id=u'...-t:+415554321']>,
      <Supporter [id=u'...-u:...']>,
      <Supporter [id=u'...-u:...']>]
 
@@ -266,13 +275,19 @@ The same mobile number again::
     >>> del supporter['data']['mobile_token']
     >>> response = browser.post_json(
     ...     '/v1/petitions/%s/event/support' % id,
-    ...     supporter)
-    >>> showInfo(response)
-    {u'letter_wait_expire': None, u'name': u'pending', u'parent': u'supportable'}
-    {u'amount': 3, u'required': 6}
+    ...     supporter,
+    ...     )
+    >>> print_json(response)
+    {
+      "data": null,
+      "reasons": [
+        "User already supports this petition"
+      ],
+      "status": "error"
+    }
 
     >>> Supporter.get_by(Supporter.petition, id, size=10)
-    [<Supporter [id=u'...-t:555 4321']>,
+    [<Supporter [id=u'...-t:+415554321']>,
      <Supporter [id=u'...-u:...']>,
      <Supporter [id=u'...-u:...']>]
 

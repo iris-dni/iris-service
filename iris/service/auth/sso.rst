@@ -124,7 +124,7 @@ With valid data::
     >>> u2.email_trusted
     True
     >>> u2.mobile
-    '555 123'
+    u'+41555123'
     >>> u2.mobile_trusted
     False
     >>> u2.salutation
@@ -257,6 +257,6 @@ Mobile trusted can be reset if the mobile number is changed::
     >>> user.email_trusted
     True
     >>> user.mobile
-    '555 4242'
+    u'+415554242'
     >>> user.mobile_trusted
     False
