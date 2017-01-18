@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/01/18 0.7.4
+================
+
  - Normalise 'mobile'
    DEPLOY:
         Perform 'mobile phone normalise migration'
