@@ -16,8 +16,8 @@ SETTINGS = {
         "sql_settings": "sql/sql"
     },
     "production": {
-        "hosts": "st1.p.ls.af",
-        "crate_host": "http://st1.p.ls.af:12042",
+        "hosts": "dkr01.p.ls.af",
+        "crate_host": "http://dkr01.p.ls.af:12042",
         "sql_settings": "sql/sql"
     }
 }
