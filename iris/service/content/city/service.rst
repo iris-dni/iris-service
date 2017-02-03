@@ -242,6 +242,54 @@ It is possible to provide multiple tags::
       "total": 7
     }
 
+Filter by Portal
+----------------
+
+Search results can be filtered by portal. Setup::
+
+    >>> city = {
+    ...     "data": {
+    ...         "id": "10042",
+    ...         "provider": "test",
+    ...         "location": {"url": "https://www.aargauerzeitung.ch"},
+    ...         "name": "aarau",
+    ...         "portal": {
+    ...             "id": "nwch:aaz2016",
+    ...         },
+    ...         "tags": ["portal:aaz"],
+    ...         "zips": ["5004"],
+    ...     }
+    ... }
+    >>> response = browser.post_json('/v1/admin/cities',
+    ...                              city)
+    >>> response.status
+    '200 OK'
+
+
+Search::
+
+    >>> response = browser.get('/v1/admin/cities?portal.id=nwch:aaz2016')
+    >>> print_json(response)
+    {
+      "data": [
+        {
+          ...
+          "portal": {
+            "id": "nwch:aaz2016"
+          },
+          ...
+      ],
+      "total": 1
+    }
+
+    >>> response = browser.get('/v1/admin/cities?portal.id=nope')
+    >>> print_json(response)
+    {
+      "data": [],
+      "total": 0
+    }
+
+
 
 General Fulltext Search
 -----------------------

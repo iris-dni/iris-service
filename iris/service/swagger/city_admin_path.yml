@@ -30,6 +30,12 @@ cities:
         items:
           type: string
         collectionFormat: csv
+      - name: portal.id
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
       - name: zips
         in: query
         type: array

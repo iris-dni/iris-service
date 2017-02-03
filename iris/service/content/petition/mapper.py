@@ -9,6 +9,7 @@ from iris.service.rest import queries
 from iris.service.rest.extender import APIExtender
 
 from iris.service.content.user import SessionUser, normalise_phone_number
+from iris.service.content.city import City
 
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
@@ -51,6 +52,28 @@ def stateFilter(value):
     }
 
 
+def cityFilter(cityProperty):
+    """
+    city properties is either 'city.portal' or 'city.tags'
+    """
+    def wrapper(value):
+        cities = City.search({
+            "query": {
+                "filtered": {
+                    "filter": {
+                        "bool": {
+                            "must": queries.termsFilter(cityProperty)(value)
+                        }
+                    }
+                }
+            },
+            "fields": []
+        }, resolve_hits=False)['hits']['hits']
+        cityIds = [c['_id'] for c in cities]
+        return {"terms": {"relations.city": cityIds}}
+    return wrapper
+
+
 class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
                           rest.SearchableDocumentRESTMapperMixin,
                           rest.RESTMapper):
@@ -80,6 +103,8 @@ class PetitionsRESTMapper(rest.DocumentRESTMapperMixin,
         'state': stateFilter,
         'tags': queries.termsFilter('tags'),
         'city': queries.termsFilter('relations.city'),
+        'city.portal.id': cityFilter('portal.id'),
+        'city.tags': cityFilter('tags'),
         'owner': queries.termsFilter('relations.owner.id'),
     }
 

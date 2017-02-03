@@ -1352,6 +1352,91 @@ But it works with a token as well::
     }
 
 
+Filter by city
+--------------
+
+Test setup::
+
+    >>> from iris.service.content.city import City
+    >>> from iris.service.content.petition import Petition
+
+Clear all cities.portal, cities.tags, and petitions.city::
+
+    >>> cities = City.search({"query": {"match_all":{}},
+    ...                       "sort": "name", "size": 100})['hits']['hits']
+    >>> for city in cities:
+    ...     city.portal = {}
+    ...     city.tags = []
+    ...     _ = city.store()
+
+    >>> petitions = Petition.search({"query": {"match_all":{}},
+    ...                              "sort": "name", "size": 100})['hits']['hits']
+    >>> for petition in petitions:
+    ...     petition.city = None
+    ...     _ = petition.store()
+
+Add some test data::
+
+    >>> cities = City.search({"query": {"match_all":{}},
+    ...                       "sort": "name"})['hits']['hits']
+    >>> updatedCities = []
+    >>> max = 5
+    >>> for i in xrange(0, max):
+    ...     city = cities[i]
+    ...     city.portal = {"id": "nwch:aaz2016"}
+    ...     if i % 2 == 0:
+    ...         city.tags = ['nwch:aaz']
+    ...     else:
+    ...         city.tags = ['nwch:aaz', 'nwch:blz', 'nwch:otg']
+    ...     _ = city.store()
+    ...     updatedCities.append(city)
+    >>> city = cities[max + 1]
+    >>> city.portal = {"id": "nwch:blz2016"}
+    >>> _ = city.store()
+    >>> updatedCities.append(city)
+    >>> _ = City.refresh()
+
+    >>> petitions = Petition.search({"query": {"match_all":{}},
+    ...                              "sort": "name"})['hits']['hits']
+    >>> for i in xrange(0, max):
+    ...     petition = petitions[i]
+    ...     city = updatedCities[i]
+    ...     petition.city = city
+    ...     _ = petition.store()
+    >>> petition = petitions[max + 1]
+    >>> petition.city = updatedCities[-1]
+    >>> _ = petition.store()
+    >>> _ = Petition.refresh()
+
+
+Filter by city.portal::
+
+    >>> response = browser.get('/v1/admin/petitions?city.portal.id=nwch:aaz2016')
+    >>> response.json['total']
+    5
+
+    >>> response = browser.get('/v1/admin/petitions?city.portal.id=nwch:aaz2016,nwch:blz2016')
+    >>> response.json['total']
+    6
+
+Filter by city.tags::
+
+    >>> response = browser.get('/v1/admin/petitions?city.tags=nwch:aaz')
+    >>> response.json['total']
+    5
+
+    >>> response = browser.get('/v1/admin/petitions?city.tags=nwch:blz')
+    >>> response.json['total']
+    2
+
+    >>> response = browser.get('/v1/admin/petitions?city.tags=nwch:aaz,nwch:blz')
+    >>> response.json['total']
+    5
+
+    >>> response = browser.get('/v1/admin/petitions?city.tags=nwch:otg,nwch:blz')
+    >>> response.json['total']
+    2
+
 Permissions
 ===========
 
