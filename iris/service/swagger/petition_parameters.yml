@@ -19,6 +19,20 @@ parameters:
     items:
       type: string
     collectionFormat: csv
+  city_portal_id_filter:
+    name: city.portal.id
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
+  city_tags_filter:
+    name: city.tags
+    in: query
+    type: array
+    items:
+      type: string
+    collectionFormat: csv
   owner_filter:
     name: owner
     in: query

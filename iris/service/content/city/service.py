@@ -51,6 +51,7 @@ class CityRESTMapper(rest.DocumentRESTMapperMixin,
     FILTER_PARAMS = {
         'state': queries.termsFilter('state'),
         'provider': queries.termsFilter('provider'),
+        'portal.id': queries.termsFilter('portal.id'),
         'tags': queries.termsFilter('tags'),
         'zips': queries.termsFilter('zips'),
     }

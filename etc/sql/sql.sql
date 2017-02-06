@@ -210,7 +210,9 @@ CREATE TABLE cities (
         salutation STRING,
         address STRING
     ),
-    portal OBJECT(IGNORED),
+    portal OBJECT(IGNORED) AS (
+        id STRING
+    ),
     -- location: WebLocation relation
     location STRING,
 

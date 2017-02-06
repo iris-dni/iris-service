@@ -5,6 +5,13 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Extend filters for /admin/petitions by city.portal.id and city.tags
+ - Extend filters for /admin/cities by portal.id and city.tags
+   DEPLOY:
+        - ALTER TABLE cities ADD COLUMN portal['id'] STRING
+        - trigger iris city sync from ls.scripts:
+            bin/fab azr.trigger_datasync:<env>,iris.cities
+
 2017/01/18 0.7.4
 ================
 
