@@ -13,6 +13,7 @@ from iris.service.content.city import City
 
 from .sm import PetitionStateMachine, fromYAML
 from .document import Petition, Supporter
+from elasticsearch.helpers import scan
 
 PETITIONS_MAPPER_NAME = 'petitions'
 PETITIONS_PUBLIC_MAPPER_NAME = 'petitions_public'
@@ -57,7 +58,8 @@ def cityFilter(cityProperty):
     city properties is either 'city.portal' or 'city.tags'
     """
     def wrapper(value):
-        cities = City.search({
+        cityIds = []
+        query = {
             "query": {
                 "filtered": {
                     "filter": {
@@ -67,9 +69,13 @@ def cityFilter(cityProperty):
                     }
                 }
             },
-            "fields": []
-        }, resolve_hits=False)['hits']['hits']
-        cityIds = [c['_id'] for c in cities]
+            "fields": [],
+        }
+        for c in scan(City._get_es(),
+                      index=City.INDEX,
+                      doc_type=City.DOC_TYPE,
+                      query=query):
+            cityIds.append(c['_id'])
         return {"terms": {"relations.city": cityIds}}
     return wrapper
 
