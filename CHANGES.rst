@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/02/07 0.7.5
+================
+
  - Extend filters for /admin/petitions by city.portal.id and city.tags
  - Extend filters for /admin/cities by portal.id and city.tags
    DEPLOY:
