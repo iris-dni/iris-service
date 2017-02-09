@@ -143,7 +143,6 @@ states:
           - name: letterResponseArrived
             on_enter:
                 - listable
-                - reset_response_token
             transitions:
                 - trigger: close
                   dest: closed

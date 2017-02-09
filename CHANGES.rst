@@ -7,6 +7,9 @@ unreleased
 
  - added cleanup script to delete unused files
 
+ - EP /token/<token>/petitions: Return 'status' with 'response_token_usable' or
+   'response_token_used'
+
 2017/02/07 0.7.5
 ================
 

@@ -274,11 +274,6 @@ class PetitionStateMachine(object):
         if token is None:
             self.petition.response_token = IID_SHORTED()
 
-    def reset_response_token(self, **kwargs):
-        """Reset the response token
-        """
-        self.petition.response_token = None
-
     def if_feedback_has_valid_token(self, data, **kwargs):
         return self.petition.response_token == data['token']
 
