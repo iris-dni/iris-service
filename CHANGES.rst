@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - added cleanup script to delete unused files
+
 2017/02/07 0.7.5
 ================
 

@@ -115,6 +115,7 @@ setup(
             'iris-service=pyramid.scripts.pserve:main',
             'dump=iris.service.scripts.dump:dump',
             'setup_db=iris.service.scripts.setup_db:main',
+            'cleanup_s3=iris.scripts.cleanup_s3:main',
         ],
     },
 )
