@@ -481,10 +481,33 @@ With a valid token the feedback can be set::
       "text": "machen wir gleich"
     }
 
-The petition is no longer available via the token::
+The response_token is not changed::
+
+    >>> petition = Petition.get(id)
+    >>> petition.response_token == token
+    True
+
+The petition is still available, but contains a 'status' indicating that the
+response token is used::
 
     >>> response = browser.get(
     ...     '/v1/token/%s/petitions' % token,
+    ...     expect_errors=True,
+    ... )
+    >>> print_json(response)
+    {
+      "data": {
+        ...
+        "title": "Manage Letter",
+        ...
+      },
+      "status": "response_token_used"
+    }
+
+Unknown tokens result in a Not Found::
+
+    >>> response = browser.get(
+    ...     '/v1/token/<unknown-token>/petitions',
     ...     expect_errors=True,
     ... )
     >>> print_json(response)
