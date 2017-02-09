@@ -50,7 +50,7 @@ class S3Cleaner(object):
     def _in_use(self, file_id):
         """Determine if given file_id is referenced anywhere.
 
-        NOTE: Usage is checked on all indizes but only on fields called
+        NOTE: Usage is checked on all indices but only on fields called
               'relations.images.id'. How to determine new relations to Files?
         """
         try:
