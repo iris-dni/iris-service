@@ -350,6 +350,10 @@ definitions:
                 x-nullable: true
                 items:
                     $ref: '#/definitions/Petition'
+            status:
+                type: string
+                x-nullable: true
+                readOnly: true
     ListResponseBody:
         description: Petition list response
         type: object

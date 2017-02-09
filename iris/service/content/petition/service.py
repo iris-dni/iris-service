@@ -231,7 +231,10 @@ class PetitionByTokenRESTService(rest.BaseRESTService):
                                   'mapperName': mapperName
                                  }
                                 )
-        return {"data": data}
+        status = 'response_token_used'
+        if data.get('state') in ['waitForLetterResponse', 'noLetterResponse']:
+            status = 'response_token_usable'
+        return {"data": data, "status": status}
 
 
 class SupportingExtender(object):
