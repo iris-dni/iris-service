@@ -1,6 +1,7 @@
 from . import service  # noqa
 from . import confirmation  # noqa
 from .document import Petition  # noqa
+from pyramid.settings import aslist
 
 
 SETTINGS = {}
@@ -57,3 +58,5 @@ def includeme(config):
     for name, value in settings.iteritems():
         if name.startswith('frontend.petition.urls.'):
             petition['urls'][name[23:]] = value
+    SETTINGS['domains.automatic_mentions'] = aslist(
+                                settings.get('domains.automatic_mentions', ''))

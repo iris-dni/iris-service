@@ -1,3 +1,4 @@
+import re
 import transitions
 
 from pyramid import security
@@ -34,6 +35,44 @@ class PetitionPublicRESTService(rest.RESTService):
     """
 
     MAPPER_NAME = PETITIONS_PUBLIC_MAPPER_NAME
+
+    @rpcmethod_route(request_method='OPTIONS',
+                     route_suffix='/{contentId}/mentions')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def options_add_to_mentions(self, **kwargs):
+        return {}
+
+    @rpcmethod_route(request_method='GET',
+                     route_suffix='/{contentId}/mentions')
+    @rpcmethod_view(http_cache=0,
+                    permission=security.NO_PERMISSION_REQUIRED)
+    def get_add_to_mentions(self, contentId, url=None, **kwargs):
+        if not contentId:
+            raise self.bad_request(
+                replacements={'message': "'contentId' must be provided"})
+        if not url:
+            raise self.bad_request(
+                replacements={'message': "'url' must be provided"})
+        # check if url is allowed to be used to auto connect to mentions:
+        from iris.service.content.petition import SETTINGS
+        urlIsAllowedToAutoConnect = False
+        for domainRegex in SETTINGS['domains.automatic_mentions']:
+            if re.match(domainRegex, url):
+                urlIsAllowedToAutoConnect = True
+                break
+        if not urlIsAllowedToAutoConnect:
+            raise self.bad_request(
+                replacements={'message': "'url' is not allowed to be "
+                                         "automatically connected to this "
+                                         "petition"})
+        petition = Petition.get(contentId)
+        if not petition:
+            raise self.bad_request(
+                replacements={'message': "No petition found for 'contentId'"})
+        petition.mentions = list(petition.mentions) + [{'url': url}]
+        petition.store()
+        return {"status": "ok"}
 
     @rpcmethod_route(request_method='OPTIONS',
                      route_suffix='/{contentId}/event/{transitionName}')

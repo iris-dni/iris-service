@@ -775,7 +775,7 @@ Relations can be resolved::
             "email": "",
             "email_trusted": false,
             "firstname": "",
-            "id": "1FLYm",
+            "id": "...",
             "lastname": "",
             "mobile": "",
             "mobile_trusted": false,
@@ -1436,6 +1436,106 @@ Filter by city.tags::
     >>> response = browser.get('/v1/admin/petitions?city.tags=nwch:otg,nwch:blz')
     >>> response.json['total']
     2
+
+
+Add URL to Petition's Mentions
+==============================
+
+Create a petition::
+
+    >>> from iris.service.content.petition import Petition
+    >>> petition = Petition(title='petition')
+    >>> _ = petition.store()
+
+We need to add an API key to a request's headers::
+
+    >>> from iris.service.security.policy import API_KEY_HEADER_NAME
+    >>> headers = {
+    ...     API_KEY_HEADER_NAME: 'local'
+    ... }
+
+    >>> [m() for m in petition.mentions]
+    []
+
+    >>> response = browser.get('/v1/petitions/{id}/mentions?url={url}'.format(
+    ...                        id=petition.id,
+    ...                        url='http://www.example.com/'),
+    ...                        headers=headers)
+    >>> response.status
+    '200 OK'
+    >>> print_json(response)
+    {
+      "status": "ok"
+    }
+
+    >>> petition = Petition.get(petition.id)
+    >>> [m() for m in petition.mentions]
+    [<WebLocation u'http://www.example.com/'>]
+
+    >>> response = browser.get('/v1/petitions/{id}/mentions?url={url}'.format(
+    ...                        id=petition.id,
+    ...                        url='http://www.other-example.com/'),
+    ...                        headers=headers)
+    >>> response.status
+    '200 OK'
+
+    >>> petition = Petition.get(petition.id)
+    >>> [m() for m in petition.mentions]
+    [<WebLocation u'http://www.example.com/'>,
+     <WebLocation u'http://www.other-example.com/'>]
+
+'Options' requests do not need an API key header::
+
+    >>> response = browser.options('/v1/petitions/%s/mentions' % petition.id)
+    >>> response.status
+    '200 OK'
+
+'Get' requests do need an API key header::
+
+    >>> response = browser.get('/v1/petitions/{id}/mentions?url={url}'.format(
+    ...                        id=petition.id,
+    ...                        url='http://www.other-example.com/'),
+    ...                        expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "errors": {
+        "code": "400",
+        "description": "x-iris-api-key is a required parameter.\n\nFailed ..."
+      }
+    }
+
+Only configured domains (see config.ini -> 'domains.automatic_mentions') are
+allowed::
+
+    >>> response = browser.get('/v1/petitions/{id}/mentions?url={url}'.format(
+    ...                        id=petition.id,
+    ...                        url='http://www.i-am-not-allowed.com/'),
+    ...                        headers=headers,
+    ...                        expect_errors=True)
+    >>> response.status
+    '400 Bad Request'
+    >>> print_json(response)
+    {
+      "error": {
+        "code": 400,
+        "description": "Bad request: 'url' is not allowed to be automatically connected to this petition"
+      }
+    }
+
+Clean up::
+
+    >>> _ = petition.delete()
+    >>> _ = Petition.refresh()
+
+    >>> from iris.service.content.weblocation import WebLocation
+    >>> _ = WebLocation.refresh()
+    >>> weblocations = WebLocation.search({"query": {"match_all":{}}})
+    >>> for weblocation in weblocations['hits']['hits']:
+    ...     _ = weblocation.delete()
+    >>> _ = WebLocation.refresh()
+
 
 Permissions
 ===========

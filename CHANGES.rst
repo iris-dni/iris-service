@@ -5,6 +5,10 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - Add URL to mentions: /petitions/<id>/mentions?url=...
+   DEPLOY:
+    Configure 'domains.automatic_mentions' for all environments
+
  - added cleanup script to delete unused files
 
  - EP /token/<token>/petitions: Return 'status' with 'response_token_usable' or
