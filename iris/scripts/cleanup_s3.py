@@ -169,9 +169,9 @@ def main():
     parser.add_argument(
         '--min-age',
         dest='min_age',
-        default=7,
+        default=1,
         type=int,
-        help='Minimum age of files to delete.'
+        help='Minimum age of files to delete. Value indicates days'
     )
     parser.add_argument(
         '--dry-run',
