@@ -19,6 +19,11 @@ logger.addHandler(ch)
 
 class S3Cleaner(object):
     """Cleanup utility for unused files.
+
+    This class iterates over all locally known S3 files with a given minimum
+    age and checks if each file is used as a file relation. If a file is not
+    referenced anywhere it will be deleted on S3. If it has been deleted
+    successfully on S3 it will be deleted in Crate as well.
     """
 
     def __init__(self,
