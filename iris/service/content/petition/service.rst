@@ -1484,6 +1484,20 @@ We need to add an API key to a request's headers::
     [<WebLocation u'http://www.example.com/'>,
      <WebLocation u'http://www.other-example.com/'>]
 
+Calling multiple times with the same URL will not add an additional entry::
+
+    >>> response = browser.get('/v1/petitions/{id}/mentions?url={url}'.format(
+    ...                        id=petition.id,
+    ...                        url='http://www.other-example.com/'),
+    ...                        headers=headers)
+    >>> response.status
+    '200 OK'
+
+    >>> petition = Petition.get(petition.id)
+    >>> [m() for m in petition.mentions]
+    [<WebLocation u'http://www.example.com/'>,
+     <WebLocation u'http://www.other-example.com/'>]
+
 'Options' requests do not need an API key header::
 
     >>> response = browser.options('/v1/petitions/%s/mentions' % petition.id)

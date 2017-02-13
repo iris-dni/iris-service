@@ -12,6 +12,7 @@ from iris.service.errors import Errors
 from iris.service.rest.swagger import swagger_reduce_response
 from iris.service.rest.extender import APIExtender
 from iris.service.content.user.document import obfuscate_phone_number
+from iris.service.content.weblocation import WebLocation
 
 from .document import Petition, Supporter
 from .mapper import PETITIONS_MAPPER_NAME, PETITIONS_PUBLIC_MAPPER_NAME
@@ -70,6 +71,13 @@ class PetitionPublicRESTService(rest.RESTService):
         if not petition:
             raise self.bad_request(
                 replacements={'message': "No petition found for 'contentId'"})
+        # check if given URL is already in 'mentions' list
+        location = WebLocation.get_url(url)
+        if location:
+            for mention in petition.mentions:
+                if mention.relation_dict.get('id') == location.id:
+                    return {"status": "ok"}
+        # add 'url' to 'mentions'
         petition.mentions = list(petition.mentions) + [{'url': url}]
         petition.store()
         return {"status": "ok"}
