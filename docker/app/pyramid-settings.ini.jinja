@@ -52,6 +52,11 @@ frontend.petition.urls.city = {{ context['frontend']['domain'] }}/petitions/{cit
 frontend.petition.urls.letter = {{ context['admin']['domain'] }}/#/petition/{id}/letter/cover
 frontend.petition.urls.appendix = {{ context['admin']['domain'] }}/#/petition/{id}/letter/appendix?token={token}
 
+domains.automatic_mentions =
+{%- for regex in context['domains']['automatic_mentions'] %}
+    {{ regex }}
+{%- endfor %}
+
 statemachine.petitions.cron = */5 * * * *
 
 static.docs = iris.service:docs

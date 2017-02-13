@@ -156,6 +156,40 @@ petitions_contentId:
         schema:
           $ref: 'errors.yml#/definitions/ResponseBody'
 
+petitions_contentId_mentions:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "parameters.yml#/parameters/url"
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - petition
+    summary: Add a URL to petition's mentions list
+    operationId: add_to_mentions
+    parameters:
+      - $ref: "parameters.yml#/parameters/api_key_header"
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "parameters.yml#/parameters/url"
+    responses:
+      '200':
+        description: URL added
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+
+
 petitions_by_token:
   options:
     tags:

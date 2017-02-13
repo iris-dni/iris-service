@@ -53,6 +53,8 @@ paths:
     $ref: 'petition_public_path.yml#/petitions'
   /petitions/{contentId}:
     $ref: 'petition_public_path.yml#/petitions_contentId'
+  /petitions/{contentId}/mentions:
+    $ref: 'petition_public_path.yml#/petitions_contentId_mentions'
   /token/{token}/petitions:
     $ref: 'petition_public_path.yml#/petitions_by_token'
 

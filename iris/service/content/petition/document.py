@@ -20,6 +20,7 @@ from iris.service.db.sequence import IID_SHORTED
 from iris.service.content.weblocation import WebLocation
 from iris.service.content.city import document as city_module
 from iris.service.content.user import SessionUser, normalise_phone_number
+from lovely.esdb.properties.relation import ListItemRelationResolver
 
 from .sm import PetitionStateMachine
 
@@ -188,21 +189,27 @@ class Petition(Document):
         """
         if not value:
             return value
-        urls = {}
+        urlsToResolve = {}
+        newValues = []
         for item in value:
             if isinstance(item, dict) and 'url' in item:
-                items = urls.setdefault(item['url'], [])
+                newValues.append(item)
+                items = urlsToResolve.setdefault(item['url'], [])
                 items.append(item)
-        if urls:
-            lookup_urls = sorted(urls.keys())
+            elif isinstance(item, ListItemRelationResolver):
+                newValues.append({'id': item.relation_dict['id']})
+            else:
+                newValues.append(item)
+        if urlsToResolve:
+            lookup_urls = sorted(urlsToResolve.keys())
             locations = WebLocation.mget_urls(lookup_urls)
             for url, location in zip(lookup_urls, locations):
                 if location is None:
                     location = WebLocation(url=url)
                     location.store()
-                for item in urls[url]:
+                for item in urlsToResolve[url]:
                     item['id'] = location.id
-        return value
+        return newValues
 
     links.setter(_weblocation_setter)
     mentions.setter(_weblocation_setter)

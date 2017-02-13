@@ -251,6 +251,16 @@ on the fly::
       }
     ]
 
+'Appending' is also supported::
+
+    >>> links = list(petition.links)
+    >>> links.append({'url': 'http://www.example.com'})
+    >>> petition.links = links
+    >>> [v() for v in petition.links]
+    [<WebLocation u'http://www.iris.com'>,
+     <WebLocation u'http://www.iris.com/petitions'>,
+     <WebLocation u'http://www.example.com'>]
+
 
 Petition Mentions
 =================
@@ -275,6 +285,15 @@ The web locations can be assigned via a url::
         "state": "visible"
       }
     ]
+
+'Appending' is also supported::
+
+    >>> mentions = list(petition.mentions)
+    >>> mentions.append({'url': 'http://www.example.com'})
+    >>> petition.mentions = mentions
+    >>> [v() for v in petition.mentions]
+    [<WebLocation u'http://www.iris.com'>,
+     <WebLocation u'http://www.example.com'>]
 
 
 Petition Support

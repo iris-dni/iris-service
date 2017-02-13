@@ -19,6 +19,10 @@ parameters:
     items:
       type: string
     collectionFormat: csv
+  url:
+    name: url
+    in: query
+    type: string
   fulltext:
     name: ft
     in: query

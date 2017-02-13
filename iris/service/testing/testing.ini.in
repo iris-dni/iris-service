@@ -61,6 +61,10 @@ frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
 frontend.petition.urls.letter = http://admin/#/petition/{id}/letter/cover
 frontend.petition.urls.appendix = http://admin/#/petition/{id}/letter/appendix?token={token}
 
+domains.automatic_mentions =
+    .*example\.com.*
+    .*creative-example\.com.*
+
 es.hosts = localhost:19342
 
 og.noworker = don't start the og worker in test
