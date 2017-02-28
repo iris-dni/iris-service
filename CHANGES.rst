@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/02/28 0.8.0
+================
+
  - Add URL to mentions: /petitions/<id>/mentions?url=...
    DEPLOY:
     Configure 'domains.automatic_mentions' for all environments
