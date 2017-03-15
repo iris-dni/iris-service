@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - fix: compare state['name'] to determine if 'response_token_usable'
+
 2017/02/28 0.8.0
 ================
 

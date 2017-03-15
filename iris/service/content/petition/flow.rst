@@ -454,6 +454,19 @@ Now the feedback can be set if the token is correct::
       }
     }
 
+The token is usable to set feedback as the petition is in state 'waitForLetterResponse'::
+
+    >>> response = browser.get(
+    ...     '/v1/token/%s/petitions' % token,
+    ...     expect_errors=True,
+    ... )
+
+    >>> print_json(response.json['data']['state']['name'])
+    "waitForLetterResponse"
+
+    >>> print_json(response.json['status'])
+    "response_token_usable"
+
 With a valid token the feedback can be set::
 
     >>> body = {

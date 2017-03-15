@@ -279,7 +279,8 @@ class PetitionByTokenRESTService(rest.BaseRESTService):
                                  }
                                 )
         status = 'response_token_used'
-        if data.get('state') in ['waitForLetterResponse', 'noLetterResponse']:
+        usable_states = ['waitForLetterResponse', 'noLetterResponse']
+        if data.get('state', {}).get('name') in usable_states:
             status = 'response_token_usable'
         return {"data": data, "status": status}
 
