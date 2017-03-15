@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - removed setuptools from versions.cfg (to avoid VersionConflict during
+   buildout)
+
  - fix: compare state['name'] to determine if 'response_token_usable'
 
 2017/02/28 0.8.0
