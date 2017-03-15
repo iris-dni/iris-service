@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/03/15 0.8.1
+================
+
  - removed setuptools from versions.cfg (to avoid VersionConflict during
    buildout)
 
