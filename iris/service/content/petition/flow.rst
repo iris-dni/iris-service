@@ -467,6 +467,29 @@ The token is usable to set feedback as the petition is in state 'waitForLetterRe
     >>> print_json(response.json['status'])
     "response_token_usable"
 
+If the petition runs in a timeout the state will change to noLetterResponse
+but the token is still usable to set feedback::
+
+    >>> body = {"to_state": "processing.noLetterResponse" }
+    >>> response = admin.post_json(
+    ...     '/v1/petitions/%s/event/force_state' % id,
+    ...     body
+    ... )
+
+    >>> response.status
+    '200 OK'
+
+    >>> response = browser.get(
+    ...     '/v1/token/%s/petitions' % token,
+    ...     expect_errors=True,
+    ... )
+
+    >>> print_json(response.json['data']['state']['name'])
+    "noLetterResponse"
+
+    >>> print_json(response.json['status'])
+    "response_token_usable"
+
 With a valid token the feedback can be set::
 
     >>> body = {
