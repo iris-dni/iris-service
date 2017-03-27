@@ -53,6 +53,8 @@ class Worker(Greenlet):
         }
         for loc in WebLocation.search(query)['hits']['hits']:
             try:
+                logger.info("Updating OG information for '{0}'".format(
+                                                                    loc.url))
                 data = OGDataRequester(loc.url)
             except requests.exceptions.RequestException:
                 logging.error('Can not update OG data for "%s"' % loc.url)

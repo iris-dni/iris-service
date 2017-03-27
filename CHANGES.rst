@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - OG Update: Improve logging
+
  - Downgrade 'gevent' 1.2.0 -> 1.0.2
 
 2017/03/15 0.8.1
