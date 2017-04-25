@@ -49,15 +49,15 @@ sms.testing = true
 temp.dir = /tmp/iris-testing
 imageproxy.url = http://imageproxy
 
-frontend.domain = http://frontend
+frontend.domain = http://test.iris.ch
 frontend.petition.confirmpath = /confirm/email/petition
 frontend.supporter.confirmpath = /confirm/email/supporter
 
 # URLs used for petitions in mails
-frontend.petition.urls.url = http://frontend/petitons/{id}
-frontend.petition.urls.edit = http://frontend/petitons/{id}/edit
-frontend.petition.urls.city = http://frontend/petitions/{city_url_id}
-frontend.petition.urls.brief = http://frontend/petitons/{id}/brief
+frontend.petition.urls.url = http://test.iris.ch/petitons/{id}
+frontend.petition.urls.edit = http://test.iris.ch/petitons/{id}/edit
+frontend.petition.urls.city = http://test.iris.ch/petitions/{city_url_id}
+frontend.petition.urls.brief = http://test.iris.ch/petitons/{id}/brief
 frontend.petition.urls.letter = http://admin/#/petition/{id}/letter/cover
 frontend.petition.urls.appendix = http://admin/#/petition/{id}/letter/appendix?token={token}
 
@@ -71,6 +71,12 @@ og.noworker = don't start the og worker in test
 og.https_proxy_url = https://proxy/https_proxy
 
 mandrill.key = mock
+
+twitter.api.mock = 1
+
+twitter.template.active = Unterstützer gesucht! Es gibt eine neue Petition in {{ city.name }}. {{ urls.url }} 
+twitter.template.winner = {{ owner.firstname }} {{ owner.lastname }} hat mit seiner Petition die für {{ city.name }} nötige Anzahl von {{ supporters.required }} Stimmen erreicht! {{ urls.url }} 
+twitter.template.closed = {{ city.name }} hat die Petition von {{ owner.firstname }} {{ owner.lastname }} beantwortet. {{ urls.url }} 
 
 ###
 # wsgi server configuration
