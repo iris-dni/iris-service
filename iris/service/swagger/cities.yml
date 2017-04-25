@@ -36,6 +36,12 @@ definitions:
                         type: string
                     rss2:
                         type: string
+            geopos:
+                type: array
+                x-nullable: true
+                items:
+                    type: number
+                    format: double
             location:
                 type: object
                 properties:
@@ -220,6 +226,11 @@ definitions:
                 properties:
                     url:
                         type: string
+            geopos:
+                type: array
+                items:
+                    type: number
+                    format: double
             portal:
                 type: object
     CityImportEntry:

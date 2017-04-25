@@ -84,6 +84,15 @@ og.https_proxy_url = https://{{ context['access']['url'] }}/https_proxy
 
 mandrill.key = {{ context['mandrill']['key'] }}
 
+twitter.api.consumer_key = {{ context.twitter.consumer_key }}
+twitter.api.consumer_secret = {{ context.twitter.consumer_secret }}
+twitter.api.access_token_key = {{ context.twitter.token_key }}
+twitter.api.access_token_secret = {{ context.twitter.token_secret }}
+
+twitter.template.active = Unterstützer gesucht! Es gibt eine neue Petition in {{ city.name }}. {{ urls.url }} 
+twitter.template.winner = {{ owner.firstname }} {{ owner.lastname }} hat mit seiner Petition die für {{ city.name }} nötige Anzahl von {{ supporters.required }} Stimmen erreicht! {{ urls.url }} 
+twitter.template.closed = {{ city.name }} hat die Petition von {{ owner.firstname }} {{ owner.lastname }} beantwortet. {{ urls.url }} 
+
 es.hosts = {% for node in config['containers']['iris-crate']['hosts'] %}{{node}}:{{config['containers']['iris-crate']['ports'][0][0]}} {%endfor%}
 
 ###

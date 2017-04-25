@@ -22,6 +22,7 @@ Create a petition::
 
     >>> city = creators.city(id='4242',
     ...                      provider='petition_events',
+    ...                      geopos=[114.168653,22.2981874],
     ...                      name='HongKong',
     ...                      treshold=42,
     ...                      location={'url':'https://www.hongkong.com'},
@@ -85,6 +86,10 @@ There is a mail::
             "content": {
               "city": {
                 "contact": {},
+                "geopos": [
+                  114.168653,
+                  22.2981874
+                ],
                 "id": "petition_events:4242",
                 "name": "HongKong",
                 "portal": {},
@@ -142,18 +147,18 @@ There is a mail::
               "type": "",
               "urls": {
                 "appendix": "http://admin/#/petition/.../letter/appendix?token=...",
-                "brief": "http://frontend/petitons/.../brief",
-                "city": "http://frontend/petitions/hongkong-petition_events:4242",
-                "edit": "http://frontend/petitons/.../edit",
+                "brief": "http://test.iris.ch/petitons/.../brief",
+                "city": "http://test.iris.ch/petitions/hongkong-petition_events:4242",
+                "edit": "http://test.iris.ch/petitons/.../edit",
                 "letter": "http://admin/#/petition/.../letter/cover",
-                "url": "http://frontend/petitons/..."
+                "url": "http://test.iris.ch/petitons/..."
               }
             },
             "name": "petition"
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }

@@ -18,6 +18,7 @@ from iris.service.content.city.document import TRESHOLD_NOT_SET
 from iris.service.content.user import SessionUser, normalise_phone_number
 
 from .mail import send_petition_mail
+from .twitter import tweet_petition
 
 
 # create a state machine implementation from extensions
@@ -342,7 +343,7 @@ class PetitionStateMachine(object):
         half_time = dateutil.parser.parse(t)
         result = half_time and half_time <= dc.time_now()
         if result:
-            # Set to None to prevent from sending multiple time
+            # Set to None to prevent from sending multiple times
             self.petition.state.half_time_mail_time = None
         return result
 
@@ -353,7 +354,7 @@ class PetitionStateMachine(object):
         before_time = dateutil.parser.parse(t)
         result = before_time and before_time <= dc.time_now()
         if result:
-            # Set to None to prevent from sending multiple time
+            # Set to None to prevent from sending multiple times
             self.petition.state.before_loser_mail_time = None
         return result
 
@@ -414,8 +415,7 @@ class PetitionStateMachine(object):
         owner_id = self.petition.owner.id
         to = [s.user.relation_dict
               for s in self.petition.get_supporters()
-              if s.user.id != owner_id
-             ]
+              if s.user.id != owner_id]
         return self._send_mail(template, to)
 
     def _send_mail(self, template, to):
@@ -433,6 +433,18 @@ class PetitionStateMachine(object):
             self.petition,
             rcpt,
         )
+
+    def tweet_active(self, **kwargs):
+        self._tweet_petition('active')
+
+    def tweet_winner(self, **kwargs):
+        self._tweet_petition('winner')
+
+    def tweet_closed(self, **kwargs):
+        self._tweet_petition('closed')
+
+    def _tweet_petition(self, template):
+        tweet_petition(self.request, template, self.petition)
 
 
 HIDDEN_TRIGGERS = [
@@ -524,7 +536,7 @@ def includeme(config):
     LETTER_WAIT_DAYS = int(settings['iris.letter.wait.days'])
     SMS_VERIFICATION = settings.get('iris.sms.verification',
                                     'true'
-                                   ).lower() == 'true'
+                                    ).lower() == 'true'
     config.add_view(
         condition_error_request_handler,
         renderer='json',

@@ -64,6 +64,7 @@ Relations are always represented as an object.
               "city": {
                 "class": "City",
                 "data": {
+                  "geopos": null,
                   "id": "...",
                   "location": {
                     "class": "WebLocation",

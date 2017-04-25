@@ -70,7 +70,10 @@ def reduce_mapping(mapping, data):
         elif isinstance(v, dict):
             result[k] = reduce_mapping(v, prop)
         elif isinstance(v, list):
-            result[k] = [reduce_mapping(v[0], c) for c in prop]
+            if prop is not None:
+                result[k] = [reduce_mapping(v[0], c) for c in prop]
+            else:
+                result[k] = prop
     return result
 
 

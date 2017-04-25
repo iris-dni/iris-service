@@ -33,6 +33,8 @@ def test_suite():
 
         create_suite('mail/README.rst'),
 
+        create_crate_suite('twitter/README.rst'),
+
         create_crate_suite('content/weblocation/document.rst'),
         create_crate_suite('content/weblocation/service.rst'),
 

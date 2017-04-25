@@ -213,7 +213,7 @@ The mail::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/email/petition?key=..."
+              "url": "http://test.iris.ch/confirm/email/petition?key=..."
             },
             "name": "confirm"
           },
@@ -222,7 +222,7 @@ The mail::
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }
@@ -368,6 +368,13 @@ Create a new petition::
     >>> petition.state.tick
     True
 
+A tweet was created::
+
+    >>> from iris.service.twitter import API
+    >>> pprint(API.lastPost())
+    {'args': (),
+     'kwargs': {'status': u'Unterst\xfctzer gesucht! Es gibt eine neue Petition in HongKong. http://test.iris.ch/petitons/1kRlv'}}
+
 Make the petition a winner::
 
     >>> petition = Petition.get(id)
@@ -384,6 +391,12 @@ Make the petition a winner::
     True
     >>> petition.state.tick
     True
+
+A tweet was created::
+
+    >>> pprint(API.lastPost())
+    {'args': (),
+     'kwargs': {'status': u'  hat mit seiner Petition die f\xfcr HongKong n\xf6tige Anzahl von 10 Stimmen erreicht! http://test.iris.ch/petitons/1kRlv'}}
 
 Let the support time expire::
 
@@ -553,3 +566,13 @@ Unknown tokens result in a Not Found::
         "description": "Token '...' for content type 'petitions' not found"
       }
     }
+
+Now the petition can be closed::
+
+    >>> _ = admin.post_json('/v1/petitions/%s/event/close' % id)
+
+A tweet was created::
+
+    >>> pprint(API.lastPost())
+    {'args': (),
+     'kwargs': {'status': u'HongKong hat die Petition von   beantwortet. http://test.iris.ch/petitons/1kRlv'}}

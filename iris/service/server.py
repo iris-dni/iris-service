@@ -99,6 +99,7 @@ def app_factory(global_config, **settings):
     config.include('iris.service.swaggerui')
     config.include('iris.service.static')
     config.include('iris.service.mail')
+    config.include('iris.service.twitter')
     config.include('iris.service.og',
                    route_prefix=API_V1_BASE_URL)
     config.include('iris.service.og.og')

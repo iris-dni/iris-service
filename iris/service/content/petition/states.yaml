@@ -50,6 +50,7 @@ states:
             on_enter:
                 - listable
                 - enable_tick
+                - tweet_active
             on_exit:
                 - disable_tick
             transitions:
@@ -84,6 +85,7 @@ states:
           - name: winner
             on_enter:
                 - send_winner_mail_to_owner
+                - tweet_winner
                 - listable
                 - enable_tick
             on_exit:
@@ -155,6 +157,7 @@ states:
       on_enter:
         - send_closed_mail_to_supporters
         - send_closed_mail_to_owner
+        - tweet_closed
     - name: closedWithoutLetterResponse
       on_enter:
         - send_closed_without_response_mail_to_owner

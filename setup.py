@@ -75,6 +75,7 @@ requires = [
     'phonenumbers',
     'python-magic',
     'mandrill',
+    'python-twitter',
     'exifread',
 ]
 

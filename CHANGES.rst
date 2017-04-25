@@ -5,6 +5,11 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - extended cities with geopos
+   DEPLOY:
+    ALTER TABLE cities ADD COLUMN geopos GEO_POINT;
+ - added twitter messages to state machine
+
 2017/03/27 0.8.2
 ================
 
