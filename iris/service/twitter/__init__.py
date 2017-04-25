@@ -23,6 +23,9 @@ def send(name, data):
     `data` is the context provided to the jinja template, this should be the
            same data as it is used for mails.
     """
+    global API_PARAMS
+    if API_PARAMS is None:
+        return None
     message = renderMessage(name, data)
     if message is None:
         log.error('Twitter template "%s" not found' % name)
@@ -68,3 +71,7 @@ def includeme(config):
         from .testing import TwitterMock
         API = TwitterMock()
         del API_PARAMS['mock']
+    else:
+        if 'consumer_key' not in API_PARAMS:
+            # disable teeting
+            API_PARAMS = None
