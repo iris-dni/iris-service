@@ -122,7 +122,7 @@ The mail::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/email/supporter?key=..."
+              "url": "http://test.iris.ch/confirm/email/supporter?key=..."
             },
             "name": "confirm"
           },
@@ -131,7 +131,7 @@ The mail::
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }

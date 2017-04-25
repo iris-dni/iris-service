@@ -203,7 +203,7 @@ Create the confirmation::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/email/petition?key=..."
+              "url": "http://test.iris.ch/confirm/email/petition?key=..."
             },
             "name": "confirm"
           },
@@ -212,7 +212,7 @@ Create the confirmation::
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }
@@ -461,7 +461,7 @@ Support Email Confirmation
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/email/supporter?key=..."
+              "url": "http://test.iris.ch/confirm/email/supporter?key=..."
             },
             "name": "confirm"
           },
@@ -470,7 +470,7 @@ Support Email Confirmation
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }

@@ -40,7 +40,7 @@ Now send the mail (note: the test uses a mock sender)::
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }

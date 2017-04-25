@@ -213,7 +213,7 @@ The mail::
         "global_merge_vars": [
           {
             "content": {
-              "url": "http://frontend/confirm/email/petition?key=..."
+              "url": "http://test.iris.ch/confirm/email/petition?key=..."
             },
             "name": "confirm"
           },
@@ -222,7 +222,7 @@ The mail::
           },
           {
             "content": {
-              "url": "http://frontend"
+              "url": "http://test.iris.ch"
             },
             "name": "portal"
           }
