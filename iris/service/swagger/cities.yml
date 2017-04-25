@@ -228,6 +228,7 @@ definitions:
                         type: string
             geopos:
                 type: array
+                x-nullable: true
                 items:
                     type: number
                     format: double

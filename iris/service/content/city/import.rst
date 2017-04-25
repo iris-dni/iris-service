@@ -116,6 +116,7 @@ All Properties::
     ...                 "name": "Aarau",
     ...                 "tags": ["portal:aaz", "kanton:aargau"],
     ...                 "zips": ["5004", "5000", "5001"],
+    ...                 "geopos": None,
     ...                 "location": {"url": "https://www.aargauerzeitung.ch"},
     ...                 "portal": {
     ...                     "id": "nwch:1007",
