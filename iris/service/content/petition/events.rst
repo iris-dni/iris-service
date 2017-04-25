@@ -900,6 +900,7 @@ Event response can also reolve::
     ...                      provider='petition_events',
     ...                      name='Berlin',
     ...                      treshold=42,
+    ...                      geopos=[9.42, 47.123],
     ...                      location={'url':'https://www.aargauerzeitung.ch'},
     ...                     )
     >>> petition = {
@@ -926,6 +927,10 @@ Event response can also reolve::
         "city": {
           "class": "City",
           "data": {
+            "geopos": [
+              9.42,
+              47.123
+            ],
             "id": "petition_events:1111",
               "location": {
                 "class": "WebLocation",

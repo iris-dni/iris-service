@@ -37,6 +37,7 @@ Create a new city::
     ...     "data": {
     ...         "id": "10042",
     ...         "provider": "test",
+    ...         "geopos": [9.42, 47.123],
     ...         "location": {"url": "https://www.aargauerzeitung.ch"},
     ...         "name": "aarau",
     ...         "portal": {
@@ -60,6 +61,10 @@ Create a new city::
           "created": "...",
           "modified": "..."
         },
+        "geopos": [
+          9.42,
+          47.123
+        ],
         "id": "test:10042",
         "location": {
           "class": "WebLocation",
@@ -128,6 +133,10 @@ Use the id from the response above::
           "created": "...",
           "modified": "..."
         },
+        "geopos": [
+          9.42,
+          47.123
+        ],
         "id": "test:10042",
         "location": {
           "class": "WebLocation",

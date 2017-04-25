@@ -22,6 +22,7 @@ Create a petition::
 
     >>> city = creators.city(id='4242',
     ...                      provider='petition_events',
+    ...                      geopos=[114.168653,22.2981874],
     ...                      name='HongKong',
     ...                      treshold=42,
     ...                      location={'url':'https://www.hongkong.com'},
@@ -85,6 +86,10 @@ There is a mail::
             "content": {
               "city": {
                 "contact": {},
+                "geopos": [
+                  114.168653,
+                  22.2981874
+                ],
                 "id": "petition_events:4242",
                 "name": "HongKong",
                 "portal": {},

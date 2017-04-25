@@ -92,6 +92,13 @@ class City(Document):
         """,
     )
 
+    geopos = Property(
+        doc="""
+        The geo position of the city.
+        Stored as [lon, lat]
+        """,
+    )
+
     _location = Property(
         name='location'
     )

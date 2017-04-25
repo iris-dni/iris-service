@@ -6,7 +6,7 @@ City Document
 A city is a `Document`::
 
     >>> from iris.service.content.city.document import City
-    >>> city = City(id=1, provider='test')
+    >>> city = City(id=1, provider='test', geopos=[9.0, 47.0])
     >>> city
     <City [id='test:1', '']>
 
@@ -29,6 +29,8 @@ A city is a `Document`::
     {}
     >>> city.provider
     'test'
+    >>> city.geopos
+    [9.0, 47.0]
     >>> city.location
     <RelationResolver WebLocation[None]>
     >>> city.portal

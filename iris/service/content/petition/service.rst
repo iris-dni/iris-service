@@ -479,6 +479,7 @@ Resolve the location of a city::
     >>> city = creators.city(
     ...     id="100042",
     ...     provider="test",
+    ...     geopos=[9.42, 47.123],
     ...     location={"url": "https://www.aargauerzeitung.ch"},
     ...     name="aarau",
     ...     contact={
@@ -516,6 +517,10 @@ Resolve the location of a city::
             "dc": {
                 ...
             },
+            "geopos": [
+              9.42,
+              47.123
+            ],
             "id": "test:100042",
             "location": {
               "class": "WebLocation",
@@ -742,6 +747,7 @@ Relations can be resolved::
               "dc": {
                 ...
               },
+              "geopos": null,
               "id": "test:...",
               ...
               "provider": "test",

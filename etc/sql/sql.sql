@@ -213,6 +213,7 @@ CREATE TABLE cities (
     portal OBJECT(IGNORED) AS (
         id STRING
     ),
+    geopos GEO_POINT,
     -- location: WebLocation relation
     location STRING,
 
