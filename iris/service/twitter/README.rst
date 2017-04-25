@@ -20,6 +20,7 @@ templates must be provided in the pyramid configuration::
     >>> city = creators.city(
     ...     id="100042",
     ...     provider="test",
+    ...     geopos=[8.0585209,47.5006171],
     ...     location={"url": "https://www.aargauerzeitung.ch"},
     ...     name="Hornussen",
     ...     treshold=42,
@@ -63,4 +64,7 @@ Send a message::
     >>> response = twitter.send('active', data)
     >>> pprint(twitter.API.lastPost())
     {'args': (),
-     'kwargs': {'status': u'Unterst\xfctzer gesucht! Es gibt eine neue Petition in Hornussen. http://test.iris.ch/petitons/...'}}
+     'kwargs': {'display_coordinates': True,
+                'latitude': 47.5006171,
+                'longitude': 8.0585209,
+                'status': u'Unterst\xfctzer gesucht! Es gibt eine neue Petition in Hornussen. http://test.iris.ch/petitons/1Zbfk'}}

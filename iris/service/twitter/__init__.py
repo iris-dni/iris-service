@@ -34,10 +34,18 @@ def send(name, data):
         "template": TEMPLATES[name],
         "data": data
     }
+    lonlat = data.get('city', {}).get('geopos')
+    if lonlat:
+        params['PostUpdate']['longitude'] = lonlat[0]
+        params['PostUpdate']['latitude'] = lonlat[1]
+        params['PostUpdate']['display_coordinates'] = True
     log.info(json.dumps(params, sort_keys=True))
     api = API(**API_PARAMS)
     result = api.PostUpdate(**params['PostUpdate'])
-    log.info(json.dumps(result, sort_keys=True))
+    if isinstance(result, dict):
+        log.info(json.dumps(result, sort_keys=True))
+    else:
+        log.info(result.AsJsonString())
     return result
 
 
