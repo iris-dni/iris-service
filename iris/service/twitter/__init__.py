@@ -72,6 +72,6 @@ def includeme(config):
         API = TwitterMock()
         del API_PARAMS['mock']
     else:
-        if 'consumer_key' not in API_PARAMS:
+        if not API_PARAMS.get('consumer_key'):
             # disable teeting
             API_PARAMS = None
