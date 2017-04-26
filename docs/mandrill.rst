@@ -63,7 +63,11 @@ Mails
 |                              |                     |                                                      | - user        |
 |                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+
-| Petition No Letter Response  | petition owner      | iris-petition-closed-without-response                | - petiton     |
+| Petition No Letter Response  | petition owner      | iris-petition-no-letter-response                     | - petiton     |
+|                              |                     |                                                      | - user        |
+|                              |                     |                                                      | - domain      |
++------------------------------+---------------------+------------------------------------------------------+---------------+
+| Petition Closed No Letter    | petition owner      | iris-petition-closed-without-response                | - petiton     |
 |                              |                     |                                                      | - user        |
 |                              |                     |                                                      | - domain      |
 +------------------------------+---------------------+------------------------------------------------------+---------------+

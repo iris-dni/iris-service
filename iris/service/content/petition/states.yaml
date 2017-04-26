@@ -133,6 +133,8 @@ states:
                   conditions:
                       - if_no_letter_timeout
           - name: noLetterResponse
+            on_enter:
+                - send_no_letter_response_to_owner
             transitions:
                 - trigger: setFeedback
                   conditions:
