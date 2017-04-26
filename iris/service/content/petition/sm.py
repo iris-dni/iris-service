@@ -28,7 +28,7 @@ NestedState.separator = '.'
 
 APPROVAL_DAYS = 30
 BEFORE_LOSER_DAYS = 2
-LETTER_WAIT_DAYS = 40
+LETTER_WAIT_DAYS = 60
 
 SMS_VERIFICATION = True
 
@@ -374,6 +374,9 @@ class PetitionStateMachine(object):
 
     def send_winner_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-winner')
+
+    def send_no_letter_response_to_owner(self, **kwargs):
+        self._send_mail_to_petition_owner('iris-petition-no-letter-response')
 
     def send_lettersent_mail_to_owner(self, **kwargs):
         self._send_mail_to_petition_owner('iris-petition-letter-sent')

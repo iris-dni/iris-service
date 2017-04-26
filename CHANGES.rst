@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - send mail to owner when no letter is received
+     Mandrill id: iris-petition-no-letter-response
+ - extend the letter wait time to 60 days (was 40 days)
  - extended cities with geopos
    DEPLOY:
     ALTER TABLE cities ADD COLUMN geopos GEO_POINT;

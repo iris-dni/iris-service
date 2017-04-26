@@ -503,6 +503,28 @@ but the token is still usable to set feedback::
     >>> print_json(response.json['status'])
     "response_token_usable"
 
+A mail is sent::
+
+    >>> print_json(mail.TESTING_MAIL_STACK[-1])
+    {
+      "message": {
+        "global_merge_vars": [
+          ...
+        ],
+        "merge_vars": [
+          ...
+        ],
+        "to": [
+          {
+            "email": "email@iris.com",
+            "type": "to"
+          }
+        ]
+      },
+      "template_content": [],
+      "template_name": "iris-petition-no-letter-response"
+    }
+
 With a valid token the feedback can be set::
 
     >>> body = {
