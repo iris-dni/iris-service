@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - hashtags for tweets: #petition #city-name
+
 2017/04/26 0.9.0
 ================
 
