@@ -5,6 +5,9 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2017/06/14 0.10.0
+=================
+
  - don't allow to get a deleted petition using the public API
  - hashtags for tweets: #petition #city-name
 
