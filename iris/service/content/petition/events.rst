@@ -867,6 +867,27 @@ Delete the petition::
     >>> showListable(response)
     False
 
+It is not possible to get a deleted petition using the public API::
+
+    >>> response = browser.get('/v1/petitions/%s' % id, expect_errors=True)
+    >>> response.status
+    '404 Not Found'
+    >>> print_json(response)
+    {
+      "error": {
+        "code": 404,
+        "description": "Id '[u'1TYlP']' for content type 'petitions_public' not found"
+      }
+    }
+
+It is not possible to get a deleted petition using the admin API::
+
+    >>> response = admin.get('/v1/admin/petitions/%s' % id)
+    >>> response.status
+    '200 OK'
+    >>> showState(response)
+    {u'listable': False, u'tick': False, u'letter_wait_expire': None, u'name': u'deleted', u'parent': u''}
+
 
 Options Requests
 ================

@@ -334,6 +334,28 @@ class PetitionsPublicRESTMapper(PetitionsRESTMapper):
 
     NAME = PETITIONS_PUBLIC_MAPPER_NAME
 
+    def get(self, contentId, resolve=None, extend=None):
+        """Get a specific petition
+
+        The public API must not deliver `deleted` petitions.
+        """
+        if isinstance(contentId, list):
+            # remove empty ids
+            if len(contentId) > 1:
+                ids = [c for c in contentId if c]
+                docs = []
+                for doc in self.DOC_CLASS.mget(ids):
+                    if doc and doc.state.name == 'deleted':
+                        doc = None
+                    docs.append(doc)
+                return self.to_api(docs, resolve, extend)
+            else:
+                contentId = contentId[0]
+        doc = self.DOC_CLASS.get(contentId)
+        if doc and doc.state.name == 'deleted':
+            doc = None
+        return self.to_api(doc, resolve, extend)
+
     def _extend_filter(self, filters):
         filters.append(queries.termFilter('state.listable')(True))
 
