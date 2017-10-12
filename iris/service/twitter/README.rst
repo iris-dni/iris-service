@@ -51,7 +51,7 @@ Now we can render the configured templates::
     ...         print "text too long"
     active: Unterstützer gesucht! Es gibt eine neue Petition in Hornussen. http://test.iris.ch/petitons/1Zbfk
     closed: Hornussen hat die Petition von Hoschi Galoschi beantwortet. http://test.iris.ch/petitons/1Zbfk
-    winner: Hoschi Galoschi hat mit seiner Petition die für Hornussen nötige Anzahl von 42 Stimmen erreicht! http://test.iris.ch/petitons/1Zbfk
+    winner: Hoschi Galoschi hat mit der Petition die für Hornussen nötige Anzahl von 42 Stimmen erreicht! http://test.iris.ch/petitons/1Zbfk
 
 
 Send To Twitter

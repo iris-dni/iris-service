@@ -75,7 +75,7 @@ mandrill.key = mock
 twitter.api.mock = 1
 
 twitter.template.active = Unterstützer gesucht! Es gibt eine neue Petition in {{ city.name }}. {{ urls.url }} 
-twitter.template.winner = {{ owner.firstname }} {{ owner.lastname }} hat mit seiner Petition die für {{ city.name }} nötige Anzahl von {{ supporters.required }} Stimmen erreicht! {{ urls.url }} 
+twitter.template.winner = {{ owner.firstname }} {{ owner.lastname }} hat mit der Petition die für {{ city.name }} nötige Anzahl von {{ supporters.required }} Stimmen erreicht! {{ urls.url }} 
 twitter.template.closed = {{ city.name }} hat die Petition von {{ owner.firstname }} {{ owner.lastname }} beantwortet. {{ urls.url }} 
 
 ###

@@ -396,7 +396,7 @@ A tweet was created::
 
     >>> pprint(API.lastPost())
     {'args': (),
-     'kwargs': {'status': u'  hat mit seiner Petition die f\xfcr HongKong n\xf6tige Anzahl von 10 Stimmen erreicht! http://test.iris.ch/petitons/1kRlv'}}
+     'kwargs': {'status': u'  hat mit der Petition die f\xfcr HongKong n\xf6tige Anzahl von 10 Stimmen erreicht! http://test.iris.ch/petitons/1kRlv'}}
 
 Let the support time expire::
 
