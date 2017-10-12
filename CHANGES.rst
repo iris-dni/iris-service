@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - sharing: change wording from 'seiner Petition' to 'der Petition'
+
 2017/06/14 0.10.0
 =================
 
