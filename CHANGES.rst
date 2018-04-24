@@ -5,6 +5,12 @@ Changes For IRIS Service
 unreleased
 ==========
 
+2018/04/24 0.10.2
+=================
+
+ - update twitter library with support for 280 characters
+ - ignore twitter errors and log them instead of failing
+
 2017/10/12 0.10.1
 =================
 

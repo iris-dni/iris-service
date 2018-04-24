@@ -2,6 +2,7 @@ import json
 import logging
 
 import twitter
+from twitter.error import TwitterError  # noqa
 
 from jinja2 import Template
 
