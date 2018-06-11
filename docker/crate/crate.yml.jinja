@@ -40,5 +40,9 @@ discovery:
                     - {{ node }}:{{ crate['ports'][1][0] }}
                     {%- endfor %}
 
+gateway:
+    expected_nodes: {{ crate['hosts']|length}}
+    gateway.recover_after_nodes: {{ crate['hosts']|length // 2 + 1 }}
+
 cluster:
     name: {{ crate['cluster_name'] }}
