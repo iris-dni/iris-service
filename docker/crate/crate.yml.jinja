@@ -30,6 +30,7 @@ path:
 discovery:
     type: zen
     zen:
+        minimum_master_nodes: {{ len(crate['hosts']) // 2 + 1 }}
         ping:
             multicast:
                 enabled:  false
