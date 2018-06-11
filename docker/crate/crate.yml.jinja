@@ -42,7 +42,7 @@ discovery:
 
 gateway:
     expected_nodes: {{ crate['hosts']|length}}
-    gateway.recover_after_nodes: {{ crate['hosts']|length // 2 + 1 }}
+    recover_after_nodes: {{ crate['hosts']|length // 2 + 1 }}
 
 cluster:
     name: {{ crate['cluster_name'] }}
