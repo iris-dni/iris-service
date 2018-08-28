@@ -5,6 +5,8 @@ Changes For IRIS Service
 unreleased
 ==========
 
+ - use 8081 as default port for API service on localhost
+
 2018/04/24 0.10.2
 =================
 

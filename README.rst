@@ -55,7 +55,7 @@ To start a fully working local environment a supervisor is available::
 
     $ bin/supervisord
 
-This starts a crate instance on port 8042 and the iris app on port 8080.
+This starts a crate instance on port 8042 and the iris app on port 8081.
 
 To setup the crate database run::
 
@@ -63,13 +63,13 @@ To setup the crate database run::
 
 Documentation is now available::
 
-    $ open http://localhost:8080/docs
+    $ open http://localhost:8081/docs
 
 Swagger client UI::
 
-    $ open http://localhost:8080/swaggerui
+    $ open http://localhost:8081/swaggerui
 
-Explore with: http://localhost:8080/api.json
+Explore with: http://localhost:8081/api.json
 
 
 Sample Data
