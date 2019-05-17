@@ -1,0 +1,177 @@
+states:
+    - name: draft
+      on_enter:
+        - not_listable
+      transitions:
+        - trigger: publish
+          dest: supportable.pending
+          before:
+            - check_publish
+          after:
+            # let the publisher support the petition
+            - support_petition_on_publish
+
+    - name: rejected
+      on_enter:
+        - send_rejected_mail_to_owner
+        - not_listable
+      transitions:
+        - trigger: publish
+          dest: supportable.pending
+          before:
+            - check_publish
+          after:
+            # let the publisher support the petition
+            - support_petition_on_publish
+
+    - name: supportable
+      on_enter:
+        - start_support
+        - listable
+      children:
+          - name: pending
+            on_enter:
+                - start_support
+                - not_listable
+            transitions:
+                - trigger: approved
+                  dest: supportable.active
+                  conditions:
+                    - if_city_assigned
+                  after:
+                    - send_approval_mail_to_owner
+                - trigger: reject
+                  dest: rejected
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.pending
+          - name: active
+            on_enter:
+                - listable
+                - enable_tick
+                - tweet_active
+            on_exit:
+                - disable_tick
+            transitions:
+                - trigger: check
+                  dest: supportable.winner
+                  conditions:
+                      - if_supporter_limit_reached
+                - trigger: tick
+                  dest: loser
+                  conditions:
+                      - if_support_timeout
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_half_time_mail
+                  after:
+                    - send_half_time_mail_to_owner
+                - trigger: tick
+                  dest: supportable.active
+                  conditions:
+                    - if_send_before_loser_mail
+                  after:
+                    - send_before_loser_mail_to_owner
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.active
+                - trigger: reset_support_start_time
+                  dest: supportable.active
+                  after:
+                    - reset_support_start_timer
+          - name: winner
+            on_enter:
+                - send_winner_mail_to_owner
+                - tweet_winner
+                - listable
+                - enable_tick
+            on_exit:
+                - disable_tick
+            transitions:
+                - trigger: tick
+                  dest: processing.sendLetterRequested
+                  conditions:
+                    - if_support_timeout
+                - trigger: support
+                  after:
+                    - support_petition
+                  dest: supportable.winner
+
+    - name: processing
+      children:
+          - name: sendLetterRequested
+            on_enter:
+                - listable
+                - set_response_token
+                - send_support_won_mail_to_owner
+                - send_support_won_mail_to_supporters
+            transitions:
+                - trigger: letterSent
+                  dest: processing.waitForLetterResponse
+                  after:
+                    - send_lettersent_mail_to_owner
+          - name: waitForLetterResponse
+            on_enter:
+                - listable
+                - set_response_token
+                - set_letter_expire
+                - enable_tick
+            on_exit:
+                - disable_tick
+            transitions:
+                - trigger: setFeedback
+                  conditions:
+                      - if_feedback_has_valid_token
+                  after:
+                    - set_petition_feedback
+                  dest: processing.letterResponseArrived
+                - trigger: tick
+                  dest: processing.noLetterResponse
+                  conditions:
+                      - if_no_letter_timeout
+          - name: noLetterResponse
+            on_enter:
+                - send_no_letter_response_to_owner
+            transitions:
+                - trigger: setFeedback
+                  conditions:
+                      - if_feedback_has_valid_token
+                  after:
+                    - set_petition_feedback
+                  dest: processing.letterResponseArrived
+                - trigger: close
+                  dest: closedWithoutLetterResponse
+          - name: letterResponseArrived
+            on_enter:
+                - listable
+            transitions:
+                - trigger: close
+                  dest: closed
+
+    - name: loser
+      on_enter:
+        - send_loser_mail_to_owner
+        - send_loser_mail_to_supporters
+    - name: closed
+      on_enter:
+        - send_closed_mail_to_supporters
+        - send_closed_mail_to_owner
+        - tweet_closed
+    - name: closedWithoutLetterResponse
+      on_enter:
+        - send_closed_without_response_mail_to_owner
+    - name: deleted
+      on_enter:
+        - not_listable
+
+
+transitions:
+    - trigger: reset
+      source: '*'
+      dest: draft
+    - trigger: delete
+      source: '*'
+      dest: deleted

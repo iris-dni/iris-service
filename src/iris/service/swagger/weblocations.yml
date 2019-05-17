@@ -1,0 +1,107 @@
+definitions:
+    WebLocation:
+        type: object
+        x-nullable: true
+        properties:
+            id:
+                type: string
+                readOnly: true
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+                    modified:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            url:
+                type: string
+                readOnly: true
+            state:
+                type: string
+                readOnly: true
+                enum:
+                    - visible
+                    - hidden
+                default: 'visible'
+            og:
+                $ref: "#definitions/og"
+
+    WebLocationReadOnly:
+        type: object
+        readOnly: true
+        x-nullable: true
+        allOf:
+            - $ref: '#/definitions/WebLocation'
+
+    WebLocationCreate:
+        type: object
+        allOf:
+            - $ref: '#/definitions/WebLocation'
+            - type: object
+              x-nullable: true
+              properties:
+                  url:
+                      type: string
+                      readOnly: false
+
+    WebLocationUpdate:
+        type: object
+        allOf:
+            - $ref: '#/definitions/WebLocation'
+            - type: object
+              x-nullable: true
+              properties:
+                  state:
+                      type: string
+                      readOnly: false
+                      enum:
+                          - visible
+                          - hidden
+    WebLocationAdmin:
+        $ref: '#/definitions/WebLocation'
+
+    CreateBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/WebLocationCreate'
+
+    UpdateBody:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/WebLocationUpdate'
+
+    ResponseBodyAdmin:
+        type: object
+        required: 
+            - data
+        properties:
+            data:
+                $ref: '#/definitions/WebLocationAdmin'
+
+    ListResponseBodyAdmin:
+        description: Admin weblocation list response
+        type: object
+        required: 
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/WebLocation'
+            total:
+                type: integer
+
+    og:
+        $ref: 'og.yml#/definitions/OGData'

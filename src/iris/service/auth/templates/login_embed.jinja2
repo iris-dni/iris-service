@@ -1,0 +1,62 @@
+(function iris_sso_login(global) {
+
+    var irisSSOData = global.irisConfig && global.irisConfig.sso ? new global.irisConfig.sso() : null;
+    if (!irisSSOData || !irisSSOData.remote_auth) {
+        // There is no IRIS SSO data on this page. This means we are not able
+        // to manage this page.
+        // This may not a problem if the page is not abel to provide the data
+        // without a valid login. If the page will not provide SSO data for the
+        // logged in user the IRIS SSO login process will not work.
+        return;
+    }
+
+    {% include 'query-parameters.js' %}
+    var params = extractQueryParameters();
+    var retUrl = getQueryParameter('irisreturl', params);
+    if (!retUrl) {
+        return;
+    }
+    var module = {};
+    var exports = {};
+    {% include 'es6-promise.min.js' %}
+    {% include 'axios-0.9.1.min.js' %}
+    var axios = module.exports;
+
+    function ssoapicall(url, method, callback) {
+        var sso = encodeURIComponent(irisSSOData.remote_auth);
+        var apikey = encodeURIComponent(irisSSOData.apikey);
+        axios[method](url + '?sso=' + sso + '&apikey=' + apikey
+                 ).then(function success(response) {
+            callback(response);
+        }).catch(function (response) {
+            callback(response);
+        });
+    };
+
+    function whoami(callback) {
+        ssoapicall('{{ whoamiUrl}}', 'get', callback);
+    };
+
+    function ssotoken(callback) {
+        ssoapicall('{{ ssotokenUrl}}', 'post', callback);
+    };
+
+    // try whoami with the remote_auth data
+    whoami(function(response) {
+        // successful invocation:
+        if (response.status === 200 && response.data.status === 'ok') {
+            //  We are logged in and can now redirect back to the original page.
+            ssotoken(function(response) {
+                if (response.status === 200) {
+                    // The response contains the authentication token, redirect
+                    // back to the original page:
+                    var token = response.data.token;
+                    var redirectUrl = '{{ redirectUrl }}?token=' + token + '&redirecturl=' + retUrl;
+                    global.location.href = redirectUrl;
+                } else {
+                    console.log('No token: ' + response.status);
+                }
+            });
+        };
+    });
+})(window);

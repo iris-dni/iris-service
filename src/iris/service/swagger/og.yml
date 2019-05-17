@@ -1,0 +1,21 @@
+definitions:
+    OGCheckPOSTBody:
+        type: object
+        properties:
+            url:
+                type: string
+    OGData:
+        type: object
+        readOnly: true
+        x-nullable: true
+        description: |
+            The full open graph data provided by the URL.
+    OGDataResponseBody:
+        type: object
+        required: 
+            - status
+        properties:
+            data:
+                $ref: '#/definitions/OGData'
+            status:
+                type: string

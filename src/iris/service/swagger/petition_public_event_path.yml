@@ -1,0 +1,310 @@
+petitions_contentId_event_reject:
+  post:
+    tags:
+      - petition_event
+    summary: Reject a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: reject
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/rejectData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_publish:
+  post:
+    tags:
+      - petition_event
+    summary: Publish a Petition
+    description: |
+        Puts the petition into a state in which it is possible to support it.
+
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: publish
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/publishData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_delete:
+  post:
+    tags:
+      - petition_event
+    summary: Publish a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: delete
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_support:
+  post:
+    tags:
+      - petition_event
+    summary: Support a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: support
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/supportData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_close:
+  post:
+    tags:
+      - petition_event
+    summary: Close a Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: close
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_approved:
+  post:
+    tags:
+      - petition_event
+    summary: Approve a pending Petition
+    description: |
+        Approval is allowed for administrators and only when a city is assigned
+        to the petition.
+
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: approved
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_letterSent:
+  post:
+    tags:
+      - petition_event
+    summary: letterSent for Petition
+    description: |
+        This event confirms that a letter has been created and sent.
+
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: letterSent
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_setFeedback:
+  post:
+    tags:
+      - petition_event
+    summary: set feedback for Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: setFeedback
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/feedbackData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_reset_support_start_time:
+  post:
+    tags:
+      - petition_event
+    summary: Reset the start time of the retition
+    description: |
+      The petition times are reset as if it was published now.
+    operationId: reset_support_start_time
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_check:
+  post:
+    tags:
+      - petition_event
+    summary: trigger a check on the Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: check
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_tick:
+  post:
+    tags:
+      - petition_event
+    summary: trigger a timer tick on the Petition
+    description: |
+        For more information about the petition state machine see
+        <a href="/docs/petition-management.html">petition-management</a>.
+    operationId: tick
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId_event_transitionName:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - name: transitionName
+        in: path
+        type: string
+        required: true
+    responses:
+      default:
+        description: Empty Body
+petitions_contentId_event_force_state:
+  post:
+    tags:
+      - petition_event
+    summary: Force the petition into any state
+    description: |
+        This is a developer/maintenance tool and must not be used in code. It
+        is only provided to be used using the swaggerui.
+
+        It is not guaranteed that any state switch works without problems.
+
+        Admin privilegs are needed to be able to use this endpoint.
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - name: data
+        in: body
+        schema:
+          $ref: 'state.yml#/definitions/force_stateData'
+        required: true
+    responses:
+      '200':
+        description: all good
+        schema:
+          $ref: 'state.yml#/definitions/eventResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

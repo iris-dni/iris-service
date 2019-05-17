@@ -1,0 +1,149 @@
+petitions:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - petition_admin
+    summary: Search Petitions
+    operationId: search
+    parameters:
+      - $ref: "petition_parameters.yml#/parameters/state"
+      - $ref: "parameters.yml#/parameters/tags"
+      - $ref: "petition_parameters.yml#/parameters/city_filter"
+      - $ref: "petition_parameters.yml#/parameters/city_portal_id_filter"
+      - $ref: "petition_parameters.yml#/parameters/city_tags_filter"
+      - $ref: "petition_parameters.yml#/parameters/owner_filter"
+      - $ref: "parameters.yml#/parameters/fulltext"
+      - name: tags_ft
+        in: query
+        type: string
+      - name: title_ft
+        in: query
+        type: string
+      - name: description_ft
+        in: query
+        type: string
+      - name: suggested_solution_ft
+        in: query
+        type: string
+      - $ref: "petition_parameters.yml#/parameters/sort"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ListResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - petition_admin
+    summary: Create Petition
+    operationId: create
+    parameters:
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'petitions.yml#/definitions/POSTBodyAdmin'
+        required: true
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+petitions_contentId:
+  options:
+    tags:
+      - Options
+    summary: CORS Options
+    parameters:
+      - $ref: "parameters.yml#/parameters/multiple_contentId"
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - petition_admin
+    summary: Get a Petition
+    description: |
+        Provides a single petition in the "data" property of the response.
+
+        It is also possible to request multiple petitions by providing a comma
+        separated list of ids. In this case the requested petitions are
+        returned in the "items" property of the response.
+        The order of the petitions in "items" is the same as the order in the
+        "contentId" path parameter. If an id could not be found None is
+        returned in "items".
+
+        Please note that the response is always returned in the "data" property
+        if only one id is provided. If you want to force the result to always
+        appear int the "items" property add a "," at the end.
+    operationId: get
+    parameters:
+      - $ref: "parameters.yml#/parameters/multiple_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  post:
+    tags:
+      - petition_admin
+    summary: Update Petition
+    operationId: update
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+      - $ref: "petition_parameters.yml#/parameters/resolve"
+      - $ref: "petition_parameters.yml#/parameters/extend"
+      - name: data
+        in: body
+        schema:
+          $ref: 'petitions.yml#/definitions/POSTBodyAdmin'
+        required: true
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'
+  delete:
+    tags:
+      - petition_admin
+    summary: Update Petition
+    operationId: delete
+    parameters:
+      - $ref: "parameters.yml#/parameters/single_contentId"
+    responses:
+      '200':
+        description: Petition found
+        schema:
+          $ref: 'petitions.yml#/definitions/ResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

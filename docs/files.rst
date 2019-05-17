@@ -25,7 +25,8 @@ The service is described here: `IRIS-Swagger-UI files API </swaggerui#/file>`_
     >>> import webtest
     >>> import collections
     >>> here = os.path.dirname(__file__)
-    >>> img_file = open(os.path.join(here, "../iris/service/testing/blobs/iptc.jpeg"))
+    >>> from iris.service.testing import testing_path
+    >>> img_file = open(testing_path("blobs", "iptc.jpeg"))
     >>> image_content = img_file.read()
 
 

@@ -1,0 +1,108 @@
+definitions:
+  UploadResponseBodyPublic:
+    description: File upload response
+    type: object
+    required:
+      - status
+    properties:
+      data:
+        $ref: '#/definitions/FilePublic'
+      status:
+        type: string
+  UploadResponseBodyAdmin:
+    description: File upload response
+    type: object
+    required:
+      - status
+    properties:
+      data:
+        $ref: '#/definitions/FileAdmin'
+      status:
+        type: string
+  FileResponseBodyPublic:
+    description: File GET Response
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        $ref: '#/definitions/FilePublic'
+  FileResponseBodyAdmin:
+    description: File GET Response
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        $ref: '#/definitions/FileAdmin'
+  FilePublic:
+    type: object
+    x-nullable: true
+    properties:
+      id:
+        type: string
+        readOnly: true
+      original_url:
+        type: string
+        readOnly: true
+      image_proxy_base_url:
+        type: string
+        readOnly: true
+      info:
+        type: object
+      content_type:
+        type: string
+  FilePrivate:
+    type: object
+    x-nullable: true
+    properties:
+      dc:
+        type: object
+        readOnly: true
+        properties:
+          created:
+            type: string
+            format: dateTime
+            description: ISO8601
+          modified:
+            type: string
+            format: dateTime
+            description: ISO8601
+      original_name:
+        type: string
+      owner:
+        $ref: 'users.yml#/definitions/UserRelationAdmin'
+      state:
+        type: string
+      storage_type:
+        type: string
+        enum:
+          - s3
+          - tmp
+  File:
+    $ref: '#/definitions/FilePublic'
+  FileAdmin:
+    type: object
+    allOf:
+      - $ref: '#/definitions/FilePublic'
+      - $ref: '#/definitions/FilePrivate'
+  POSTBodyAdmin:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        $ref: '#/definitions/FileAdmin'
+  ListResponseBodyAdmin:
+    description: Admin file list response
+    type: object
+    required:
+      - data
+      - total
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/FileAdmin'
+      total:
+        type: integer

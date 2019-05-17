@@ -1,0 +1,12 @@
+version: "3.6"
+services:
+
+  crate:
+    image: crate/crate:0.54.11
+    ports:
+      - "19342:4200"
+    environment:
+      CRATE_HEAP_SIZE: 1g
+      NODE_NAME: iristestnode
+    volumes:
+      - ./config:/crate/config

@@ -1,8 +1,0 @@
-definitions:
-  ConfirmationResponseBody:
-    type: object
-    required:
-      - data
-    properties:
-      data:
-          type: object

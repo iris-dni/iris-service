@@ -1,0 +1,19 @@
+es:
+    api:
+        enabled: true
+script:
+    groovy:
+        sandbox:
+            enabled: true
+http:
+    cors:
+        enabled: true
+        allow-origin: "/.*/"
+discovery:
+    type: zen
+    zen:
+        ping:
+            multicast:
+                enabled:  false
+cluster:
+    name: iris-service-localdev

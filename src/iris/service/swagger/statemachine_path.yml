@@ -1,0 +1,36 @@
+statemachine_name:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    parameters:
+      - name: name
+        in: path
+        type: string
+        required: True
+        enum:
+            - petitions
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - statemachine
+    summary: Statemachine structure
+    operationId: statemachine
+    parameters:
+      - name: name
+        in: path
+        type: string
+        required: True
+        enum:
+            - petitions
+    responses:
+      '200':
+        description: Statemachine found
+        schema:
+          $ref: 'statemachine.yml#/definitions/StatemachineResponseBody'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

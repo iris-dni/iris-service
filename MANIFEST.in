@@ -1,13 +1,13 @@
-include versions.cfg
-recursive-include iris/service *.jinja2
-recursive-include iris/service/docs *
-recursive-include iris/service/auth/templates *
+include VERSION.txt
+recursive-include src/iris/service *.jinja2
+recursive-include src/iris/service/docs *
+recursive-include src/iris/service/auth/templates *
 
-recursive-include iris/service/content/petition *.yaml
+recursive-include src/iris/service/content/petition *.yaml
 
-graft iris/service/swagger
-graft iris/service/swaggerui/dist
-exclude iris/service/swaggerui/dist/index.html
+graft src/iris/service/swagger
+graft src/iris/service/swaggerui/dist
+exclude src/iris/service/swaggerui/dist/index.html
 
-recursive-exclude iris/service tests.py
-recursive-exclude iris/service/testing *
+recursive-exclude src/iris/service tests.py
+recursive-exclude src/iris/service/testing *

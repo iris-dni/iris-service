@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="icon" type="image/png" href="/swaggerui_resources/images/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/swaggerui_resources/images/favicon-16x16.png" sizes="16x16" />
+  <link href='/swaggerui_resources/css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/swaggerui_resources/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/swaggerui_resources/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/swaggerui_resources/css/reset.css' media='print' rel='stylesheet' type='text/css'/>
+  <link href='/swaggerui_resources/css/print.css' media='print' rel='stylesheet' type='text/css'/>
+
+  <script src='/swaggerui_resources/lib/object-assign-pollyfill.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/jquery.slideto.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/jquery.wiggle.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/handlebars-2.0.0.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/lodash.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/backbone-min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/swagger-ui.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/highlight.9.1.0.pack.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/highlight.9.1.0.pack_extended.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/jsoneditor.min.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/marked.js' type='text/javascript'></script>
+  <script src='/swaggerui_resources/lib/swagger-oauth.js' type='text/javascript'></script>
+
+  <!-- Some basic translations -->
+  <!-- <script src='/swaggerui_resources/lang/translator.js' type='text/javascript'></script> -->
+  <!-- <script src='/swaggerui_resources/lang/ru.js' type='text/javascript'></script> -->
+  <!-- <script src='/swaggerui_resources/lang/en.js' type='text/javascript'></script> -->
+
+  <script type="text/javascript">
+    $(function () {
+      hljs.configure({
+        highlightSizeThreshold: 5000
+      });
+
+      // Pre load translate...
+      if(window.SwaggerTranslator) {
+        window.SwaggerTranslator.translate();
+      }
+      window.swaggerUi = new SwaggerUi({
+        url: "/swagger.json",
+        dom_id: "swagger-ui-container",
+        validatorUrl: null,
+        supportedSubmitMethods: [
+            {% for method in supportedSubmitMethods -%}
+            '{{ method }}'
+            {%- if not loop.last %},{% endif %}
+            {%- endfor %}
+        ],
+        onComplete: function(swaggerApi, swaggerUi){
+          if(typeof initOAuth == "function") {
+            initOAuth({
+              clientId: "your-client-id",
+              clientSecret: "your-client-secret-if-required",
+              realm: "your-realms",
+              appName: "your-app-name",
+              scopeSeparator: ",",
+              additionalQueryStringParams: {}
+            });
+          }
+
+          if(window.SwaggerTranslator) {
+            window.SwaggerTranslator.translate();
+          }
+        },
+        onFailure: function(data) {
+          log("Unable to Load SwaggerUI");
+        },
+        docExpansion: "none",
+        jsonEditor: false,
+        defaultModelRendering: 'schema',
+        showRequestHeaders: true
+      });
+
+      window.swaggerUi.load();
+
+      function log() {
+        if ('console' in window) {
+          console.log.apply(console, arguments);
+        }
+      }
+  });
+  </script>
+</head>
+
+<body class="swagger-section">
+<div id='header'>
+  <div class="swagger-ui-wrap">
+    <a id="logo" href="/swaggerui"><img class="logo__img" alt="swagger" height="30" width="30" src="/swaggerui_resources/images/logo_small.png" /><span class="logo__title">swagger</span></a>
+    <form id='api_selector'>
+      <div id='auth_container'></div>
+    </form>
+    <a href="/docs">online documentation</a>
+  </div>
+</div>
+
+<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+supporters:
+  options:
+    tags:
+        - Options
+    summary: CORS Options
+    responses:
+      default:
+        description: Empty Body
+  get:
+    tags:
+      - supporter_admin
+    summary: Search Supporters
+    operationId: search
+    parameters:
+      - name: petition
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: user
+        in: query
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      - name: resolve
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+            - user
+            - petition
+        collectionFormat: csv
+      - name: sort
+        in: query
+        type: array
+        items:
+          type: string
+          enum:
+              - created
+              - -created
+              - id
+              - -id
+        collectionFormat: csv
+      - $ref: "parameters.yml#/parameters/offset"
+      - $ref: "parameters.yml#/parameters/limit"
+    responses:
+      '200':
+        description: Supporters found
+        schema:
+          $ref: 'supporters.yml#/definitions/ListResponseBodyAdmin'
+      default:
+        description: Unexpected error
+        schema:
+          $ref: 'errors.yml#/definitions/ResponseBody'

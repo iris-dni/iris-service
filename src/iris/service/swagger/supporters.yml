@@ -1,0 +1,94 @@
+definitions:
+    SupporterAdmin:
+        type: object
+        properties:
+            id:
+                type: string
+            dc:
+                type: object
+                readOnly: true
+                properties:
+                    created:
+                        type: string
+                        format: dateTime
+                        description: ISO8601
+            petition:
+                type: object
+                readOnly: true
+                properties:
+                    id:
+                        type: string
+                        x-nullable: true
+                    class:
+                        type: string
+                    data:
+                        $ref: 'petitions.yml#/definitions/Petition'
+            user:
+                type: object
+                readOnly: true
+                allOf:
+                    - $ref: 'users.yml#definitions/UserRelationPublic'
+                    - $ref: 'users.yml#definitions/UserRelationProperties'
+
+    SupporterPublic:
+        type: object
+        properties:
+            id:
+                type: string
+            user:
+                type: object
+                readOnly: true
+                properties:
+                    id:
+                        type: string
+                        x-nullable: true
+                    salutation:
+                        type: string
+                        x-nullable: true
+                    firstname:
+                        type: string
+                        x-nullable: true
+                    lastname:
+                        type: string
+                        x-nullable: true
+                    mobile:
+                        type: string
+                        x-nullable: true
+                    mobile_trusted:
+                        type: boolean
+                        x-nullable: true
+                    zip:
+                        type: string
+                        x-nullable: true
+                    town:
+                        type: string
+                        x-nullable: true
+
+
+    ListResponseBodyAdmin:
+        description: Supporters list response
+        type: object
+        required:
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/SupporterAdmin'
+            total:
+                type: integer
+
+    ListResponseBodyPublic:
+        description: Supporters list response
+        type: object
+        required:
+            - data
+            - total
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/SupporterPublic'
+            total:
+                type: integer

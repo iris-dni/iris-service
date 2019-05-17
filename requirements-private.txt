@@ -1,0 +1,5 @@
+# lovely public repo contains a special release of paramid-swagger
+# see https://github.com/lovelysystems/pyramid_swagger
+pyramid-swagger==2.3.1rc1
+
+bravado-core==4.2.3rc7

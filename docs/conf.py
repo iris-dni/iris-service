@@ -12,7 +12,7 @@ here = os.path.dirname(__file__)
 project_root = os.path.dirname(here)
 
 VERSION = '?'
-execfile(os.path.join(project_root, 'iris/service/__init__.py'))
+execfile(os.path.join(project_root, 'src/iris/service/__init__.py'))
 docs_version = VERSION
 
 pyramid_conf = os.path.join(project_root, 'etc', 'development.ini')
@@ -31,8 +31,7 @@ extensions = ['sphinxcontrib.plantuml',
 
 plantuml = ('java'
             ' -Djava.awt.headless=true'
-            ' -jar ../parts/plantuml/plantuml.jar'
-            ' -graphvizdot /opt/local/bin/dot'
+            ' -jar ./plantuml.jar'
            )
 
 # load doctest extension to be able to setup testdata in the documentation that

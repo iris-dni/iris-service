@@ -1,0 +1,57 @@
+version: '3.6'
+
+services:
+  api:
+    image: lovelysystems/iris-service:dev
+    command: "/config/config.ini"
+    ports:
+      - 29080:29080
+    depends_on:
+      - crate
+    volumes:
+      - ./api:/config
+
+  crate:
+    image: crate/crate:0.54.11
+    ports:
+      - 29042:4200
+    environment:
+      CRATE_HEAP_SIZE: 1g
+      NODE_NAME: irislocal
+    volumes:
+      - ./crate:/crate/config
+
+  frontend:
+    image: lovelysystems/iris-frontend:0.15.0
+    ports:
+      - 29081:8000
+    environment:
+      # Do not install devDependencies for deployment
+      NODE_ENV: "production"
+      # The site's name used in page titles. Change it for a custom name.
+      SITE_NAME: "Petitio"
+      # The site's base URL
+      BASE_URL: "http://localhost:29081"
+      # URL to the IRIS Service API
+      API_URL: "http://iris-api.loc.lovelysystems.com:29080/v1"
+      # The api key for the IRIS Service API
+      API_KEY: "5e5ab673ab684b2ebed19bcf9bbfecc0"
+      # Secret key to use the IRIS service API's image proxy
+      IMAGE_PROXY_KEY: "unused"
+      # Label used in Single Sign-On dialog
+      SSO_PROVIDER_TEXT: "Login mit Ihrem AZ Konto"
+      # Provider URL for Single Sign-On
+      SSO_PROVIDER_URL: "http://aaz.azdev.lovelysystems.com/anmelden"
+      # Custom theme path. Leave empty for default theme.
+      THEME_PATH: "themes/petitio"
+    links:
+      - api:iris-api.loc.lovelysystems.com
+    volumes:
+      - ./frontend:/config
+
+  admin:
+    image: lovelysystems/iris-admin:v0.6.0
+    ports:
+      - 29082:80
+    volumes:
+      - ./admin:/config
