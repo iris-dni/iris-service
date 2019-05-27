@@ -2,9 +2,10 @@
 Changes For IRIS Service
 ========================
 
-unreleased
-==========
+2019/05/27 1.0.0
+=================
 
+ - new style docker build
  - use 8081 as default port for API service on localhost
 
 2018/04/24 0.10.2
