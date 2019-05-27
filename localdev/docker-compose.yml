@@ -22,7 +22,7 @@ services:
       - ./crate:/crate/config
 
   frontend:
-    image: lovelysystems/iris-frontend:0.15.0
+    image: lovelysystems/iris-frontend:dev
     ports:
       - 29081:8000
     environment:
@@ -31,7 +31,7 @@ services:
       # The site's name used in page titles. Change it for a custom name.
       SITE_NAME: "Petitio"
       # The site's base URL
-      BASE_URL: "http://localhost:29081"
+      BASE_URL: "http://iris-frontend.loc.lovelysystems.com:29081"
       # URL to the IRIS Service API
       API_URL: "http://iris-api.loc.lovelysystems.com:29080/v1"
       # The api key for the IRIS Service API
@@ -46,11 +46,9 @@ services:
       THEME_PATH: "themes/petitio"
     links:
       - api:iris-api.loc.lovelysystems.com
-    volumes:
-      - ./frontend:/config
 
   admin:
-    image: lovelysystems/iris-admin:v0.6.0
+    image: lovelysystems/iris-admin:dev
     ports:
       - 29082:80
     volumes:
